@@ -44,6 +44,7 @@ The Ask page works without this. The AI mode needs a tiny server to keep your Cl
 |---|---|
 | **Ghost Map** | Moon and Mars maps with every artifact at its real latitude and longitude. You can zoom with the + and − buttons, by double-clicking, with ctrl+scroll, or with the "Zoom to Apollo sites" and "Zoom to Jezero" presets. When zoomed in you can drag the map. Labels are spread out automatically so they don't overlap. A searchable, filterable list sits beside the map. |
 | **Dossier** (slide-over) | Each machine has a first-person **Ghost Log**, a story at Explorer level (ages 8–11) or Scientist level (12+), a "planned vs. what happened" comparison, numbers, dates, discoveries, what was left behind, why it matters today, a fun fact, a NASA video, and links to the original NASA records. |
+| **How it worked** (explainer animations) | 10 step-by-step animations: Apollo landing and liftoff, Surveyor's rocket landing (including Surveyor 3's bounces), airbag bouncing, the sky crane, parachute-and-legs landings (including what probably went wrong for Mars Polar Lander), Ingenuity's flights, crashing on purpose (Ranger, LCROSS, Deep Impact, GRAIL, the S-IVB, LADEE), laser ranging to the Moon, marsquakes and moonquakes, and gravity assists. Each has captions, play/pause/step controls, optional narration, and follows Reduce motion. They're in a gallery on the main page and in every matching dossier, and the Ask page uses their steps to answer "How did X land?". |
 | **Ghost Logs** | 12 short story chapters you can step through with the ← → keys. Each one can be read aloud. |
 | **Timeline** | Artifacts grouped by decade from 1964 to 2021, with a filter by world. |
 | **Deep Space** | A log-scale ruler showing Pioneer 10/11, Voyager 1/2 and New Horizons at *estimated* distances for today's date, plus how long a signal takes to cross that distance. |
@@ -71,6 +72,7 @@ site/
   assets/maps/      moon.jpg (NASA SVS), mars.jpg, stars.jpg, earth.jpg (Solar System Scope, CC BY 4.0)
   assets/ui/        badge icons cut out from Fantasy_Rpg_UI_Kit
   assets/models/    12 NASA GLB models (~19 MB), from NASA 3D Resources
+  js/explainers.js  "How it worked" animations: the player and all 10 scenes (SVG). The FOR table maps each machine to its animations.
   js/models.js      shared 3D model viewer (Google <model-viewer> 3.5.0, loaded only on first use)
   ask.html, js/ask.js   Ask the Archive chat (offline guide + optional AI)
   js/ask-config.js  where the AI worker's address goes

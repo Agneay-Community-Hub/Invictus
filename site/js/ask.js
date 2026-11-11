@@ -62,7 +62,7 @@
     [/backshell|parachute|perseverance|sky ?crane|dare mighty/, ["backshell"]],
     [/curiosity|gale crater|mount sharp/, ["curiosity"]],
     [/pale blue dot|golden record|farthest|furthest|interstellar|heliopause/, ["voyager1"]],
-    [/uranus|neptune|triton|grand tour|interstellar shout/, ["voyager2"]],
+    [/uranus|neptune|triton|grand tour|interstellar shout|gravity assist|slingshot/, ["voyager2"]],
     [/jupiter|asteroid belt|aldebaran|plaque/, ["pioneer10"]],
     [/saturn(?! v)|f ring/, ["pioneer11"]],
     [/asteroid|eros|valentine/, ["near"]],
@@ -93,6 +93,7 @@
 
   const INTENTS = [
     ["ghost", /talk (to me )?(as|like)|pretend|your (story|ghost)|in (its|their|your) (own )?voice|ghost log|introduce yourself|who are you/],
+    ["how", /how did .*(land|touch down|get down|fly|crash|take off|work)|how (does|do|did) .*(land|fly)|\blanding\b|how .* landed|parachute|airbags?|sky ?crane|slingshot|gravity assist/],
     ["distance", /how far|distance|light.?(time|hours?|minutes?)|where is .* now|signal take/],
     ["status", /still (work|talk|alive|active|awake|run)|is .* (alive|dead|working|active)|status|switched off|died|stop(ped)? working/],
     ["dates", /\bwhen\b|what year|which year|\bdate\b|launch|land(ed)? on|arriv/],
@@ -234,6 +235,11 @@
     switch (intent) {
       case "ghost":
         return `*${a.name} speaking (a story voice, built from real mission facts):*\n“${a.ghost}”`;
+      case "how": {
+        const sum = window.Explainers && Explainers.summary(a.id);
+        if (!sum) return `${sci ? a.deep : a.story}`;
+        return `**${sum.title}:**\n` + sum.steps.map(t => `- ${t}`).join("\n") + `\n\n*Open the dossier below to watch it as an animation.*`;
+      }
       case "dates":
         return `${name} launched on **${a.dates.launch}** and arrived on **${a.dates.arrive}**.\n- Last word / status: ${a.dates.last}.`;
       case "where": {
@@ -407,6 +413,7 @@
     "What did Opportunity discover?",
     "Why did astronauts leave things on the Moon?",
     "How far away is Voyager 1 right now?",
+    "How did Curiosity land?",
     "Which robot found ice on Mars?",
     "Talk to me as Ingenuity",
     "What is an RTG?",

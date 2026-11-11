@@ -477,9 +477,18 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 }
 
 /* ---------- responsive ---------- */
+.mainnav a { white-space: nowrap; }
 @media (max-width: 1180px) {
   .mainnav ul { gap: 0; }
   .mainnav a { padding: 8px 8px; font-size: .86rem; }
+}
+@media (max-width: 1260px) {
+  .nav-toggle { display: block; }
+  .mainnav { order: 3; margin-left: 0; }
+  .mainnav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: var(--bg2); border-bottom: 1px solid var(--line); padding: 8px 16px 16px; }
+  .mainnav ul.open { display: flex; }
+  .mainnav a { padding: 12px; font-size: 1rem; }
+  .top-actions { margin-left: auto; }
 }
 @media (max-width: 1020px) {
   .nav-toggle { display: block; }
@@ -540,3 +549,62 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 .model-btn { position: absolute; right: 12px; bottom: 12px; z-index: 2; backdrop-filter: blur(6px); background: rgba(11,17,32,.8); }
 .tag3d { display: inline-block; margin-left: 6px; font-size: .65rem; font-weight: 700; padding: 1px 6px; border-radius: 6px; background: rgba(127,212,255,.15); color: var(--cyan); border: 1px solid rgba(127,212,255,.4); vertical-align: middle; }
 @media (max-width: 640px) { .model-card { padding: 16px; } .mm-stage { height: 52vh; } }
+
+/* ---------- explainer animations ---------- */
+.ex { display: block; }
+.ex-stage { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--line2); background: #04060c; }
+.ex-stage svg { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+.ex .fx:not(.on) { visibility: hidden; }
+.ex .flame.on path, .ex .flicker.on ellipse { animation: exFlick .11s ease-in-out infinite alternate; }
+.ex .rotor.on .blade { transform-box: view-box; animation: exSpin .09s linear infinite; }
+.ex .rotor.rev.on .blade { animation-direction: reverse; animation-duration: .08s; }
+.ex .flicker.on circle { animation: exFlick .5s ease-in-out infinite alternate; }
+@keyframes exFlick { from { opacity: .65; } to { opacity: 1; } }
+@keyframes exSpin { 0% { transform: scaleX(1); } 50% { transform: scaleX(-.2); } 100% { transform: scaleX(1); } }
+.ex-big {
+  position: absolute; inset: 0; margin: auto; width: 76px; height: 76px; border-radius: 50%; border: 0; cursor: pointer;
+  background: rgba(255,179,71,.92); color: #1b1203; font-size: 1.8rem; box-shadow: 0 10px 30px rgba(0,0,0,.5); display: grid; place-items: center;
+  transition: transform .15s;
+}
+.ex-big:hover { transform: scale(1.06); }
+.ex-big span { margin-left: 5px; }
+.ex-cap { min-height: 3.4em; margin: 10px 2px 8px; font-size: 1rem; line-height: 1.5; color: var(--text); }
+.ex-bar { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.ex-btn { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line2); background: var(--panel); color: var(--text); cursor: pointer; font-size: 1rem; }
+.ex-btn:hover { background: var(--panel2); }
+.ex-play { background: var(--amber); color: #1b1203; border-color: var(--amber); }
+.ex-narr[aria-pressed="true"] { background: var(--cyan); color: #04060c; border-color: var(--cyan); }
+.ex-dots { display: flex; gap: 5px; flex: 1; justify-content: center; padding: 0 6px; min-width: 80px; }
+.ex-dot { width: 10px; height: 10px; border-radius: 50%; border: 0; padding: 0; background: var(--line2); cursor: pointer; }
+.ex-dot.done { background: var(--amber2); opacity: .55; }
+.ex-dot[aria-current="true"] { background: var(--amber); transform: scale(1.35); }
+.ex-dot:focus-visible { outline-offset: 3px; }
+
+/* "How it worked" block inside dossiers */
+.d-how .ex-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.d-how .ex-tabs button { border: 1px solid var(--line2); background: var(--bg2); color: var(--muted); border-radius: 999px; padding: 5px 12px; font-weight: 700; font-size: .82rem; cursor: pointer; }
+.d-how .ex-tabs button[aria-selected="true"] { color: #1b1203; background: var(--amber); border-color: var(--amber); }
+
+/* "How it worked" gallery section */
+.how-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 20px; align-items: start; }
+.how-list { display: flex; flex-direction: column; gap: 6px; }
+.how-list button {
+  display: flex; align-items: center; gap: 10px; text-align: left; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel);
+  color: var(--muted); font-weight: 700; cursor: pointer; min-height: 48px;
+}
+.how-list button .n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--bg2); font-size: .8rem; flex-shrink: 0; }
+.how-list button[aria-selected="true"] { color: var(--text); border-color: var(--amber); background: var(--panel2); }
+.how-list button[aria-selected="true"] .n { background: var(--amber); color: #1b1203; }
+.how-player { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 16px; }
+.how-player h3 { font-size: 1.2rem; margin-bottom: 10px; }
+.how-player .how-who { color: var(--muted); font-size: .88rem; margin: 10px 0 0; }
+@media (max-width: 1020px) {
+  .how-layout { grid-template-columns: 1fr; }
+  .how-list { flex-direction: row; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+  .how-list button { flex-shrink: 0; }
+}
+@media (max-width: 640px) {
+  .ex-btn { width: 36px; height: 36px; }
+  .ex-cap { font-size: .95rem; }
+  .ex-big { width: 60px; height: 60px; font-size: 1.4rem; }
+}

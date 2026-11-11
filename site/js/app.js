@@ -71,7 +71,7 @@
         if (en.isIntersecting) links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + en.target.id));
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    ["map", "logs", "timeline", "deep", "quiz", "archive"].forEach(id => io.observe(document.getElementById(id)));
+    ["map", "logs", "how", "timeline", "deep", "quiz", "archive"].forEach(id => io.observe(document.getElementById(id)));
   }
 
   /* ---------------- starfield ---------------- */
@@ -282,8 +282,11 @@
     history.replaceState(null, "", "#artifact=" + id);
     if (!progress.opened.includes(id)) { progress.opened.push(id); saveProgress(); checkBadges(); }
   }
+  let dHow = null;
+  function destroyHow() { if (dHow) { dHow.destroy(); dHow = null; } }
   function closeDrawer() {
     stopSpeech();
+    destroyHow();
     $("#scrim").hidden = true; $("#drawer").hidden = true; document.body.style.overflow = "";
     openId = null; history.replaceState(null, "", location.pathname);
     $$("#drawer video").forEach(v => v.pause());
@@ -304,6 +307,8 @@
       return `<div class="fact"><small>${esc(k)}</small><b>${esc(val)}</b></div>`;
     }).join("");
     const isSci = prefs.level === "scientist";
+    const howList = window.Explainers ? Explainers.forArtifact(a.id) : [];
+    destroyHow();
     let distBlock = "";
     if (a.dist) {
       const au = auNow(a.dist);
@@ -332,6 +337,10 @@
         <div class="d-block"><h3>${isSci ? "The science story" : "The story"}</h3><p>${esc(isSci ? a.deep : a.story)}</p>
           ${!isSci ? `<button class="btn btn-small" id="moreBtn">Tell me more (Scientist level)</button>` : ""}</div>
 
+        ${howList.length ? `<div class="d-block d-how"><h3>How it worked</h3>
+          ${howList.length > 1 ? `<div class="ex-tabs" role="tablist" aria-label="Animations">${howList.map((h, i) => `<button role="tab" data-ex="${i}" aria-selected="${i === 0}">${esc(h.title)}</button>`).join("")}</div>` : ""}
+          <div id="dHow"></div></div>` : ""}
+
         <div class="d-block"><h3>Planned vs. what really happened</h3>
           <div class="pva"><div><small>The plan</small>${esc(a.planned)}</div><div><small>What happened</small>${esc(a.actual)}</div></div></div>
 
@@ -357,6 +366,14 @@
         </div>
       </div>`;
     $("#drawerBody").scrollTop = 0;
+    // "How it worked" animation(s)
+    if (howList.length) {
+      const show = i => { destroyHow(); dHow = Explainers.mount($("#dHow"), howList[i].scene, howList[i].variant); };
+      show(0);
+      $$("#drawerBody .ex-tabs [data-ex]").forEach(b => b.addEventListener("click", () => {
+        $$("#drawerBody .ex-tabs [data-ex]").forEach(x => x.setAttribute("aria-selected", x === b)); show(+b.dataset.ex);
+      }));
+    }
     // thumbs
     $$(".d-thumbs button").forEach(b => b.addEventListener("click", () => {
       const m = a.media[+b.dataset.i];
@@ -634,7 +651,29 @@
   }
 
   /* ---------------- boot ---------------- */
-  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initChapters(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
+  /* ---------------- HOW IT WORKED gallery ---------------- */
+  function initHow() {
+    if (!window.Explainers) return;
+    let player = null;
+    const G = Explainers.GALLERY;
+    $("#howList").innerHTML = G.map(([, , label], i) => `<button role="tab" data-i="${i}" aria-selected="${i === 0}"><span class="n">${i + 1}</span>${esc(label)}</button>`).join("");
+    const users = scene => ARTIFACTS.filter(a => Explainers.forArtifact(a.id).some(h => h.scene === scene));
+    const show = i => {
+      const [scene, artId] = G[i];
+      if (player) player.destroy();
+      const variant = (Explainers.forArtifact(artId).find(h => h.scene === scene) || {}).variant;
+      player = Explainers.mount($("#howPlayer"), scene, variant);
+      $("#howTitle2").textContent = player.title;
+      const who = users(scene);
+      $("#howWho").innerHTML = "Used by: " + who.map(a => `<a href="#artifact=${a.id}" data-open="${a.id}">${esc(a.name)}</a>`).join(", ");
+      $$("#howWho [data-open]").forEach(l => l.addEventListener("click", e => { e.preventDefault(); openDrawer(l.dataset.open, l); }));
+      $$("#howList button").forEach(b => b.setAttribute("aria-selected", +b.dataset.i === i));
+    };
+    $$("#howList button").forEach(b => b.addEventListener("click", () => show(+b.dataset.i)));
+    show(0);
+  }
+
+  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initChapters(); initHow(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
   $("#lbClose").addEventListener("click", closeLightbox);
   $("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") closeLightbox(); });
   if ("speechSynthesis" in window) speechSynthesis.getVoices();
