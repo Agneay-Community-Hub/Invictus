@@ -15,6 +15,29 @@ https://agneay-community-hub.github.io/PROJECT-AREA-51/
 
 GitHub Pages publishes the `site/` folder automatically on every push to `main` that changes it, using `.github/workflows/pages.yml`. You can also re-run it by hand from the repo's **Actions** tab. `netlify.toml` is kept in case you ever want to host on Netlify instead.
 
+## Turning on the AI guide (optional)
+
+The Ask page works without this. The AI mode needs a tiny server to keep your Claude API key secret, because anything inside a GitHub Pages site is public. `worker/` is that server: a free Cloudflare Worker.
+
+**What it costs:** a Cloudflare account is free. Claude usage is billed to your Anthropic account. The worker uses Claude Opus 5.5 at low effort, with the archive cached so repeat questions are cheap, and each visitor is limited to 10 questions a minute. **Set a monthly spend limit** in the Claude Console (Settings → Limits) before sharing the link widely.
+
+1. Get an API key at https://console.anthropic.com (Settings → API keys).
+2. Deploy the worker:
+   ```bash
+   cd worker
+   npm install
+   npx wrangler login
+   npx wrangler secret put ANTHROPIC_API_KEY
+   npx wrangler deploy
+   ```
+   `wrangler secret put` asks you to paste the key; it is stored encrypted in Cloudflare, never in the repo.
+3. Copy the address that `wrangler deploy` prints (like `https://ghosts-archive-guide.<you>.workers.dev`) into `site/js/ask-config.js`, then commit and push.
+
+**Changing things:**
+- Only the sites listed in `ALLOWED_ORIGINS` in `worker/wrangler.toml` can use the worker. Add your Netlify or custom domain there if you use one.
+- Edited facts in `site/js/data.js`? Run `npx wrangler deploy` again. It rebuilds the AI's knowledge from `data.js` automatically, via `scripts/build-knowledge.mjs`.
+- The model, answer length and rules are at the top of `worker/src/index.js`. To make it cheaper, change `MODEL` to `"claude-haiku-5-5"`.
+
 ## What's inside
 
 | Section | What it does |
@@ -27,6 +50,7 @@ GitHub Pages publishes the `site/` folder automatically on every push to `main` 
 | **Who Am I? quiz** | 8 random clue questions. |
 | **Archive** | All NASA photos with their NASA IDs, plus 6 NASA videos. |
 | **Explorer Passport** | 8 badges, saved in localStorage. The badge art comes from your Fantasy RPG UI Kit. |
+| **Ask the Archive** (`ask.html`) | A chat page for questions about any machine. It works straight away with a built-in "archive guide" that searches the site's own data, with no account and no cost. If you deploy the optional AI worker, it switches to Claude, with streaming answers grounded in the same archive. Every dossier has an "Ask about…" button. |
 | **NASA 3D models** | 18 machines have a "🧊 View 3D model" button, both in their dossier and in 3D Explore. You can spin and zoom the official NASA model, and phones get "View in your space" (AR). Models are listed below. |
 | **3D Explore** (`explore.html`) | Moon and Mars globes you can spin, with clickable beacons. A Deep Space scene shows the Sun, the planet orbits, the heliopause and each probe's direction and distance. It works on phones too. |
 
@@ -48,6 +72,10 @@ site/
   assets/ui/        badge icons cut out from Fantasy_Rpg_UI_Kit
   assets/models/    12 NASA GLB models (~19 MB), from NASA 3D Resources
   js/models.js      shared 3D model viewer (Google <model-viewer> 3.5.0, loaded only on first use)
+  ask.html, js/ask.js   Ask the Archive chat (offline guide + optional AI)
+  js/ask-config.js  where the AI worker's address goes
+worker/             optional Cloudflare Worker that talks to Claude and keeps the API key secret
+scripts/build-knowledge.mjs   turns site/js/data.js into the AI's knowledge file
 ```
 
 ## NASA 3D models (github.com/nasa/NASA-3D-Resources)

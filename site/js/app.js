@@ -352,6 +352,7 @@
         <div class="d-links">
           ${hasModel(a.id) ? `<button class="btn btn-small" data-model="${a.id}">🧊 Spin the NASA 3D model</button>` : ""}
           ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">See it in 3D deep space →</a>`}
+          <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">💬 Ask about ${esc(a.name)}</a>
           ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">Open in NASA library ↗</a>` : ""}
         </div>
       </div>`;

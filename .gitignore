@@ -30,3 +30,8 @@ desktop.ini
 .idea/
 *.swp
 *.log
+
+# Cloudflare Worker local secrets and build output
+worker/.dev.vars
+worker/.wrangler/
+worker/src/knowledge.js
