@@ -7,7 +7,18 @@ NASA Space Apps Challenge 2026 entry. It's an interactive story archive, for age
 ```bash
 python serve.py
 ```
-Then open http://localhost:5173. The server turns off browser caching. Any static host also works, such as GitHub Pages or Netlify: upload the `site/` folder.
+Then open http://localhost:5173. The server turns off browser caching.
+
+## Put it online (Netlify)
+
+The repo includes a `netlify.toml` that tells Netlify to publish the `site/` folder. There's no build step.
+
+1. Sign in at https://app.netlify.com with your GitHub account.
+2. Choose **Add new site → Import an existing project → GitHub**, and allow Netlify to see the `Agneay-Community-Hub/PROJECT-AREA-51` repo. Private repos work on the free plan.
+3. Leave the build settings as Netlify reads them from `netlify.toml`, then click **Deploy**.
+4. Optionally, rename the site under **Site configuration → Change site name** to get a nicer address, such as `ghosts-of-exploration.netlify.app`.
+
+After that, every push to `main` redeploys the site automatically.
 
 The 3D mode loads Three.js from a CDN, so it needs an internet connection. The NASA videos are streamed from images-assets.nasa.gov. Everything else is local.
 
