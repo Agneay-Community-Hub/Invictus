@@ -1,0 +1,640 @@
+/* ===========================================================
+   Ghosts of Exploration — main app
+   =========================================================== */
+(() => {
+  "use strict";
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
+  const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂" };
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* ---------------- persistent state (safe storage) ---------------- */
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("goe:" + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem("goe:" + k, JSON.stringify(v)); } catch { /* ignore */ } }
+  };
+  const progress = Object.assign({ opened: [], chapters: [], voice: false, quizBest: 0, explore: false, badges: [] }, store.get("progress", {}));
+  const saveProgress = () => store.set("progress", progress);
+  const prefs = Object.assign({ level: "explorer", size: 1, motion: false, spacing: false }, store.get("prefs", {}));
+  const savePrefs = () => store.set("prefs", prefs);
+
+  /* ---------------- helpers ---------------- */
+  const cover = a => a.media && a.media[0] ? "assets/nasa/" + a.media[0].f : null;
+  const thumbHTML = (a, cls = "thumb") => cover(a)
+    ? `<img class="${cls}" src="${cover(a)}" alt="" loading="lazy">`
+    : `<span class="${cls} ph" aria-hidden="true">${TYPE_EMOJI[a.type] || "✦"}</span>`;
+  const pill = s => `<span class="pill" style="color:${STATUS[s].color}">${STATUS[s].label}</span>`;
+  const auNow = d => d.au2025 + d.rate * ((Date.now() - Date.UTC(2025, 0, 1)) / (365.25 * 864e5));
+  const fmtKm = au => {
+    const km = au * 1.496e8;
+    return km >= 1e9 ? (km / 1e9).toFixed(1) + " billion km" : (km / 1e6).toFixed(0) + " million km";
+  };
+  const lightTime = au => { const h = au * 499 / 3600; return h >= 1 ? h.toFixed(1) + " light-hours" : (h * 60).toFixed(0) + " light-minutes"; };
+
+  /* ---------------- settings ---------------- */
+  function applyPrefs() {
+    document.documentElement.style.setProperty("--fs", prefs.size);
+    document.body.classList.toggle("reduce-motion", !!prefs.motion);
+    document.body.classList.toggle("spacing", !!prefs.spacing);
+    $$("[data-level]").forEach(b => b.setAttribute("aria-checked", b.dataset.level === prefs.level));
+    $$("[data-size]").forEach(b => b.setAttribute("aria-checked", +b.dataset.size === +prefs.size));
+    $("#reduceMotion").checked = !!prefs.motion;
+    $("#spacing").checked = !!prefs.spacing;
+  }
+  function initSettings() {
+    const btn = $("#settingsBtn"), panel = $("#settings");
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      panel.hidden = !panel.hidden; btn.setAttribute("aria-expanded", !panel.hidden);
+    });
+    document.addEventListener("click", e => { if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) { panel.hidden = true; btn.setAttribute("aria-expanded", "false"); } });
+    $$("[data-level]").forEach(b => b.addEventListener("click", () => { prefs.level = b.dataset.level; savePrefs(); applyPrefs(); rerenderLevel(); }));
+    $$("[data-size]").forEach(b => b.addEventListener("click", () => { prefs.size = +b.dataset.size; savePrefs(); applyPrefs(); }));
+    $("#reduceMotion").addEventListener("change", e => { prefs.motion = e.target.checked; savePrefs(); applyPrefs(); });
+    $("#spacing").addEventListener("change", e => { prefs.spacing = e.target.checked; savePrefs(); applyPrefs(); });
+    applyPrefs();
+  }
+  function rerenderLevel() {
+    renderChapter();
+    if (openId) renderDrawer(openId);
+  }
+
+  /* ---------------- nav ---------------- */
+  function initNav() {
+    const t = $(".nav-toggle"), ul = $("#navlist");
+    t.addEventListener("click", () => { const o = ul.classList.toggle("open"); t.setAttribute("aria-expanded", o); });
+    ul.addEventListener("click", e => { if (e.target.tagName === "A") { ul.classList.remove("open"); t.setAttribute("aria-expanded", "false"); } });
+    const links = $$("#navlist a");
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + en.target.id));
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    ["map", "logs", "timeline", "deep", "quiz", "archive"].forEach(id => io.observe(document.getElementById(id)));
+  }
+
+  /* ---------------- starfield ---------------- */
+  function initStars() {
+    const c = $("#stars"), ctx = c.getContext("2d");
+    let stars = [], w, h, raf;
+    const resize = () => {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      w = c.offsetWidth; h = c.offsetHeight; c.width = w * dpr; c.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      stars = Array.from({ length: Math.round(w * h / 2600) }, () => ({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.3 + .2, t: Math.random() * 6.28, s: Math.random() * .02 + .004 }));
+    };
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      const still = prefs.motion || matchMedia("(prefers-reduced-motion: reduce)").matches;
+      for (const s of stars) {
+        if (!still) s.t += s.s;
+        ctx.globalAlpha = .35 + .65 * Math.abs(Math.sin(s.t));
+        ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+    resize(); draw();
+    addEventListener("resize", () => { cancelAnimationFrame(raf); resize(); draw(); });
+  }
+
+  /* ---------------- hero bits ---------------- */
+  function initHero() {
+    const counts = w => ARTIFACTS.filter(a => a.world === w).length;
+    $("#worldCards").innerHTML = Object.entries(WORLDS).map(([k, v]) => `
+      <button class="world-card" data-go="${k}">
+        <span class="globe ${k}" aria-hidden="true"></span>
+        <span><b>${v.name}</b><small>${counts(k)} machines · ${v.tagline.split("·")[0].trim()}</small></span>
+      </button>`).join("");
+    $$("#worldCards [data-go]").forEach(b => b.addEventListener("click", () => {
+      const w = b.dataset.go;
+      if (w === "deep") document.getElementById("deep").scrollIntoView();
+      else { setWorld(w); document.getElementById("map").scrollIntoView(); }
+    }));
+    const v1 = byId.voyager1.dist;
+    $("#v1dist").textContent = "~" + auNow(v1).toFixed(0) + " AU";
+  }
+
+  /* ---------------- MAP ---------------- */
+  let world = "moon", typeFilter = "all", query = "";
+  const MAPCREDIT = {
+    moon: "Map: NASA Scientific Visualization Studio CGI Moon Kit (LRO LROC data). Centre = 0° longitude, the side facing Earth.",
+    mars: "Map: Solar System Scope (CC BY 4.0), based on NASA data. Centre = 0° longitude."
+  };
+  const listFor = () => ARTIFACTS.filter(a => a.world === world)
+    .filter(a => typeFilter === "all" || (typeFilter === "active" ? a.status === "active" || a.status === "retired" : a.type === typeFilter))
+    .filter(a => !query || (a.name + " " + (a.nick || "") + " " + a.mission + " " + a.place + " " + a.story + " " + a.discoveries.join(" ") + " " + TYPES[a.type]).toLowerCase().includes(query));
+
+  function setWorld(w) {
+    world = w; typeFilter = "all";
+    $$(".map-tabs [role=tab]").forEach(t => { const on = t.dataset.world === w; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1; });
+    const img = $("#mapImg"); img.style.opacity = 0;
+    setTimeout(() => { img.src = "assets/maps/" + w + ".jpg"; img.onload = () => (img.style.opacity = 1); }, 150);
+    $("#mapWrap").classList.toggle("mars", w === "mars");
+    $("#mapCredit").textContent = MAPCREDIT[w];
+    Z.s = 1; Z.tx = Z.ty = 0;
+    renderChips(); renderMap(); applyZoom(false); updatePresetLabel();
+  }
+  function renderChips() {
+    const types = [...new Set(ARTIFACTS.filter(a => a.world === world).map(a => a.type))];
+    const chips = [["all", "All"], ...types.map(t => [t, TYPES[t] + "s"]), ["active", "Still awake"]];
+    $("#chips").innerHTML = chips.map(([k, l]) => `<button class="chip" aria-pressed="${k === typeFilter}" data-f="${k}">${l}</button>`).join("");
+    $$("#chips .chip").forEach(c => c.addEventListener("click", () => { typeFilter = c.dataset.f; renderChips(); renderMap(); }));
+  }
+  function renderLegend() {
+    $("#legend").innerHTML = Object.entries(STATUS).map(([k, s]) => `<li title="${esc(s.desc)}"><i style="background:${s.color};color:${s.color}"></i>${s.label}</li>`).join("");
+  }
+  function renderMap() {
+    const shown = new Set(listFor().map(a => a.id));
+    const all = ARTIFACTS.filter(a => a.world === world);
+    const box = $("#mapMarkers");
+    box.innerHTML = all.map((a, i) => {
+      const x = (a.lon + 180) / 360 * 100, y = (90 - a.lat) / 180 * 100;
+      const n = a.nudge || [0, 0];
+      return `<button class="marker ${shown.has(a.id) ? "" : "dim"}" data-id="${a.id}" data-x="${x}" data-y="${y}" data-nx="${n[0] * 9}" data-ny="${n[1] * 9}"
+        style="left:${x}%;top:${y}%;--c:${STATUS[a.status].color};--d:${(i % 5) * .5}s;transform:scale(var(--inv)) translate(${n[0] * 9}px,${n[1] * 9}px)"
+        aria-label="${esc(a.name)}, ${esc(STATUS[a.status].label)}, ${a.year}" ${shown.has(a.id) ? "" : 'tabindex="-1"'}>
+        <span class="marker-label">${esc(a.nick && a.type !== "vehicle" ? a.nick : a.name)}</span></button>`;
+    }).join("");
+    const tip = $("#mapTip");
+    $$(".marker", box).forEach(m => {
+      const a = byId[m.dataset.id];
+      const show = () => {
+        tip.innerHTML = `<b>${esc(a.name)}</b><span>${esc(a.place)} · ${a.year}</span><br>${pill(a.status)}`;
+        const p = screenPos(m), W = $("#mapWrap").clientWidth;
+        tip.style.left = Math.min(Math.max(p.x, 115), W - 115) + "px"; tip.style.top = p.y + "px"; tip.hidden = false;
+        $$(".aitem").forEach(i => i.classList.toggle("on", i.dataset.id === a.id));
+      };
+      const hide = () => { tip.hidden = true; $$(".aitem").forEach(i => i.classList.remove("on")); };
+      m.addEventListener("mouseenter", show); m.addEventListener("focus", show);
+      m.addEventListener("mouseleave", hide); m.addEventListener("blur", hide);
+      m.addEventListener("click", () => openDrawer(a.id, m));
+    });
+    declutter();
+    const list = listFor().sort((a, b) => a.year - b.year);
+    $("#alist").innerHTML = list.length ? list.map(a => `<li><button class="aitem" data-id="${a.id}">
+        ${thumbHTML(a)}<span><b>${esc(a.name)}${hasModel(a.id) ? '<span class="tag3d" title="Has a 3D model">3D</span>' : ""}</b><small>${esc(TYPES[a.type])} · ${esc(a.place.split("(")[0])}</small><br>${pill(a.status)}</span><span class="yr">${a.year}</span></button></li>`).join("")
+      : `<li class="empty">Nothing matches. Try another word!</li>`;
+    $$("#alist .aitem").forEach(b => {
+      b.addEventListener("click", () => openDrawer(b.dataset.id, b));
+      b.addEventListener("mouseenter", () => $$(".marker", box).forEach(m => m.classList.toggle("on", m.dataset.id === b.dataset.id)));
+      b.addEventListener("mouseleave", () => $$(".marker", box).forEach(m => m.classList.remove("on")));
+    });
+  }
+  /* ---- zoom & pan ---- */
+  const Z = { s: 1, tx: 0, ty: 0 };
+  const PRESETS = {
+    moon: { label: "Zoom to the Apollo sites", lon: 2, lat: 5, s: 3.2 },
+    mars: { label: "Zoom to Jezero (Ingenuity)", lon: 77.4, lat: 18.4, s: 7 }
+  };
+  function screenPos(m) {
+    const wrap = $("#mapWrap"), W = wrap.clientWidth, H = wrap.clientHeight;
+    return { x: Z.tx + Z.s * (+m.dataset.x / 100) * W + +m.dataset.nx, y: Z.ty + Z.s * (+m.dataset.y / 100) * H + +m.dataset.ny };
+  }
+  function applyZoom(animate = true) {
+    const wrap = $("#mapWrap"), st = $("#mapStage"), W = wrap.clientWidth, H = wrap.clientHeight;
+    Z.s = Math.min(10, Math.max(1, Z.s));
+    Z.tx = Math.min(0, Math.max(W - W * Z.s, Z.tx));
+    Z.ty = Math.min(0, Math.max(H - H * Z.s, Z.ty));
+    st.style.transition = animate ? "" : "none";
+    st.style.transform = `translate(${Z.tx}px,${Z.ty}px) scale(${Z.s})`;
+    st.style.setProperty("--inv", 1 / Z.s);
+    wrap.classList.toggle("zoomed", Z.s > 1.01);
+    $("#mapTip").hidden = true;
+    declutter();
+  }
+  function zoomAt(ns, cx, cy, animate) {
+    const wx = (cx - Z.tx) / Z.s, wy = (cy - Z.ty) / Z.s;
+    Z.s = Math.min(10, Math.max(1, ns)); Z.tx = cx - wx * Z.s; Z.ty = cy - wy * Z.s; applyZoom(animate);
+  }
+  function zoomTo(lon, lat, s) {
+    const wrap = $("#mapWrap"), W = wrap.clientWidth, H = wrap.clientHeight;
+    Z.s = s; Z.tx = W / 2 - s * ((lon + 180) / 360) * W; Z.ty = H / 2 - s * ((90 - lat) / 180) * H; applyZoom();
+  }
+  function declutter() {
+    const placed = [];
+    const ms = $$("#mapMarkers .marker").filter(m => !m.classList.contains("dim"))
+      .sort((a, b) => byId[a.dataset.id].year - byId[b.dataset.id].year);
+    $$("#mapMarkers .marker-label").forEach(l => l.classList.add("hide"));
+    const W = $("#mapWrap").clientWidth, small = W < 520;
+    if (small && Z.s < 2) return;
+    ms.forEach(m => {
+      const l = $(".marker-label", m), p = screenPos(m);
+      l.classList.remove("hide");
+      const w = l.offsetWidth + 6, h = 18;
+      const r = { x1: p.x - w / 2, x2: p.x + w / 2, y1: p.y + 12, y2: p.y + 12 + h };
+      const hit = placed.some(q => !(r.x2 < q.x1 || r.x1 > q.x2 || r.y2 < q.y1 || r.y1 > q.y2)) || r.x1 < 0 || r.x2 > W;
+      if (hit) l.classList.add("hide"); else placed.push(r, { x1: p.x - 8, x2: p.x + 8, y1: p.y - 8, y2: p.y + 8 });
+    });
+  }
+  function initZoom() {
+    const wrap = $("#mapWrap");
+    const center = () => [wrap.clientWidth / 2, wrap.clientHeight / 2];
+    $("#zIn").addEventListener("click", () => zoomAt(Z.s * 1.8, ...center()));
+    $("#zOut").addEventListener("click", () => zoomAt(Z.s / 1.8, ...center()));
+    $("#zReset").addEventListener("click", () => { Z.s = 1; Z.tx = Z.ty = 0; applyZoom(); });
+    $("#zPreset").addEventListener("click", () => {
+      if (Z.s > 1.01) { Z.s = 1; Z.tx = Z.ty = 0; applyZoom(); } else { const p = PRESETS[world]; zoomTo(p.lon, p.lat, p.s); }
+      updatePresetLabel();
+    });
+    wrap.addEventListener("dblclick", e => { if (e.target.closest(".marker, button")) return; const r = wrap.getBoundingClientRect(); zoomAt(Z.s * 2, e.clientX - r.left, e.clientY - r.top); updatePresetLabel(); });
+    wrap.addEventListener("wheel", e => { if (!e.ctrlKey) return; e.preventDefault(); const r = wrap.getBoundingClientRect(); zoomAt(Z.s * (e.deltaY < 0 ? 1.25 : 0.8), e.clientX - r.left, e.clientY - r.top, false); updatePresetLabel(); }, { passive: false });
+    let drag = null;
+    wrap.addEventListener("pointerdown", e => {
+      if (Z.s <= 1.01 || e.target.closest(".marker, button")) return;
+      drag = { x: e.clientX, y: e.clientY, tx: Z.tx, ty: Z.ty, moved: false }; wrap.setPointerCapture(e.pointerId);
+    });
+    wrap.addEventListener("pointermove", e => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 3) { drag.moved = true; wrap.classList.add("dragging"); }
+      Z.tx = drag.tx + dx; Z.ty = drag.ty + dy; applyZoom(false);
+    });
+    const end = () => { drag = null; wrap.classList.remove("dragging"); };
+    wrap.addEventListener("pointerup", end); wrap.addEventListener("pointercancel", end);
+    addEventListener("resize", () => { Z.s = 1; Z.tx = Z.ty = 0; applyZoom(false); updatePresetLabel(); });
+  }
+  function updatePresetLabel() { $("#zPreset").textContent = Z.s > 1.01 ? "← Whole map" : PRESETS[world].label; }
+
+  function initMap() {
+    initZoom();
+    const tabs = $$(".map-tabs [role=tab]");
+    tabs.forEach(t => {
+      t.addEventListener("click", () => setWorld(t.dataset.world));
+      t.addEventListener("keydown", e => {
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") { const o = tabs[(tabs.indexOf(t) + 1) % tabs.length]; o.focus(); setWorld(o.dataset.world); }
+      });
+    });
+    $("#search").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); renderMap(); });
+    renderLegend(); setWorld("moon");
+  }
+
+  /* ---------------- DRAWER ---------------- */
+  let openId = null, returnFocus = null;
+  const ORDER = [...ARTIFACTS].sort((a, b) => ["moon", "mars", "deep"].indexOf(a.world) - ["moon", "mars", "deep"].indexOf(b.world) || a.year - b.year).map(a => a.id);
+
+  function openDrawer(id, from) {
+    returnFocus = from || document.activeElement;
+    openId = id;
+    renderDrawer(id);
+    $("#scrim").hidden = false; $("#drawer").hidden = false;
+    document.body.style.overflow = "hidden";
+    $("#drawer").focus();
+    history.replaceState(null, "", "#artifact=" + id);
+    if (!progress.opened.includes(id)) { progress.opened.push(id); saveProgress(); checkBadges(); }
+  }
+  function closeDrawer() {
+    stopSpeech();
+    $("#scrim").hidden = true; $("#drawer").hidden = true; document.body.style.overflow = "";
+    openId = null; history.replaceState(null, "", location.pathname);
+    $$("#drawer video").forEach(v => v.pause());
+    if (returnFocus && document.contains(returnFocus)) returnFocus.focus();
+  }
+  function videoHTML(key) {
+    const v = VIDEOS[key]; if (!v) return "";
+    return `<div class="d-video"><video controls preload="none" poster="${v.poster}" playsinline><source src="${NASA_VIDEO(v.id)}" type="video/mp4">Your browser can't play this video.</video>
+      <p>${esc(v.title)}${v.note ? " · " + esc(v.note) : ""} · <a href="${NASA_PAGE(v.id)}" target="_blank" rel="noopener">NASA source</a></p></div>`;
+  }
+  function renderDrawer(id) {
+    const a = byId[id], idx = ORDER.indexOf(id);
+    $("#dCount").textContent = `${WORLDS[a.world].short} · ${idx + 1} of ${ORDER.length}`;
+    const m0 = a.media[0];
+    const facts = a.stats.map(([k, v]) => {
+      let val = v;
+      if (v === "live" && a.dist) val = "~" + auNow(a.dist).toFixed(0) + " AU";
+      return `<div class="fact"><small>${esc(k)}</small><b>${esc(val)}</b></div>`;
+    }).join("");
+    const isSci = prefs.level === "scientist";
+    let distBlock = "";
+    if (a.dist) {
+      const au = auNow(a.dist);
+      distBlock = `<div class="d-block"><h3>Where is it now?</h3><ul class="dates">
+        <li><span>Estimated distance from the Sun</span><b>~${au.toFixed(1)} AU (${fmtKm(au)})</b></li>
+        <li><span>Time for a radio signal to cross that distance</span><b>~${lightTime(au)}</b></li>
+        <li><span>Heading</span><b>${esc(a.heading)}</b></li></ul></div>`;
+    }
+    $("#drawerBody").innerHTML = `
+      <div class="d-hero">${m0 ? `<img id="dImg" src="assets/nasa/${m0.f}" alt="${esc(m0.cap)}">` : `<div class="ph" aria-hidden="true">${TYPE_EMOJI[a.type]}</div>`}${hasModel(a.id) ? `<button class="btn btn-small model-btn" data-model="${a.id}">🧊 View 3D model</button>` : ""}</div>
+      ${a.media.length > 1 ? `<div class="d-thumbs" role="group" aria-label="More photos">${a.media.map((m, i) => `<button data-i="${i}" aria-current="${i === 0}" aria-label="Photo ${i + 1}"><img src="assets/nasa/${m.f}" alt=""></button>`).join("")}</div>` : ""}
+      ${m0 ? `<p class="d-cap" id="dCap">${esc(m0.cap)} <a href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">NASA · ${esc(m0.id)}</a></p>` : `<p class="d-cap">No close-up photo exists of this one — it crashed where no camera could see.</p>`}
+      <div class="d-main">
+        <div class="d-tags">${pill(a.status)}<span class="tag">${esc(WORLDS[a.world].short)}</span><span class="tag">${esc(TYPES[a.type])}</span><span class="tag">${esc(a.mission)}</span></div>
+        <h2 id="dName">${esc(a.name)}</h2>
+        <p class="d-sub">${a.nick && a.nick !== a.mission ? esc(a.nick) + " · " : ""}${esc(a.fixedPlace || a.place || a.heading)}${a.lat != null ? ` · ${Math.abs(a.lat).toFixed(2)}°${a.lat >= 0 ? "N" : "S"}, ${Math.abs(a.lon).toFixed(2)}°${a.lon >= 0 ? "E" : "W"}` : ""}</p>
+
+        <div class="ghost">
+          <blockquote id="ghostText">${esc(a.ghost)}</blockquote>
+          <div class="ghost-actions">
+            <button class="btn btn-small speak" id="speakBtn" aria-pressed="false"><span aria-hidden="true">🔊</span> Read aloud</button>
+            <small style="color:var(--dim)">Written in ${esc(a.name)}’s voice, from real mission facts.</small>
+          </div>
+        </div>
+
+        <div class="d-block"><h3>${isSci ? "The science story" : "The story"}</h3><p>${esc(isSci ? a.deep : a.story)}</p>
+          ${!isSci ? `<button class="btn btn-small" id="moreBtn">Tell me more (Scientist level)</button>` : ""}</div>
+
+        <div class="d-block"><h3>Planned vs. what really happened</h3>
+          <div class="pva"><div><small>The plan</small>${esc(a.planned)}</div><div><small>What happened</small>${esc(a.actual)}</div></div></div>
+
+        <div class="d-block"><h3>By the numbers</h3><div class="facts">${facts}</div></div>
+
+        <div class="d-block"><h3>Mission dates</h3><ul class="dates">
+          <li><span>Launched</span><b>${esc(a.dates.launch)}</b></li>
+          <li><span>Arrived</span><b>${esc(a.dates.arrive)}</b></li>
+          <li><span>Last word / status</span><b>${esc(a.dates.last)}</b></li></ul></div>
+        ${distBlock}
+
+        <div class="d-block"><h3>What it discovered</h3><ul class="checks">${a.discoveries.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>
+        ${a.left ? `<div class="d-block"><h3>What was left behind</h3><ul class="checks left">${a.left.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>` : ""}
+
+        <div class="d-block"><h3>Why it matters today</h3><p class="legacy">${esc(a.legacy)}</p></div>
+        <div class="d-block"><div class="funbox"><img src="assets/ui/star.png" alt=""><div><b>Fun fact</b><br>${esc(a.fun)}</div></div></div>
+        ${a.video ? `<div class="d-block"><h3>Watch</h3>${videoHTML(a.video)}${a.video2 ? "<br>" + videoHTML(a.video2) : ""}</div>` : ""}
+        <div class="d-links">
+          ${hasModel(a.id) ? `<button class="btn btn-small" data-model="${a.id}">🧊 Spin the NASA 3D model</button>` : ""}
+          ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">See it in 3D deep space →</a>`}
+          ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">Open in NASA library ↗</a>` : ""}
+        </div>
+      </div>`;
+    $("#drawerBody").scrollTop = 0;
+    // thumbs
+    $$(".d-thumbs button").forEach(b => b.addEventListener("click", () => {
+      const m = a.media[+b.dataset.i];
+      $("#dImg").src = "assets/nasa/" + m.f; $("#dImg").alt = m.cap;
+      $("#dCap").innerHTML = `${esc(m.cap)} <a href="${NASA_PAGE(m.id)}" target="_blank" rel="noopener">NASA · ${esc(m.id)}</a>`;
+      $$(".d-thumbs button").forEach(x => x.setAttribute("aria-current", x === b));
+    }));
+    $$("#drawerBody [data-model]").forEach(b => b.addEventListener("click", () => openModel(b.dataset.model)));
+    const di = $("#dImg");
+    if (di) di.addEventListener("click", () => openLightbox(di.getAttribute("src"), $("#dCap").textContent));
+    $("#speakBtn").addEventListener("click", e => toggleSpeech(e.currentTarget, a.ghost + " " + (prefs.level === "scientist" ? a.deep : a.story)));
+    const more = $("#moreBtn");
+    if (more) more.addEventListener("click", () => { prefs.level = "scientist"; savePrefs(); applyPrefs(); rerenderLevel(); });
+  }
+  function initDrawer() {
+    $("#dClose").addEventListener("click", closeDrawer);
+    $("#scrim").addEventListener("click", closeDrawer);
+    const step = d => { const i = ORDER.indexOf(openId); const n = ORDER[(i + d + ORDER.length) % ORDER.length]; stopSpeech(); openId = n; renderDrawer(n); if (!progress.opened.includes(n)) { progress.opened.push(n); saveProgress(); checkBadges(); } history.replaceState(null, "", "#artifact=" + n); };
+    $("#dPrev").addEventListener("click", () => step(-1));
+    $("#dNext").addEventListener("click", () => step(1));
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        if (!$("#lightbox").hidden) return closeLightbox();
+        if (!$("#passport").hidden) return ($("#passport").hidden = true);
+        if (!$("#drawer").hidden) return closeDrawer();
+        if (!$("#settings").hidden) { $("#settings").hidden = true; $("#settingsBtn").setAttribute("aria-expanded", "false"); }
+      }
+      // focus trap
+      if (e.key === "Tab" && !$("#drawer").hidden && $("#lightbox").hidden && !document.querySelector(".model-modal:not([hidden])")) {
+        const f = $$("#drawer button, #drawer a, #drawer video, #drawer [tabindex]:not([tabindex='-1'])").filter(x => x.offsetParent !== null);
+        if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    const m = location.hash.match(/artifact=([\w-]+)/);
+    if (m && byId[m[1]]) { const a = byId[m[1]]; if (a.world !== "deep") setWorld(a.world); setTimeout(() => openDrawer(a.id), 300); }
+  }
+
+  /* ---------------- speech ---------------- */
+  let speakingBtn = null;
+  function stopSpeech() { try { speechSynthesis.cancel(); } catch { } if (speakingBtn) { speakingBtn.setAttribute("aria-pressed", "false"); speakingBtn = null; } }
+  function toggleSpeech(btn, text) {
+    if (!("speechSynthesis" in window)) { toast("speaker", "Read aloud isn't supported in this browser."); return; }
+    if (speakingBtn === btn) return stopSpeech();
+    stopSpeech();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = prefs.level === "explorer" ? 0.92 : 1; u.pitch = 1;
+    const en = speechSynthesis.getVoices().find(v => /^en(-|_)/i.test(v.lang) && /natural|google|samantha|aria|jenny/i.test(v.name)) || speechSynthesis.getVoices().find(v => /^en/i.test(v.lang));
+    if (en) u.voice = en;
+    u.onend = u.onerror = () => { if (speakingBtn === btn) stopSpeech(); };
+    speechSynthesis.speak(u);
+    speakingBtn = btn; btn.setAttribute("aria-pressed", "true");
+    if (!progress.voice) { progress.voice = true; saveProgress(); checkBadges(); }
+  }
+
+  /* ---------------- GHOST LOGS (chapters) ---------------- */
+  let chapter = 0;
+  function initChapters() {
+    $("#chapterNav").innerHTML = CHAPTERS.map((c, i) => {
+      const a = byId[c.id];
+      return `<button role="tab" data-i="${i}" aria-selected="${i === 0}" class="${progress.chapters.includes(c.id) ? "read" : ""}">${cover(a) ? `<img src="${cover(a)}" alt="">` : ""}${i + 1}. ${esc(a.name)}</button>`;
+    }).join("");
+    $$("#chapterNav button").forEach(b => b.addEventListener("click", () => { chapter = +b.dataset.i; renderChapter(true); }));
+    const sec = $("#logs");
+    sec.addEventListener("keydown", e => {
+      if (e.target.closest("input, textarea")) return;
+      if (e.key === "ArrowRight") { chapter = Math.min(CHAPTERS.length - 1, chapter + 1); renderChapter(true); }
+      if (e.key === "ArrowLeft") { chapter = Math.max(0, chapter - 1); renderChapter(true); }
+    });
+    renderChapter();
+  }
+  function renderChapter(markRead) {
+    const c = CHAPTERS[chapter], a = byId[c.id];
+    stopSpeech();
+    const isSci = prefs.level === "scientist";
+    $("#chapter").innerHTML = `
+      <div class="ch-media">${cover(a) ? `<img src="${cover(a)}" alt="${esc(a.media[0].cap)}">` : ""}<span class="ch-num">${String(chapter + 1).padStart(2, "0")}</span></div>
+      <div class="ch-text">
+        <p class="eyebrow">${esc(c.kicker)} · ${esc(a.name)}</p>
+        <h3>${esc(c.title)}</h3>
+        <p class="ch-quote">${esc(a.ghost)}</p>
+        <p class="ch-body">${esc(isSci ? a.deep : a.story)}</p>
+        <div class="ch-foot">
+          <button class="btn btn-small speak" id="chSpeak" aria-pressed="false"><span aria-hidden="true">🔊</span> Read aloud</button>
+          <button class="btn btn-small" id="chOpen">Open dossier</button>
+          <span class="spacer"></span>
+          <button class="icon-btn" id="chPrev" aria-label="Previous chapter" ${chapter === 0 ? "disabled" : ""}>←</button>
+          <button class="icon-btn" id="chNext" aria-label="Next chapter" ${chapter === CHAPTERS.length - 1 ? "disabled" : ""}>→</button>
+        </div>
+      </div>`;
+    $("#chSpeak").addEventListener("click", e => toggleSpeech(e.currentTarget, a.ghost + " " + (isSci ? a.deep : a.story)));
+    $("#chOpen").addEventListener("click", e => openDrawer(a.id, e.currentTarget));
+    $("#chPrev").addEventListener("click", () => { chapter--; renderChapter(true); });
+    $("#chNext").addEventListener("click", () => { chapter++; renderChapter(true); });
+    $$("#chapterNav button").forEach((b, i) => { b.setAttribute("aria-selected", i === chapter); if (i === chapter && markRead) b.scrollIntoView({ block: "nearest", inline: "center", behavior: prefs.motion ? "auto" : "smooth" }); });
+    if (markRead || chapter === 0) {
+      // count a chapter as read once it has been displayed for a few seconds
+      clearTimeout(renderChapter.t);
+      renderChapter.t = setTimeout(() => {
+        if (!progress.chapters.includes(c.id)) { progress.chapters.push(c.id); saveProgress(); checkBadges(); }
+        $$("#chapterNav button")[chapter]?.classList.add("read");
+      }, 4000);
+    }
+  }
+
+  /* ---------------- TIMELINE ---------------- */
+  let tlFilter = "all";
+  function renderTimeline() {
+    const items = ARTIFACTS.filter(a => tlFilter === "all" || a.world === tlFilter).sort((a, b) => a.year - b.year);
+    const decades = {};
+    items.forEach(a => { const d = Math.floor(a.year / 10) * 10; (decades[d] ||= []).push(a); });
+    $("#tl").innerHTML = Object.entries(decades).map(([d, list]) => `
+      <div class="decade"><h3>${d}s</h3>
+        ${list.map(a => `<button class="tl-item" data-id="${a.id}" style="--c:${WORLDS[a.world].color}">
+          ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph" aria-hidden="true">${TYPE_EMOJI[a.type]}</span>`}
+          <span><b>${esc(a.name)}</b><small>${a.year} · ${esc(WORLDS[a.world].short)} · ${esc(STATUS[a.status].label)}</small></span></button>`).join("")}
+      </div>`).join("");
+    $$("#tl .tl-item").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
+  }
+  function initTimeline() {
+    $$("[data-tl]").forEach(b => b.addEventListener("click", () => {
+      tlFilter = b.dataset.tl; $$("[data-tl]").forEach(x => x.setAttribute("aria-pressed", x === b)); renderTimeline();
+    }));
+    renderTimeline();
+  }
+
+  /* ---------------- DEEP SPACE ---------------- */
+  function initDeep() {
+    const min = Math.log10(0.3), max = Math.log10(300);
+    const X = au => ((Math.log10(au) - min) / (max - min)) * 100;
+    const bodies = [["Mercury", .39, 6, "#b8a99a"], ["Venus", .72, 9, "#e8c88a"], ["Earth", 1, 10, "#5aa9ff"], ["Mars", 1.52, 8, "#ff8a5c"], ["Jupiter", 5.2, 20, "#d9b38c"], ["Saturn", 9.54, 17, "#e6d3a3"], ["Uranus", 19.2, 13, "#9fe3e8"], ["Neptune", 30.1, 13, "#5b7cff"], ["Pluto", 39.5, 5, "#cbbba6"]];
+    const ticks = [0.3, 1, 3, 10, 30, 100, 300];
+    const probes = ARTIFACTS.filter(a => a.dist).map(a => ({ a, au: auNow(a.dist) })).sort((p, q) => p.au - q.au);
+    const heights = [24, 40, 82, 124, 166, 200];
+    $("#ruler").innerHTML = `
+      <div class="zone" style="left:${X(94)}%;right:0;--b:26px"><span>Termination shock (~94 AU) →</span></div>
+      <div class="zone" style="left:${X(120)}%;right:0;--b:4px"><span>Interstellar space begins (~120 AU) →</span></div>
+      <div class="axis"></div>
+      ${ticks.map(t => `<div class="tick" style="left:${X(t)}%"><span>${t} AU</span></div>`).join("")}
+      <div class="body" style="left:0"><i style="width:22px;height:22px;background:radial-gradient(#fff6c8,#ffb347);box-shadow:0 0 18px #ffb347"></i><span>Sun →</span></div>
+      ${bodies.map(([n, au, s, c], i) => `<div class="body" style="left:${X(au)}%"><i style="width:${s}px;height:${s}px;background:${c}"></i><span style="top:${i % 2 ? 34 : 18}px">${n}</span></div>`).join("")}
+      ${probes.map((p, i) => `<button class="probe" style="left:${X(p.au)}%;--c:${STATUS[p.a.status].color};--h:${heights[i]}px;bottom:93px" data-id="${p.a.id}" aria-label="${esc(p.a.name)}, about ${p.au.toFixed(0)} AU">
+        <b>${esc(p.a.name)}</b><small>~${p.au.toFixed(0)} AU</small><span class="pdot"></span></button>`).join("")}`;
+    $("#ruler").setAttribute("aria-label", "Distances from the Sun: " + probes.map(p => `${p.a.name} about ${p.au.toFixed(0)} AU`).join(", "));
+    $$("#ruler .probe").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
+    $("#deepCards").innerHTML = ARTIFACTS.filter(a => a.world === "deep").map(a => `
+      <button class="card" data-id="${a.id}">
+        ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph">${TYPE_EMOJI[a.type]}</span>`}
+        <span class="card-body">${pill(a.status)}${hasModel(a.id) ? '<span class="tag3d">3D model</span>' : ""}<b>${esc(a.name)}</b>
+          <p>${esc(a.dist ? "~" + fmtKm(auNow(a.dist)) + " from the Sun" : a.fixedPlace)}</p>
+          <p class="live">${a.dist ? "Signal travel time: ~" + lightTime(auNow(a.dist)) : "Launched " + a.dates.launch}</p></span>
+      </button>`).join("");
+    $$("#deepCards .card").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
+  }
+
+  /* ---------------- QUIZ ---------------- */
+  let quiz = null;
+  function newQuiz() {
+    const pool = ARTIFACTS.filter(a => a.quiz).sort(() => Math.random() - .5).slice(0, 8);
+    quiz = { qs: pool.map(a => {
+      const others = ARTIFACTS.filter(o => o.id !== a.id && o.quiz).sort((x, y) => (y.world === a.world) - (x.world === a.world) || Math.random() - .5).slice(0, 6).sort(() => Math.random() - .5).slice(0, 3);
+      return { a, opts: [a, ...others].sort(() => Math.random() - .5) };
+    }), i: 0, score: 0, answered: false };
+    renderQuiz();
+  }
+  function renderQuiz() {
+    const box = $("#quizBox");
+    if (quiz.i >= quiz.qs.length) {
+      const s = quiz.score, n = quiz.qs.length;
+      if (s > progress.quizBest) { progress.quizBest = s; saveProgress(); checkBadges(); }
+      box.innerHTML = `<div class="q-done"><img src="assets/ui/${s >= 6 ? "trophy" : "star"}.png" alt="">
+        <h3>You scored ${s} out of ${n}!</h3><p>${s >= 6 ? "Amazing — you’re an Archive Expert." : "Nice try! Open a few more dossiers and try again."}</p>
+        <button class="btn btn-primary" id="qAgain">Play again</button></div>`;
+      $("#qAgain").addEventListener("click", newQuiz);
+      return;
+    }
+    const q = quiz.qs[quiz.i];
+    box.innerHTML = `
+      <div class="q-top"><span class="tag">Question ${quiz.i + 1} of ${quiz.qs.length}</span><span class="q-progress" aria-hidden="true"><i style="width:${quiz.i / quiz.qs.length * 100}%"></i></span><span class="tag">Score: ${quiz.score}</span></div>
+      <p class="q-clue">${esc(q.a.quiz)}</p>
+      <div class="q-opts">${q.opts.map(o => `<button class="q-opt" data-id="${o.id}">${thumbHTML(o, "")}<span><b>${esc(o.name)}</b><br><small style="color:var(--muted)">${esc(WORLDS[o.world].short)} · ${o.year}</small></span></button>`).join("")}</div>
+      <div class="q-feedback" id="qFeed" aria-live="polite"></div>`;
+    $$(".q-opt", box).forEach(b => b.addEventListener("click", () => {
+      if (quiz.answered) return; quiz.answered = true;
+      const ok = b.dataset.id === q.a.id;
+      if (ok) quiz.score++;
+      $$(".q-opt", box).forEach(x => { x.disabled = true; if (x.dataset.id === q.a.id) x.classList.add("right"); });
+      if (!ok) b.classList.add("wrong");
+      $("#qFeed").innerHTML = `<p>${ok ? "✅ Correct!" : "❌ Not quite — it was <b>" + esc(q.a.name) + "</b>."} ${esc(q.a.fun)}</p>
+        <button class="btn btn-primary btn-small" id="qNext">${quiz.i === quiz.qs.length - 1 ? "See my score" : "Next question →"}</button>
+        <button class="btn btn-small" id="qLearn">Open its dossier</button>`;
+      $("#qNext").addEventListener("click", () => { quiz.i++; quiz.answered = false; renderQuiz(); $("#quizBox").scrollIntoView({ block: "nearest" }); });
+      $("#qLearn").addEventListener("click", e => openDrawer(q.a.id, e.currentTarget));
+      $("#qNext").focus();
+    }));
+  }
+
+  /* ---------------- ARCHIVE ---------------- */
+  function initArchive() {
+    const vids = [
+      ["apollo11", "apollo11"], ["lrv", "apollo15"], ["ingenuity", "ingenuity"], ["marsquake", "insight"], ["meteoroid", "insight"], ["voyager", "voyager1"]
+    ];
+    $("#videos").innerHTML = vids.map(([k, aid]) => { const v = VIDEOS[k]; return `
+      <div class="vcard"><button class="vthumb" data-v="${k}" aria-label="Play video: ${esc(v.title)}"><img src="${v.poster}" alt="" loading="lazy"></button>
+      <p>${esc(v.title)}<small>${esc(byId[aid].name)}${v.note ? " · " + esc(v.note) : ""}</small></p></div>`; }).join("");
+    $$("#videos .vthumb").forEach(b => b.addEventListener("click", () => {
+      const v = VIDEOS[b.dataset.v];
+      const vid = document.createElement("video");
+      vid.controls = true; vid.autoplay = true; vid.playsInline = true; vid.poster = v.poster; vid.src = NASA_VIDEO(v.id);
+      vid.setAttribute("aria-label", v.title);
+      b.replaceWith(vid); vid.focus();
+    }));
+    renderGallery("all");
+    $$("[data-arc]").forEach(b => b.addEventListener("click", () => { $$("[data-arc]").forEach(x => x.setAttribute("aria-pressed", x === b)); renderGallery(b.dataset.arc); }));
+  }
+  function renderGallery(w) {
+    const seen = new Set(), items = [];
+    ARTIFACTS.filter(a => w === "all" || a.world === w).forEach(a => a.media.forEach(m => { if (!seen.has(m.f)) { seen.add(m.f); items.push({ a, m }); } }));
+    $("#gallery").innerHTML = items.map(({ a, m }) => `
+      <figure><button data-src="assets/nasa/${m.f}" data-cap="${esc(m.cap + " — NASA · " + m.id)}"><img src="assets/nasa/${m.f}" alt="${esc(m.cap)}" loading="lazy"></button>
+      <figcaption><b>${esc(a.name)}</b>${esc(m.cap)}<br><a href="${NASA_PAGE(m.id)}" target="_blank" rel="noopener">NASA · ${esc(m.id)}</a></figcaption></figure>`).join("");
+    $$("#gallery button").forEach(b => b.addEventListener("click", () => openLightbox(b.dataset.src, b.dataset.cap)));
+  }
+  let lbReturn = null;
+  function openLightbox(src, cap) {
+    lbReturn = document.activeElement;
+    $("#lbImg").src = src; $("#lbImg").alt = cap; $("#lbCap").textContent = cap;
+    $("#lightbox").hidden = false; $("#lbClose").focus();
+  }
+  function closeLightbox() { $("#lightbox").hidden = true; lbReturn?.focus(); }
+
+  /* ---------------- BADGES ---------------- */
+  function earned() {
+    const op = progress.opened.map(id => byId[id]).filter(Boolean);
+    const c = w => op.filter(a => a.world === w).length;
+    return {
+      moon3: c("moon") >= 3, mars3: c("mars") >= 3, deep2: c("deep") >= 2,
+      story: progress.chapters.length >= 4, voice: !!progress.voice, quiz: progress.quizBest >= 6,
+      explore: !!progress.explore || !!store.get("explored", false), all: ARTIFACTS.every(a => progress.opened.includes(a.id))
+    };
+  }
+  function checkBadges() {
+    const e = earned();
+    BADGES.forEach(b => {
+      if (e[b.id] && !progress.badges.includes(b.id)) { progress.badges.push(b.id); saveProgress(); toast(b.icon, `Badge earned: <b>${esc(b.name)}</b>`); }
+    });
+    $("#badgeCount").textContent = progress.badges.length;
+    renderPassport();
+  }
+  function renderPassport() {
+    $("#ppProgress").textContent = `${progress.badges.length} of ${BADGES.length} badges · ${progress.opened.length} of ${ARTIFACTS.length} dossiers opened`;
+    $("#badges").innerHTML = BADGES.map(b => {
+      const has = progress.badges.includes(b.id);
+      return `<div class="bdg ${has ? "earned" : "locked"}"><img src="assets/ui/${has ? b.icon : "lock"}.png" alt=""><b>${esc(b.name)}</b><small>${has ? "Earned!" : esc(b.how)}</small></div>`;
+    }).join("");
+  }
+  function initPassport() {
+    const m = $("#passport");
+    $("#passportBtn").addEventListener("click", () => { renderPassport(); m.hidden = false; $("[data-close]", m).focus(); });
+    $("[data-close]", m).addEventListener("click", () => (m.hidden = true));
+    m.addEventListener("click", e => { if (e.target === m) m.hidden = true; });
+    $("#resetProgress").addEventListener("click", () => {
+      if (!confirm("Reset all badges and progress?")) return;
+      Object.assign(progress, { opened: [], chapters: [], voice: false, quizBest: 0, explore: false, badges: [] });
+      store.set("explored", false); saveProgress(); checkBadges(); initChapters();
+    });
+    checkBadges();
+  }
+  let toastT;
+  function toast(icon, html) {
+    const t = $("#toast");
+    t.innerHTML = `<img src="assets/ui/${icon}.png" alt=""><span>${html}</span>`; t.hidden = false;
+    clearTimeout(toastT); toastT = setTimeout(() => (t.hidden = true), 3800);
+  }
+
+  /* ---------------- boot ---------------- */
+  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initChapters(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
+  $("#lbClose").addEventListener("click", closeLightbox);
+  $("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") closeLightbox(); });
+  if ("speechSynthesis" in window) speechSynthesis.getVoices();
+})();

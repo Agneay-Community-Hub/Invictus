@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>3D Explore — Ghosts of Exploration</title>
+  <meta name="description" content="Fly around the Moon, Mars and deep space and find the machines NASA left behind.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/explore.css?v=3">
+  <link rel="icon" href="assets/ui/map.png">
+  <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body class="explore">
+  <div id="scene" aria-hidden="true"></div>
+  <div id="labels" aria-hidden="true"></div>
+
+  <header class="x-top">
+    <a class="btn btn-small" href="index.html">← Archive</a>
+    <div class="x-tabs" role="tablist" aria-label="Choose a destination">
+      <button role="tab" data-w="moon" aria-selected="true"><span class="dot moon"></span>Moon</button>
+      <button role="tab" data-w="mars" aria-selected="false"><span class="dot mars"></span>Mars</button>
+      <button role="tab" data-w="deep" aria-selected="false"><span class="dot deep"></span>Deep Space</button>
+    </div>
+    <div class="x-tools">
+      <button class="btn btn-small" id="xRotate" aria-pressed="true" title="Auto-rotate">⟳ <span>Spin</span></button>
+      <button class="btn btn-small" id="xLabels" aria-pressed="true" title="Show labels">🏷 <span>Labels</span></button>
+    </div>
+  </header>
+
+  <aside class="x-list" id="xList" aria-label="Beacons">
+    <button class="x-list-toggle" id="xListToggle" aria-expanded="true">Beacons <span id="xCount"></span></button>
+    <ul id="xItems"></ul>
+  </aside>
+
+  <section class="x-card" id="xCard" hidden aria-live="polite"></section>
+
+  <div class="x-hint" id="xHint">Drag to spin · scroll or pinch to zoom · tap a glowing beacon</div>
+  <div class="x-loading" id="xLoading">Warming up the engines…</div>
+  <div class="x-error" id="xError" hidden>
+    <h2>3D mode couldn’t start</h2>
+    <p>Your browser or device may not support WebGL, or the 3D library couldn’t load (it needs an internet connection). Everything is still available in the <a href="index.html">2D archive</a>.</p>
+  </div>
+
+  <script src="js/data.js?v=3"></script>
+  <script src="js/models.js"></script>
+  <script type="module" src="js/explore.js?v=3"></script>
+</body>
+</html>
