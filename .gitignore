@@ -1,0 +1,32 @@
+# Unzipped copy of the asset packs (the original zips in "ASSET PACKS/" are kept)
+_assets_extracted/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node (in case a build step is added later)
+node_modules/
+
+# Blender backups and working files
+*.blend1
+*.blend2
+
+# Claude Code local settings (launch.json stays shared)
+.claude/settings.local.json
+
+# Environment / secrets
+.env
+.env.*
+
+# OS and editor clutter
+.DS_Store
+__MACOSX/
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.log
