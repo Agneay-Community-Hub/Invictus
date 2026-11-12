@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "site/**"
+      - "scripts/build-sw.mjs"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -26,6 +27,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      # Stamp CSS/JS links with content fingerprints and rebuild the offline file list,
+      # so visitors never get a new page with an old stylesheet.
+      - name: Fingerprint assets and build service worker
+        run: node scripts/build-sw.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -8,6 +8,20 @@ import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "site");
+
+// 1) Cache-busting: stamp every local stylesheet/script link in the pages with a
+//    fingerprint of the file's contents (e.g. css/style.css?v=3f9a1c2b). When a file
+//    changes, its address changes, so browsers can never mix a new page with an old file.
+const fingerprint = rel => createHash("sha1").update(readFileSync(join(root, rel))).digest("hex").slice(0, 8);
+let stamped = 0;
+for (const page of readdirSync(root).filter(f => f.endsWith(".html"))) {
+  const p = join(root, page);
+  const before = readFileSync(p, "utf8");
+  const after = before.replace(/(href|src)="((?:css|js)\/[\w.-]+\.(?:css|js))(?:\?v=[\w]+)?"/g, (m, attr, rel) => {
+    try { stamped++; return `${attr}="${rel}?v=${fingerprint(rel)}"`; } catch { return m; }
+  });
+  if (after !== before) writeFileSync(p, after);
+}
 const SKIP = [/^sw\.js$/, /^assets\/models\//]; // 3D models are large: cached the first time someone opens them
 const files = [];
 (function walk(dir) {
@@ -46,7 +60,9 @@ self.addEventListener("fetch", e => {
   const same = url.origin === location.origin;
   if (same && (req.mode === "navigate" || FRESH.test(url.pathname))) {
     // Network first, so updates show up straight away; fall back to the saved copy offline.
-    e.respondWith(fetch(req).then(res => { if (res.ok) caches.open(VERSION).then(c => c.put(req, res.clone())); return res; })
+    // cache: "no-cache" makes the browser re-check with the server instead of reusing
+    // its short-term copy (GitHub Pages lets browsers reuse files for 10 minutes).
+    e.respondWith(fetch(req, { cache: "no-cache" }).then(res => { if (res.ok) caches.open(VERSION).then(c => c.put(req, res.clone())); return res; })
       .catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || caches.match("./index.html"))));
     return;
   }
@@ -61,4 +77,5 @@ self.addEventListener("fetch", e => {
 `;
 writeFileSync(join(root, "sw.js"), sw);
 const bytes = files.reduce((n, f) => n + statSync(join(root, f)).size, 0);
+console.log(`Stamped ${stamped} stylesheet/script links with content fingerprints.`);
 console.log(`Wrote site/sw.js — ${files.length} files (${(bytes / 1e6).toFixed(1)} MB) saved for offline use, version ${version}`);
