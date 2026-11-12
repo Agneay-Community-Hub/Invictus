@@ -338,7 +338,7 @@ const ARTIFACTS = [
     id: "viking1", world: "mars", type: "lander", status: "silent",
     name: "Viking 1 Lander", nick: "Thomas Mutch Memorial Station", mission: "Viking", year: 1976,
     lat: 22.27, lon: -47.95, place: "Chryse Planitia",
-    dates: { launch: "20 Aug 1975", arrive: "20 Jul 1976", last: "11 Nov 1982" },
+    dates: { launch: "20 Aug 1975", arrive: "20 Jul 1976", last: "13 Nov 1982" },
     planned: "Operate on the surface for at least 90 days and search for life.",
     actual: "Worked for more than six years.",
     stats: [["Planned", "90 days"], ["Actual", "6+ years"], ["Life experiments", "3"]],

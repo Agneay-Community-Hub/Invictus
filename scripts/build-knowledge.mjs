@@ -11,8 +11,11 @@ const src = readFileSync(join(root, "site/js/data.js"), "utf8");
 
 // data.js declares top-level consts for the browser; expose them from a sandbox.
 const sandbox = {};
+// records.js (instrument lists from the Cosmic-Atlas catalogue) is optional
+let recSrc = "const RECORDS = {};";
+try { recSrc = readFileSync(join(root, "site/js/records.js"), "utf8"); } catch { /* not present */ }
 vm.runInNewContext(
-  src + "\n;globalThis.__out = { ARTIFACTS, STATUS, TYPES, WORLDS, MODELS, CHAPTERS, ASK_FAQ };",
+  src + "\n" + recSrc + "\n;globalThis.__out = { ARTIFACTS, STATUS, TYPES, WORLDS, MODELS, CHAPTERS, ASK_FAQ, RECORDS };",
   sandbox,
 );
 const { ARTIFACTS, STATUS, TYPES, WORLDS, MODELS } = sandbox.__out;
@@ -56,6 +59,10 @@ for (const world of ["moon", "mars", "deep"]) {
     if (a.left) out += line("Left behind", a.left.join("; "));
     out += line("Why it matters today", a.legacy);
     out += line("Fun fact", a.fun);
+    for (const g of (sandbox.__out.RECORDS[a.id] || {}).onboard || []) {
+      out += line(`On board / left behind: ${g.name}`, [g.design, g.status && `Today: ${g.status}`].filter(Boolean).join(" "));
+      for (const i of g.items) out += line(`  - ${i.name}`, [i.what, i.found && `Found: ${i.found.join(" ")}`, i.specs && i.specs.join("; ")].filter(Boolean).join(" "));
+    }
     if (MODELS[a.id]) out += line("3D model on the site", `${MODELS[a.id].title} — ${MODELS[a.id].note}`);
     out += "\n";
   }

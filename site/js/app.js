@@ -358,10 +358,13 @@
 
         <div class="d-block"><h3>What it discovered</h3><ul class="checks">${a.discoveries.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>
         ${a.left ? `<div class="d-block"><h3>What was left behind</h3><ul class="checks left">${a.left.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>` : ""}
+        ${orbitHTML(a)}
+        ${onboardHTML(a)}
 
         <div class="d-block"><h3>Why it matters today</h3><p class="legacy">${esc(a.legacy)}</p></div>
         <div class="d-block"><div class="funbox"><img src="assets/ui/star.png" alt=""><div><b>Fun fact</b><br>${esc(a.fun)}</div></div></div>
         ${a.video ? `<div class="d-block"><h3>Watch</h3>${videoHTML(a.video)}${a.video2 ? "<br>" + videoHTML(a.video2) : ""}</div>` : ""}
+        ${sourcesHTML(a)}
         <div class="d-links">
           ${hasModel(a.id) ? `<button class="btn btn-small" data-model="${a.id}">🧊 Spin the NASA 3D model</button>` : ""}
           ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">See it in 3D deep space →</a>`}
@@ -536,6 +539,40 @@
           <p class="live">${a.dist ? "Signal travel time: ~" + lightTime(auNow(a.dist)) : "Launched " + a.dates.launch}</p></span>
       </button>`).join("");
     $$("#deepCards .card").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
+  }
+
+  /* ---- sourced records (site/js/records.js, from the Cosmic-Atlas catalogue) ---- */
+  const rec = id => (typeof RECORDS !== "undefined" && RECORDS[id]) || null;
+  // "What was on board": the instruments and parts, so readers see how the engineering made the science possible.
+  function onboardHTML(a) {
+    const r = rec(a.id);
+    if (!r || !r.onboard) return "";
+    return `<div class="d-block d-onboard"><h3>What was on board</h3>
+      <p class="d-note">The hardware behind the discoveries. Tap a part to see what it did.</p>
+      ${r.onboard.map(g => `<div class="ob-group">
+        <h4>${esc(g.name.replace(/^Apollo \d+ /, ""))}</h4>
+        ${g.design ? `<p>${esc(g.design)}</p>` : ""}
+        ${g.status ? `<p class="ob-status"><b>Today:</b> ${esc(g.status)}</p>` : ""}
+        ${g.items.length ? `<ul class="ob-list">${g.items.map(i => `<li><details><summary><b>${esc(i.name)}</b>${i.kind ? `<span class="ob-kind">${esc(i.kind)}</span>` : ""}</summary>
+          <p>${i.full ? `<i>${esc(i.full)}.</i> ` : ""}${esc(i.what)}</p>
+          ${i.found ? `<p class="ob-found"><b>What it found:</b> ${i.found.map(esc).join(" ")}</p>` : ""}
+          ${i.specs ? `<p class="ob-specs">${i.specs.map(esc).join(" · ")}</p>` : ""}</details></li>`).join("")}</ul>` : ""}
+      </div>`).join("")}</div>`;
+  }
+  // "See it from orbit": a real orbital photo showing the hardware still there today.
+  function orbitHTML(a) {
+    const o = rec(a.id)?.orbit;
+    if (!o) return "";
+    return `<div class="d-block d-orbit"><h3>See it from orbit</h3><p>${esc(o.cap)}</p>
+      <a class="btn btn-small" href="${esc(o.url)}" target="_blank" rel="noopener">🛰️ Open HiRISE image ${esc(o.img)} ↗</a></div>`;
+  }
+  // "Sources": the documents these facts were checked against.
+  function sourcesHTML(a) {
+    const list = (rec(a.id)?.sources || []).map(id => typeof SOURCE_LIST !== "undefined" && SOURCE_LIST[id]).filter(Boolean);
+    const photos = a.media.length ? `Photos: <a href="${NASA_PAGE(a.media[0].id)}" target="_blank" rel="noopener">NASA Image and Video Library</a>. ` : "";
+    return `<div class="d-block d-sources"><details><summary>Sources${list.length ? ` (${list.length})` : ""}</summary>
+      ${list.length ? `<ul>${list.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> <small>${esc(s.org)}${s.read ? ` · read ${esc(s.read)}` : ""}</small></li>`).join("")}</ul>` : ""}
+      <p class="d-note">${photos}<a href="sources.html#${a.id}">Every source in the archive →</a></p></details></div>`;
   }
 
   // One-line epitaph, carved like a memorial. Machines still working get a "not yet" label.
