@@ -4,7 +4,7 @@
 
 | Time | What to show (on screen) | Narration (voice-over) |
 |---|---|---|
-| 0–4 s | Home page. Slowly scroll past "They stopped talking. Their stories didn't." | "Since 1964, NASA has left machines all over the solar system." |
+| 0–4 s | Home page. Slowly scroll past "They stopped talking. Their stories didn't." | "Since 1958, NASA has left machines all over the solar system." |
 | 4–9 s | Ghost Map → click **Zoom to the Apollo sites** → click Tranquility Base. The dossier opens with its ghost log. | "Ghosts of Exploration lets kids find them, and hear each one tell its own story." |
 | 9–14 s | Scroll down in the dossier to **How it worked** → press ▶ on the Apollo landing animation. | "Step-by-step animations show how they landed, like Apollo's lunar module…" |
 | 14–18 s | **How it worked** gallery → Sky crane, steps 3–5 (rover lowered on cables). | "…or the sky crane that lowered Curiosity onto Mars." |

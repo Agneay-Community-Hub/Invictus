@@ -67,13 +67,15 @@ const TYPES = {
   impactor:   "Impactor",
   probe:      "Deep-space probe",
   helicopter: "Helicopter",
+  orbiter:    "Orbiter",
+  telescope:  "Space telescope",
   debris:     "Landing debris"
 };
 
 const WORLDS = {
   moon: { name: "The Moon", short: "Moon", tagline: "384,400 km away · 1.3 light-seconds", color: "#cfd8e3" },
   mars: { name: "Mars", short: "Mars", tagline: "55–400 million km away · 3–22 light-minutes", color: "#ff8a5c" },
-  deep: { name: "Elsewhere", short: "Elsewhere", tagline: "Mercury to interstellar space · up to a light-day away", color: "#8fb8ff" }
+  deep: { name: "Elsewhere", short: "Elsewhere", tagline: "Earth orbit to interstellar space · up to a light-day away", color: "#8fb8ff" }
 };
 
 const ARTIFACTS = [
@@ -312,6 +314,23 @@ const ARTIFACTS = [
     fun: "It was deliberately crashed on the far side so it couldn't hit any historic Apollo sites.",
     media: [],
     quiz: "I studied the Moon's super-thin atmosphere and crashed on the far side."
+  },
+  {
+    id: "prospector", world: "moon", type: "impactor", status: "impact",
+    name: "Lunar Prospector", mission: "Lunar Prospector", year: 1999,
+    lat: -87.7, lon: 44, place: "Shoemaker crater, near the south pole",
+    dates: { launch: "7 Jan 1998", arrive: "Moon orbit: 11 Jan 1998", last: "31 Jul 1999 (impact)" },
+    planned: "Map what the Moon is made of from orbit for one year.",
+    actual: "Mapped the whole Moon for 19 months, then crashed into a dark polar crater to look for water.",
+    stats: [["Cost", "~$63 million"], ["Months in orbit", "19"], ["Cameras on board", "0"]],
+    ghost: "I was small and cheap, and I carried no camera at all. Instead I sniffed the Moon's surface from orbit and found hints of hydrogen hiding in the dark craters at the poles. At the end, my team steered me into one of those craters. I also carried something precious: some of the ashes of Gene Shoemaker, the scientist who taught the Apollo astronauts geology.",
+    story: "Lunar Prospector was a small spacecraft that mapped what the Moon is made of. It found clues that ice might be hiding in craters near the poles. It also carried the ashes of a famous scientist, so he could finally go to the Moon.",
+    deep: "Lunar Prospector carried a neutron spectrometer, gamma-ray spectrometer, magnetometer and other instruments, but no camera. Its neutron data showed extra hydrogen at both poles, consistent with water ice in permanently shadowed craters. On 31 July 1999 it was steered into a crater near the south pole in the hope that the impact would release water vapour visible from Earth; none was detected. That crater was later named Shoemaker.",
+    discoveries: ["Extra hydrogen at the poles: the first strong hint of water ice on the Moon", "Global maps of elements such as iron, thorium and potassium", "Patches of magnetic field in the Moon's crust"],
+    legacy: "LCROSS confirmed its hint ten years later, finding water ice in another polar crater.",
+    fun: "Gene Shoemaker was the first person whose ashes were sent to the Moon. He had hoped to be an astronaut himself, but a health condition kept him from flying.",
+    media: [{ f: "PIA18162.jpg", id: "PIA18162", cap: "Artist's concept of Lunar Prospector in orbit, its instrument masts unfolded." }],
+    quiz: "I carried the ashes of a famous scientist and crashed into a crater near the Moon's south pole."
   },
 
   /* ===================== MARS ===================== */
@@ -776,6 +795,212 @@ const ARTIFACTS = [
       { f: "PIA19376.jpg", id: "PIA19376", cap: "Artist's rendering of Dawn with its long solar panels." }
     ],
     quiz: "I used ion engines to orbit two worlds, and I'm still circling Ceres."
+  },
+  {
+    id: "magellan", world: "deep", type: "orbiter", status: "impact", body: "Venus",
+    name: "Magellan", mission: "Magellan", year: 1994,
+    heading: "Burned up in Venus's sky", fixedPlace: "Venus's atmosphere (some pieces may have reached the ground)",
+    dates: { launch: "4 May 1989", arrive: "Venus orbit: 10 Aug 1990", last: "13 Oct 1994" },
+    planned: "Map Venus through its clouds with radar.",
+    actual: "Mapped 98% of the planet, tested a new braking trick, then was sent into the atmosphere.",
+    stats: [["Surface mapped", "98%"], ["Launched from", "Space Shuttle"], ["Years at Venus", "4"]],
+    ghost: "Venus hides under clouds so thick no camera can see through them, so I used radar instead. I bounced radio waves off the ground and turned the echoes into maps of volcanoes, lava plains and craters. At the end, my team turned my solar panels like the sails of a windmill and let me fall into the clouds I had seen through.",
+    story: "Magellan was launched from a Space Shuttle and flew to Venus. It used radar to see through the thick clouds and made a map of almost the whole planet.",
+    deep: "Magellan's synthetic-aperture radar mapped 98% of Venus at resolutions around 100–150 m, revealing a young surface shaped by volcanism, with few impact craters and no sign of Earth-like plate tectonics. In 1993 it became the first planetary spacecraft to use aerobraking to lower its orbit, a technique later used at Mars. In October 1994 controllers angled its solar panels to measure atmospheric drag in a final 'windmill' experiment before it entered the atmosphere.",
+    discoveries: ["Venus is covered in volcanoes and old lava flows", "Its surface is young: few craters, all fairly fresh", "First test of aerobraking at another planet"],
+    legacy: "Aerobraking, first tried by Magellan, helped later orbiters like Mars Global Surveyor save fuel.",
+    fun: "Magellan was the first planetary spacecraft ever launched from a Space Shuttle.",
+    media: [
+      { f: "s30-72-047.jpg", id: "s30-72-047", cap: "Magellan, with its upper-stage rocket, is released from Space Shuttle Atlantis on 4 May 1989." },
+      { f: "PIA00478.jpg", id: "PIA00478", cap: "A global view of Venus built from Magellan's radar maps." }
+    ],
+    quiz: "I saw through Venus's clouds with radar and mapped almost the whole planet."
+  },
+  {
+    id: "mariner9", world: "deep", type: "orbiter", status: "silent", body: "Mars",
+    name: "Mariner 9", mission: "Mariner 9", year: 1972,
+    heading: "Probably still orbiting Mars", fixedPlace: "Orbit around Mars, silent since 1972",
+    dates: { launch: "30 May 1971", arrive: "Mars orbit: 14 Nov 1971", last: "27 Oct 1972 (switched off)" },
+    planned: "Orbit Mars and map its surface.",
+    actual: "Became the first spacecraft to orbit another planet and mapped 85% of Mars.",
+    stats: [["First to orbit", "another planet"], ["Mars mapped", "85%"], ["Photos sent", "7,329"]],
+    ghost: "I was the first spacecraft ever to circle another planet. When I arrived, a dust storm covered all of Mars. Only the tops of four giant volcanoes poked through. So I waited. When the dust cleared, I showed you canyons, dry riverbeds and the biggest volcano in the solar system.",
+    story: "Mariner 9 was the first spacecraft to orbit another planet. It arrived in the middle of a giant dust storm, waited for it to end, and then mapped most of Mars.",
+    deep: "Mariner 9 reached Mars on 14 November 1971, narrowly ahead of the Soviet Mars 2 and 3 orbiters. A global dust storm hid the surface until early 1972; afterwards it mapped 85% of the planet, revealing Olympus Mons, the canyon system later named Valles Marineris in its honour, and dried channels suggesting water once flowed. It was switched off on 27 October 1972 in an orbit expected to last about 50 years, so it may by now have fallen into the atmosphere.",
+    discoveries: ["Olympus Mons, the largest volcano in the solar system", "Valles Marineris, a canyon about 4,000 km long", "Dry riverbeds: water once flowed on Mars"],
+    legacy: "Its maps were used to choose the landing sites for the Viking landers.",
+    fun: "The giant canyon system it found was named after it: Valles Marineris means 'Mariner Valleys'.",
+    media: [
+      { f: "PIA02999.jpg", id: "PIA02999", cap: "Mariner 9's view of Olympus Mons standing above the global dust storm." },
+      { f: "PIA02998.jpg", id: "PIA02998", cap: "The canyon system emerging as the dust storm cleared." }
+    ],
+    quiz: "I was the first spacecraft to orbit another planet, and I waited out a dust storm."
+  },
+  {
+    id: "mco", world: "deep", type: "orbiter", status: "lost", body: "Mars",
+    name: "Mars Climate Orbiter", mission: "Mars Surveyor '98", year: 1999,
+    heading: "Lost at Mars", fixedPlace: "Burned up at Mars, or skipped back out into orbit around the Sun",
+    dates: { launch: "11 Dec 1998", arrive: "23 Sep 1999 (arrival)", last: "23 Sep 1999" },
+    planned: "Study Mars's weather and relay messages for Mars Polar Lander.",
+    actual: "Arrived far too low because of a mix-up between two kinds of units, and was never heard from again.",
+    stats: [["Planned height", "~150 km"], ["Actual height", "~57 km"], ["Cause", "Mixed-up units"]],
+    ghost: "One computer told the other how hard my thrusters pushed in pounds. The other computer thought the numbers were in newtons. Nobody noticed. The tiny mistake grew and grew on my nine-month trip, and I reached Mars far too low. I slipped behind the planet and never came out.",
+    story: "Mars Climate Orbiter was lost because two teams used different units, like one using inches and the other centimetres. Its path was a little off, and it flew much too close to Mars.",
+    deep: "Ground software produced thruster impulse data in pound-force seconds, while the navigation software expected newton-seconds, a factor of about 4.45. The small, repeated error in modelling thruster firings went unnoticed during the cruise. At orbit insertion the spacecraft passed about 57 km above the surface instead of the intended ~150 km, and contact was lost. The review board's findings reshaped NASA's checks on software interfaces and navigation.",
+    discoveries: ["(No science returned): its loss became engineering's most famous lesson in checking units"],
+    legacy: "Engineering and science students around the world still learn its story as a warning: always check your units.",
+    fun: "1 pound-force is about 4.45 newtons. That small difference was enough to lose a whole spacecraft.",
+    media: [{ f: "KSC-98pc1079.jpg", id: "KSC-98pc1079", cap: "Technicians unpack Mars Climate Orbiter at Kennedy Space Center before launch, 1998." }],
+    quiz: "I was lost at Mars because two teams used different units."
+  },
+  {
+    id: "mgs", world: "deep", type: "orbiter", status: "lost", body: "Mars",
+    name: "Mars Global Surveyor", mission: "Mars Global Surveyor", year: 2006,
+    heading: "Still orbiting Mars, silent", fixedPlace: "Orbit around Mars",
+    dates: { launch: "7 Nov 1996", arrive: "Mars orbit: 12 Sep 1997", last: "2 Nov 2006" },
+    planned: "Map Mars from orbit for about two years.",
+    actual: "Worked for more than nine years, longer than any Mars spacecraft before it.",
+    stats: [["Planned", "~2 years"], ["Actual", "9+ years"], ["Photos", "240,000+"]],
+    ghost: "I mapped Mars for nine years. I measured the height of the whole planet with a laser and took over 240,000 pictures. Then a mistake in a command sent months earlier made me turn one of my batteries towards the Sun. It overheated, and I went quiet. I'm still up here, circling.",
+    story: "Mars Global Surveyor made the first detailed map of the heights and depths of Mars, using a laser. It also took photos of gullies that looked like water had flowed down them recently.",
+    deep: "MGS used aerobraking to settle into its mapping orbit, then spent years mapping Mars with its Mars Orbiter Laser Altimeter (MOLA), camera, thermal spectrometer and magnetometer. MOLA produced the first precise global topographic map, and the magnetometer found stripes of magnetism in the ancient crust. Its camera imaged young gullies and, in 2005, became the first spacecraft to photograph another spacecraft orbiting Mars. A faulty command uploaded in June 2006 led to a battery overheating after a routine manoeuvre in November.",
+    discoveries: ["The first precise 3D map of the whole of Mars", "Fresh gullies, possibly carved by water", "Ancient magnetic stripes in the crust"],
+    legacy: "Its maps guided where Spirit, Opportunity and later missions landed.",
+    fun: "It took a photo of Spirit's and Opportunity's tracks from orbit, and even spotted other spacecraft flying around Mars.",
+    media: [{ f: "PIA17486.jpg", id: "PIA17486", cap: "Artist's concept of Mars Global Surveyor flying over Mars." }],
+    quiz: "I mapped Mars for nine years, until a wrong command made my battery overheat."
+  },
+  {
+    id: "vanguard1", world: "deep", type: "orbiter", status: "silent", body: "Earth",
+    name: "Vanguard 1", mission: "Project Vanguard", year: 1964,
+    heading: "Still circling Earth", fixedPlace: "Orbit around Earth: the oldest human-made object still up there",
+    dates: { launch: "17 Mar 1958", arrive: "Earth orbit: 17 Mar 1958", last: "1964" },
+    planned: "Prove that a small satellite could reach orbit, and test solar power in space.",
+    actual: "Radioed home for six years, and it's still in orbit more than 65 years later.",
+    stats: [["Size", "16 cm across"], ["Mass", "1.5 kg"], ["Expected to stay up", "~240 years"]],
+    ghost: "I'm about the size of a grapefruit, and someone famous made fun of me for it. But I was the first satellite to run on sunlight, and I'm still up here. Every satellite launched since has flown beneath me. My radio went quiet in 1964, but I keep going round and round.",
+    story: "Vanguard 1 was one of the very first satellites, small enough to hold in your hands. It was the first to use solar panels, and it's still circling Earth today.",
+    deep: "Vanguard 1 was the fourth artificial satellite to reach orbit and the first powered by solar cells; its solar-powered transmitter worked until 1964. Tracking how its orbit changed showed that Earth is very slightly pear-shaped. Its high orbit (about 650 × 3,800 km) means it is expected to stay up for roughly another two centuries. The Vanguard programme began under the U.S. Naval Research Laboratory and moved to NASA when NASA was founded in 1958.",
+    discoveries: ["Earth is very slightly pear-shaped", "Solar cells can power a satellite for years"],
+    legacy: "Almost every satellite since, from weather satellites to the ISS, runs on solar power.",
+    fun: "Soviet leader Nikita Khrushchev called it 'the grapefruit satellite'.",
+    media: [{ f: "58PD-06149A.jpg", id: "58PD-06149A", cap: "The Vanguard rocket on its launch pad at Cape Canaveral, waiting to launch Vanguard 1 in 1958." }],
+    quiz: "I'm the size of a grapefruit and the oldest human-made object still orbiting Earth."
+  },
+  {
+    id: "mariner2", world: "deep", type: "probe", status: "silent",
+    name: "Mariner 2", mission: "Mariner 2", year: 1963, orbit: { au: 0.86, ang: 1.2, y: 0.3 },
+    heading: "Circling the Sun", fixedPlace: "Orbit around the Sun, between Venus and Earth",
+    dates: { launch: "27 Aug 1962", arrive: "Venus flyby: 14 Dec 1962", last: "3 Jan 1963" },
+    planned: "Fly past Venus and measure it.",
+    actual: "Became the first spacecraft to successfully visit another planet.",
+    stats: [["Closest to Venus", "~34,800 km"], ["First", "planetary visit"], ["Mass", "~200 kg"]],
+    ghost: "I was the first spacecraft to visit another planet. People hoped Venus might be a warm, steamy jungle world. I measured it and found it scorching hot under its clouds. On the way, I was the first to feel the wind that blows from the Sun. Now I circle the Sun with no one listening.",
+    story: "Mariner 2 was the first spacecraft to fly past another planet. It discovered that Venus is extremely hot, not the jungle world some people imagined.",
+    deep: "Launched on an Atlas-Agena after its twin Mariner 1 was destroyed at launch, Mariner 2 flew past Venus on 14 December 1962 at about 34,800 km. Its microwave radiometer showed very high surface temperatures, and during the cruise it made the first direct measurements of the solar wind, confirming a continuous stream of charged particles from the Sun. Contact was lost on 3 January 1963; it remains in orbit around the Sun.",
+    discoveries: ["Venus is extremely hot beneath its clouds", "The solar wind blows all the time"],
+    legacy: "Every mission to the planets since builds on the path Mariner 2 opened.",
+    fun: "Its twin, Mariner 1, was destroyed shortly after launch because of a tiny mistake in its guidance equations, often described as a missing hyphen.",
+    media: [{ f: "PIA04594.jpg", id: "PIA04594", cap: "Artist's concept of Mariner 2, the first successful interplanetary spacecraft." }],
+    quiz: "I was the first spacecraft to visit another planet: Venus, in 1962."
+  },
+  {
+    id: "mariner4", world: "deep", type: "probe", status: "silent",
+    name: "Mariner 4", mission: "Mariner 4", year: 1967, orbit: { au: 1.33, ang: 5.6, y: -0.3 },
+    heading: "Circling the Sun", fixedPlace: "Orbit around the Sun, between Earth and Mars",
+    dates: { launch: "28 Nov 1964", arrive: "Mars flyby: 15 Jul 1965", last: "21 Dec 1967" },
+    planned: "Fly past Mars and take the first close-up pictures.",
+    actual: "Sent home 21 pictures showing a cratered, Moon-like Mars.",
+    stats: [["Pictures", "21 (and part of a 22nd)"], ["Closest to Mars", "~9,800 km"], ["Data speed", "8.3 bits/s"]],
+    ghost: "I took the first close-up pictures of another planet. My pictures came home so slowly that people didn't want to wait for the computers. They printed my numbers on strips of paper and coloured them in by hand, like a paint-by-numbers. Mars turned out to be cratered and dry. No canals. No cities.",
+    story: "Mariner 4 took the first close-up photos of Mars. Scientists were so excited they coloured in the first picture by hand with pastel chalks before the computers had finished!",
+    deep: "Mariner 4 flew past Mars on 14–15 July 1965, returning 21 full images plus part of a 22nd at just 8.33 bits per second; each picture took hours to transmit. Engineers impatient to see the first image pinned printed strips of its brightness values to a board and coloured them with pastel chalks. The images revealed impact craters and a thin atmosphere, ending long-held ideas of a Mars with canals and civilisations. Contact ended in December 1967.",
+    discoveries: ["Mars has a cratered surface, more like the Moon than Earth", "Its atmosphere is very thin, mostly carbon dioxide", "No sign of the 'canals' some people believed in"],
+    legacy: "The hand-coloured first picture is now a treasured piece of space history at NASA's Jet Propulsion Laboratory.",
+    fun: "Its data speed was 8.3 bits per second. A single phone photo today would take days to send that way.",
+    media: [
+      { f: "PIA14033.jpg", id: "PIA14033", cap: "The first image of Mars from Mariner 4, coloured in by hand from printed numbers." },
+      { f: "PIA02979.jpg", id: "PIA02979", cap: "A crater on Mars photographed by Mariner 4 in 1965." }
+    ],
+    quiz: "My first picture of Mars was coloured in by hand before the computers finished."
+  },
+  {
+    id: "isee3", world: "deep", type: "probe", status: "silent",
+    name: "ISEE-3 / ICE", nick: "International Cometary Explorer", mission: "International Sun-Earth Explorer 3", year: 2014, orbit: { au: 0.97, ang: 0.4, y: 0.4 },
+    heading: "Circling the Sun near Earth's path", fixedPlace: "Orbit around the Sun, close to Earth's path",
+    dates: { launch: "12 Aug 1978", arrive: "Comet Giacobini–Zinner: 11 Sep 1985", last: "16 Sep 2014" },
+    planned: "Watch the solar wind from a balance point between the Sun and Earth.",
+    actual: "Did that, then was flung to a comet, and was woken up by volunteers 30 years later.",
+    stats: [["First to visit", "a comet"], ["Woken by volunteers", "2014"], ["Years in space", "36+"]],
+    ghost: "First I watched the solar wind from a quiet spot between the Sun and Earth. Then my team swung me past the Moon again and again and sent me through the tail of a comet: the first spacecraft ever to visit one. In 2014, strangers on the internet raised money, borrowed a giant radio dish and talked to me again.",
+    story: "ISEE-3 was the first spacecraft to fly through a comet's tail. Decades later, a team of volunteers raised money online and managed to talk to it again.",
+    deep: "ISEE-3 was the first spacecraft placed in a halo orbit around the Sun–Earth L1 point. In 1982–83 a series of lunar flybys redirected it, renamed the International Cometary Explorer, through the tail of Comet Giacobini–Zinner in September 1985, and it later observed Comet Halley from a distance. NASA ended the mission in 1997. In 2014, as its orbit brought it back near Earth, the crowdfunded ISEE-3 Reboot Project used the Arecibo radio telescope to command it. They could not fire its engines, because the nitrogen gas that pushed its fuel was gone, and contact was lost in September 2014.",
+    discoveries: ["First direct measurements inside a comet's tail", "First spacecraft to watch the solar wind from the L1 point"],
+    legacy: "Spacecraft such as SOHO and DSCOVR now watch the Sun from the same L1 point ISEE-3 pioneered.",
+    fun: "It should swing back near Earth again in the 2030s.",
+    media: [{ f: "201009100004HQ.jpg", id: "201009100004HQ", cap: "Robert Farquhar (left), who planned ISEE-3's route to the comet, at NASA's 25th-anniversary comet symposium in 2010." }],
+    quiz: "I was the first spacecraft to visit a comet, and volunteers woke me up 30 years later."
+  },
+  {
+    id: "kepler", world: "deep", type: "telescope", status: "silent",
+    name: "Kepler", mission: "Kepler / K2", year: 2018, orbit: { au: 1.01, ang: 3.9, y: 0.5 },
+    heading: "Trailing behind Earth around the Sun", fixedPlace: "Orbit around the Sun, drifting further behind Earth every year",
+    dates: { launch: "7 Mar 2009", arrive: "Orbit around the Sun: Mar 2009", last: "15 Nov 2018 (final commands)" },
+    planned: "Stare at one patch of sky for 3.5 years to find Earth-sized planets.",
+    actual: "Found more than 2,600 confirmed planets over nine and a half years.",
+    stats: [["Stars watched", "~150,000"], ["Planets confirmed", "2,600+"], ["Years working", "9.5"]],
+    ghost: "I stared at the same patch of sky for years, watching thousands of stars at once. When a star dimmed a tiny bit, a planet was passing in front of it. That's how I found thousands of worlds. When my steering wheels broke, my team used the push of sunlight to balance me. I said goodnight in 2018.",
+    story: "Kepler was a space telescope that hunted for planets around other stars. It found thousands of them and showed that most stars have planets.",
+    deep: "Kepler used the transit method, measuring tiny drops in starlight as planets passed in front of their stars. After the failure of a second reaction wheel in 2013, engineers balanced it against solar radiation pressure for the extended K2 mission, observing new fields along the ecliptic. It ran out of fuel and was retired on 30 October 2018; its final commands were sent on 15 November 2018, the anniversary of Johannes Kepler's death.",
+    discoveries: ["More than 2,600 confirmed planets around other stars", "Most stars have planets, so there are more planets than stars in our galaxy", "Many Earth-sized planets orbit in their star's 'habitable zone'"],
+    legacy: "TESS now surveys almost the whole sky for planets, using Kepler's method.",
+    fun: "Its final 'goodnight' commands were sent on the anniversary of the death of astronomer Johannes Kepler, its namesake.",
+    media: [
+      { f: "PIA11824.jpg", id: "PIA11824", cap: "Artist's concept of the Kepler space telescope." },
+      { f: "PIA11188.jpg", id: "PIA11188", cap: "Kepler in a clean room at Ball Aerospace before launch." }
+    ],
+    quiz: "I stared at one patch of sky and found thousands of planets around other stars."
+  },
+  {
+    id: "spitzer", world: "deep", type: "telescope", status: "silent",
+    name: "Spitzer Space Telescope", nick: "Spitzer", mission: "Spitzer", year: 2020, orbit: { au: 1.02, ang: 2.0, y: -0.5 },
+    heading: "Trailing behind Earth around the Sun", fixedPlace: "Orbit around the Sun, far behind Earth",
+    dates: { launch: "25 Aug 2003", arrive: "Orbit around the Sun: Aug 2003", last: "30 Jan 2020 (switched off)" },
+    planned: "Observe the universe in infrared light for at least 2.5 years.",
+    actual: "Worked for more than 16 years, most of them after its coolant ran out.",
+    stats: [["Planned", "2.5+ years"], ["Actual", "16+ years"], ["Coolant ran out", "2009"]],
+    ghost: "I saw the universe by its warmth. Infrared light let me see newborn stars hidden in dust and the glow of planets around other suns. I helped discover seven Earth-sized planets around one small star. My coolant ran out, but I kept working for ten more years while I drifted further behind Earth.",
+    story: "Spitzer was a space telescope that saw infrared light, the kind of light warm things give off. It helped discover a star with seven Earth-sized planets.",
+    deep: "Spitzer was the infrared member of NASA's four Great Observatories. It followed Earth around the Sun rather than orbiting Earth, keeping it away from Earth's heat. In 2005 it made the first direct detection of light from planets outside the solar system, and in 2017 it helped reveal the seven Earth-sized planets of TRAPPIST-1. Its liquid-helium coolant ran out in 2009, but its shortest-wavelength cameras kept working in the 'warm mission' until January 2020.",
+    discoveries: ["First direct detection of light from planets around other stars", "Helped find the seven planets of TRAPPIST-1", "Saw stars forming inside dusty clouds"],
+    legacy: "The James Webb Space Telescope continues Spitzer's infrared work with a much larger mirror.",
+    fun: "It drifted so far behind Earth that, by the end, talking to it meant tilting it more and more steeply towards home.",
+    media: [
+      { f: "PIA23643.jpg", id: "PIA23643", cap: "Artist's rendering of Spitzer, with the sky behind it shown in infrared light." },
+      { f: "PIA11796.jpg", id: "PIA11796", cap: "The spiral galaxy Messier 101 as seen by Spitzer." }
+    ],
+    quiz: "I saw the universe in infrared light and helped find seven planets around one star."
+  },
+  {
+    id: "stardust", world: "deep", type: "probe", status: "silent",
+    name: "Stardust", mission: "Stardust / Stardust-NExT", year: 2011, orbit: { au: 2.0, ang: 3.0, y: 0.3 },
+    heading: "Circling the Sun", fixedPlace: "Orbit around the Sun",
+    dates: { launch: "7 Feb 1999", arrive: "Comet Wild 2: 2 Jan 2004", last: "24 Mar 2011 (final burn)" },
+    planned: "Catch dust from a comet and bring it back to Earth.",
+    actual: "Brought comet dust home in 2006, then flew on to visit a second comet.",
+    stats: [["Comets visited", "2"], ["Sample landing", "Utah, 2006"], ["Catcher", "Aerogel"]],
+    ghost: "I flew through the dust around a comet and caught tiny grains in a catcher made of aerogel, one of the lightest solids ever made. I sent my capsule down to the Utah desert with the first comet dust ever brought to Earth. Then I visited one more comet and burned my last drop of fuel.",
+    story: "Stardust caught dust from a comet and sent it back to Earth in a capsule. Scientists found an ingredient of life in it.",
+    deep: "Stardust flew through the coma of Comet Wild 2 on 2 January 2004, capturing particles in a tennis-racket-shaped grid of aerogel. Its capsule landed in Utah on 15 January 2006. The samples included minerals that formed at high temperatures near the young Sun, and in 2009 scientists reported the amino acid glycine. As Stardust-NExT it photographed Comet Tempel 1 in 2011, including the crater made by Deep Impact, then fired its engine until its fuel was gone.",
+    discoveries: ["Comet dust contains glycine, a building block of proteins", "Comets contain material formed close to the young Sun", "Saw the crater Deep Impact made on Tempel 1"],
+    legacy: "Its sample capsule paved the way for asteroid sample-return missions such as OSIRIS-REx.",
+    fun: "Its aerogel catcher was more than 99% empty space, so fast-moving dust grains could slow down gently inside it instead of being smashed.",
+    media: [
+      { f: "PIA03188.jpg", id: "PIA03188", cap: "Stardust's dust collector, filled with blocks of aerogel." },
+      { f: "PIA03669.jpg", id: "PIA03669", cap: "The sample capsule after landing in the Utah desert, January 2006." },
+      { f: "PIA03182.jpg", id: "PIA03182", cap: "Artist's rendering of the Stardust spacecraft." }
+    ],
+    quiz: "I caught comet dust in aerogel and sent it back to Earth."
   }
 ];
 

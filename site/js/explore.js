@@ -8,7 +8,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
-const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂" };
+const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂", orbiter: "🛰️", telescope: "🔭" };
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const auNow = d => d.au2025 + d.rate * ((Date.now() - Date.UTC(2025, 0, 1)) / (365.25 * 864e5));
 try { localStorage.setItem("goe:explored", "true"); } catch { /* ignore */ }
@@ -155,6 +155,7 @@ const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26]
   const hpAnchor = new THREE.Object3D(); hpAnchor.position.set(0, R(120) * 0.72, 0); grp.add(hpAnchor);
   planetLabels.push({ el: makeLabel("Heliopause — edge of the Sun's bubble (~120 AU)", "planet"), obj: hpAnchor, world: "deep" });
   // probes
+  const bodyCount = {};
   ARTIFACTS.filter(a => a.world === "deep").forEach(a => {
     let pos;
     if (a.dist && DIRS[a.id]) {
@@ -166,8 +167,11 @@ const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26]
       pos = new THREE.Vector3(Math.cos(4.2) * R(1.46), 0.3, Math.sin(4.2) * R(1.46));
     } else if (a.id === "deepimpact") {
       pos = new THREE.Vector3(Math.cos(2.4) * R(3.1), -0.3, Math.sin(2.4) * R(3.1));
+    } else if (a.orbit) { // circling the Sun on its own (illustrative position)
+      pos = new THREE.Vector3(Math.cos(a.orbit.ang) * R(a.orbit.au), a.orbit.y || 0, Math.sin(a.orbit.ang) * R(a.orbit.au));
     } else if (a.body && bodyPos[a.body]) {
-      pos = bodyPos[a.body].clone().add(new THREE.Vector3(0, a.body === "Jupiter" || a.body === "Saturn" ? 1.3 : .7, 0)); // just above its world
+      const k = (bodyCount[a.body] = (bodyCount[a.body] || 0) + 1) - 1; // several machines at one world sit side by side
+      pos = bodyPos[a.body].clone().add(new THREE.Vector3(k * 0.6, a.body === "Jupiter" || a.body === "Saturn" ? 1.3 : .7, 0)); // just above its world
     } else return;
     addBeacon(a, "deep", pos, null, 0.6);
   });

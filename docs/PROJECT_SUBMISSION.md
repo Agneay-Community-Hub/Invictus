@@ -22,7 +22,7 @@ Abandoned but not Forgotten: Storytelling about NASA's Discarded Equipment on th
 ## High-level summary
 *(Space Apps asks for a short summary. This one is about 150 words.)*
 
-Ghosts of Exploration is a free, story-driven website that introduces 8–14-year-olds to 37 machines NASA left on the Moon, on Mars and across the solar system, from Ranger 7 (1964) to Ingenuity's final airfield. Each machine "speaks" in a first-person ghost log built from real mission facts. Kids can:
+Ghosts of Exploration is a free, story-driven website that introduces 8–14-year-olds to 49 machines NASA left on the Moon, on Mars and across the solar system, from Vanguard 1 (1958) to Ingenuity's final airfield. Each machine "speaks" in a first-person ghost log built from real mission facts. Kids can:
 - find the machines on a map at their true coordinates;
 - watch step-by-step animations of how they landed;
 - compare mission photos with how the sites look today;

@@ -6,7 +6,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
-  const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂" };
+  const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂", orbiter: "🛰️", telescope: "🔭" };
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   /* ---------------- persistent state (safe storage) ---------------- */

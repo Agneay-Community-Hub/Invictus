@@ -12,7 +12,7 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
-  const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂" };
+  const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂", orbiter: "🛰️", telescope: "🔭" };
   const ENDPOINT = (window.ASK_ENDPOINT || "").replace(/\/+$/, "");
   const store = {
     get(k, d) { try { const v = localStorage.getItem("goe:" + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -68,7 +68,20 @@
     [/f ring|first .*(to|visit) saturn/, ["pioneer11"]],
     [/into saturn|grand finale|enceladus|titan|huygens|cassini/, ["cassini"]],
     [/mercury|messenger/, ["messenger"]],
-    [/venus/, ["pioneervenus"]],
+    [/venus/, ["pioneervenus", "magellan"]],
+    [/magellan|radar map|aerobrak/, ["magellan"]],
+    [/mariner 9|olympus mons|valles marineris|first .*orbit (another|a) planet/, ["mariner9"]],
+    [/climate orbiter|units|pounds?|newtons|metric/, ["mco"]],
+    [/global surveyor|\bmgs\b|laser altimeter|mola/, ["mgs"]],
+    [/mariners?\b(?! [249])/, ["mariner2", "mariner4", "mariner9"]],
+    [/vanguard|grapefruit|oldest (satellite|object)|pear.?shaped/, ["vanguard1"]],
+    [/mariner 2|first .*(visit|fly past|flyby).*planet|solar wind/, ["mariner2"]],
+    [/mariner 4|hand.?colou?red|crayon|pastel|canals/, ["mariner4"]],
+    [/isee|cometary explorer|giacobini|first .*comet|volunteers?|crowdfund/, ["isee3"]],
+    [/kepler|exoplanets?|planets? (around|orbiting) other stars|planet hunt/, ["kepler", "spitzer"]],
+    [/spitzer|infrared|trappist/, ["spitzer"]],
+    [/stardust|wild 2|aerogel|comet dust|glycine/, ["stardust"]],
+    [/lunar prospector|prospector|shoemaker|ashes/, ["prospector"]],
     [/ceres|vesta|ion engine/, ["dawn"]],
     [/asteroid|eros|valentine/, ["near"]],
     [/comet|tempel|independence day|4th of july|july 4/, ["deepimpact"]],
