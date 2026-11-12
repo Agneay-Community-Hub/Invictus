@@ -58,9 +58,19 @@
   /* ---------------- the scenes ---------------- */
   const S = {};
 
-  // 1. Apollo lunar module: landing, exploring, liftoff
-  S["apollo-lm"] = v => ({
-    title: "How Apollo landed and took off again", world: "moon",
+  // 1. Apollo lunar module: landing, exploring, liftoff (names, crews and experiments per mission)
+  const APOLLO = {
+    apollo11: { lm: "Eagle", crew: "Neil Armstrong and Buzz Aldrin", quote: "“The Eagle has landed.” ", kit: "a seismometer, a laser mirror and the flag", sci: "Laser mirror + seismometer", rover: false },
+    apollo12: { lm: "Intrepid", crew: "Pete Conrad and Alan Bean", quote: "", kit: "a nuclear-powered science station and the flag, then walk over to visit Surveyor 3", sci: "Science station (ALSEP)", rover: false },
+    apollo14: { lm: "Antares", crew: "Alan Shepard and Edgar Mitchell", quote: "", kit: "a science station, a laser mirror and the flag (and Shepard hits two golf balls!)", sci: "Laser mirror + science station", rover: false },
+    apollo15: { lm: "Falcon", crew: "David Scott and James Irwin", quote: "", kit: "the first Moon car, a science station, a laser mirror and the flag", sci: "Laser mirror + science station", rover: true },
+    apollo16: { lm: "Orion", crew: "John Young and Charlie Duke", quote: "", kit: "their Moon car, a science station and the flag", sci: "Science station (ALSEP)", rover: true },
+    apollo17: { lm: "Challenger", crew: "Gene Cernan and Harrison Schmitt", quote: "", kit: "their Moon car, a science station and the flag", sci: "Science station (ALSEP)", rover: true }
+  };
+  S["apollo-lm"] = v => {
+    const m = APOLLO[v] || APOLLO.apollo11;
+    return {
+    title: `How ${(v || "apollo11").replace("apollo", "Apollo ")} landed and took off again`, world: "moon",
     svg: P => `${BG.moon(P)}
       ${dust("dust", 400, 378)}
       <g data-k="seis" class="fx"><rect x="520" y="362" width="22" height="16" fill="#c9ccd2"/><rect x="514" y="356" width="34" height="5" fill="#2e3d66"/></g>
@@ -83,18 +93,20 @@
       </g>
       <g data-k="astro" class="fx" data-px="440" data-py="368"><circle cx="440" cy="352" r="6" fill="#f2f2f2"/><rect x="434" y="358" width="12" height="13" rx="3" fill="#f2f2f2"/><rect x="430" y="359" width="5" height="10" fill="#d0d0d0"/><line x1="437" y1="371" x2="436" y2="379" stroke="#f2f2f2" stroke-width="3"/><line x1="443" y1="371" x2="445" y2="379" stroke="#f2f2f2" stroke-width="3"/><rect x="438" y="349" width="6" height="4" fill="#d4a64a"/></g>
       ${label("l1", 230, 240, "Descent stage: still there", 380, 330)}
-      ${label("l2", 610, 290, "Laser mirror + seismometer", 560, 352)}
-      ${label("l3", 210, 300, "Flag", 300, 322)}`,
+      ${label("l2", 610, 290, m.sci, 560, 352)}
+      ${label("l3", 210, 300, "Flag", 300, 322)}
+      ${m.rover ? `<g data-k="lrv" class="fx"><rect x="640" y="364" width="54" height="7" fill="#c9ccd2"/><rect x="652" y="352" width="10" height="12" fill="#9aa3ad"/><circle cx="702" cy="350" r="7" fill="none" stroke="#ccc" stroke-width="2"/><line x1="694" y1="364" x2="700" y2="356" stroke="#ccc" stroke-width="2"/><g fill="#555"><circle cx="648" cy="374" r="6"/><circle cx="686" cy="374" r="6"/></g></g>${label("l4", 640, 230, "Moon car: still parked", 667, 360)}` : ""}`,
     init: { lm: { x: -330, y: -300, r: -25 } },
     steps: [
-      { cap: "The lunar module Eagle leaves the command module in orbit and heads down toward the Moon, moving at about 6,000 km/h.", dur: 2200, to: { lm: { x: -200, y: -200, r: -18 } } },
+      { cap: `The lunar module ${m.lm}, carrying ${m.crew}, leaves the command module in orbit and heads down toward the Moon at about 6,000 km/h.`, dur: 2200, to: { lm: { x: -200, y: -200, r: -18 } } },
       { cap: "Its descent engine fires to slow down. There's no air on the Moon, so there's no parachute: only rocket power.", dur: 3600, on: ["lmFlame"], to: { lm: { x: 0, y: -70, r: 0 } } },
-      { cap: "Touchdown on four legs! “The Eagle has landed.” The engine kicks up a cloud of Moon dust.", dur: 2400, on: ["dust"], to: { lm: { x: 0, y: 0 } }, offEnd: ["lmFlame", "dust"] },
-      { cap: "The astronauts climb down the ladder and set up experiments: a seismometer, a laser mirror and the flag.", dur: 3200, on: ["astro", "flag", "seis", "mirror"], to: { astro: [{ x: 30 }, { x: 70 }, { x: 110 }] } },
-      { cap: "Time to go home. Only the top half, the ascent stage, blasts off. The bottom half is its launch pad.", dur: 3200, on: ["asFlame"], off: ["astro"], to: { lmA: [{ y: -20 }, { y: -140 }, { y: -400 }] } },
-      { cap: "The descent stage, the flag and the experiments stayed behind. They're still there today.", dur: 1200, off: ["asFlame"], on: ["l1", "l2", "l3"] }
+      { cap: `Touchdown on four legs! ${m.quote}The engine kicks up a cloud of Moon dust.`, dur: 2400, on: ["dust"], to: { lm: { x: 0, y: 0 } }, offEnd: ["lmFlame", "dust"] },
+      { cap: `The astronauts climb down the ladder and set up ${m.kit}.`, dur: 3200, on: ["astro", "flag", "seis", "mirror", ...(m.rover ? ["lrv"] : [])], to: { astro: [{ x: 30 }, { x: 70 }, { x: 110 }] } },
+      { cap: `Time to go home. Only the top half of ${m.lm}, the ascent stage, blasts off. The bottom half is its launch pad.`, dur: 3200, on: ["asFlame"], off: ["astro"], to: { lmA: [{ y: -20 }, { y: -140 }, { y: -400 }] } },
+      { cap: `The descent stage, the flag${m.rover ? ", the Moon car" : ""} and the experiments stayed behind. They're still there today.`, dur: 1200, off: ["asFlame"], on: ["l1", "l2", "l3", ...(m.rover ? ["l4"] : [])] }
     ]
-  });
+    };
+  };
 
   // 2. Surveyor: rocket-only landing on the airless Moon
   S["retro-moon"] = v => {
@@ -151,8 +163,11 @@
   });
 
   // 4. Sky crane (Curiosity, Perseverance)
-  S.skycrane = v => ({
-    title: "How the sky crane lowered a rover onto Mars", world: "mars",
+  S.skycrane = v => {
+    const perse = v === "backshell";
+    const R = perse ? "Perseverance" : "Curiosity";
+    return {
+    title: `How the sky crane lowered ${R} onto Mars`, world: "mars",
     svg: P => `${BG.mars(P)}
       ${puff("crash", 760, 372)}
       <g data-k="cables" class="fx" data-px="400" data-py="252"><line x1="390" y1="252" x2="390" y2="338" stroke="#eee" stroke-width="1.5"/><line x1="410" y1="252" x2="410" y2="338" stroke="#eee" stroke-width="1.5"/></g>
@@ -163,14 +178,17 @@
       ${label("l1", 560, 230, "The sky crane crashes far away", 740, 360)}`,
     init: { cap: { x: -340, y: -230, r: -35 }, chute: { s: .2 }, ds: { y: -110 }, rov: { y: -190, s: .9 }, cables: { sy: 0 } },
     steps: [
-      { cap: "Curiosity's capsule plunges into Mars at about 20,000 km/h. The heat shield glows as it slows down.", dur: 3200, on: ["glow"], to: { cap: { x: 0, y: 0, r: 0 } } },
+      { cap: `${R}'s capsule plunges into Mars at about 20,000 km/h${perse ? " in February 2021" : " in August 2012"}. The heat shield glows as it slows down.`, dur: 3200, on: ["glow"], to: { cap: { x: 0, y: 0, r: 0 } } },
       { cap: "A huge supersonic parachute opens, and the heat shield drops away so radar can see the ground.", dur: 2400, off: ["glow"], on: ["chute"], to: { chute: { s: 1 }, hs: { y: 330, o: 0 }, cap: { y: 20 } } },
       { cap: "The rover and its rocket “jetpack” drop out of the backshell. Eight rocket engines fire to slow them down.", dur: 3000, on: ["ds", "rov", "dsF1", "dsF2"], to: { cap: { x: 260, y: -260, o: 0 }, ds: [{ y: -80 }, { y: 0 }], rov: [{ y: -160, s: .95 }, { y: -80, s: 1 }] } },
       { cap: "Hovering about 20 m up, the sky crane lowers the rover on cables about 7.5 m long, like a crane on a building site.", dur: 3400, on: ["cables"], to: { rov: { y: 0 }, cables: { sy: 1 } } },
       { cap: "Wheels touch the ground! The cables are cut, and the sky crane flies away to crash a safe distance away.", dur: 3000, on: ["dust"], off: ["cables"], to: { ds: [{ x: 60, y: -60, r: 15 }, { x: 260, y: -120, r: 25 }, { x: 360, y: 120, r: 70, o: 0 }] }, onEnd: ["crash"], offEnd: ["dust", "dsF1", "dsF2"] },
-      { cap: "The whole landing takes about seven minutes, too fast for anyone on Earth to help. Engineers call it “seven minutes of terror”.", dur: 1200, on: ["l1"] }
+      { cap: perse
+          ? "The backshell and parachute crashed nearby. A year later, Ingenuity flew over and photographed them so engineers could study how they survived."
+          : "The whole landing takes about seven minutes, too fast for anyone on Earth to help. Engineers call it “seven minutes of terror”.", dur: 1200, on: ["l1"] }
     ]
-  });
+    };
+  };
 
   // 5. Parachute + rocket legs (Viking, Phoenix, InSight, Mars Polar Lander)
   S["legs-mars"] = v => {
@@ -215,6 +233,7 @@
       deepimpact: ["How Deep Impact smashed into a comet", "The Deep Impact flyby spacecraft releases a 370 kg impactor in the comet's path.", "The impactor's camera watches comet Tempel 1 get closer, while the flyby craft swerves aside to watch.", "Crash at about 37,000 km/h! The flash and the cloud of fine powder showed what a comet is made of inside."],
       grail: ["How the GRAIL twins ended their mission", "Ebb and Flow, the GRAIL twins, finish mapping the Moon's gravity and fly together toward a mountain near the north pole.", "Ebb hits first.", "Flow follows about 30 seconds later. The site is named after astronaut Sally Ride."],
       sivb16: ["Why Apollo crashed its rockets into the Moon", "After sending Apollo 16 to the Moon, the empty third stage of the Saturn V is steered to crash on purpose.", "It hits at more than 2 km/s.", "The crash sends shakes through the Moon. Seismometers left by earlier crews measure them, revealing what's inside."],
+      messenger: ["How MESSENGER ended its mission on Mercury", "Out of fuel after more than four years in orbit, MESSENGER sinks lower and lower over Mercury.", "Its last photos show Mercury's cratered surface closer than ever before.", "It hits at about 14,000 km/h on the side facing away from Earth, making a new crater about 16 m wide."],
       ladee: ["How LADEE ended its mission", "LADEE skims very low over the Moon, studying its thin atmosphere and dust.", "Running low on fuel, it's steered down to the far side.", "It hits the eastern rim of Sundman V crater, far from any historic Apollo site."]
     }[v] || ["How an impactor works", "A spacecraft flies straight at its target.", "It gets closer…", "Impact!"];
     const ground = comet
@@ -235,7 +254,7 @@
       init: { c1: { x: -380, y: -300, r: 30 }, c2: { x: -470, y: -360, r: 30 }, plume: { s: .1, o: 0 }, rings: { s: .1 }, mother: { x: -360, y: -60 } },
       steps: [
         { cap: T[1], dur: 2800, on: ["c1", ...(two ? ["c2"] : []), ...(comet ? ["mother"] : [])], to: { c1: { x: -220, y: -190 }, c2: { x: -320, y: -250 }, mother: { x: -200, y: -30 } } },
-        { cap: T[2], dur: 2800, on: v === "ranger7" ? ["photos"] : [], to: { c1: { x: -60, y: -60 }, c2: { x: -150, y: -130 }, mother: { x: 0, y: -40 } } },
+        { cap: T[2], dur: 2800, on: v === "ranger7" || v === "messenger" ? ["photos"] : [], to: { c1: { x: -60, y: -60 }, c2: { x: -150, y: -130 }, mother: { x: 0, y: -40 } } },
         { cap: T[3], dur: 3000, offStart: ["photos"], on: ["plume", ...(v === "sivb16" ? ["rings"] : [])], to: { c1: { x: 10, y: 40, o: 0 }, plume: [{ s: 1, o: 1 }, { s: 1.15, o: .5 }], rings: { s: 1 }, c2: two ? [{ x: -60, y: -60 }, { x: 10, y: 40, o: 0 }] : {}, mother: { x: 280, y: -60 } }, onEnd: ["crater"] }
       ]
     };
@@ -279,7 +298,7 @@
       { cap: "The probe aims to pass just behind a giant planet as the planet travels around the Sun.", dur: 2600, to: { probe: { p: .3 }, trail: { d: .3 }, planet: { x: -40, y: 14 } } },
       { cap: "The planet's gravity grabs the probe and swings it around, like a ball on a string.", dur: 3000, to: { probe: { p: .62 }, trail: { d: .62 }, planet: { x: 0, y: 0 } }, count: { k: "spd", from: 10, to: 14, fmt: n => n.toFixed(0) + " km/s" } },
       { cap: "Because the planet is moving, the probe leaves faster than it arrived, stealing a tiny bit of the planet's energy.", dur: 3000, to: { probe: { p: 1 }, trail: { d: 1 }, planet: { x: 14, y: -5 } }, count: { k: "spd", from: 14, to: 20, fmt: n => n.toFixed(0) + " km/s" } },
-      { cap: v === "voyager2" ? "Voyager 2 did this at Jupiter, Saturn and Uranus to reach Neptune, using a planet line-up that happens only about every 175 years." : v === "newhorizons" ? "New Horizons used Jupiter's gravity in 2007 to cut years off its trip to Pluto." : "Pioneer and Voyager used Jupiter and Saturn like this to fling themselves out of the solar system. (Speeds here are just for illustration.)", dur: 1000 }
+      { cap: v === "dawn" ? "Dawn flew past Mars in 2009 for a gravity boost toward the asteroid belt. Then its gentle ion engines did the rest, carrying it to Vesta and Ceres." : v === "voyager2" ? "Voyager 2 did this at Jupiter, Saturn and Uranus to reach Neptune, using a planet line-up that happens only about every 175 years." : v === "newhorizons" ? "New Horizons used Jupiter's gravity in 2007 to cut years off its trip to Pluto." : "Pioneer and Voyager used Jupiter and Saturn like this to fling themselves out of the solar system. (Speeds here are just for illustration.)", dur: 1000 }
     ]
   });
 
@@ -336,21 +355,75 @@
     };
   };
 
+  // 11. Plunging into a planet (Pioneer Venus, Galileo probe, Cassini)
+  S.plunge = v => {
+    const C = {
+      pioneervenus: { title: "How the Pioneer Venus probes dropped into Venus", sky: ["#f3d58a", "#d9a64a", "#a8742a"], band: "#f7e3a8", par: true,
+        caps: ["The carrier spacecraft releases four probes weeks before arrival, each aimed at a different part of Venus.",
+               "Each probe hits the thick clouds behind a heat shield. The big probe opens a parachute; the small ones simply fall.",
+               "For about an hour they measure temperature, pressure, winds and the sulfuric-acid clouds all the way down.",
+               "They hit the scorching surface at about 35 km/h. Three went quiet, but the Day Probe kept talking for 67 minutes!"] },
+      galileo: { title: "How Galileo's probe dived into Jupiter", sky: ["#e9cfa6", "#c48a5a", "#8a5232"], band: "#f3e2c4", par: true,
+        caps: ["Five months after separating from Galileo, the probe hits Jupiter's atmosphere at about 170,000 km/h, the fastest entry ever.",
+               "A heat shield takes the scorching heat of slowing down, then a parachute opens.",
+               "For about 58 minutes it radios measurements up to the Galileo orbiter, which relays them home to Earth.",
+               "About 150 km down, heat and crushing pressure silence it. It melted deep inside Jupiter, which has no solid ground to land on."] },
+      cassini: { title: "How Cassini made its final plunge into Saturn", sky: ["#f1e2b8", "#d4b47a", "#a88850"], band: "#f8efd2", par: false,
+        caps: ["Low on fuel, Cassini is steered into Saturn on purpose, so it can never crash onto Enceladus or Titan, moons that might hold life.",
+               "It enters Saturn's atmosphere at about 120,000 km/h, firing its thrusters to keep its antenna pointed at Earth.",
+               "For about a minute it sends brand-new measurements of Saturn's air, until it can't hold steady any more.",
+               "Then it burns up like a shooting star. Its final signal took 83 minutes to reach Earth."] }
+    }[v];
+    const c = C || { title: "Plunge", sky: ["#ccc", "#999", "#666"], band: "#eee", par: false, caps: ["", "", "", ""] };
+    const relay = v === "galileo" || v === "pioneervenus";
+    const smalls = v === "pioneervenus"
+      ? `<g data-k="p2" class="fx" data-px="250" data-py="150"><path d="M242 144 Q250 140 258 144 L257 154 Q250 158 243 154Z" fill="#9aa3ad"/></g><g data-k="p3" class="fx" data-px="560" data-py="150"><path d="M552 144 Q560 140 568 144 L567 154 Q560 158 553 154Z" fill="#9aa3ad"/></g><g data-k="p4" class="fx" data-px="160" data-py="150"><path d="M152 144 Q160 140 168 144 L167 154 Q160 158 153 154Z" fill="#9aa3ad"/></g><path d="M0 430 Q200 418 400 428 T800 424 V450 H0Z" fill="#6b4a2a"/>`
+      : "";
+    const body = v === "cassini"
+      ? `<rect x="388" y="140" width="24" height="20" fill="#d9a84a"/><circle cx="400" cy="134" r="14" fill="#e8e8e8"/>`
+      : `<path d="M384 140 Q400 132 416 140 L414 158 Q400 166 386 158Z" fill="#9aa3ad" stroke="#666"/>`;
+    const sx = v === "cassini" ? [300, 200, 120] : [520, 580, 620];
+    return {
+      title: c.title, world: "space",
+      svg: P => `<defs><linearGradient id="${P}atm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset=".28" stop-color="${c.sky[0]}"/><stop offset=".65" stop-color="${c.sky[1]}"/><stop offset="1" stop-color="${c.sky[2]}"/></linearGradient>
+        <radialGradient id="${P}hot"><stop offset="0" stop-color="#fff2b0"/><stop offset="1" stop-color="#ff6a2a" stop-opacity="0"/></radialGradient></defs>
+        <rect width="800" height="450" fill="url(#${P}atm)"/>${stars(30, 9, 110)}
+        <g opacity=".45"><path d="M0 190 Q200 175 400 192 T800 186" stroke="${c.band}" stroke-width="16" fill="none"/><path d="M0 280 Q220 266 420 284 T800 276" stroke="${c.band}" stroke-width="22" fill="none"/><path d="M0 370 Q200 356 400 374 T800 366" stroke="${c.band}" stroke-width="18" fill="none"/></g>
+        <circle cx="60" cy="48" r="16" fill="#3d7bd9"/><text x="60" y="80" text-anchor="middle" font-size="13" fill="#cfd8e6">Earth</text>
+        ${relay ? `<g data-k="mother"><rect x="640" y="40" width="26" height="14" fill="#c9ccd2"/><rect x="618" y="44" width="22" height="6" fill="#2e3d66"/><rect x="666" y="44" width="22" height="6" fill="#2e3d66"/><text x="653" y="76" text-anchor="middle" font-size="13" fill="#cfd8e6">${v === "galileo" ? "Galileo orbiter" : "carrier"}</text></g>` : ""}
+        <g data-k="sig" class="fx flicker"><circle cx="${sx[0]}" cy="150" r="4" fill="#7fd4ff"/><circle cx="${sx[1]}" cy="100" r="4" fill="#7fd4ff"/><circle cx="${sx[2]}" cy="64" r="4" fill="#7fd4ff"/></g>
+        <g data-k="pr" data-px="400" data-py="150">
+          <g data-k="chute" class="fx" data-px="400" data-py="118"><path d="M370 112 Q400 78 430 112Z" fill="#f2f2f2"/><line x1="372" y1="112" x2="394" y2="140" stroke="#ddd"/><line x1="428" y1="112" x2="406" y2="140" stroke="#ddd"/></g>
+          ${body}
+          <g data-k="hot" class="fx flicker"><ellipse cx="400" cy="168" rx="26" ry="12" fill="url(#${P}hot)"/></g>
+        </g>
+        ${smalls}
+        <g data-k="end" class="fx"><circle cx="400" cy="380" r="10" fill="#fff6d0"/><circle cx="400" cy="380" r="22" fill="#ffb347" opacity=".4"/></g>`,
+      init: { pr: { x: v === "cassini" ? -220 : 0, y: -190, s: .8 }, chute: { s: .3 }, p2: { y: -190 }, p3: { y: -190 }, p4: { y: -190 } },
+      steps: [
+        { cap: c.caps[0], dur: 2600, on: v === "pioneervenus" ? ["p2", "p3", "p4"] : [], to: { pr: { x: 0, y: -60, s: 1 }, p2: { y: -60 }, p3: { y: -60 }, p4: { y: -60 } } },
+        { cap: c.caps[1], dur: 2800, on: ["hot", ...(c.par ? [] : ["sig"])], to: { pr: { y: 20 }, p2: { y: 30 }, p3: { y: 20 }, p4: { y: 40 } }, offEnd: ["hot"], onEnd: c.par ? ["chute"] : [] },
+        { cap: c.caps[2], dur: 3200, on: ["sig"], to: { pr: { y: 120 }, chute: { s: 1 }, p2: { y: 160 }, p3: { y: 150 }, p4: { y: 170 } } },
+        { cap: c.caps[3], dur: 2600, off: ["sig", "chute"], to: { pr: v === "pioneervenus" ? { y: 270 } : { y: 230, o: 0, s: .6 }, p2: { y: 275, o: .5 }, p3: { y: 270, o: .5 }, p4: { y: 275, o: .5 } }, onEnd: v === "pioneervenus" ? ["sig"] : ["end"] }
+      ]
+    };
+  };
+
   /* ---------------- which machine gets which explainer ---------------- */
   const FOR = {
-    apollo11: [["apollo-lm"], ["laser"]], apollo12: [["apollo-lm"], ["quake", "apollo12"]], apollo14: [["apollo-lm"]], apollo15: [["apollo-lm"]], apollo16: [["apollo-lm"]], apollo17: [["apollo-lm"]],
+    apollo11: [["apollo-lm", "apollo11"], ["laser"]], apollo12: [["apollo-lm", "apollo12"], ["quake", "apollo12"]], apollo14: [["apollo-lm", "apollo14"]], apollo15: [["apollo-lm", "apollo15"]], apollo16: [["apollo-lm", "apollo16"]], apollo17: [["apollo-lm", "apollo17"]],
     surveyor1: [["retro-moon"]], surveyor3: [["retro-moon", "surveyor3"]],
-    ranger7: [["impactor", "ranger7"]], lcross: [["impactor", "lcross"]], grail: [["impactor", "grail"]], sivb16: [["impactor", "sivb16"]], ladee: [["impactor", "ladee"]], deepimpact: [["impactor", "deepimpact"]],
+    ranger7: [["impactor", "ranger7"]], lcross: [["impactor", "lcross"]], grail: [["impactor", "grail"]], sivb16: [["impactor", "sivb16"]], ladee: [["impactor", "ladee"]], deepimpact: [["impactor", "deepimpact"]], messenger: [["impactor", "messenger"]], pioneervenus: [["plunge", "pioneervenus"]], galileo: [["plunge", "galileo"]], cassini: [["plunge", "cassini"]], dawn: [["slingshot", "dawn"]],
     viking1: [["legs-mars", "viking1"]], viking2: [["legs-mars", "viking2"]], phoenix: [["legs-mars", "phoenix"]], insight: [["legs-mars", "insight"], ["quake", "insight"]], polarlander: [["legs-mars", "polarlander"]],
     pathfinder: [["airbags", "pathfinder"]], sojourner: [["airbags", "pathfinder"]], spirit: [["airbags", "spirit"]], opportunity: [["airbags", "opportunity"]],
-    curiosity: [["skycrane"]], backshell: [["skycrane"]], ingenuity: [["helicopter"]],
+    curiosity: [["skycrane", "curiosity"]], backshell: [["skycrane", "backshell"]], ingenuity: [["helicopter"]],
     voyager1: [["slingshot", "voyager1"]], voyager2: [["slingshot", "voyager2"]], pioneer10: [["slingshot", "pioneer10"]], pioneer11: [["slingshot", "pioneer11"]], newhorizons: [["slingshot", "newhorizons"]]
   };
   // The gallery on the main page: one of each kind.
   const GALLERY = [
     ["apollo-lm", "apollo11", "Apollo landing"], ["retro-moon", "surveyor1", "Rocket landing"], ["airbags", "opportunity", "Airbag bounce"],
     ["skycrane", "curiosity", "Sky crane"], ["legs-mars", "phoenix", "Parachute + legs"], ["helicopter", "ingenuity", "First flight on Mars"],
-    ["impactor", "lcross", "Crashing on purpose"], ["laser", "apollo11", "Laser to the Moon"], ["quake", "insight", "Marsquakes"], ["slingshot", "voyager2", "Gravity assist"]
+    ["impactor", "lcross", "Crashing on purpose"], ["laser", "apollo11", "Laser to the Moon"], ["quake", "insight", "Marsquakes"], ["slingshot", "voyager2", "Gravity assist"], ["plunge", "cassini", "Diving into a giant planet"]
   ];
 
   /* ---------------- the player ---------------- */

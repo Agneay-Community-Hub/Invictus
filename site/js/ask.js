@@ -63,8 +63,13 @@
     [/curiosity|gale crater|mount sharp/, ["curiosity"]],
     [/pale blue dot|golden record|farthest|furthest|interstellar|heliopause/, ["voyager1"]],
     [/uranus|neptune|triton|grand tour|interstellar shout|gravity assist|slingshot/, ["voyager2"]],
-    [/jupiter|asteroid belt|aldebaran|plaque/, ["pioneer10"]],
-    [/saturn(?! v)|f ring/, ["pioneer11"]],
+    [/asteroid belt|aldebaran|plaque|first .*(to|past) jupiter/, ["pioneer10"]],
+    [/into jupiter|jupiter.?s (atmosphere|clouds)|europa|ganymede|galileo/, ["galileo"]],
+    [/f ring|first .*(to|visit) saturn/, ["pioneer11"]],
+    [/into saturn|grand finale|enceladus|titan|huygens|cassini/, ["cassini"]],
+    [/mercury|messenger/, ["messenger"]],
+    [/venus/, ["pioneervenus"]],
+    [/ceres|vesta|ion engine/, ["dawn"]],
     [/asteroid|eros|valentine/, ["near"]],
     [/comet|tempel|independence day|4th of july|july 4/, ["deepimpact"]],
     [/pluto|arrokoth|kuiper|new horizons/, ["newhorizons"]]
@@ -93,7 +98,7 @@
 
   const INTENTS = [
     ["ghost", /talk (to me )?(as|like)|pretend|your (story|ghost)|in (its|their|your) (own )?voice|ghost log|introduce yourself|who are you/],
-    ["how", /how did .*(land|touch down|get down|fly|crash|take off|work)|how (does|do|did) .*(land|fly)|\blanding\b|how .* landed|parachute|airbags?|sky ?crane|slingshot|gravity assist/],
+    ["how", /how did .*(land|touch down|get down|fly|crash|take off|work|end|die|finish)|how (does|do|did) .*(land|fly)|\blanding\b|how .* landed|parachute|airbags?|sky ?crane|slingshot|gravity assist/],
     ["distance", /how far|distance|light.?(time|hours?|minutes?)|where is .* now|signal take/],
     ["status", /still (work|talk|alive|active|awake|run)|is .* (alive|dead|working|active)|status|switched off|died|stop(ped)? working/],
     ["dates", /\bwhen\b|what year|which year|\bdate\b|launch|land(ed)? on|arriv/],
@@ -124,7 +129,7 @@
   function detectWorld(q) {
     if (/\bmoon|lunar|apollo/.test(q)) return "moon";
     if (/\bmars|martian|red planet/.test(q)) return "mars";
-    if (/deep space|probe|interstellar|outer|solar system|beyond/.test(q)) return "deep";
+    if (/deep space|elsewhere|probe|interstellar|outer|solar system|beyond|mercury|venus|jupiter|saturn|ceres|asteroid|comet/.test(q)) return "deep";
     return null;
   }
   function detectType(q) {
@@ -196,7 +201,7 @@
         }
       }
       const label = (types ? (types.includes("vehicle") && types.length === 1 ? "Moon cars" : types.includes("rover") ? (world === "moon" ? "Moon cars" : "rovers") : types.map(t => TYPES[t].toLowerCase() + "s").join(" and ")) : "machines")
-        + (world ? (world === "deep" ? " in deep space" : ` on ${world === "moon" ? "the Moon" : "Mars"}`) : "")
+        + (world ? (world === "deep" ? " elsewhere in the solar system" : ` on ${world === "moon" ? "the Moon" : "Mars"}`) : "")
         + (statuses ? (statuses.includes("active") ? " that are still (at least partly) awake" : ` with status “${STATUS[statuses[0]].label}”`) : "");
       set = set.sort((x, y) => x.year - y.year);
       lastIds = set.map(a => a.id);
@@ -221,7 +226,7 @@
     if (!a) {
       lastIds = [];
       return {
-        text: "Hmm, I couldn't find that in the archive. I know about 32 machines on the Moon, on Mars and in deep space. Try asking about one of them, like **Opportunity**, **Voyager 1** or the **Apollo 11** landing site, or ask “Which landers are on Mars?”",
+        text: `Hmm, I couldn't find that in the archive. I know about ${ARTIFACTS.length} machines on the Moon, on Mars and elsewhere in the solar system. Try asking about one of them, like **Opportunity**, **Voyager 1** or the **Apollo 11** landing site, or ask “Which landers are on Mars?”`,
         ids: ["opportunity", "voyager1", "apollo11"], unknown: true
       };
     }
@@ -445,7 +450,7 @@
 
   function greet() {
     const el = addMsg("bot", "");
-    finishBot(el, "Hi! I'm the Archive Guide. I know the stories of 32 machines that NASA left on the Moon, on Mars and in deep space. What would you like to know?", [], ENDPOINT && mode === "ai" ? "ai" : "offline");
+    finishBot(el, `Hi! I'm the Archive Guide. I know the stories of ${ARTIFACTS.length} machines that NASA left on the Moon, on Mars and across the solar system. What would you like to know?`, [], ENDPOINT && mode === "ai" ? "ai" : "offline");
   }
   greet();
 

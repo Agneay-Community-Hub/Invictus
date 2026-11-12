@@ -17,6 +17,9 @@
         "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
     } }
   </script>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
 </head>
 <body class="explore">
   <div id="scene" aria-hidden="true"></div>
@@ -27,7 +30,7 @@
     <div class="x-tabs" role="tablist" aria-label="Choose a destination">
       <button role="tab" data-w="moon" aria-selected="true"><span class="dot moon"></span>Moon</button>
       <button role="tab" data-w="mars" aria-selected="false"><span class="dot mars"></span>Mars</button>
-      <button role="tab" data-w="deep" aria-selected="false"><span class="dot deep"></span>Deep Space</button>
+      <button role="tab" data-w="deep" aria-selected="false"><span class="dot deep"></span>Elsewhere</button>
     </div>
     <div class="x-tools">
       <a class="btn btn-small" href="ask.html" title="Ask the Archive">💬 <span>Ask</span></a>
@@ -53,5 +56,6 @@
   <script src="js/data.js?v=3"></script>
   <script src="js/models.js"></script>
   <script type="module" src="js/explore.js?v=3"></script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>

@@ -2,12 +2,25 @@
 
 NASA Space Apps Challenge 2026 entry. It's an interactive story archive, for ages 8–14 and casual space fans, about the hardware NASA left on the Moon and Mars and the probes it sent into deep space.
 
+## For the judges
+
+- **Project description:** `docs/PROJECT_SUBMISSION.md` (ready to paste into the Space Apps project page).
+- **Pitch deck:** `site/pitch.html`, live at `/pitch.html`, plus `docs/pitch-deck.pdf`.
+- **30-second demo video script:** `docs/DEMO_VIDEO_SCRIPT.md`.
+- **Screenshots:** `docs/screenshots/`.
+
 ## Run it
 
 ```bash
 python serve.py
 ```
 Then open http://localhost:5173. The server turns off browser caching.
+
+**After adding, removing or renaming files in `site/`**, rebuild the offline file list:
+
+```bash
+node scripts/build-sw.mjs
+```
 
 ## Live site
 
@@ -44,15 +57,20 @@ The Ask page works without this. The AI mode needs a tiny server to keep your Cl
 |---|---|
 | **Ghost Map** | Moon and Mars maps with every artifact at its real latitude and longitude. You can zoom with the + and − buttons, by double-clicking, with ctrl+scroll, or with the "Zoom to Apollo sites" and "Zoom to Jezero" presets. When zoomed in you can drag the map. Labels are spread out automatically so they don't overlap. A searchable, filterable list sits beside the map. |
 | **Dossier** (slide-over) | Each machine has a first-person **Ghost Log**, a story at Explorer level (ages 8–11) or Scientist level (12+), a "planned vs. what happened" comparison, numbers, dates, discoveries, what was left behind, why it matters today, a fun fact, a NASA video, and links to the original NASA records. |
-| **How it worked** (explainer animations) | 10 step-by-step animations: Apollo landing and liftoff, Surveyor's rocket landing (including Surveyor 3's bounces), airbag bouncing, the sky crane, parachute-and-legs landings (including what probably went wrong for Mars Polar Lander), Ingenuity's flights, crashing on purpose (Ranger, LCROSS, Deep Impact, GRAIL, the S-IVB, LADEE), laser ranging to the Moon, marsquakes and moonquakes, and gravity assists. Each has captions, play/pause/step controls, optional narration, and follows Reduce motion. They're in a gallery on the main page and in every matching dossier, and the Ask page uses their steps to answer "How did X land?". |
+| **How it worked** (explainer animations) | 11 step-by-step animations: Apollo landing and liftoff (with each mission's own lunar module and crew), Surveyor's rocket landing (including Surveyor 3's bounces), airbag bouncing, the sky crane, parachute-and-legs landings (including what probably went wrong for Mars Polar Lander), Ingenuity's flights, crashing on purpose (Ranger, LCROSS, Deep Impact, GRAIL, the S-IVB, LADEE), laser ranging to the Moon, marsquakes and moonquakes, gravity assists, and plunges into Venus, Jupiter and Saturn (Pioneer Venus, Galileo, Cassini). Each has captions, play/pause/step controls, optional narration, and follows Reduce motion. They're in a gallery on the main page and in every matching dossier, and the Ask page uses their steps to answer "How did X land?". |
 | **Ghost Logs** | 12 short story chapters you can step through with the ← → keys. Each one can be read aloud. |
 | **Timeline** | Artifacts grouped by decade from 1964 to 2021, with a filter by world. |
-| **Deep Space** | A log-scale ruler showing Pioneer 10/11, Voyager 1/2 and New Horizons at *estimated* distances for today's date, plus how long a signal takes to cross that distance. |
+| **Elsewhere** | Machines beyond the Moon and Mars: MESSENGER (Mercury), the Pioneer Venus probes, Galileo (Jupiter), Cassini (Saturn), Dawn (still orbiting Ceres), NEAR (asteroid Eros), Deep Impact (comet Tempel 1), plus a log-scale ruler of Pioneer 10/11, Voyager 1/2 and New Horizons at *estimated* distances for today's date. |
+| **Then & now** | Drag a slider between a mission photo and a later view of the same place: Apollo 11, Apollo 12/Surveyor 3, Surveyor 1, Phoenix and InSight. Also shown in those dossiers. |
+| **Listen** | 7 real recordings, streamed from NASA videos: Mars wind, Ingenuity's blades, Perseverance's "puff, whir, zap", how sound changes on Mars, a marsquake, a meteoroid impact and Apollo 15 astronauts driving. |
+| **Land it yourself** (`lander.html`) | A landing game with three levels (Moon, Mars, Jezero crater) using each world's real gravity. Every crash explains what real missions did. Works with keyboard or touch. |
+| **Teacher pack** (`teacher.html`) | Three 45-minute lesson plans linked to NGSS standards, four printable worksheets generated from the archive data, an answer key, and a projector quiz with team scores. |
+| **Offline & install** | A service worker saves the site, so it works without internet once loaded, and it can be installed as an app. Videos and sounds still need internet. |
 | **Who Am I? quiz** | 8 random clue questions. |
-| **Archive** | All NASA photos with their NASA IDs, plus 6 NASA videos. |
+| **Archive** | All NASA photos with their NASA IDs, the "Listen" sounds and 6 NASA videos. |
 | **Explorer Passport** | 8 badges, saved in localStorage. The badge art comes from your Fantasy RPG UI Kit. |
 | **Ask the Archive** (`ask.html`) | A chat page for questions about any machine. It works straight away with a built-in "archive guide" that searches the site's own data, with no account and no cost. If you deploy the optional AI worker, it switches to Claude, with streaming answers grounded in the same archive. Every dossier has an "Ask about…" button. |
-| **NASA 3D models** | 18 machines have a "🧊 View 3D model" button, both in their dossier and in 3D Explore. You can spin and zoom the official NASA model, and phones get "View in your space" (AR). Models are listed below. |
+| **NASA 3D models** | 22 machines have a "🧊 View 3D model" button, both in their dossier and in 3D Explore. You can spin and zoom the official NASA model, and phones get "View in your space" (AR). Models are listed below. |
 | **3D Explore** (`explore.html`) | Moon and Mars globes you can spin, with clickable beacons. A Deep Space scene shows the Sun, the planet orbits, the heliopause and each probe's direction and distance. It works on phones too. |
 
 **Accessibility:** Atkinson Hyperlegible font, 4 text sizes, a dyslexia-friendly spacing option, a reduce-motion toggle (it also follows the OS setting), read-aloud through the browser's speech synthesis, full keyboard support (Esc and Tab are trapped inside dialogs), and alt text and ARIA labels. A list view gives the same information as the map.
@@ -72,12 +90,18 @@ site/
   assets/maps/      moon.jpg (NASA SVS), mars.jpg, stars.jpg, earth.jpg (Solar System Scope, CC BY 4.0)
   assets/ui/        badge icons cut out from Fantasy_Rpg_UI_Kit
   assets/models/    12 NASA GLB models (~19 MB), from NASA 3D Resources
-  js/explainers.js  "How it worked" animations: the player and all 10 scenes (SVG). The FOR table maps each machine to its animations.
+  js/explainers.js  "How it worked" animations: the player and all 11 scenes (SVG). The FOR table maps each machine to its animations.
+  lander.html, js/lander.js, css/lander.css   "Land it yourself" game
+  teacher.html, js/teacher.js, css/teacher.css   teacher pack (worksheets print cleanly)
+  pitch.html        7-slide pitch deck (← → keys; print to PDF)
+  manifest.webmanifest, sw.js, js/pwa.js   install + offline (sw.js is generated by scripts/build-sw.mjs)
   js/models.js      shared 3D model viewer (Google <model-viewer> 3.5.0, loaded only on first use)
   ask.html, js/ask.js   Ask the Archive chat (offline guide + optional AI)
   js/ask-config.js  where the AI worker's address goes
 worker/             optional Cloudflare Worker that talks to Claude and keeps the API key secret
 scripts/build-knowledge.mjs   turns site/js/data.js into the AI's knowledge file
+scripts/build-sw.mjs        rebuilds the offline file list in site/sw.js
+docs/                        judging materials: project description, demo script, pitch PDF, screenshots
 ```
 
 ## NASA 3D models (github.com/nasa/NASA-3D-Resources)

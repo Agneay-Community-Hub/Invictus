@@ -10,6 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=2">
   <link rel="icon" href="assets/ui/star.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -27,9 +30,10 @@
         <li><a href="#logs">Ghost Logs</a></li>
         <li><a href="#how">How it worked</a></li>
         <li><a href="#timeline">Timeline</a></li>
-        <li><a href="#deep">Deep Space</a></li>
+        <li><a href="#deep">Elsewhere</a></li>
         <li><a href="#quiz">Quiz</a></li>
         <li><a href="#archive">Archive</a></li>
+        <li><a href="lander.html">Play</a></li>
         <li><a href="ask.html">Ask</a></li>
       </ul>
     </nav>
@@ -65,6 +69,7 @@
     </div>
     <label class="set-row switch"><span class="set-label">Reduce motion</span><input type="checkbox" id="reduceMotion"><span class="track" aria-hidden="true"></span></label>
     <label class="set-row switch"><span class="set-label">Dyslexia-friendly spacing</span><input type="checkbox" id="spacing"><span class="track" aria-hidden="true"></span></label>
+    <button class="btn btn-small" id="installBtn" type="button" hidden>📲 Install as an app (works offline)</button>
     <p class="set-note">Every story can be read aloud — look for the <span aria-hidden="true">🔊</span> button.</p>
   </section>
 
@@ -80,6 +85,7 @@
           <a class="btn btn-primary" href="#logs">Start the story</a>
           <a class="btn" href="#map">Open the Ghost Map</a>
         </div>
+        <p class="hero-teacher">Teacher or parent? <a href="teacher.html">Get the free lesson plans, worksheets and class quiz →</a></p>
         <div class="world-cards" id="worldCards"></div>
       </div>
       <figure class="hero-photo">
@@ -177,6 +183,21 @@
           <p class="how-who" id="howWho"></p>
         </div>
       </div>
+      <div class="play-cta">
+        <img src="assets/ui/trophy.png" alt="" width="56" height="56">
+        <div><b>Think you could do better than a robot?</b><br><span>Try landing on the Moon, on Mars and in Jezero crater yourself, with real gravity.</span></div>
+        <a class="btn btn-primary" href="lander.html">🚀 Play “Land it yourself”</a>
+      </div>
+    </section>
+
+    <section class="section" id="thennow" aria-labelledby="tnTitle">
+      <header class="sec-head">
+        <p class="eyebrow">Then &amp; now</p>
+        <h2 id="tnTitle">Still there, years later</h2>
+        <p>Drag the slider (or use the arrow keys) to switch between a photo taken during the mission and a view of the same place years later.</p>
+      </header>
+      <div class="tn-tabs" id="tnTabs" role="tablist" aria-label="Places"></div>
+      <div class="tn-wrap" id="tnStage"></div>
     </section>
 
     <section class="section" id="timeline" aria-labelledby="tlTitle">
@@ -189,7 +210,7 @@
         <button aria-pressed="true" data-tl="all">All</button>
         <button aria-pressed="false" data-tl="moon">Moon</button>
         <button aria-pressed="false" data-tl="mars">Mars</button>
-        <button aria-pressed="false" data-tl="deep">Deep Space</button>
+        <button aria-pressed="false" data-tl="deep">Elsewhere</button>
       </div>
       <div class="timeline" id="tl" tabindex="0" aria-label="Timeline, scrollable"></div>
     </section>
@@ -197,9 +218,9 @@
     <!-- ============ DEEP SPACE ============ -->
     <section class="section" id="deep" aria-labelledby="deepTitle">
       <header class="sec-head">
-        <p class="eyebrow">Deep Space</p>
-        <h2 id="deepTitle">The ones still sailing away</h2>
-        <p>Some machines didn’t land anywhere. They are still travelling outward — some silent, some still whispering home. Distances are estimates for today’s date, calculated from each probe’s speed.</p>
+        <p class="eyebrow">Elsewhere in the Solar System</p>
+        <h2 id="deepTitle">From Mercury to the stars</h2>
+        <p>NASA hardware also rests on Mercury, sank into Venus, Jupiter and Saturn, circles a dwarf planet, sits on an asteroid and a comet, and some is still sailing out of the solar system. Distances for the travelling probes are estimates for today’s date, calculated from each probe’s speed.</p>
       </header>
       <div class="ruler-wrap">
         <div class="ruler" id="ruler" role="img" aria-label="Log-scale chart of distances from the Sun"></div>
@@ -225,6 +246,9 @@
         <h2 id="arcTitle">The archive</h2>
         <p>Every picture and video on this site comes from <a href="https://images.nasa.gov" target="_blank" rel="noopener">images.nasa.gov</a>. Click any image to see it large, with its NASA ID.</p>
       </header>
+      <h3 class="sub">Listen: real sounds from space</h3>
+      <p class="sub-note">Real recordings made by these machines, plus astronauts on the Moon. Sound needs air to travel, so most of space is silent. These were picked up on Mars and the Moon, or turned into sound from vibrations.</p>
+      <div class="sounds" id="sounds"></div>
       <h3 class="sub">Videos</h3>
       <div class="videos" id="videos"></div>
       <h3 class="sub">Photos</h3>
@@ -232,7 +256,7 @@
         <button aria-pressed="true" data-arc="all">All</button>
         <button aria-pressed="false" data-arc="moon">Moon</button>
         <button aria-pressed="false" data-arc="mars">Mars</button>
-        <button aria-pressed="false" data-arc="deep">Deep Space</button>
+        <button aria-pressed="false" data-arc="deep">Elsewhere</button>
       </div>
       <div class="gallery" id="gallery"></div>
     </section>
@@ -251,6 +275,7 @@
   <footer class="footer">
     <div>
       <strong>Ghosts of Exploration</strong>
+      <p><a href="teacher.html">Teacher pack</a> · <a href="lander.html">Land it yourself</a> · <a href="ask.html">Ask the Archive</a> · <a href="explore.html">3D Explore</a></p>
       <p>Made for the NASA Space Apps Challenge 2026 — “Abandoned but not Forgotten.”</p>
     </div>
     <div>
@@ -299,5 +324,6 @@
   <script src="js/models.js"></script>
   <script src="js/explainers.js"></script>
   <script src="js/app.js?v=2"></script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>

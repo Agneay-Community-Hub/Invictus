@@ -134,6 +134,9 @@ const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26]
   grp.add(sunMesh, sunGlow);
   planetLabels.push({ el: makeLabel("Sun", "planet"), obj: sunMesh, world: "deep" });
   const planets = [["Mercury", .39, .25, 0xb8a99a], ["Venus", .72, .35, 0xe8c88a], ["Earth", 1, .38, 0x5aa9ff], ["Mars", 1.52, .3, 0xff8a5c], ["Jupiter", 5.2, .9, 0xd9b38c], ["Saturn", 9.54, .8, 0xe6d3a3], ["Uranus", 19.2, .6, 0x9fe3e8], ["Neptune", 30.1, .6, 0x5b7cff], ["Pluto", 39.5, .2, 0xcbbba6]];
+  const bodyPos = {};
+  // Ceres (dwarf planet in the asteroid belt), where Dawn still orbits
+  { const r = R(2.77), ang = 5.3; const ceres = new THREE.Mesh(new THREE.SphereGeometry(.18, 24, 12), new THREE.MeshStandardMaterial({ color: 0x9a9690 })); ceres.position.set(Math.cos(ang) * r, 0, Math.sin(ang) * r); grp.add(ceres); bodyPos.Ceres = ceres.position.clone(); planetLabels.push({ el: makeLabel("Ceres", "planet"), obj: ceres, world: "deep" }); }
   planets.forEach(([n, au, s, c], i) => {
     const r = R(au);
     const ring = new THREE.Mesh(new THREE.RingGeometry(r - 0.03, r + 0.03, 160), new THREE.MeshBasicMaterial({ color: 0x334466, side: THREE.DoubleSide, transparent: true, opacity: .7 }));
@@ -141,7 +144,7 @@ const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26]
     const ang = i * 2.1 + 0.6;
     const mat = n === "Earth" ? new THREE.MeshStandardMaterial({ map: tex("assets/maps/earth.jpg") }) : new THREE.MeshStandardMaterial({ color: c, roughness: .9 });
     const p = new THREE.Mesh(new THREE.SphereGeometry(s, 32, 16), mat);
-    p.position.set(Math.cos(ang) * r, 0, Math.sin(ang) * r); grp.add(p);
+    p.position.set(Math.cos(ang) * r, 0, Math.sin(ang) * r); grp.add(p); bodyPos[n] = p.position.clone();
     if (n === "Saturn") { const sr = new THREE.Mesh(new THREE.RingGeometry(s * 1.3, s * 2.1, 48), new THREE.MeshBasicMaterial({ color: 0xd9c38f, side: THREE.DoubleSide, transparent: true, opacity: .6 })); sr.rotation.x = -1.2; p.add(sr); }
     planetLabels.push({ el: makeLabel(n, "planet"), obj: p, world: "deep" });
   });
@@ -163,6 +166,8 @@ const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26]
       pos = new THREE.Vector3(Math.cos(4.2) * R(1.46), 0.3, Math.sin(4.2) * R(1.46));
     } else if (a.id === "deepimpact") {
       pos = new THREE.Vector3(Math.cos(2.4) * R(3.1), -0.3, Math.sin(2.4) * R(3.1));
+    } else if (a.body && bodyPos[a.body]) {
+      pos = bodyPos[a.body].clone().add(new THREE.Vector3(0, a.body === "Jupiter" || a.body === "Saturn" ? 1.3 : .7, 0)); // just above its world
     } else return;
     addBeacon(a, "deep", pos, null, 0.6);
   });

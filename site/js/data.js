@@ -73,7 +73,7 @@ const TYPES = {
 const WORLDS = {
   moon: { name: "The Moon", short: "Moon", tagline: "384,400 km away · 1.3 light-seconds", color: "#cfd8e3" },
   mars: { name: "Mars", short: "Mars", tagline: "55–400 million km away · 3–22 light-minutes", color: "#ff8a5c" },
-  deep: { name: "Deep Space", short: "Deep Space", tagline: "Billions of kilometres · up to a light-day away", color: "#8fb8ff" }
+  deep: { name: "Elsewhere", short: "Elsewhere", tagline: "Mercury to interstellar space · up to a light-day away", color: "#8fb8ff" }
 };
 
 const ARTIFACTS = [
@@ -672,6 +672,110 @@ const ARTIFACTS = [
     fun: "It launched on the fastest launch speed of any spacecraft at the time.",
     media: [{ f: "PIA20200.jpg", id: "PIA20200", cap: "Layered craters and icy plains on Pluto, from New Horizons." }],
     quiz: null
+  },
+
+  /* ===================== OTHER WORLDS ===================== */
+  {
+    id: "messenger", world: "deep", type: "impactor", status: "impact", body: "Mercury",
+    name: "MESSENGER", mission: "MESSENGER", year: 2015,
+    heading: "Crater on Mercury", fixedPlace: "Mercury, near the Shakespeare basin",
+    dates: { launch: "3 Aug 2004", arrive: "Mercury orbit: 18 Mar 2011", last: "30 Apr 2015 (impact)" },
+    planned: "Orbit Mercury for one Earth year.",
+    actual: "Orbited for more than four years, then crashed when its fuel ran out.",
+    stats: [["First to orbit", "Mercury"], ["Years in orbit", "4+"], ["Impact speed", "~14,000 km/h"]],
+    ghost: "I'm the first spacecraft ever to circle Mercury, the planet closest to the Sun. I wore a sunshade like a giant umbrella so I wouldn't cook. I found ice hiding in craters at Mercury's poles, where sunlight never reaches. When my fuel ran out, I crashed into the planet I'd studied for four years.",
+    story: "MESSENGER was the first spacecraft to orbit Mercury. Even though Mercury is the closest planet to the Sun, MESSENGER found frozen water hiding in the shadows of its polar craters.",
+    deep: "To reach Mercury without falling straight into the Sun, MESSENGER needed six planetary flybys (one of Earth, two of Venus and three of Mercury) over more than six years. A ceramic-cloth sunshade kept its instruments near room temperature. In orbit it mapped the whole planet and confirmed water ice and dark organic-rich material in permanently shadowed polar craters. It also found strange shallow pits called hollows and a magnetic field shifted toward the north.",
+    discoveries: ["Water ice in permanently shadowed craters at Mercury's poles", "Mysterious shallow pits called ‘hollows’ that seem to be forming even now", "Mercury's surface is surprisingly rich in substances like sulfur and potassium"],
+    legacy: "BepiColombo, a joint European–Japanese mission, is following up on MESSENGER's discoveries.",
+    fun: "Its final crash made a new crater about 16 m wide, but nobody could watch: it hit the side of Mercury facing away from Earth.",
+    media: [
+      { f: "PIA19445.jpg", id: "PIA19445", cap: "One of MESSENGER's last images, taken the day before it hit Mercury." },
+      { f: "PIA18145.jpg", id: "PIA18145", cap: "Artist's impression of MESSENGER in orbit around Mercury." }
+    ],
+    quiz: "I was the first spacecraft to orbit the planet closest to the Sun."
+  },
+  {
+    id: "pioneervenus", world: "deep", type: "impactor", status: "impact", body: "Venus",
+    name: "Pioneer Venus probes", nick: "Pioneer Venus Multiprobe", mission: "Pioneer Venus 2", year: 1978,
+    heading: "Scattered across Venus", fixedPlace: "Venus",
+    dates: { launch: "8 Aug 1978", arrive: "9 Dec 1978 (entry)", last: "9 Dec 1978" },
+    planned: "Drop four probes through Venus's clouds. None were built to survive hitting the ground.",
+    actual: "One probe survived the impact and kept sending data from the surface for 67 minutes.",
+    stats: [["Probes", "4 + carrier"], ["Built to survive landing", "No"], ["Signal from surface", "67 min"]],
+    ghost: "We were four probes, one big and three small, dropped into the thick clouds of Venus at different spots. We measured the air all the way down. We were never meant to survive the landing, but one of us, the Day Probe, did. It whispered data from the scorching surface for 67 minutes before it fell silent.",
+    story: "Pioneer Venus dropped four probes into Venus's thick, hot atmosphere to study its clouds and air. Amazingly, one probe survived crashing into the ground and kept talking for over an hour.",
+    deep: "The large Sounder probe and three small probes (North, Day and Night) entered Venus's atmosphere at widely separated points on 9 December 1978, while the carrier bus burned up high above, measuring the upper atmosphere. They profiled the temperature, pressure, winds and sulfuric-acid clouds. The large probe measured a deuterium-to-hydrogen ratio far above Earth's, a sign that Venus may once have had much more water.",
+    discoveries: ["Venus's clouds are layers of sulfuric acid droplets", "Only a small fraction of sunlight reaches the surface", "Clues that Venus may once have had far more water"],
+    legacy: "NASA's DAVINCI mission plans to drop a new probe through Venus's atmosphere, building on what Pioneer Venus learned.",
+    fun: "The surface of Venus is about 460 °C, hot enough to melt lead.",
+    media: [
+      { f: "ARC-1978-AC78-0238.jpg", id: "ARC-1978-AC78-0238", cap: "Artist's concept of the Pioneer Venus probes just after release, approaching Venus." },
+      { f: "ARC-1978-AC78-9245.jpg", id: "ARC-1978-AC78-9245", cap: "Pioneer Venus multiprobe artwork." }
+    ],
+    quiz: "One of our probes survived crashing into Venus and talked for over an hour."
+  },
+  {
+    id: "galileo", world: "deep", type: "probe", status: "impact", body: "Jupiter",
+    name: "Galileo & its probe", nick: "Galileo", mission: "Galileo", year: 1995,
+    heading: "Inside Jupiter", fixedPlace: "Jupiter's atmosphere",
+    dates: { launch: "18 Oct 1989", arrive: "Jupiter: 7 Dec 1995", last: "21 Sep 2003 (plunged into Jupiter)" },
+    planned: "Drop a probe into Jupiter and orbit the planet for about two years.",
+    actual: "The probe sent data for 58 minutes, and the orbiter worked for almost 8 years.",
+    stats: [["Probe signal", "~58 min"], ["Years orbiting Jupiter", "~8"], ["Moons studied", "Io, Europa, Ganymede, Callisto"]],
+    ghost: "My main antenna got stuck and never opened, so I had to send everything home through a tiny backup antenna. I still sent a probe into Jupiter and found hints of a salty ocean under Europa's ice. To keep Earth germs away from that ocean, my team steered me into Jupiter at the end.",
+    story: "Galileo was the first spacecraft to orbit Jupiter. It dropped a small probe into the giant planet's clouds, and it found that the moon Europa probably hides an ocean under its ice.",
+    deep: "Galileo's probe plunged into Jupiter on 7 December 1995 and returned data for about 58 minutes before heat and pressure silenced it. Even though its high-gain antenna failed to unfurl, the orbiter made dozens of flybys of Jupiter's large moons, finding strong evidence for a salty liquid-water ocean beneath Europa's surface and a magnetic field at Ganymede. In 2003 it was deliberately sent into Jupiter so it could never crash onto Europa and contaminate it.",
+    discoveries: ["Evidence of a salty ocean under Europa's icy shell", "Ganymede is the only moon known to make its own magnetic field", "Measured Jupiter's winds, clouds and chemistry from the inside"],
+    legacy: "NASA's Europa Clipper mission is now on its way to study the ocean that Galileo discovered.",
+    fun: "On the way to Jupiter, Galileo discovered Dactyl, the first moon ever found orbiting an asteroid.",
+    media: [
+      { f: "PIA18176.jpg", id: "PIA18176", cap: "Artist's rendering of Galileo flying past Jupiter's volcanic moon Io." },
+      { f: "S89-44175.jpg", id: "S89-44175", cap: "Labelled drawing of the Galileo probe that dived into Jupiter." },
+      { f: "PIA00708.jpg", id: "PIA00708", cap: "Jupiter's Great Red Spot in roughly true colour, taken by Galileo in 1996." }
+    ],
+    quiz: "I found hints of an ocean under Europa's ice, then dived into Jupiter to protect it."
+  },
+  {
+    id: "cassini", world: "deep", type: "probe", status: "impact", body: "Saturn",
+    name: "Cassini", mission: "Cassini–Huygens", year: 2017,
+    heading: "Inside Saturn", fixedPlace: "Saturn's atmosphere",
+    dates: { launch: "15 Oct 1997", arrive: "Saturn orbit: 1 Jul 2004", last: "15 Sep 2017 (Grand Finale plunge)" },
+    planned: "A four-year tour of Saturn, its rings and moons.",
+    actual: "Explored Saturn for 13 years, then dived between the planet and its rings 22 times before plunging in.",
+    stats: [["Years at Saturn", "13"], ["Grand Finale dives", "22"], ["Huygens landed on", "Titan"]],
+    ghost: "For 13 years I circled Saturn. I carried the Huygens probe, which landed on the moon Titan. I saw geysers of ice shooting from tiny Enceladus. When my fuel ran low, I dived between Saturn and its rings 22 times, then plunged into the planet, sending data until the very last second.",
+    story: "Cassini explored Saturn, its rings and its moons for 13 years. It discovered that the small moon Enceladus sprays out water from an ocean hidden under its ice.",
+    deep: "Cassini delivered the European Space Agency's Huygens probe, which landed on Titan in January 2005 and revealed a world of methane rivers and lakes. Cassini discovered water-ice plumes erupting from Enceladus's south pole, fed by a global subsurface ocean. In its 2017 Grand Finale it threaded the gap between Saturn and the rings, then entered Saturn's atmosphere on 15 September 2017, so it could never contaminate Enceladus or Titan.",
+    discoveries: ["Enceladus sprays water from an ocean under its ice", "Titan has lakes and seas of liquid methane and ethane", "Close-up measurements of Saturn's rings and gravity"],
+    legacy: "Its ocean discoveries make Enceladus and Titan top places to search for life. NASA's Dragonfly helicopter is headed to Titan.",
+    fun: "Cassini's final signal reached Earth about 83 minutes after it was sent: that's how far away Saturn is.",
+    media: [
+      { f: "PIA21439.jpg", id: "PIA21439", cap: "Illustration of Cassini diving between Saturn and its innermost rings." },
+      { f: "PIA21895.jpg", id: "PIA21895", cap: "Cassini's final image: the spot where it would enter Saturn's atmosphere." },
+      { f: "PIA14599.jpg", id: "PIA14599", cap: "A plume of water ice shooting from Saturn's moon Enceladus, seen by Cassini." }
+    ],
+    quiz: "I saw ice geysers on Enceladus and dived into Saturn at the end of my mission."
+  },
+  {
+    id: "dawn", world: "deep", type: "probe", status: "silent", body: "Ceres",
+    name: "Dawn", mission: "Dawn", year: 2018,
+    heading: "Still orbiting the dwarf planet Ceres", fixedPlace: "In orbit around Ceres",
+    dates: { launch: "27 Sep 2007", arrive: "Ceres orbit: 6 Mar 2015", last: "1 Nov 2018 (mission ended)" },
+    planned: "Orbit the giant asteroid Vesta, then the dwarf planet Ceres.",
+    actual: "Did both, becoming the first spacecraft to orbit two different worlds beyond Earth.",
+    stats: [["Worlds orbited", "2 (Vesta, Ceres)"], ["Engine type", "Ion"], ["Still in orbit", "Yes"]],
+    ghost: "My ion engines pushed me with a force about as light as a sheet of paper resting on your hand, but they never stopped for long. Little by little I reached the asteroid Vesta, then the dwarf planet Ceres. I found that Ceres's bright spots are salt. My fuel for steering ran out in 2018, and now I circle Ceres in silence.",
+    story: "Dawn used gentle ion engines to visit two worlds in the asteroid belt: Vesta and Ceres. It discovered that the mysterious bright spots on Ceres are salt left behind by salty water.",
+    deep: "Dawn's xenon ion engines gave it a larger total change in speed than any spacecraft had achieved on its own. It orbited Vesta in 2011–2012 and Ceres from 2015, finding that Ceres's bright spots in Occator crater are mostly sodium carbonate deposited by brine from below, evidence that Ceres had, and may still have, salty liquid underground. When it ran out of hydrazine for pointing in 2018, it was left in a stable orbit around Ceres expected to last for decades.",
+    discoveries: ["Ceres's bright spots are salt deposits from salty water", "Ceres may still have pockets of brine underground", "Vesta has a giant impact basin at its south pole"],
+    legacy: "Dawn showed that ion engines can carry a spacecraft to several destinations, a technique future missions are using.",
+    fun: "Dawn is still orbiting Ceres. It's a ghost that never landed.",
+    media: [
+      { f: "PIA21078.jpg", id: "PIA21078", cap: "Occator crater, home of Ceres's brightest spots, on the edge of the dwarf planet." },
+      { f: "PIA19376.jpg", id: "PIA19376", cap: "Artist's rendering of Dawn with its long solar panels." }
+    ],
+    quiz: "I used ion engines to orbit two worlds, and I'm still circling Ceres."
   }
 ];
 
@@ -726,3 +830,39 @@ const MODELS = {
   deepimpact: { file: "deep-impact.glb", title: "Deep Impact", note: "The whole spacecraft. The impactor is the smaller part that separated and hit comet Tempel 1; the flyby craft watched." }
 };
 MODELS.curiosity = { file: "curiosity.glb", title: "Curiosity rover", note: "About the size of a small car. This model shows its camera mast folded down, the way it travelled to Mars. On Mars the mast stands up, making the rover about 2.2 m tall, and its laser can zap rocks up to 7 m away." };
+MODELS.messenger = { file: "messenger.glb", title: "MESSENGER", note: "The big white shield is its sunshade, which kept the instruments near room temperature while Mercury's sunlight is about 11 times stronger than Earth's." };
+MODELS.galileo = { file: "galileo.glb", title: "Galileo", note: "Its big umbrella-like antenna never fully opened in space, so the team sent everything home through a small backup antenna." };
+MODELS.cassini = { file: "cassini.glb", title: "Cassini–Huygens", note: "The gold disc on its side is the Huygens probe, which separated and landed on Saturn's moon Titan in 2005." };
+MODELS.dawn = { file: "dawn.glb", title: "Dawn", note: "Its solar panels stretch almost 20 m tip to tip, to power its ion engines far from the Sun." };
+
+/* Then & now: a photo from the mission next to a later view of the same place. */
+const THEN_NOW = [
+  { id: "apollo11", title: "Tranquility Base", then: { f: "as11-40-5903.jpg", nid: "as11-40-5903", when: "July 1969", how: "on the ground" }, now: { f: "PIA12909.jpg", nid: "PIA12909", when: "2009", how: "from orbit" },
+    note: "In 1969 Buzz Aldrin stood right here. Forty years later, NASA's Lunar Reconnaissance Orbiter photographed the same spot from above, and the lunar module's descent stage is still there." },
+  { id: "apollo12", title: "Apollo 12 and Surveyor 3", then: { f: "AS12-48-7133.jpg", nid: "AS12-48-7133", when: "November 1969", how: "on the ground" }, now: { f: "PIA12903.jpg", nid: "PIA12903", when: "2009", how: "from orbit" },
+    note: "Pete Conrad visits Surveyor 3, with the lunar module Intrepid behind him. From orbit in 2009, both spacecraft are still sitting where they were left." },
+  { id: "surveyor1", title: "Surveyor 1", then: { f: "PIA02976.jpg", nid: "PIA02976", when: "1966", how: "its own shadow" }, now: { f: "PIA12910.jpg", nid: "PIA12910", when: "2009", how: "from orbit" },
+    note: "In 1966 Surveyor 1 photographed its own shadow on the Moon. Over 40 years later the Lunar Reconnaissance Orbiter spotted it, still standing (look for the arrow)." },
+  { id: "phoenix", title: "Phoenix", then: { f: "PIA10701.jpg", nid: "PIA10701", when: "2008", how: "from orbit" }, now: { f: "PIA22223.jpg", nid: "PIA22223", when: "2017", how: "from orbit" },
+    note: "The same camera, the HiRISE camera on Mars Reconnaissance Orbiter, photographed Phoenix just after it landed and nearly a decade later. Arctic winters and dust have made it much harder to see." },
+  { id: "insight", title: "InSight", then: { f: "PIA22956.jpg", nid: "PIA22956", when: "December 2018", how: "on the ground" }, now: { f: "PIA23376.jpg", nid: "PIA23376", when: "September 2019", how: "from orbit" },
+    note: "InSight places its seismometer on Mars in 2018. Months later, HiRISE caught the whole lander from orbit, with dust-devil tracks criss-crossing the ground around it." }
+];
+
+/* Real sounds (the soundtrack of NASA videos, streamed from images.nasa.gov). */
+const SOUNDS = [
+  { id: "JPL-20210222-M2020f-0003a-M2020_Audio_A_002", title: "Wind on Mars", for: "backshell", icon: "🌬️",
+    what: "Recorded by Perseverance's microphone on 20 February 2021, two days after it landed. You hear the rover's own hum, then a gust of Martian wind, among the first sounds ever recorded on Mars." },
+  { id: "JPL-20210506-Listen to NASA’s Ingenuity Helicopter as it Flies on Mars-1080", title: "Ingenuity flying", for: "ingenuity", icon: "🚁",
+    what: "On 30 April 2021, Perseverance's microphone heard Ingenuity's spinning blades hum from about 80 m away: the first time a spacecraft recorded the sound of another spacecraft on another planet." },
+  { id: "JPL-20220401-M2020f-0001-Puff Whir Zap New Sounds from Mars", title: "Puff, whir, zap!", for: "backshell", icon: "⚡",
+    what: "More Perseverance recordings: puffs from a rover tool, light Martian wind, Ingenuity whirring, and the clicks of Perseverance's laser zapping rocks." },
+  { id: "JPL-20230516-M2020f-0002-Sounds of Mars NoVoiceOver", title: "How sound changes on Mars", for: "backshell", icon: "👂",
+    what: "Mars's thin air makes sounds much quieter, and high-pitched sounds arrive a tiny bit before low ones. This compares the same sounds on Earth and on Mars." },
+  { id: "JPL-20190423-INSIGHf-0001-First Likely Marsquake Heard by NASAs InSight", title: "A marsquake", for: "insight", icon: "🫨",
+    what: "InSight's seismometer felt this quake in April 2019. The vibrations are too slow for our ears, so scientists sped them up so we can hear them." },
+  { id: "JPL-20220919-INSIGHf-0001-InSight Captures Sound of a Meteoroid Striking Mars_1080", title: "A meteoroid hits Mars", for: "insight", icon: "☄️",
+    what: "In September 2021 a space rock broke apart and hit Mars. InSight felt the impacts; the odd “bloop” comes from the way Mars's atmosphere carries the waves." },
+  { id: "Apollo 15 Never Been on a Ride like this Before", title: "Astronauts driving on the Moon", for: "apollo15", icon: "🛞",
+    what: "Dave Scott and Jim Irwin talk to Mission Control as they bounce across the Moon in the first Moon car, in 1971." }
+];

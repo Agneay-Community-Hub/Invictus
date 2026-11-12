@@ -287,6 +287,7 @@
   function closeDrawer() {
     stopSpeech();
     destroyHow();
+    if (soundPlaying) soundPlaying.pause();
     $("#scrim").hidden = true; $("#drawer").hidden = true; document.body.style.overflow = "";
     openId = null; history.replaceState(null, "", location.pathname);
     $$("#drawer video").forEach(v => v.pause());
@@ -340,6 +341,8 @@
         ${howList.length ? `<div class="d-block d-how"><h3>How it worked</h3>
           ${howList.length > 1 ? `<div class="ex-tabs" role="tablist" aria-label="Animations">${howList.map((h, i) => `<button role="tab" data-ex="${i}" aria-selected="${i === 0}">${esc(h.title)}</button>`).join("")}</div>` : ""}
           <div id="dHow"></div></div>` : ""}
+        ${tnFor(a.id) ? `<div class="d-block"><h3>Then &amp; now</h3>${tnHTML(tnFor(a.id))}</div>` : ""}
+        ${typeof SOUNDS !== "undefined" && SOUNDS.some(s => s.for === a.id) ? `<div class="d-block d-sounds"><h3>Listen</h3>${SOUNDS.filter(s => s.for === a.id).map(soundHTML).join("")}</div>` : ""}
 
         <div class="d-block"><h3>Planned vs. what really happened</h3>
           <div class="pva"><div><small>The plan</small>${esc(a.planned)}</div><div><small>What happened</small>${esc(a.actual)}</div></div></div>
@@ -361,11 +364,14 @@
         <div class="d-links">
           ${hasModel(a.id) ? `<button class="btn btn-small" data-model="${a.id}">🧊 Spin the NASA 3D model</button>` : ""}
           ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">See it in 3D deep space →</a>`}
+          ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">🚀 Try landing it yourself</a>` : ""}
           <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">💬 Ask about ${esc(a.name)}</a>
           ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">Open in NASA library ↗</a>` : ""}
         </div>
       </div>`;
     $("#drawerBody").scrollTop = 0;
+    bindTn($("#drawerBody"));
+    if (typeof SOUNDS !== "undefined") bindSounds($("#drawerBody"));
     // "How it worked" animation(s)
     if (howList.length) {
       const show = i => { destroyHow(); dHow = Explainers.mount($("#dHow"), howList[i].scene, howList[i].variant); };
@@ -651,6 +657,78 @@
   }
 
   /* ---------------- boot ---------------- */
+  /* ---------------- SPACE SOUNDS ---------------- */
+  let soundPlaying = null;
+  function soundHTML(s) {
+    return `<div class="snd" data-sid="${esc(s.id)}">
+      <button class="snd-play" aria-label="Play: ${esc(s.title)}"><span class="snd-ic" aria-hidden="true">▶</span></button>
+      <div class="snd-body"><b>${s.icon} ${esc(s.title)}</b><p>${esc(s.what)}</p>
+        <div class="snd-meta"><span class="snd-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="snd-time">tap ▶ to listen</span>
+        ${byId[s.for] ? ` · <a href="#artifact=${s.for}" data-open="${s.for}">${esc(byId[s.for].name)}</a>` : ""} · <a href="${NASA_PAGE(s.id)}" target="_blank" rel="noopener">NASA source</a></div></div>
+    </div>`;
+  }
+  function bindSounds(root) {
+    $$(".snd", root).forEach(card => {
+      const s = SOUNDS.find(x => x.id === card.dataset.sid);
+      const btn = $(".snd-play", card), time = $(".snd-time", card);
+      let audio = null;
+      const stopUI = () => { card.classList.remove("playing"); $(".snd-ic", card).textContent = "▶"; btn.setAttribute("aria-label", "Play: " + s.title); };
+      btn.addEventListener("click", () => {
+        if (!audio) {
+          audio = new Audio(); audio.preload = "none"; audio.src = NASA_VIDEO(s.id);
+          audio.addEventListener("timeupdate", () => { const t = audio.currentTime | 0; time.textContent = `${(t / 60) | 0}:${String(t % 60).padStart(2, "0")}${audio.duration ? " / " + ((audio.duration / 60) | 0) + ":" + String((audio.duration | 0) % 60).padStart(2, "0") : ""}`; });
+          audio.addEventListener("ended", stopUI); audio.addEventListener("pause", stopUI);
+          audio.addEventListener("waiting", () => (time.textContent = "loading…"));
+          audio.addEventListener("error", () => { time.textContent = "couldn't load (needs internet)"; stopUI(); });
+        }
+        if (!audio.paused) { audio.pause(); return; }
+        if (soundPlaying && soundPlaying !== audio) soundPlaying.pause();
+        stopSpeech();
+        audio.play().catch(() => (time.textContent = "couldn't play"));
+        soundPlaying = audio;
+        card.classList.add("playing"); $(".snd-ic", card).textContent = "❚❚"; btn.setAttribute("aria-label", "Pause: " + s.title);
+      });
+      $$("[data-open]", card).forEach(l => l.addEventListener("click", e => { e.preventDefault(); openDrawer(l.dataset.open, l); }));
+    });
+  }
+  function initSounds() {
+    if (typeof SOUNDS === "undefined" || !$("#sounds")) return;
+    $("#sounds").innerHTML = SOUNDS.map(soundHTML).join("");
+    bindSounds($("#sounds"));
+  }
+
+  /* ---------------- THEN & NOW sliders ---------------- */
+  const tnFor = id => (typeof THEN_NOW !== "undefined" ? THEN_NOW.find(t => t.id === id) : null);
+  function tnHTML(t) {
+    return `<div class="tn" style="--p:50%">
+        <img class="tn-now" src="assets/nasa/${t.now.f}" alt="${esc(t.title)}, ${esc(t.now.when)}, ${esc(t.now.how)}" loading="lazy">
+        <div class="tn-then"><img src="assets/nasa/${t.then.f}" alt="${esc(t.title)}, ${esc(t.then.when)}, ${esc(t.then.how)}" loading="lazy"></div>
+        <span class="tn-tag l">${esc(t.then.when)} · ${esc(t.then.how)}</span><span class="tn-tag r">${esc(t.now.when)} · ${esc(t.now.how)}</span>
+        <span class="tn-handle" aria-hidden="true"><span>⟷</span></span>
+        <input class="tn-range" type="range" min="0" max="100" value="50" aria-label="Slide between ${esc(t.then.when)} and ${esc(t.now.when)}">
+      </div>
+      <p class="tn-note">${esc(t.note)} <span class="nasa-id">NASA · ${esc(t.then.nid)} · ${esc(t.now.nid)}</span></p>`;
+  }
+  function bindTn(root) {
+    $$(".tn", root).forEach(tn => {
+      const r = $(".tn-range", tn);
+      const set = () => tn.style.setProperty("--p", r.value + "%");
+      r.addEventListener("input", set); set();
+    });
+  }
+  function initThenNow() {
+    if (typeof THEN_NOW === "undefined") return;
+    const show = i => {
+      $("#tnStage").innerHTML = tnHTML(THEN_NOW[i]) + `<a class="btn btn-small" href="#artifact=${THEN_NOW[i].id}" data-open="${THEN_NOW[i].id}">Open the ${esc(byId[THEN_NOW[i].id].name)} dossier →</a>`;
+      bindTn($("#tnStage"));
+      $("#tnStage [data-open]").addEventListener("click", e => { e.preventDefault(); openDrawer(e.currentTarget.dataset.open, e.currentTarget); });
+      $$("#tnTabs button").forEach(b => b.setAttribute("aria-selected", +b.dataset.i === i));
+    };
+    $("#tnTabs").innerHTML = THEN_NOW.map((t, i) => `<button role="tab" data-i="${i}" aria-selected="${i === 0}">${esc(t.title)}</button>`).join("");
+    $$("#tnTabs button").forEach(b => b.addEventListener("click", () => show(+b.dataset.i)));
+    show(0);
+  }
+
   /* ---------------- HOW IT WORKED gallery ---------------- */
   function initHow() {
     if (!window.Explainers) return;
@@ -673,7 +751,9 @@
     show(0);
   }
 
-  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initChapters(); initHow(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
+  // ?scrollto=section jumps straight to a section (used for links and screenshots).
+  addEventListener("load", () => { const id = new URLSearchParams(location.search).get("scrollto"); const el = id && document.getElementById(id); if (el) setTimeout(() => el.scrollIntoView({ behavior: "instant", block: "start" }), 300); });
+  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initChapters(); initHow(); initThenNow(); initSounds(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
   $("#lbClose").addEventListener("click", closeLightbox);
   $("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") closeLightbox(); });
   if ("speechSynthesis" in window) speechSynthesis.getVoices();
