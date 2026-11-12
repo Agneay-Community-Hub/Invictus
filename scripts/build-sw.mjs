@@ -22,7 +22,7 @@ for (const page of readdirSync(root).filter(f => f.endsWith(".html"))) {
   });
   if (after !== before) writeFileSync(p, after);
 }
-const SKIP = [/^sw\.js$/, /^assets\/models\//]; // 3D models are large: cached the first time someone opens them
+const SKIP = [/^sw\.js$/, /^assets\/models\//, /^assets\/maps\/hd\//]; // hd = optional NASA JPL mode textures // 3D models are large: cached the first time someone opens them
 const files = [];
 (function walk(dir) {
   for (const name of readdirSync(dir)) {

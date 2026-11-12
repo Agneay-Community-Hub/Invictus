@@ -71,7 +71,7 @@ The Ask page works without this. The AI mode needs a tiny server to keep your Cl
 | **Explorer Passport** | 8 badges, saved in localStorage. The badge art comes from your Fantasy RPG UI Kit. |
 | **Ask the Archive** (`ask.html`) | A chat page for questions about any machine. It works straight away with a built-in "archive guide" that searches the site's own data, with no account and no cost. If you deploy the optional AI worker, it switches to Claude, with streaming answers grounded in the same archive. Every dossier has an "Ask about…" button. |
 | **NASA 3D models** | 22 machines have a "🧊 View 3D model" button, both in their dossier and in 3D Explore. You can spin and zoom the official NASA model, and phones get "View in your space" (AR). Models are listed below. |
-| **3D Explore** (`explore.html`) | Moon and Mars globes you can spin, with clickable beacons. A Deep Space scene shows the Sun, the planet orbits, the heliopause and each probe's direction and distance. It works on phones too. |
+| **3D Explore** (`explore.html`) | Moon and Mars globes you can spin, with clickable beacons. A Deep Space scene shows the Sun, the planet orbits, the heliopause and each probe's direction and distance. It works on phones too. The optional **🪐 NASA JPL** button (Elsewhere view) moves the planets to where they really are today, from NASA JPL's orbital elements, and loads detailed planet maps. It is off by default so the page loads fast. |
 
 **Accessibility:** Atkinson Hyperlegible font, 4 text sizes, a dyslexia-friendly spacing option, a reduce-motion toggle (it also follows the OS setting), read-aloud through the browser's speech synthesis, full keyboard support (Esc and Tab are trapped inside dialogs), and alt text and ARIA labels. A list view gives the same information as the map.
 
@@ -137,7 +137,8 @@ To add an artifact, add an object to `ARTIFACTS` in `js/data.js`. The map, list,
 ## Credits
 - Photos and videos: NASA Image and Video Library (public domain; NASA does not endorse this project).
 - Moon texture: NASA Scientific Visualization Studio, CGI Moon Kit (LRO LROC).
-- Mars, star and Earth textures: Solar System Scope (CC BY 4.0).
+- Mars, star, Earth, Sun and planet textures: Solar System Scope (CC BY 4.0), based on NASA mission data.
+- Planet positions (NASA JPL mode): JPL Solar System Dynamics, *Approximate Positions of the Planets* (E. M. Standish).
 - Badge art: Fantasy RPG UI Kit (supplied asset pack).
 - 3D models: NASA 3D Resources (public domain).
 - Stories for Vanguard 1, Lunar Prospector, Magellan, Mariner 2, 4 and 9, Mars Climate Orbiter, Mars Global Surveyor, ISEE-3, Kepler, Spitzer and Stardust: adapted from "The Silent Fleet" in [Abandoned, But Not Forgotten](https://agneay-community-hub.github.io/AbandonedNotForgotten/) by Chetan Kumar G, checked against NASA mission records.

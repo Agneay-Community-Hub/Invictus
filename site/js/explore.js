@@ -126,12 +126,14 @@ function raDecToVec(raH, decD, r) {
 }
 // Approximate sky positions (RA hours, Dec degrees) of each probe as seen from the Sun.
 const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26], pioneer11: [18.8, -8.5], newhorizons: [19.4, -21] };
+// Handles kept so the optional "NASA JPL" mode can move things after loading.
+const deep = { sun: null, planets: {}, attached: [], loose: [] };
 (function buildDeep() {
   const grp = new THREE.Group(); groups.deep = grp; scene.add(grp);
   const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(1.4, 48, 24), new THREE.MeshBasicMaterial({ color: 0xffd27a }));
   const sunGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: GLOW, color: 0xffb347, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
   sunGlow.scale.setScalar(9);
-  grp.add(sunMesh, sunGlow);
+  grp.add(sunMesh, sunGlow); deep.sun = sunMesh;
   planetLabels.push({ el: makeLabel("Sun", "planet"), obj: sunMesh, world: "deep" });
   const planets = [["Mercury", .39, .25, 0xb8a99a], ["Venus", .72, .35, 0xe8c88a], ["Earth", 1, .38, 0x5aa9ff], ["Mars", 1.52, .3, 0xff8a5c], ["Jupiter", 5.2, .9, 0xd9b38c], ["Saturn", 9.54, .8, 0xe6d3a3], ["Uranus", 19.2, .6, 0x9fe3e8], ["Neptune", 30.1, .6, 0x5b7cff], ["Pluto", 39.5, .2, 0xcbbba6]];
   const bodyPos = {};
@@ -145,6 +147,7 @@ const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26]
     const mat = n === "Earth" ? new THREE.MeshStandardMaterial({ map: tex("assets/maps/earth.jpg") }) : new THREE.MeshStandardMaterial({ color: c, roughness: .9 });
     const p = new THREE.Mesh(new THREE.SphereGeometry(s, 32, 16), mat);
     p.position.set(Math.cos(ang) * r, 0, Math.sin(ang) * r); grp.add(p); bodyPos[n] = p.position.clone();
+    deep.planets[n] = { mesh: p, r, ang, color: c };
     if (n === "Saturn") { const sr = new THREE.Mesh(new THREE.RingGeometry(s * 1.3, s * 2.1, 48), new THREE.MeshBasicMaterial({ color: 0xd9c38f, side: THREE.DoubleSide, transparent: true, opacity: .6 })); sr.rotation.x = -1.2; p.add(sr); }
     planetLabels.push({ el: makeLabel(n, "planet"), obj: p, world: "deep" });
   });
@@ -157,7 +160,7 @@ const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26]
   // probes
   const bodyCount = {};
   ARTIFACTS.filter(a => a.world === "deep").forEach(a => {
-    let pos;
+    let pos, attach = null;
     if (a.dist && DIRS[a.id]) {
       pos = raDecToVec(DIRS[a.id][0], DIRS[a.id][1], R(auNow(a.dist)));
       const pts = []; for (let t = 0; t <= 1.0001; t += 0.02) pts.push(pos.clone().multiplyScalar(t).setLength(Math.max(R(0.3), pos.length() * t)));
@@ -171,11 +174,92 @@ const DIRS = { voyager1: [17.2, 12], voyager2: [20.1, -58], pioneer10: [5.2, 26]
       pos = new THREE.Vector3(Math.cos(a.orbit.ang) * R(a.orbit.au), a.orbit.y || 0, Math.sin(a.orbit.ang) * R(a.orbit.au));
     } else if (a.body && bodyPos[a.body]) {
       const k = (bodyCount[a.body] = (bodyCount[a.body] || 0) + 1) - 1; // several machines at one world sit side by side
-      pos = bodyPos[a.body].clone().add(new THREE.Vector3(k * 0.6, a.body === "Jupiter" || a.body === "Saturn" ? 1.3 : .7, 0)); // just above its world
+      attach = new THREE.Vector3(k * 0.6, a.body === "Jupiter" || a.body === "Saturn" ? 1.3 : .7, 0);
+      pos = bodyPos[a.body].clone().add(attach); // just above its world
     } else return;
-    addBeacon(a, "deep", pos, null, 0.6);
+    const b = addBeacon(a, "deep", pos, null, 0.6);
+    if (attach && deep.planets[a.body]) deep.attached.push({ b, body: a.body, off: attach });
+    if (a.orbit) deep.loose.push({ b, home: pos.clone() });
   });
 })();
+
+/* ---------- optional "NASA JPL" mode ----------
+   Off by default so the page loads fast. When switched on, planets move to where they really
+   are today, computed from NASA JPL's "Approximate Positions of the Planets" (J2000 Keplerian
+   elements, good for 1800–2050), and detailed planet textures are downloaded.
+   Directions are real; distances stay squeezed so everything fits on screen. */
+// a (AU), e, inclination I (°), mean longitude L (°), longitude of perihelion ϖ (°), ascending node Ω (°), L rate (° per century)
+const JPL_ELEMENTS = {
+  Mercury: [0.38709927, 0.20563593, 7.00497902, 252.25032350, 77.45779628, 48.33076593, 149472.67411175],
+  Venus:   [0.72333566, 0.00677672, 3.39467605, 181.97909950, 131.60246718, 76.67984255, 58517.81538729],
+  Earth:   [1.00000261, 0.01671123, -0.00001531, 100.46457166, 102.93768193, 0.0, 35999.37244981],
+  Mars:    [1.52371034, 0.09339410, 1.84969142, -4.55343205, -23.94362959, 49.55953891, 19140.30268499],
+  Jupiter: [5.20288700, 0.04838624, 1.30439695, 34.39644051, 14.72847983, 100.47390909, 3034.74612775],
+  Saturn:  [9.53667594, 0.05386179, 2.48599187, 49.95424423, 92.59887831, 113.66242448, 1222.49362201],
+  Uranus:  [19.18916464, 0.04725744, 0.77263783, 313.23810451, 170.95427630, 74.01692503, 428.48202785],
+  Neptune: [30.06992276, 0.00859048, 1.77004347, -55.12002969, 44.96476227, 131.78422574, 218.45945325],
+  Pluto:   [39.48211675, 0.24882730, 17.14001206, 238.92903833, 224.06891629, 110.30393684, 145.20780515]
+};
+const D2R = Math.PI / 180;
+function helio([a, e, I, L, W, O, Ld], date) { // heliocentric ecliptic x, y, z in AU
+  const T = (date.getTime() / 864e5 + 2440587.5 - 2451545) / 36525;
+  let M = ((L + Ld * T - W) % 360) * D2R, E = M + e * Math.sin(M);
+  for (let k = 0; k < 8; k++) E -= (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
+  const xp = a * (Math.cos(E) - e), yp = a * Math.sqrt(1 - e * e) * Math.sin(E);
+  const w = (W - O) * D2R, o = O * D2R, i = I * D2R;
+  const cw = Math.cos(w), sw = Math.sin(w), cO = Math.cos(o), sO = Math.sin(o), cI = Math.cos(i), sI = Math.sin(i);
+  return [(cw * cO - sw * sO * cI) * xp + (-sw * cO - cw * sO * cI) * yp,
+          (cw * sO + sw * cO * cI) * xp + (-sw * sO + cw * cO * cI) * yp,
+          (sw * sI) * xp + (cw * sI) * yp];
+}
+const HD_TEX = { Sun: "sun", Mercury: "mercury", Venus: "venus", Mars: "../mars", Jupiter: "jupiter", Saturn: "saturn", Uranus: "uranus", Neptune: "neptune" };
+// Space telescopes that trail behind Earth: launch year and how many degrees they fall behind per year (approximate).
+const TRAIL = { kepler: [2009.2, 7.0], spitzer: [2003.65, 7.9] };
+let jplOn = false;
+const hdCache = {};
+function loadHD(name) {
+  return hdCache[name] ||= new Promise(res => loader.load(`assets/maps/hd/${HD_TEX[name]}.jpg`, t => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; res(t); }, undefined, () => res(null)));
+}
+function setJPL(on) {
+  jplOn = on;
+  const btn = $("#xJpl"), now = new Date();
+  btn.setAttribute("aria-pressed", on);
+  // planets: real direction for today, or back to the simple fixed layout
+  for (const [n, p] of Object.entries(deep.planets)) {
+    if (on && JPL_ELEMENTS[n]) {
+      const [x, y, z] = helio(JPL_ELEMENTS[n], now);
+      p.mesh.position.set(x, z, -y).setLength(p.r); // ecliptic plane = XZ, as elsewhere in this scene
+    } else p.mesh.position.set(Math.cos(p.ang) * p.r, 0, Math.sin(p.ang) * p.r);
+  }
+  deep.attached.forEach(({ b, body, off }) => b.group.position.copy(deep.planets[body].mesh.position).add(off));
+  // telescopes trailing Earth follow Earth's real position; other free-flying craft keep their illustrative spots
+  const ep = deep.planets.Earth.mesh.position, earthLon = Math.atan2(-ep.z, ep.x), yr = now.getFullYear() + now.getMonth() / 12;
+  deep.loose.forEach(({ b, home }) => {
+    const tr = TRAIL[b.a.id];
+    if (on && tr) {
+      const lon = earthLon - Math.max(0, yr - tr[0]) * tr[1] * D2R, r = R(b.a.orbit.au);
+      b.group.position.set(Math.cos(lon) * r, home.y, -Math.sin(lon) * r);
+    } else b.group.position.copy(home);
+  });
+  // detailed textures, downloaded only the first time the mode is switched on
+  const targets = { Sun: deep.sun, ...Object.fromEntries(Object.entries(deep.planets).map(([n, p]) => [n, p.mesh])) };
+  if (on) {
+    btn.classList.add("loading");
+    Promise.all(Object.keys(HD_TEX).map(n => loadHD(n).then(t => {
+      if (!t || !jplOn || !targets[n]) return;
+      targets[n].material.map = t; targets[n].material.color.set(0xffffff); targets[n].material.needsUpdate = true;
+    }))).then(() => btn.classList.remove("loading"));
+  } else {
+    Object.keys(HD_TEX).forEach(n => {
+      const m = targets[n]?.material; if (!m) return;
+      m.map = null; m.color.set(n === "Sun" ? 0xffd27a : deep.planets[n].color); m.needsUpdate = true;
+    });
+  }
+  const note = $("#xJplNote");
+  note.hidden = !on || current !== "deep";
+  note.textContent = `Planets placed for ${now.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })} from NASA JPL orbital elements. Directions are real; distances are squeezed to fit.`;
+  if (selected) flyTo(selected);
+}
 
 /* ---------- world switching & camera ---------- */
 let current = null, selected = null, autoRotate = !reduceMotion, showLabels = true;
@@ -194,6 +278,7 @@ function setWorld(w, focusId) {
   else { camera.position.copy(latLonToVec(w === "mars" ? 10 : 12, w === "mars" ? 40 : 5, 1)).setLength(v.dist); sun.intensity = 2.6; deepLight.visible = false; }
   controls.target.set(0, 0, 0); controls.update();
   closeCard(); renderList();
+  $("#xJpl").hidden = w !== "deep"; $("#xJplNote").hidden = !(jplOn && w === "deep");
   history.replaceState(null, "", "#" + w);
   if (focusId && byId[focusId]) select(beacons.find(b => b.a.id === focusId));
 }
@@ -273,6 +358,7 @@ function closeCard() {
 $$(".x-tabs [role=tab]").forEach(t => t.addEventListener("click", () => setWorld(t.dataset.w)));
 $("#xRotate").addEventListener("click", e => { autoRotate = !autoRotate; autoRotateTemp = true; e.currentTarget.setAttribute("aria-pressed", autoRotate); });
 $("#xLabels").addEventListener("click", e => { showLabels = !showLabels; e.currentTarget.setAttribute("aria-pressed", showLabels); });
+$("#xJpl").addEventListener("click", () => setJPL(!jplOn));
 $("#xListToggle").addEventListener("click", e => { const c = $("#xList").classList.toggle("collapsed"); e.currentTarget.setAttribute("aria-expanded", !c); });
 addEventListener("keydown", e => { if (e.key === "Escape" && !document.querySelector(".model-modal:not([hidden])")) closeCard(); });
 if (reduceMotion) $("#xRotate").setAttribute("aria-pressed", "false");
