@@ -239,6 +239,30 @@
       <div class="quiz" id="quizBox"></div>
     </section>
 
+    <!-- ============ ASK THE ARCHIVE ============ -->
+    <section class="section" id="ask" aria-labelledby="askTitle">
+      <div class="askc">
+        <div class="askc-text">
+          <p class="eyebrow">Ask the Archive</p>
+          <h2 id="askTitle">Still curious? Ask the ghosts.</h2>
+          <p class="askc-lede">Ask anything about the machines in this archive: how they landed, what they found, where they are now, or what they'd say if they could talk.</p>
+          <form class="askc-form" id="askcForm" action="ask.html" method="get">
+            <label for="askcInput" class="sr-only">Your question</label>
+            <input id="askcInput" name="q" type="text" maxlength="200" placeholder="e.g. How did Curiosity land?" autocomplete="off" enterkeyhint="go">
+            <button class="btn btn-primary" type="submit">Ask <span aria-hidden="true">→</span></button>
+          </form>
+          <div class="askc-chips" id="askcChips" role="group" aria-label="Example questions"></div>
+          <p class="askc-note"><span aria-hidden="true">📚</span> Answers come from this site's NASA mission facts, and it works offline. <a href="ask.html">Open the full chat →</a></p>
+        </div>
+        <div class="askc-preview" aria-hidden="true">
+          <div class="askc-window">
+            <div class="askc-bar"><i></i><i></i><i></i><span>Ask the Archive</span></div>
+            <div class="askc-log" id="askcLog"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ ARCHIVE ============ -->
     <section class="section" id="archive" aria-labelledby="arcTitle">
       <header class="sec-head">

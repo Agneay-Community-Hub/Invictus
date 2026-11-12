@@ -657,6 +657,49 @@
   }
 
   /* ---------------- boot ---------------- */
+  /* ---------------- ASK THE ARCHIVE teaser ---------------- */
+  function initAskTeaser() {
+    if (!$("#askcLog")) return;
+    const CHIPS = ["How did Curiosity land?", "Which machines are still working?", "Talk to me as Ingenuity", "What did Opportunity discover?", "Why did astronauts leave things on the Moon?", "How far away is Voyager 1?"];
+    $("#askcChips").innerHTML = CHIPS.map(q => `<a class="askc-chip" href="ask.html?q=${encodeURIComponent(q)}">${esc(q)}</a>`).join("");
+    $("#askcForm").addEventListener("submit", e => {
+      const q = $("#askcInput").value.trim();
+      e.preventDefault();
+      location.href = q ? "ask.html?q=" + encodeURIComponent(q) : "ask.html";
+    });
+    // Example conversations (short versions of real answers from the archive guide)
+    const v1 = byId.voyager1.dist ? auNow(byId.voyager1.dist).toFixed(0) : "170";
+    const DEMO = [
+      ["How did Curiosity land?", "A parachute slowed it down, then a rocket-powered <b>sky crane</b> lowered it on cables about 7.5 m long, and flew away to crash. 🪂", "curiosity"],
+      ["Talk to me as Ingenuity", "<i>“Nobody had ever flown on another planet. I was meant to fly five times. I flew 72.”</i> 🚁", "ingenuity"],
+      ["How far away is Voyager 1?", `About <b>${v1} AU</b> from the Sun: so far that its radio signal takes almost a whole day to reach us. 🛰️`, "voyager1"],
+      ["What did Opportunity discover?", "Tiny round “blueberries” of hematite that formed in water, proof that Mars was once wet. 💧", "opportunity"]
+    ];
+    const log = $("#askcLog");
+    const still = () => prefs.motion || matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let i = 0, timer = 0, visible = false;
+    const bubble = (cls, html) => { const d = document.createElement("div"); d.className = "askc-msg " + cls; d.innerHTML = html; log.appendChild(d); return d; };
+    function play() {
+      clearTimeout(timer);
+      const [q, a, id] = DEMO[i % DEMO.length]; i++;
+      log.innerHTML = "";
+      bubble("user", esc(q));
+      const typing = bubble("bot", `<span class="askc-dots"><i></i><i></i><i></i></span>`);
+      timer = setTimeout(() => {
+        const c = cover(byId[id]);
+        typing.innerHTML = a + `<a class="askc-link" href="ask.html?q=${encodeURIComponent(q)}" tabindex="-1">${c ? `<img src="${c}" alt="">` : ""}${esc(byId[id].name)} →</a>`;
+        if (visible && !still()) timer = setTimeout(play, 5200);
+      }, still() ? 0 : 1100);
+    }
+    new IntersectionObserver(en => en.forEach(x => {
+      visible = x.isIntersecting;
+      if (visible && !timer) play();
+      else if (visible) { clearTimeout(timer); play(); }
+      else clearTimeout(timer);
+    }), { threshold: .3 }).observe($("#ask"));
+    play();
+  }
+
   /* ---------------- SPACE SOUNDS ---------------- */
   let soundPlaying = null;
   function soundHTML(s) {
@@ -753,7 +796,7 @@
 
   // ?scrollto=section jumps straight to a section (used for links and screenshots).
   addEventListener("load", () => { const id = new URLSearchParams(location.search).get("scrollto"); const el = id && document.getElementById(id); if (el) setTimeout(() => el.scrollIntoView({ behavior: "instant", block: "start" }), 300); });
-  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initChapters(); initHow(); initThenNow(); initSounds(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
+  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initChapters(); initHow(); initThenNow(); initSounds(); initAskTeaser(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
   $("#lbClose").addEventListener("click", closeLightbox);
   $("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") closeLightbox(); });
   if ("speechSynthesis" in window) speechSynthesis.getVoices();
