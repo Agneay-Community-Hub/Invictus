@@ -1,10 +1,12 @@
 // Cloudflare Worker: a small, locked-down proxy between the "Ask the Archive"
-// page and the Claude API. It keeps the API key secret, only answers questions
+// page and Google's Gemini API. It keeps the API key secret, only answers questions
 // about this project, and streams the answer back as plain text.
-import Anthropic from "@anthropic-ai/sdk";
 import { KNOWLEDGE } from "./knowledge.js";
 
-const MODEL = "claude-opus-5-5";
+// Model and API address can be changed in wrangler.toml [vars] without touching this file.
+const DEFAULT_MODEL = "gemini-flash-lite-latest";   // Google's alias for its current Flash-Lite model: fast, less busy
+const DEFAULT_FALLBACKS = "gemini-flash-latest"; // backup when the main model is busy
+const DEFAULT_API = "https://generativelanguage.googleapis.com/v1beta";
 const MAX_TURNS = 12;          // messages kept from the conversation
 const MAX_USER_CHARS = 800;    // longest question accepted
 const MAX_ASSISTANT_CHARS = 4000;
@@ -14,6 +16,8 @@ const SYSTEM_PROMPT = `You are the Archive Guide for "Ghosts of Exploration", a 
 How to answer:
 - Base your answers on the archive below. You may add well-established facts about NASA missions and space science, but when something is not in the archive, say so ("That's not in our archive, but...") and only state it if you are confident it is accurate. If you don't know, say so and suggest a related machine they can explore.
 - Use simple, friendly words and short sentences. Keep answers under about 150 words unless the visitor asks for more detail. Use a short bulleted list when listing several things.
+- Each machine's "Status" line is the truth about whether it still works: only machines whose Status is "Still working" are still talking today; "Retired" means partly awake; everything else is silent, lost or crashed. Never guess a status.
+- When asked to list or count machines, go through the archive and include only the ones that match. Don't add a machine and then correct yourself.
 - Always write machine names exactly as they appear in the archive headings (for example "Opportunity", "Lunar Roving Vehicle 3", "Voyager 1") so the website can link them.
 - Correct myths gently. For example, "My battery is low and it's getting dark" was a journalist's summary of Opportunity's final data, not a real message.
 - If asked to speak as one of the machines, you may answer in a playful first-person voice like the archive's ghost logs, but keep every fact accurate.
@@ -72,7 +76,7 @@ export default {
     if (url.pathname === "/health") return json(200, { ok: true }, cors);
     if (request.method !== "POST" || url.pathname !== "/chat") return json(404, { error: "not_found" }, cors);
     if (!_ok) return json(403, { error: "origin_not_allowed" }, cors);
-    if (!env.ANTHROPIC_API_KEY) return json(500, { error: "missing_api_key" }, cors);
+    if (!env.GEMINI_API_KEY) return json(500, { error: "missing_api_key" }, cors);
 
     // Optional per-visitor rate limit (see wrangler.toml).
     if (env.LIMITER) {
@@ -86,46 +90,84 @@ export default {
     const messages = cleanMessages(body && body.messages);
     if (!messages) return json(400, { error: "bad_messages" }, cors);
 
-    // Put today's date in the latest turn (not the system prompt) so the cached prefix never changes.
+    // Put today's date in the latest turn (not the system prompt) so the long prefix stays identical
+    // between requests, which lets Gemini reuse it (implicit caching).
     const today = new Date().toISOString().slice(0, 10);
     const last = messages[messages.length - 1];
     last.content = `[Today's date: ${today}]\n${last.content}`;
 
-    const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
-    const encoder = new TextEncoder();
-
-    let stream;
-    try {
-      stream = client.beta.messages.stream({
-        model: MODEL,
-        max_tokens: 2048,
-        output_config: { effort: "low" },
-        betas: ["server-side-fallback-2026-07-01"],
-        fallbacks: "default",
-        system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral", ttl: "1h" } }],
-        messages,
-      });
-    } catch (err) {
-      console.error("stream start failed", err);
-      return json(502, { error: "upstream_error" }, cors);
+    // Try the main model; if Google says it's busy (503) or over the free limit (429),
+    // try the backup model(s). Every model has its own free-tier limit.
+    const models = [env.GEMINI_MODEL || DEFAULT_MODEL,
+      ...String(env.GEMINI_FALLBACK_MODELS ?? DEFAULT_FALLBACKS).split(",").map((s) => s.trim()).filter(Boolean)];
+    const api = (env.GEMINI_API_BASE || DEFAULT_API).replace(/\/$/, "");
+    const payload = JSON.stringify({
+      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents: messages.map((m) => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })),
+      generationConfig: { maxOutputTokens: 4096, temperature: 0.4 },
+    });
+    const attempts = models; // a busy model is skipped straight away, so visitors don't wait
+    let upstream = null, lastStatus = 0;
+    for (let i = 0; i < attempts.length; i++) {
+      try {
+        upstream = await fetch(`${api}/models/${encodeURIComponent(attempts[i])}:streamGenerateContent?alt=sse`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
+          body: payload,
+        });
+      } catch (err) {
+        console.error("Gemini request failed", attempts[i], err);
+        upstream = null; lastStatus = 502; continue;
+      }
+      if (upstream.ok && upstream.body) break;
+      lastStatus = upstream.status;
+      console.error("Gemini error", attempts[i], upstream.status, (await upstream.text().catch(() => "")).slice(0, 500));
+      upstream = null;
+      if (![429, 500, 503, 504].includes(lastStatus) && !(lastStatus === 404 && i >= 1)) break; // e.g. a bad key: don't keep trying
     }
+    if (!upstream) {
+      // The page then falls back to its built-in offline guide.
+      const busy = lastStatus === 429 || lastStatus === 503;
+      return json(busy ? 429 : 502, { error: busy ? "rate_limited" : "upstream_error" }, cors);
+    }
+
+    const encoder = new TextEncoder(), decoder = new TextDecoder();
+    const reader = upstream.body.getReader();
 
     const readable = new ReadableStream({
       async start(controller) {
-        let wrote = false;
-        try {
-          for await (const event of stream) {
-            if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-              wrote = true;
-              controller.enqueue(encoder.encode(event.delta.text));
-            }
+        let wrote = false, finish = "", blocked = false, buf = "";
+        const handle = (line) => {
+          if (!line.startsWith("data:")) return;
+          let chunk;
+          try { chunk = JSON.parse(line.slice(5)); } catch { return; }
+          if (chunk.promptFeedback && chunk.promptFeedback.blockReason) blocked = true;
+          const cand = chunk.candidates && chunk.candidates[0];
+          if (!cand) return;
+          for (const part of (cand.content && cand.content.parts) || []) {
+            if (part.thought || typeof part.text !== "string" || !part.text) continue; // skip the model's private reasoning
+            wrote = true;
+            controller.enqueue(encoder.encode(part.text));
           }
-          const final = await stream.finalMessage();
-          if (final.stop_reason === "refusal") {
+          if (cand.finishReason) finish = cand.finishReason;
+        };
+        try {
+          for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buf += decoder.decode(value, { stream: true });
+            const lines = buf.split(/\r?\n/);
+            buf = lines.pop();
+            lines.forEach(handle);
+          }
+          if (buf) handle(buf);
+          if (blocked || ["SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST", "SPII", "RECITATION"].includes(finish)) {
             controller.enqueue(encoder.encode((wrote ? "\n\n" : "") +
               "Sorry, I can't help with that one. Try asking me about a rover, a lander or a space probe!"));
-          } else if (final.stop_reason === "max_tokens") {
+          } else if (finish === "MAX_TOKENS") {
             controller.enqueue(encoder.encode("…"));
+          } else if (!wrote) {
+            controller.enqueue(encoder.encode("\u0000ERROR"));
           }
         } catch (err) {
           console.error("stream failed", err);

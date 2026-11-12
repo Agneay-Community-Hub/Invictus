@@ -30,17 +30,17 @@ GitHub Pages publishes the `site/` folder automatically on every push to `main` 
 
 ## Turning on the AI guide (optional)
 
-The Ask page works without this. The AI mode needs a tiny server to keep your Claude API key secret, because anything inside a GitHub Pages site is public. `worker/` is that server: a free Cloudflare Worker.
+The Ask page works without this. The AI mode needs a tiny server to keep your Gemini API key secret, because anything inside a GitHub Pages site is public. `worker/` is that server: a free Cloudflare Worker that calls Google's Gemini API.
 
-**What it costs:** a Cloudflare account is free. Claude usage is billed to your Anthropic account. The worker uses Claude Opus 5.5 at low effort, with the archive cached so repeat questions are cheap, and each visitor is limited to 10 questions a minute. **Set a monthly spend limit** in the Claude Console (Settings → Limits) before sharing the link widely.
+**What it costs:** nothing on the free tiers. A Cloudflare account is free, and Gemini API keys from Google AI Studio have a free tier with daily limits. If the limit is reached, or the AI can't be reached, the Ask page quietly answers with the built-in archive guide instead. Each visitor is limited to 10 questions a minute. Note: on Gemini's free tier, Google may use the questions it receives to improve its products, so the AI guide is told never to ask visitors for personal details.
 
-1. Get an API key at https://console.anthropic.com (Settings → API keys).
+1. Get a free API key at https://aistudio.google.com/apikey.
 2. Deploy the worker:
    ```bash
    cd worker
    npm install
    npx wrangler login
-   npx wrangler secret put ANTHROPIC_API_KEY
+   npx wrangler secret put GEMINI_API_KEY
    npx wrangler deploy
    ```
    `wrangler secret put` asks you to paste the key; it is stored encrypted in Cloudflare, never in the repo.
@@ -49,7 +49,7 @@ The Ask page works without this. The AI mode needs a tiny server to keep your Cl
 **Changing things:**
 - Only the sites listed in `ALLOWED_ORIGINS` in `worker/wrangler.toml` can use the worker. Add your Netlify or custom domain there if you use one.
 - Edited facts in `site/js/data.js`? Run `npx wrangler deploy` again. It rebuilds the AI's knowledge from `data.js` automatically, via `scripts/build-knowledge.mjs`.
-- The model, answer length and rules are at the top of `worker/src/index.js`. To make it cheaper, change `MODEL` to `"claude-haiku-5-5"`.
+- The Gemini model is `GEMINI_MODEL` in `worker/wrangler.toml` (default `gemini-flash-lite-latest`, Google's always-current Flash-Lite model, which is fast and rarely busy). If it is busy or over its free limit, the worker tries `GEMINI_FALLBACK_MODELS` next (default `gemini-flash-latest`). The answer rules are at the top of `worker/src/index.js`.
 
 ## What's inside
 
@@ -98,7 +98,7 @@ site/
   js/models.js      shared 3D model viewer (Google <model-viewer> 3.5.0, loaded only on first use)
   ask.html, js/ask.js   Ask the Archive chat (offline guide + optional AI)
   js/ask-config.js  where the AI worker's address goes
-worker/             optional Cloudflare Worker that talks to Claude and keeps the API key secret
+worker/             optional Cloudflare Worker that talks to Gemini and keeps the API key secret
 scripts/build-knowledge.mjs   turns site/js/data.js into the AI's knowledge file
 scripts/build-sw.mjs        rebuilds the offline file list in site/sw.js
 docs/                        judging materials: project description, demo script, pitch PDF, screenshots

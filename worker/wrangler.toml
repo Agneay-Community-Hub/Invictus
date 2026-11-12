@@ -10,6 +10,11 @@ command = "node ../scripts/build-knowledge.mjs"
 [vars]
 # Only these websites may use this worker (comma-separated, no trailing slash).
 ALLOWED_ORIGINS = "https://agneay-community-hub.github.io,http://localhost:5173,http://localhost:5174"
+# Which Gemini model to use. The "-latest" names always point to Google's current model.
+# Flash-Lite is fast and less busy; Flash is the backup.
+GEMINI_MODEL = "gemini-flash-lite-latest"
+# Tried in order if the main model is busy or over its free limit (comma-separated).
+GEMINI_FALLBACK_MODELS = "gemini-flash-latest"
 
 # Per-visitor limit: 10 questions per minute.
 [[ratelimits]]
@@ -20,4 +25,5 @@ namespace_id = "1001"
   period = 60
 
 # The API key is a secret, never put it in this file. Set it with:
-#   npx wrangler secret put ANTHROPIC_API_KEY
+#   npx wrangler secret put GEMINI_API_KEY
+# Get a free key at https://aistudio.google.com/apikey

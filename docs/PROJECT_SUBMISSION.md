@@ -51,7 +51,7 @@ Every story connects the hardware to the science it made possible. The site has 
 - **NASA 3D models:** official NASA 3D models for 22 machines, viewable in augmented reality (AR) on phones.
 - **Listen:** real recordings: Mars wind, Ingenuity's blades, a marsquake, a meteoroid impact, and Apollo 15 astronauts driving on the Moon.
 - **Land it yourself:** a mini-game with real Moon and Mars gravity. Kids cut the parachute and fire thrusters like Phoenix. Every crash explains what real missions did differently.
-- **Ask the Archive:** a chat page that answers questions from the archive, offline and without AI. An optional mode uses Claude (an AI model) restricted to the archive's facts.
+- **Ask the Archive:** a chat page that answers questions from the archive, offline and without AI. An optional mode uses Google's Gemini (an AI model) restricted to the archive's facts.
 - **Teacher pack:**
   - three 45-minute lesson plans linked to NGSS standards;
   - four printable worksheets generated from the same data, with an answer key;
@@ -81,7 +81,7 @@ Kids usually hear only about active missions. This project gives the "retired" m
 Facts come from NASA mission records and the NASA Image and Video Library. Each media item keeps its NASA ID. The site corrects common myths: for example, Opportunity's "My battery is low and it's getting dark" was a journalist's summary of its final data, not a real message. Estimates (such as deep-space distances) are labelled as estimates.
 
 ### Tools, languages and services
-HTML, CSS, JavaScript, SVG, Canvas, Three.js 0.160, Google model-viewer 3.5, a service worker for offline use, Python (image processing), Blender 5.1 (converting NASA's Curiosity model), Node.js, GitHub Pages, and an optional Cloudflare Worker with the Claude API.
+HTML, CSS, JavaScript, SVG, Canvas, Three.js 0.160, Google model-viewer 3.5, a service worker for offline use, Python (image processing), Blender 5.1 (converting NASA's Curiosity model), Node.js, GitHub Pages, and an optional Cloudflare Worker with Google's Gemini API.
 
 ## NASA data used
 - **NASA Image and Video Library:** https://images.nasa.gov
@@ -108,7 +108,7 @@ HTML, CSS, JavaScript, SVG, Canvas, Three.js 0.160, Google model-viewer 3.5, a s
   - prepare these submission materials.
   
   ✏️ *Our team reviewed the facts against NASA sources.* (Keep this sentence only if it's true.)
-- **In the project:** the optional "AI guide" on the Ask page uses the Claude API, restricted to answering from the site's archive. The default guide on that page uses no AI.
+- **In the project:** the optional "AI guide" on the Ask page uses Google's Gemini API, restricted to answering from the site's archive. The default guide on that page uses no AI.
 - **No AI-generated images, video or audio** are used: all media is real NASA material.
 
 ## References

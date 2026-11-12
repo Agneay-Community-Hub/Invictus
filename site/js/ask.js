@@ -3,7 +3,7 @@
    Two answer sources:
    1. Offline Archive Guide: searches ARTIFACTS (data.js) in the browser.
       Always available, free, and only says what the archive says.
-   2. AI guide (optional): streams answers from Claude through the
+   2. AI guide (optional): streams answers from Google Gemini through the
       Cloudflare Worker in /worker, when window.ASK_ENDPOINT is set.
    =========================================================== */
 (() => {
@@ -420,7 +420,7 @@
       if (mode === "ai" && ENDPOINT) {
         const r = await askAI(question, el);
         if (r.text) { finishBot(el, r.text, mentioned(r.text), "ai"); return; }
-        const why = r.failed === "busy" ? "You're asking quickly! The AI guide needs a short break" : "The AI guide isn't reachable right now";
+        const why = r.failed === "busy" ? "The AI guide is busy right now" : "The AI guide isn't reachable right now";
         const off = offlineAnswer(question);
         finishBot(el, off.text + `\n\n*${why}, so this answer comes from the archive guide.*`, off.ids, "offline");
         return;
@@ -464,7 +464,7 @@
     box.hidden = false;
     $$("button", box).forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === mode));
     $("#askStatus").textContent = mode === "ai"
-      ? "The AI guide (Claude) answers using this site's archive. It can make mistakes, so check the dossiers."
+      ? "The AI guide (Google Gemini) answers using this site's archive. It can make mistakes, so check the dossiers."
       : "Answering only from the site's archive, without AI.";
   }
   $$("#askMode button").forEach(b => b.addEventListener("click", () => { mode = b.dataset.mode; store.set("askMode", mode); renderMode(); }));
