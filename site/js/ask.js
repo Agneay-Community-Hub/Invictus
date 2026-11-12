@@ -110,6 +110,7 @@
   ];
 
   const INTENTS = [
+    ["epitaph", /epitaph|gravestone|headstone|tombstone|memorial line|rest in peace|\brip\b|last words|famous last|sum (it|its life|their life) up in one/],
     ["ghost", /talk (to me )?(as|like)|pretend|your (story|ghost)|in (its|their|your) (own )?voice|ghost log|introduce yourself|who are you/],
     ["how", /how did .*(land|touch down|get down|fly|crash|take off|work|end|die|finish)|how (does|do|did) .*(land|fly)|\blanding\b|how .* landed|parachute|airbags?|sky ?crane|slingshot|gravity assist/],
     ["distance", /how far|distance|light.?(time|hours?|minutes?)|where is .* now|signal take/],
@@ -251,6 +252,10 @@
     const sci = level() === "scientist";
     const name = `**${a.name}**`;
     switch (intent) {
+      case "epitaph":
+        if (!a.epitaph) return `${sci ? a.deep : a.story}`;
+        return `${a.status === "active" ? `${name} is still working, so it doesn't have an epitaph yet. For now:` : `${name}'s epitaph:`}\n“${a.epitaph}”\n\n*Epitaphs in this archive are one-line memorials written in each machine's voice, built from real mission facts.*`
+          + (a.id === "opportunity" ? `\n\nAbout her famous “last words”: “My battery is low and it's getting dark” was a journalist's summary of her final data, not a real message.` : "");
       case "ghost":
         return `*${a.name} speaking (a story voice, built from real mission facts):*\n“${a.ghost}”`;
       case "how": {

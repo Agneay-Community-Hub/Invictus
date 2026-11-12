@@ -49,6 +49,7 @@ for (const world of ["moon", "mars", "deep"]) {
     out += line("What happened", a.actual);
     out += line("Numbers", a.stats.filter(([, v]) => v !== "live").map(([k, v]) => `${k}: ${v}`).join("; "));
     out += line("Ghost log (first-person, storytelling voice)", a.ghost);
+    out += line("Epitaph (one-line memorial in its own voice, written for this archive)", a.epitaph);
     out += line("Story (ages 8-11)", a.story);
     out += line("Science story (ages 12+)", a.deep);
     out += line("Discoveries", a.discoveries.join("; "));

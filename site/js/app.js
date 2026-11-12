@@ -327,6 +327,7 @@
         <h2 id="dName">${esc(a.name)}</h2>
         <p class="d-sub">${a.nick && a.nick !== a.mission ? esc(a.nick) + " · " : ""}${esc(a.fixedPlace || a.place || a.heading)}${a.lat != null ? ` · ${Math.abs(a.lat).toFixed(2)}°${a.lat >= 0 ? "N" : "S"}, ${Math.abs(a.lon).toFixed(2)}°${a.lon >= 0 ? "E" : "W"}` : ""}</p>
 
+        ${epitaphHTML(a)}
         <div class="ghost">
           <blockquote id="ghostText">${esc(a.ghost)}</blockquote>
           <div class="ghost-actions">
@@ -461,6 +462,7 @@
       <div class="ch-text">
         <p class="eyebrow">${esc(c.kicker)} · ${esc(a.name)}</p>
         <h3>${esc(c.title)}</h3>
+        ${epitaphHTML(a, "ch-epitaph")}
         <p class="ch-quote">${esc(a.ghost)}</p>
         <p class="ch-body">${esc(isSci ? a.deep : a.story)}</p>
         <div class="ch-foot">
@@ -534,6 +536,12 @@
           <p class="live">${a.dist ? "Signal travel time: ~" + lightTime(auNow(a.dist)) : "Launched " + a.dates.launch}</p></span>
       </button>`).join("");
     $$("#deepCards .card").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
+  }
+
+  // One-line epitaph, carved like a memorial. Machines still working get a "not yet" label.
+  function epitaphHTML(a, extra = "") {
+    if (!a.epitaph) return "";
+    return `<p class="epitaph ${extra}"><span class="ep-label">${a.status === "active" ? "Not an epitaph yet" : "Epitaph"}</span><span class="ep-text">“${esc(a.epitaph)}”</span></p>`;
   }
 
   /* ---------------- QUIZ ---------------- */

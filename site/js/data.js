@@ -1004,6 +1004,62 @@ const ARTIFACTS = [
   }
 ];
 
+/* Epitaphs: one line each, in the machine's own voice, like words carved on a memorial.
+   Many are adapted from "The Silent Fleet" in Abandoned, But Not Forgotten (Chetan Kumar G).
+   Machines that are still working get a "not yet" line instead. */
+const EPITAPHS = {
+  ranger7: "I was built to fall, and I took pictures all the way down.",
+  surveyor1: "I proved the Moon could hold you up.",
+  surveyor3: "Two and a half years later, someone came to visit.",
+  apollo11: "Here men from the planet Earth first set foot upon the Moon.",
+  apollo12: "We landed a short walk from a robot that had waited for us since 1967.",
+  apollo14: "Somewhere near me, two golf balls are still waiting to be found.",
+  apollo15: "The first car on the Moon, still parked at Hadley.",
+  apollo16: "A family photo lies in the dust beside me.",
+  apollo17: "The last car on the Moon, parked right where its drivers left it.",
+  sivb16: "I hid my crater for 43 years.",
+  lcross: "I watched my own rocket hit the Moon, then followed it down.",
+  grail: "We flew in formation, right to the end.",
+  ladee: "I tasted the Moon's thin air, then fell where I could harm no footprints.",
+  prospector: "I carried a scientist's ashes to the Moon he never got to visit.",
+  viking1: "Someone told me to point my antenna the wrong way.",
+  viking2: "I saw frost on Mars.",
+  pathfinder: "I bounced onto Mars wrapped in airbags, and opened the door for a rover.",
+  sojourner: "The first wheels on another planet.",
+  polarlander: "I thought I had already landed.",
+  spirit: "Free Spirit.",
+  opportunity: "Planned for 90 days. I stayed for fourteen years.",
+  phoenix: "I tasted the ice. Then the winter buried me.",
+  insight: "I listened to Mars shake, 1,319 times.",
+  ingenuity: "Planned for five flights. I flew seventy-two.",
+  backshell: "I carried Perseverance down, then let go.",
+  curiosity: "Still climbing. Still talking. For now.",
+  pioneer10: "I carry a picture of you, in case anyone asks.",
+  pioneer11: "I showed you Saturn first.",
+  voyager1: "The farthest you have ever reached, still saying hello.",
+  voyager2: "Uranus and Neptune have had only one visitor. Me.",
+  near: "I was never built to land, but I touched down on an asteroid anyway.",
+  deepimpact: "I hit a comet on purpose, on the Fourth of July.",
+  newhorizons: "I showed you Pluto's heart, and I'm still going.",
+  messenger: "Out of fuel, I flew on the gas that was only meant to push it.",
+  pioneervenus: "We weren't built to survive the landing. One of us did anyway.",
+  galileo: "I fell into Jupiter so Europa would stay clean.",
+  cassini: "I sent you data until the very last second.",
+  dawn: "I orbited two worlds, and I'm still holding on to the second.",
+  magellan: "I saw through the clouds, then became part of them.",
+  mariner9: "I arrived in a storm, and waited for the sky to clear.",
+  mco: "Pound-force or newtons? Nobody checked.",
+  mgs: "One wrong command, and I turned my battery to the Sun.",
+  vanguard1: "I was the size of a grapefruit. I'm still here.",
+  mariner2: "I was the first to visit another planet.",
+  mariner4: "I sent you 21 pictures of a cratered world.",
+  isee3: "In 2014, strangers on the internet woke me up.",
+  kepler: "I stared at one patch of sky and found thousands of worlds.",
+  spitzer: "I saw the universe by its warmth.",
+  stardust: "I brought a comet home."
+};
+ARTIFACTS.forEach(a => { a.epitaph = EPITAPHS[a.id] || ""; });
+
 /* Story chapters for "Ghost Logs" narrative mode. Each chapter features an artifact. */
 const CHAPTERS = [
   { id: "ranger7",     title: "The one built to fall",            kicker: "1964 · The Moon" },
