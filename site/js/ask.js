@@ -191,6 +191,16 @@
     const world = detectWorld(q), types = detectType(q), statuses = detectStatus(q);
     const superl = /\b(oldest|first|earliest|newest|latest|most recent|last one|farthest|furthest|longest)\b/.exec(q);
 
+    // 0. Specific questions with hand-written answers (mostly about Opportunity and her twin).
+    //    Rover-specific ones need the question to be about the Mars Exploration Rovers: by name,
+    //    or "she/her/it" right after a question about Opportunity.
+    if (typeof ASK_FAQ !== "undefined") {
+      const aboutMER = /opportunity|oppy|mars exploration rovers?|\bmer\b|twin rovers?/.test(q)
+        || (lastIds.length && lastIds[0] === "opportunity" && /\b(she|her|it|its)\b/.test(q) && !(strong && top.a.id !== "opportunity" && top.s >= 40));
+      const faq = ASK_FAQ.find(f => (!f.mer || aboutMER) && f.re.test(q));
+      if (faq) { lastIds = faq.ids.slice(0, 1); return { text: faq.a, ids: faq.ids }; }
+    }
+
     // 1. Glossary / general questions (unless a specific machine is clearly named)
     const gloss = GLOSSARY.find(([re]) => re.test(q));
     if (gloss && (gloss[1] === "First rover" || !(strong && top.s >= 40 && !/what (is|are)/.test(q)))) {

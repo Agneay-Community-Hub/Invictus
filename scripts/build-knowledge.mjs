@@ -12,7 +12,7 @@ const src = readFileSync(join(root, "site/js/data.js"), "utf8");
 // data.js declares top-level consts for the browser; expose them from a sandbox.
 const sandbox = {};
 vm.runInNewContext(
-  src + "\n;globalThis.__out = { ARTIFACTS, STATUS, TYPES, WORLDS, MODELS, CHAPTERS };",
+  src + "\n;globalThis.__out = { ARTIFACTS, STATUS, TYPES, WORLDS, MODELS, CHAPTERS, ASK_FAQ };",
   sandbox,
 );
 const { ARTIFACTS, STATUS, TYPES, WORLDS, MODELS } = sandbox.__out;
@@ -60,6 +60,9 @@ for (const world of ["moon", "mars", "deep"]) {
     out += "\n";
   }
 }
+
+out += "## Questions and answers (mostly about Opportunity and the Mars Exploration Rovers)\n\n";
+for (const f of sandbox.__out.ASK_FAQ) out += `Q: ${f.q}\nA: ${f.a.replace(/\*\*/g, "")}\n\n`;
 
 const dest = join(root, "worker/src/knowledge.js");
 const content =

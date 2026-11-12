@@ -69,7 +69,7 @@ The Ask page works without this. The AI mode needs a tiny server to keep your Cl
 | **Who Am I? quiz** | 8 random clue questions. |
 | **Archive** | All NASA photos with their NASA IDs, the "Listen" sounds and 6 NASA videos. |
 | **Explorer Passport** | 8 badges, saved in localStorage. The badge art comes from your Fantasy RPG UI Kit. |
-| **Ask the Archive** (`ask.html`) | A chat page for questions about any machine. It works straight away with a built-in "archive guide" that searches the site's own data, with no account and no cost. If you deploy the optional AI worker, it switches to Claude, with streaming answers grounded in the same archive. Every dossier has an "Ask about…" button. |
+| **Ask the Archive** (`ask.html`) | A chat page for questions about any machine. It works straight away with a built-in "archive guide" that searches the site's own data, with no account and no cost. It also has 22 hand-written answers to common questions, mostly about Opportunity (her computer, cameras, how she stayed warm, the "battery is low" myth and more). If you deploy the optional AI worker, it switches to Claude, with streaming answers grounded in the same archive. Every dossier has an "Ask about…" button. |
 | **NASA 3D models** | 22 machines have a "🧊 View 3D model" button, both in their dossier and in 3D Explore. You can spin and zoom the official NASA model, and phones get "View in your space" (AR). Models are listed below. |
 | **3D Explore** (`explore.html`) | Moon and Mars globes you can spin, with clickable beacons. A Deep Space scene shows the Sun, the planet orbits, the heliopause and each probe's direction and distance. It works on phones too. The optional **🪐 NASA JPL** button (Elsewhere view) moves the planets to where they really are today, from NASA JPL's orbital elements, and loads detailed planet maps. It is off by default so the page loads fast. |
 
@@ -141,5 +141,6 @@ To add an artifact, add an object to `ARTIFACTS` in `js/data.js`. The map, list,
 - Planet positions (NASA JPL mode): JPL Solar System Dynamics, *Approximate Positions of the Planets* (E. M. Standish).
 - Badge art: Fantasy RPG UI Kit (supplied asset pack).
 - 3D models: NASA 3D Resources (public domain).
+- Ask's 22 short answers about Opportunity and Mars: adapted from ASTRA's answers in Chetan Kumar G's project (below), checked against NASA/JPL Mars Exploration Rover records.
 - Stories for Vanguard 1, Lunar Prospector, Magellan, Mariner 2, 4 and 9, Mars Climate Orbiter, Mars Global Surveyor, ISEE-3, Kepler, Spitzer and Stardust: adapted from "The Silent Fleet" in [Abandoned, But Not Forgotten](https://agneay-community-hub.github.io/AbandonedNotForgotten/) by Chetan Kumar G, checked against NASA mission records.
 - 3D: Three.js (MIT) and Google model-viewer (Apache 2.0).
