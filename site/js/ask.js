@@ -385,7 +385,7 @@
       res = await fetch(ENDPOINT + "/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history.slice(-12) })
+        body: JSON.stringify({ messages: history.slice(-12), lang: (() => { try { const l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("goe:lang"); return l === "es" || l === "hi" ? l : "en"; } catch { return "en"; } })() })
       });
     } catch { history.pop(); return { failed: "network" }; }
     if (res.status === 429) { history.pop(); return { failed: "busy" }; }

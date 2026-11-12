@@ -35,3 +35,9 @@ desktop.ini
 worker/.dev.vars
 worker/.wrangler/
 worker/src/knowledge.js
+
+# Generated at deploy time (scripts/build-i18n.mjs, scripts/build-pages.mjs)
+site/js/i18n/
+site/machines/
+site/sitemap.xml
+site/robots.txt

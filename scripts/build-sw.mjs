@@ -14,15 +14,18 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..", "site");
 //    changes, its address changes, so browsers can never mix a new page with an old file.
 const fingerprint = rel => createHash("sha1").update(readFileSync(join(root, rel))).digest("hex").slice(0, 8);
 let stamped = 0;
-for (const page of readdirSync(root).filter(f => f.endsWith(".html"))) {
-  const p = join(root, page);
+const pagesToStamp = readdirSync(root).filter(f => f.endsWith(".html")).map(f => join(root, f));
+try { pagesToStamp.push(...readdirSync(join(root, "machines")).filter(f => f.endsWith(".html")).map(f => join(root, "machines", f))); } catch { /* not built yet */ }
+for (const p of pagesToStamp) {
   const before = readFileSync(p, "utf8");
-  const after = before.replace(/(href|src)="((?:css|js)\/[\w.-]+\.(?:css|js))(?:\?v=[\w]+)?"/g, (m, attr, rel) => {
-    try { stamped++; return `${attr}="${rel}?v=${fingerprint(rel)}"`; } catch { return m; }
+  let after = before.replace(/(href|src)="((?:\.\.\/)?)((?:css|js)\/[\w.-]+\.(?:css|js))(?:\?v=[\w]+)?"/g, (m, attr, up, rel) => {
+    try { stamped++; return `${attr}="${up}${rel}?v=${fingerprint(rel)}"`; } catch { return m; }
   });
+  // language files are loaded by a script string ("js/i18n/es.js"), so stamp those too
+  after = after.replace(/"(js\/i18n\/[\w-]+\.js)(?:\?v=\w+)?"/g, (m, rel) => { try { stamped++; return `"${rel}?v=${fingerprint(rel)}"`; } catch { return m; } });
   if (after !== before) writeFileSync(p, after);
 }
-const SKIP = [/^sw\.js$/, /^assets\/models\//, /^assets\/maps\/hd\//]; // hd = optional NASA JPL mode textures // 3D models are large: cached the first time someone opens them
+const SKIP = [/^sw\.js$/, /^assets\/models\//, /^assets\/maps\/hd\//, /^machines\//, /^js\/i18n\//, /^sitemap\.xml$/, /^robots\.txt$/]; // hd = optional NASA JPL mode textures // 3D models are large: cached the first time someone opens them
 const files = [];
 (function walk(dir) {
   for (const name of readdirSync(dir)) {

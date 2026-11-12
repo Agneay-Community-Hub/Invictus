@@ -7,6 +7,7 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
   const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂", orbiter: "🛰️", telescope: "🔭" };
+  const t = window.t || ((k, f) => f);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   /* ---------------- persistent state (safe storage) ---------------- */
@@ -28,9 +29,9 @@
   const auNow = d => d.au2025 + d.rate * ((Date.now() - Date.UTC(2025, 0, 1)) / (365.25 * 864e5));
   const fmtKm = au => {
     const km = au * 1.496e8;
-    return km >= 1e9 ? (km / 1e9).toFixed(1) + " billion km" : (km / 1e6).toFixed(0) + " million km";
+    return km >= 1e9 ? (km / 1e9).toFixed(1) + " " + t("u.bkm", "billion km") : (km / 1e6).toFixed(0) + " " + t("u.mkm", "million km");
   };
-  const lightTime = au => { const h = au * 499 / 3600; return h >= 1 ? h.toFixed(1) + " light-hours" : (h * 60).toFixed(0) + " light-minutes"; };
+  const lightTime = au => { const h = au * 499 / 3600; return h >= 1 ? h.toFixed(1) + " " + t("u.lh", "light-hours") : (h * 60).toFixed(0) + " " + t("u.lm", "light-minutes"); };
 
   /* ---------------- settings ---------------- */
   function applyPrefs() {
@@ -103,7 +104,7 @@
     $("#worldCards").innerHTML = Object.entries(WORLDS).map(([k, v]) => `
       <button class="world-card" data-go="${k}">
         <span class="globe ${k}" aria-hidden="true"></span>
-        <span><b>${v.name}</b><small>${counts(k)} machines · ${v.tagline.split("·")[0].trim()}</small></span>
+        <span><b>${v.name}</b><small>${counts(k)} ${t("machines", "machines")} · ${v.tagline.split("·")[0].trim()}</small></span>
       </button>`).join("");
     $$("#worldCards [data-go]").forEach(b => b.addEventListener("click", () => {
       const w = b.dataset.go;
@@ -136,7 +137,7 @@
   }
   function renderChips() {
     const types = [...new Set(ARTIFACTS.filter(a => a.world === world).map(a => a.type))];
-    const chips = [["all", "All"], ...types.map(t => [t, TYPES[t] + "s"]), ["active", "Still awake"]];
+    const chips = [["all", "All"], ...types.map(t => [t, TYPES[t] + "s"]), ["active", t("chip.awake", "Still awake")]];
     $("#chips").innerHTML = chips.map(([k, l]) => `<button class="chip" aria-pressed="${k === typeFilter}" data-f="${k}">${l}</button>`).join("");
     $$("#chips .chip").forEach(c => c.addEventListener("click", () => { typeFilter = c.dataset.f; renderChips(); renderMap(); }));
   }
@@ -173,7 +174,7 @@
     const list = listFor().sort((a, b) => a.year - b.year);
     $("#alist").innerHTML = list.length ? list.map(a => `<li><button class="aitem" data-id="${a.id}">
         ${thumbHTML(a)}<span><b>${esc(a.name)}${hasModel(a.id) ? '<span class="tag3d" title="Has a 3D model">3D</span>' : ""}</b><small>${esc(TYPES[a.type])} · ${esc(a.place.split("(")[0])}</small><br>${pill(a.status)}</span><span class="yr">${a.year}</span></button></li>`).join("")
-      : `<li class="empty">Nothing matches. Try another word!</li>`;
+      : `<li class="empty">${t("map.none", "Nothing matches. Try another word!")}</li>`;
     $$("#alist .aitem").forEach(b => {
       b.addEventListener("click", () => openDrawer(b.dataset.id, b));
       b.addEventListener("mouseenter", () => $$(".marker", box).forEach(m => m.classList.toggle("on", m.dataset.id === b.dataset.id)));
@@ -300,7 +301,7 @@
   }
   function renderDrawer(id) {
     const a = byId[id], idx = ORDER.indexOf(id);
-    $("#dCount").textContent = `${WORLDS[a.world].short} · ${idx + 1} of ${ORDER.length}`;
+    $("#dCount").textContent = `${WORLDS[a.world].short} · ${t("xOfY", "{x} of {y}").replace("{x}", idx + 1).replace("{y}", ORDER.length)}`;
     const m0 = a.media[0];
     const facts = a.stats.map(([k, v]) => {
       let val = v;
@@ -313,13 +314,13 @@
     let distBlock = "";
     if (a.dist) {
       const au = auNow(a.dist);
-      distBlock = `<div class="d-block"><h3>Where is it now?</h3><ul class="dates">
-        <li><span>Estimated distance from the Sun</span><b>~${au.toFixed(1)} AU (${fmtKm(au)})</b></li>
-        <li><span>Time for a radio signal to cross that distance</span><b>~${lightTime(au)}</b></li>
-        <li><span>Heading</span><b>${esc(a.heading)}</b></li></ul></div>`;
+      distBlock = `<div class="d-block"><h3>${t("d.whereNow", "Where is it now?")}</h3><ul class="dates">
+        <li><span>${t("d.estDist", "Estimated distance from the Sun")}</span><b>~${au.toFixed(1)} AU (${fmtKm(au)})</b></li>
+        <li><span>${t("d.signalTime", "Time for a radio signal to cross that distance")}</span><b>~${lightTime(au)}</b></li>
+        <li><span>${t("d.heading", "Heading")}</span><b>${esc(a.heading)}</b></li></ul></div>`;
     }
     $("#drawerBody").innerHTML = `
-      <div class="d-hero">${m0 ? `<img id="dImg" src="assets/nasa/${m0.f}" alt="${esc(m0.cap)}">` : `<div class="ph" aria-hidden="true">${TYPE_EMOJI[a.type]}</div>`}${hasModel(a.id) ? `<button class="btn btn-small model-btn" data-model="${a.id}">🧊 View 3D model</button>` : ""}</div>
+      <div class="d-hero">${m0 ? `<img id="dImg" src="assets/nasa/${m0.f}" alt="${esc(m0.cap)}">` : `<div class="ph" aria-hidden="true">${TYPE_EMOJI[a.type]}</div>`}${hasModel(a.id) ? `<button class="btn btn-small model-btn" data-model="${a.id}">🧊 ${t("d.model", "View 3D model")}</button>` : ""}</div>
       ${a.media.length > 1 ? `<div class="d-thumbs" role="group" aria-label="More photos">${a.media.map((m, i) => `<button data-i="${i}" aria-current="${i === 0}" aria-label="Photo ${i + 1}"><img src="assets/nasa/${m.f}" alt=""></button>`).join("")}</div>` : ""}
       ${m0 ? `<p class="d-cap" id="dCap">${esc(m0.cap)} <a href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">NASA · ${esc(m0.id)}</a></p>` : `<p class="d-cap">No close-up photo exists of this one — it crashed where no camera could see.</p>`}
       <div class="d-main">
@@ -331,46 +332,46 @@
         <div class="ghost">
           <blockquote id="ghostText">${esc(a.ghost)}</blockquote>
           <div class="ghost-actions">
-            <button class="btn btn-small speak" id="speakBtn" aria-pressed="false"><span aria-hidden="true">🔊</span> Read aloud</button>
-            <small style="color:var(--dim)">Written in ${esc(a.name)}’s voice, from real mission facts.</small>
+            <button class="btn btn-small speak" id="speakBtn" aria-pressed="false"><span aria-hidden="true">🔊</span> ${t("readAloud", "Read aloud")}</button>
+            <small style="color:var(--dim)">${t("d.voiceNote", "Written in {name}’s voice, from real mission facts.").replace("{name}", esc(a.name))}</small>
           </div>
         </div>
 
-        <div class="d-block"><h3>${isSci ? "The science story" : "The story"}</h3><p>${esc(isSci ? a.deep : a.story)}</p>
-          ${!isSci ? `<button class="btn btn-small" id="moreBtn">Tell me more (Scientist level)</button>` : ""}</div>
+        <div class="d-block"><h3>${isSci ? t("d.sciStory", "The science story") : t("d.story", "The story")}</h3><p>${esc(isSci ? a.deep : a.story)}</p>
+          ${!isSci ? `<button class="btn btn-small" id="moreBtn">${t("d.more", "Tell me more (Scientist level)")}</button>` : ""}</div>
 
-        ${howList.length ? `<div class="d-block d-how"><h3>How it worked</h3>
+        ${howList.length ? `<div class="d-block d-how"><h3>${t("d.how", "How it worked")}</h3>
           ${howList.length > 1 ? `<div class="ex-tabs" role="tablist" aria-label="Animations">${howList.map((h, i) => `<button role="tab" data-ex="${i}" aria-selected="${i === 0}">${esc(h.title)}</button>`).join("")}</div>` : ""}
           <div id="dHow"></div></div>` : ""}
-        ${tnFor(a.id) ? `<div class="d-block"><h3>Then &amp; now</h3>${tnHTML(tnFor(a.id))}</div>` : ""}
-        ${typeof SOUNDS !== "undefined" && SOUNDS.some(s => s.for === a.id) ? `<div class="d-block d-sounds"><h3>Listen</h3>${SOUNDS.filter(s => s.for === a.id).map(soundHTML).join("")}</div>` : ""}
+        ${tnFor(a.id) ? `<div class="d-block"><h3>${t("d.thenNow", "Then &amp; now")}</h3>${tnHTML(tnFor(a.id))}</div>` : ""}
+        ${typeof SOUNDS !== "undefined" && SOUNDS.some(s => s.for === a.id) ? `<div class="d-block d-sounds"><h3>${t("d.listen", "Listen")}</h3>${SOUNDS.filter(s => s.for === a.id).map(soundHTML).join("")}</div>` : ""}
 
-        <div class="d-block"><h3>Planned vs. what really happened</h3>
-          <div class="pva"><div><small>The plan</small>${esc(a.planned)}</div><div><small>What happened</small>${esc(a.actual)}</div></div></div>
+        <div class="d-block"><h3>${t("d.pva", "Planned vs. what really happened")}</h3>
+          <div class="pva"><div><small>${t("d.plan", "The plan")}</small>${esc(a.planned)}</div><div><small>${t("d.happened", "What happened")}</small>${esc(a.actual)}</div></div></div>
 
-        <div class="d-block"><h3>By the numbers</h3><div class="facts">${facts}</div></div>
+        <div class="d-block"><h3>${t("d.numbers", "By the numbers")}</h3><div class="facts">${facts}</div></div>
 
-        <div class="d-block"><h3>Mission dates</h3><ul class="dates">
-          <li><span>Launched</span><b>${esc(a.dates.launch)}</b></li>
-          <li><span>Arrived</span><b>${esc(a.dates.arrive)}</b></li>
-          <li><span>Last word / status</span><b>${esc(a.dates.last)}</b></li></ul></div>
+        <div class="d-block"><h3>${t("d.dates", "Mission dates")}</h3><ul class="dates">
+          <li><span>${t("d.launched", "Launched")}</span><b>${esc(a.dates.launch)}</b></li>
+          <li><span>${t("d.arrived", "Arrived")}</span><b>${esc(a.dates.arrive)}</b></li>
+          <li><span>${t("d.last", "Last word / status")}</span><b>${esc(a.dates.last)}</b></li></ul></div>
         ${distBlock}
 
-        <div class="d-block"><h3>What it discovered</h3><ul class="checks">${a.discoveries.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>
-        ${a.left ? `<div class="d-block"><h3>What was left behind</h3><ul class="checks left">${a.left.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>` : ""}
+        <div class="d-block"><h3>${t("d.discovered", "What it discovered")}</h3><ul class="checks">${a.discoveries.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>
+        ${a.left ? `<div class="d-block"><h3>${t("d.left", "What was left behind")}</h3><ul class="checks left">${a.left.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>` : ""}
         ${orbitHTML(a)}
         ${onboardHTML(a)}
 
-        <div class="d-block"><h3>Why it matters today</h3><p class="legacy">${esc(a.legacy)}</p></div>
-        <div class="d-block"><div class="funbox"><img src="assets/ui/star.png" alt=""><div><b>Fun fact</b><br>${esc(a.fun)}</div></div></div>
-        ${a.video ? `<div class="d-block"><h3>Watch</h3>${videoHTML(a.video)}${a.video2 ? "<br>" + videoHTML(a.video2) : ""}</div>` : ""}
+        <div class="d-block"><h3>${t("d.matters", "Why it matters today")}</h3><p class="legacy">${esc(a.legacy)}</p></div>
+        <div class="d-block"><div class="funbox"><img src="assets/ui/star.png" alt=""><div><b>${t("d.fun", "Fun fact")}</b><br>${esc(a.fun)}</div></div></div>
+        ${a.video ? `<div class="d-block"><h3>${t("d.watch", "Watch")}</h3>${videoHTML(a.video)}${a.video2 ? "<br>" + videoHTML(a.video2) : ""}</div>` : ""}
         ${sourcesHTML(a)}
         <div class="d-links">
           ${hasModel(a.id) ? `<button class="btn btn-small" data-model="${a.id}">🧊 Spin the NASA 3D model</button>` : ""}
-          ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">See it in 3D deep space →</a>`}
+          ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">${t("d.see3dDeep", "See it in 3D deep space →")}</a>`}
           ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">🚀 Try landing it yourself</a>` : ""}
           <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">💬 Ask about ${esc(a.name)}</a>
-          ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">Open in NASA library ↗</a>` : ""}
+          ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">${t("d.nasaLib", "Open in NASA library ↗")}</a>` : ""}
         </div>
       </div>`;
     $("#drawerBody").scrollTop = 0;
@@ -432,8 +433,12 @@
     stopSpeech();
     const u = new SpeechSynthesisUtterance(text);
     u.rate = prefs.level === "explorer" ? 0.92 : 1; u.pitch = 1;
-    const en = speechSynthesis.getVoices().find(v => /^en(-|_)/i.test(v.lang) && /natural|google|samantha|aria|jenny/i.test(v.name)) || speechSynthesis.getVoices().find(v => /^en/i.test(v.lang));
-    if (en) u.voice = en;
+    // speak in the page's language (English, Spanish or Hindi), preferring the more natural voices
+    const lang = (window.I18n && I18n.lang) || "en", voices = speechSynthesis.getVoices(), re = new RegExp("^" + lang + "(-|_|$)", "i");
+    u.lang = (window.I18n && I18n.speech) || "en-US";
+    const voice = voices.find(v => re.test(v.lang) && /natural|google|samantha|aria|jenny|sabina|helena|madhur|swara|kalpana|hemant/i.test(v.name)) || voices.find(v => re.test(v.lang));
+    if (voice) u.voice = voice;
+    else if (lang !== "en") toast("speaker", t("noVoice", "Your device has no voice for this language, so it may sound odd. You can add one in your system's language settings."));
     u.onend = u.onerror = () => { if (speakingBtn === btn) stopSpeech(); };
     speechSynthesis.speak(u);
     speakingBtn = btn; btn.setAttribute("aria-pressed", "true");
@@ -469,8 +474,8 @@
         <p class="ch-quote">${esc(a.ghost)}</p>
         <p class="ch-body">${esc(isSci ? a.deep : a.story)}</p>
         <div class="ch-foot">
-          <button class="btn btn-small speak" id="chSpeak" aria-pressed="false"><span aria-hidden="true">🔊</span> Read aloud</button>
-          <button class="btn btn-small" id="chOpen">Open dossier</button>
+          <button class="btn btn-small speak" id="chSpeak" aria-pressed="false"><span aria-hidden="true">🔊</span> ${t("readAloud", "Read aloud")}</button>
+          <button class="btn btn-small" id="chOpen">${t("ch.open", "Open dossier")}</button>
           <span class="spacer"></span>
           <button class="icon-btn" id="chPrev" aria-label="Previous chapter" ${chapter === 0 ? "disabled" : ""}>←</button>
           <button class="icon-btn" id="chNext" aria-label="Next chapter" ${chapter === CHAPTERS.length - 1 ? "disabled" : ""}>→</button>
@@ -536,7 +541,7 @@
         ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph">${TYPE_EMOJI[a.type]}</span>`}
         <span class="card-body">${pill(a.status)}${hasModel(a.id) ? '<span class="tag3d">3D model</span>' : ""}<b>${esc(a.name)}</b>
           <p>${esc(a.dist ? "~" + fmtKm(auNow(a.dist)) + " from the Sun" : a.fixedPlace)}</p>
-          <p class="live">${a.dist ? "Signal travel time: ~" + lightTime(auNow(a.dist)) : "Launched " + a.dates.launch}</p></span>
+          <p class="live">${a.dist ? t("deep.signal", "Signal travel time: ~") + lightTime(auNow(a.dist)) : t("deep.launched", "Launched ") + a.dates.launch}</p></span>
       </button>`).join("");
     $$("#deepCards .card").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
   }
@@ -547,15 +552,15 @@
   function onboardHTML(a) {
     const r = rec(a.id);
     if (!r || !r.onboard) return "";
-    return `<div class="d-block d-onboard"><h3>What was on board</h3>
-      <p class="d-note">The hardware behind the discoveries. Tap a part to see what it did.</p>
+    return `<div class="d-block d-onboard"><h3>${t("d.onboard", "What was on board")}</h3>
+      <p class="d-note">${t("d.onboardNote", "The hardware behind the discoveries. Tap a part to see what it did.")}</p>
       ${r.onboard.map(g => `<div class="ob-group">
         <h4>${esc(g.name.replace(/^Apollo \d+ /, ""))}</h4>
         ${g.design ? `<p>${esc(g.design)}</p>` : ""}
-        ${g.status ? `<p class="ob-status"><b>Today:</b> ${esc(g.status)}</p>` : ""}
+        ${g.status ? `<p class="ob-status"><b>${t("d.today", "Today:")}</b> ${esc(g.status)}</p>` : ""}
         ${g.items.length ? `<ul class="ob-list">${g.items.map(i => `<li><details><summary><b>${esc(i.name)}</b>${i.kind ? `<span class="ob-kind">${esc(i.kind)}</span>` : ""}</summary>
           <p>${i.full ? `<i>${esc(i.full)}.</i> ` : ""}${esc(i.what)}</p>
-          ${i.found ? `<p class="ob-found"><b>What it found:</b> ${i.found.map(esc).join(" ")}</p>` : ""}
+          ${i.found ? `<p class="ob-found"><b>${t("d.found", "What it found:")}</b> ${i.found.map(esc).join(" ")}</p>` : ""}
           ${i.specs ? `<p class="ob-specs">${i.specs.map(esc).join(" · ")}</p>` : ""}</details></li>`).join("")}</ul>` : ""}
       </div>`).join("")}</div>`;
   }
@@ -563,22 +568,22 @@
   function orbitHTML(a) {
     const o = rec(a.id)?.orbit;
     if (!o) return "";
-    return `<div class="d-block d-orbit"><h3>See it from orbit</h3><p>${esc(o.cap)}</p>
-      <a class="btn btn-small" href="${esc(o.url)}" target="_blank" rel="noopener">🛰️ Open HiRISE image ${esc(o.img)} ↗</a></div>`;
+    return `<div class="d-block d-orbit"><h3>${t("d.orbit", "See it from orbit")}</h3><p>${esc(o.cap)}</p>
+      <a class="btn btn-small" href="${esc(o.url)}" target="_blank" rel="noopener">🛰️ ${t("d.hirise", "Open HiRISE image")} ${esc(o.img)} ↗</a></div>`;
   }
   // "Sources": the documents these facts were checked against.
   function sourcesHTML(a) {
     const list = (rec(a.id)?.sources || []).map(id => typeof SOURCE_LIST !== "undefined" && SOURCE_LIST[id]).filter(Boolean);
-    const photos = a.media.length ? `Photos: <a href="${NASA_PAGE(a.media[0].id)}" target="_blank" rel="noopener">NASA Image and Video Library</a>. ` : "";
-    return `<div class="d-block d-sources"><details><summary>Sources${list.length ? ` (${list.length})` : ""}</summary>
+    const photos = a.media.length ? `${t("d.photos", "Photos:")} <a href="${NASA_PAGE(a.media[0].id)}" target="_blank" rel="noopener">NASA Image and Video Library</a>. ` : "";
+    return `<div class="d-block d-sources"><details><summary>${t("d.sources", "Sources")}${list.length ? ` (${list.length})` : ""}</summary>
       ${list.length ? `<ul>${list.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> <small>${esc(s.org)}${s.read ? ` · read ${esc(s.read)}` : ""}</small></li>`).join("")}</ul>` : ""}
-      <p class="d-note">${photos}<a href="sources.html#${a.id}">Every source in the archive →</a></p></details></div>`;
+      <p class="d-note">${photos}<a href="sources.html#${a.id}">${t("d.allSources", "Every source in the archive →")}</a></p></details></div>`;
   }
 
   // One-line epitaph, carved like a memorial. Machines still working get a "not yet" label.
   function epitaphHTML(a, extra = "") {
     if (!a.epitaph) return "";
-    return `<p class="epitaph ${extra}"><span class="ep-label">${a.status === "active" ? "Not an epitaph yet" : "Epitaph"}</span><span class="ep-text">“${esc(a.epitaph)}”</span></p>`;
+    return `<p class="epitaph ${extra}"><span class="ep-label">${a.status === "active" ? t("d.notEpitaph", "Not an epitaph yet") : t("d.epitaph", "Epitaph")}</span><span class="ep-text">“${esc(a.epitaph)}”</span></p>`;
   }
 
   /* ---------------- QUIZ ---------------- */
@@ -597,14 +602,14 @@
       const s = quiz.score, n = quiz.qs.length;
       if (s > progress.quizBest) { progress.quizBest = s; saveProgress(); checkBadges(); }
       box.innerHTML = `<div class="q-done"><img src="assets/ui/${s >= 6 ? "trophy" : "star"}.png" alt="">
-        <h3>You scored ${s} out of ${n}!</h3><p>${s >= 6 ? "Amazing — you’re an Archive Expert." : "Nice try! Open a few more dossiers and try again."}</p>
-        <button class="btn btn-primary" id="qAgain">Play again</button></div>`;
+        <h3>${t("q.scored", "You scored {s} out of {n}!").replace("{s}", s).replace("{n}", n)}</h3><p>${s >= 6 ? t("q.amazing", "Amazing — you’re an Archive Expert.") : t("q.nice", "Nice try! Open a few more dossiers and try again.")}</p>
+        <button class="btn btn-primary" id="qAgain">${t("q.again", "Play again")}</button></div>`;
       $("#qAgain").addEventListener("click", newQuiz);
       return;
     }
     const q = quiz.qs[quiz.i];
     box.innerHTML = `
-      <div class="q-top"><span class="tag">Question ${quiz.i + 1} of ${quiz.qs.length}</span><span class="q-progress" aria-hidden="true"><i style="width:${quiz.i / quiz.qs.length * 100}%"></i></span><span class="tag">Score: ${quiz.score}</span></div>
+      <div class="q-top"><span class="tag">${t("q.questionXofY", "Question {x} of {y}").replace("{x}", quiz.i + 1).replace("{y}", quiz.qs.length)}</span><span class="q-progress" aria-hidden="true"><i style="width:${quiz.i / quiz.qs.length * 100}%"></i></span><span class="tag">${t("q.scoreLabel", "Score:")} ${quiz.score}</span></div>
       <p class="q-clue">${esc(q.a.quiz)}</p>
       <div class="q-opts">${q.opts.map(o => `<button class="q-opt" data-id="${o.id}">${thumbHTML(o, "")}<span><b>${esc(o.name)}</b><br><small style="color:var(--muted)">${esc(WORLDS[o.world].short)} · ${o.year}</small></span></button>`).join("")}</div>
       <div class="q-feedback" id="qFeed" aria-live="polite"></div>`;
@@ -615,8 +620,8 @@
       $$(".q-opt", box).forEach(x => { x.disabled = true; if (x.dataset.id === q.a.id) x.classList.add("right"); });
       if (!ok) b.classList.add("wrong");
       $("#qFeed").innerHTML = `<p>${ok ? "✅ Correct!" : "❌ Not quite — it was <b>" + esc(q.a.name) + "</b>."} ${esc(q.a.fun)}</p>
-        <button class="btn btn-primary btn-small" id="qNext">${quiz.i === quiz.qs.length - 1 ? "See my score" : "Next question →"}</button>
-        <button class="btn btn-small" id="qLearn">Open its dossier</button>`;
+        <button class="btn btn-primary btn-small" id="qNext">${quiz.i === quiz.qs.length - 1 ? t("q.score", "See my score") : t("q.next", "Next question →")}</button>
+        <button class="btn btn-small" id="qLearn">${t("q.openDossier", "Open its dossier")}</button>`;
       $("#qNext").addEventListener("click", () => { quiz.i++; quiz.answered = false; renderQuiz(); $("#quizBox").scrollIntoView({ block: "nearest" }); });
       $("#qLearn").addEventListener("click", e => openDrawer(q.a.id, e.currentTarget));
       $("#qNext").focus();

@@ -6,7 +6,8 @@ on:
     branches: [main]
     paths:
       - "site/**"
-      - "scripts/build-sw.mjs"
+      - "scripts/**"
+      - "i18n/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -29,6 +30,9 @@ jobs:
       - uses: actions/checkout@v4
       # Stamp CSS/JS links with content fingerprints and rebuild the offline file list,
       # so visitors never get a new page with an old stylesheet.
+      # Spanish/Hindi language files, then the search-friendly machine pages, sitemap and robots.txt.
+      - name: Build translations and SEO pages
+        run: node scripts/build-i18n.mjs && node scripts/build-pages.mjs
       - name: Fingerprint assets and build service worker
         run: node scripts/build-sw.mjs
       - uses: actions/configure-pages@v5

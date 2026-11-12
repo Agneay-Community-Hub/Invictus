@@ -96,7 +96,10 @@ export default {
     // between requests, which lets Gemini reuse it (implicit caching).
     const today = new Date().toISOString().slice(0, 10);
     const last = messages[messages.length - 1];
-    last.content = `[Today's date: ${today}]\n${last.content}`;
+    // The site is in English, Spanish or Hindi: answer in the visitor's language.
+    const LANGS = { es: "Spanish (Latin American, simple words for children)", hi: "Hindi (Devanagari script, simple everyday words for school children; keep well-known names like NASA, Apollo and machine names in their usual form)" };
+    const langNote = LANGS[body && body.lang] ? `\n[Answer in ${LANGS[body.lang]}.]` : "";
+    last.content = `[Today's date: ${today}]${langNote}\n${last.content}`;
 
     // Try the main model; if Google says it's busy (503) or over the free limit (429),
     // try the backup model(s). Every model has its own free-tier limit.

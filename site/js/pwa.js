@@ -5,7 +5,7 @@
   addEventListener("load", () => {
     navigator.serviceWorker.register("sw.js").then(reg => {
       // Tell the user once everything has been saved for offline use.
-      const done = () => { try { if (!localStorage.getItem("goe:offlineReady")) { localStorage.setItem("goe:offlineReady", "1"); note("Saved for offline use — this site now works without internet."); } } catch { } };
+      const done = () => { try { if (!localStorage.getItem("goe:offlineReady")) { localStorage.setItem("goe:offlineReady", "1"); note((window.t || ((k, f) => f))("pwa.saved", "Saved for offline use — this site now works without internet.")); } } catch { } };
       if (reg.active && !reg.installing) return;
       const w = reg.installing || reg.waiting;
       if (w) w.addEventListener("statechange", () => { if (w.state === "activated") done(); });
@@ -24,7 +24,7 @@
     // Small, dismissible, and only offered once per visit.
     try { if (sessionStorage.getItem("goe:noInstall")) return document.createElement("button"); } catch { }
     const wrap = document.createElement("div"); wrap.className = "install-float";
-    wrap.innerHTML = `<button class="btn btn-small" type="button">📲 Install app</button><button class="install-x" type="button" aria-label="Dismiss">✕</button>`;
+    wrap.innerHTML = `<button class="btn btn-small" type="button">${(window.t || ((k, f) => f))("pwa.install", "📲 Install app")}</button><button class="install-x" type="button" aria-label="Dismiss">✕</button>`;
     const [b, x] = wrap.querySelectorAll("button");
     const close = () => { wrap.remove(); try { sessionStorage.setItem("goe:noInstall", "1"); } catch { } };
     x.addEventListener("click", close); setTimeout(close, 12000);

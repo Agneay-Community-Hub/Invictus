@@ -16,11 +16,25 @@ python serve.py
 ```
 Then open http://localhost:5173. The server turns off browser caching.
 
-**After adding, removing or renaming files in `site/`**, rebuild the offline file list:
+**Before previewing locally**, build the language files and search-friendly pages, then the offline file list (GitHub Pages runs these automatically on every deploy):
 
 ```bash
-node scripts/build-sw.mjs
+node scripts/build-i18n.mjs && node scripts/build-pages.mjs && node scripts/build-sw.mjs
 ```
+
+## Languages: English, Español, हिंदी
+
+The main page has a language switcher (EN / ES / हिं). It remembers the choice and also works as a link: `index.html?lang=es` or `?lang=hi`.
+
+- **What's translated:** menus, headings, buttons, the settings panel, every machine's story, ghost log, epitaph, fun fact and quiz clue, the Ghost Logs chapters, status labels and world names. Read-aloud uses a Spanish or Hindi voice, and the AI guide on the Ask page answers in the chosen language. The "Scientist" level text, instrument lists, dates and photo captions stay in English.
+- **Editing translations:** change the JSON files in `i18n/es/` and `i18n/hi/` (`ui.json` for the interface, `m1–m3.json` for the machines), then run `node scripts/build-i18n.mjs`. It reports anything missing.
+- **Review:** the Spanish and Hindi were drafted with AI help. Please have a fluent speaker check them before relying on them.
+
+## Search engines (SEO)
+
+The dossiers open with `#` links, which search engines barely index, so `scripts/build-pages.mjs` also writes a plain, fast page for every machine in all three languages: 147 pages in `site/machines/`, plus an index page per language ("All 49 machines", linked in the footer). Each page has its own title, description, canonical link, `hreflang` language alternates, Open Graph image (the machine's NASA photo) and schema.org structured data (Article, BreadcrumbList, educational audience, citations). The script also writes `sitemap.xml` (159 URLs with language alternates and images), `robots.txt`, and the home page's structured data (WebSite, LearningResource and an ItemList of all machines).
+
+To get indexed faster, add the site to [Google Search Console](https://search.google.com/search-console) and submit `https://agneay-community-hub.github.io/PROJECT-AREA-51/sitemap.xml`. (A project site's `robots.txt` is not at the domain root, so search engines find the sitemap through Search Console or the links between pages rather than through `robots.txt`.)
 
 ## Live site
 
