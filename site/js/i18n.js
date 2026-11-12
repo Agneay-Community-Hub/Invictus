@@ -26,6 +26,13 @@
     if (m.discoveries) { a._en.discoveries = a.discoveries; a.discoveries = m.discoveries; }
   });
 
+  // "Opportunity, up close" (js/oppy-data.js)
+  if (D.oppy && typeof OPPY !== "undefined") {
+    (D.oppy.moments || []).forEach((m, k) => { if (OPPY.moments[k]) Object.assign(OPPY.moments[k], m); });
+    (D.oppy.stops || []).forEach((n, k) => { if (OPPY.stops[k]) OPPY.stops[k].name = n; });
+    OPPY.parts.forEach(p => Object.assign(p, (D.oppy.parts || {})[p.id] || {}));
+  }
+
   // ---- static page text: elements marked data-i / data-i-ph / data-i-al ----
   const apply = () => {
     document.querySelectorAll("[data-i]").forEach(el => { const v = D.ui[el.dataset.i]; if (v != null) el.innerHTML = v; });

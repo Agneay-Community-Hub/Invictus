@@ -370,12 +370,14 @@
           ${hasModel(a.id) ? `<button class="btn btn-small" data-model="${a.id}">🧊 Spin the NASA 3D model</button>` : ""}
           ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">${t("d.see3dDeep", "See it in 3D deep space →")}</a>`}
           ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">🚀 Try landing it yourself</a>` : ""}
+          ${a.id === "opportunity" || a.id === "spirit" ? `<a class="btn btn-small btn-upclose" href="#upclose" data-upclose>🔍 ${t("d.upclose", "Opportunity, up close: her life and insides")}</a>` : ""}
           <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">💬 Ask about ${esc(a.name)}</a>
           ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">${t("d.nasaLib", "Open in NASA library ↗")}</a>` : ""}
         </div>
       </div>`;
     $("#drawerBody").scrollTop = 0;
     bindTn($("#drawerBody"));
+    $("#drawerBody [data-upclose]")?.addEventListener("click", () => closeDrawer());
     if (typeof SOUNDS !== "undefined") bindSounds($("#drawerBody"));
     // "How it worked" animation(s)
     if (howList.length) {

@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
-  <link rel="stylesheet" href="css/style.css?v=cc77db4a">
+  <link rel="stylesheet" href="css/style.css?v=658e770b">
   <link rel="icon" href="assets/ui/star.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
@@ -202,6 +202,21 @@
       </header>
       <div class="chapter-nav" id="chapterNav" role="tablist" aria-label="Chapters"></div>
       <article class="chapter" id="chapter" aria-live="polite"></article>
+    </section>
+
+    <!-- ============ OPPORTUNITY, UP CLOSE ============ -->
+    <section class="section oppy" id="upclose" aria-labelledby="oppyTitle">
+      <header class="sec-head">
+        <p class="eyebrow" data-i="oppy.eyebrow">Up close</p>
+        <h2 id="oppyTitle" data-i="oppy.title">Opportunity: a life in 14 moments</h2>
+        <p data-i="oppy.desc">Built to last 90 days, she explored Mars for more than 14 years. Step through her life with her own memories of each moment, then put on the X-ray goggles and look inside her.</p>
+      </header>
+      <div class="oppy-tabs seg" role="tablist" aria-label="Opportunity, up close">
+        <button role="tab" aria-selected="true" aria-controls="oppyLife" id="oppyTabLife" data-i="oppy.tabLife">📅 Her life</button>
+        <button role="tab" aria-selected="false" aria-controls="oppyBody" id="oppyTabBody" data-i="oppy.tabBody">🔬 Inside the rover</button>
+      </div>
+      <div id="oppyLife" role="tabpanel" aria-labelledby="oppyTabLife"></div>
+      <div id="oppyBody" role="tabpanel" aria-labelledby="oppyTabBody" hidden></div>
     </section>
 
     <!-- ============ TIMELINE ============ -->
@@ -384,9 +399,11 @@
   <script src="js/records.js?v=8b8adcd6"></script>
   <script src="js/models.js?v=b98b4de6"></script>
   <script src="js/explainers.js?v=88475e9e"></script>
-  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=f255ab4e", hi: "js/i18n/hi.js?v=2b7b3d3f" }[window.GOE_LANG] + '"><\/script>');</script>
-  <script src="js/i18n.js?v=20e029f9"></script>
-  <script src="js/app.js?v=0f9ce902"></script>
+  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=cd73e316", hi: "js/i18n/hi.js?v=41b43d0b" }[window.GOE_LANG] + '"><\/script>');</script>
+  <script src="js/oppy-data.js?v=9eef9b60"></script>
+  <script src="js/i18n.js?v=209e531b"></script>
+  <script src="js/app.js?v=b94febcc"></script>
+  <script src="js/oppy.js?v=54cf126a"></script>
   <script src="js/pwa.js?v=68dca921"></script>
 </body>
 </html>
