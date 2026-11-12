@@ -1,6 +1,9 @@
 /* ===========================================================
    Ghosts of Exploration — styles
    =========================================================== */
+/* Fallback faces sized to match the web fonts, so text doesn't jump when the real fonts arrive. */
+@font-face { font-family: "Atkinson Fallback"; src: local("Arial"), local("ArialMT"), local("Helvetica"), local("Roboto"); size-adjust: 97.3%; ascent-override: 97.6%; descent-override: 29.8%; line-gap-override: 0%; }
+@font-face { font-family: "Grotesk Fallback"; font-weight: 400 900; src: local("Arial Bold"), local("Arial-BoldMT"), local("Arial"), local("Roboto"); size-adjust: 101%; ascent-override: 97%; descent-override: 28.7%; line-gap-override: 0%; }
 :root {
   --bg: #060a13;
   --bg2: #0b1120;
@@ -10,7 +13,7 @@
   --line2: #2f4166;
   --text: #e9eef7;
   --muted: #9eabc2;
-  --dim: #6f7d96;
+  --dim: #7e8ca6;
   --amber: #ffb347;
   --amber2: #ffd08a;
   --cyan: #7fd4ff;
@@ -22,8 +25,8 @@
   --radius-sm: 10px;
   --shadow: 0 20px 50px -20px rgba(0,0,0,.7);
   --fs: 1;
-  --font: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --head: "Space Grotesk", var(--font);
+  --font: "Atkinson Hyperlegible", "Atkinson Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --head: "Space Grotesk", "Grotesk Fallback", var(--font);
   --ls: 0;
   --ws: 0;
   --lh: 1.6;
@@ -40,6 +43,7 @@ body {
 }
 body.spacing { --ls: .03em; --ws: .12em; --lh: 1.85; }
 img { max-width: 100%; display: block; }
+img[src*="assets/ui/"] { object-fit: contain; }
 a { color: var(--cyan); }
 h1, h2, h3, h4 { font-family: var(--head); line-height: 1.15; margin: 0 0 .5em; letter-spacing: -0.01em; }
 p { margin: 0 0 1em; }
@@ -140,8 +144,8 @@ button { font: inherit; color: inherit; }
 }
 .world-card:hover { border-color: var(--line2); transform: translateY(-2px); }
 .globe { width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0; background-size: 200% 100%; box-shadow: inset -8px -6px 14px rgba(0,0,0,.65), 0 0 16px rgba(255,255,255,.08); animation: rotate 30s linear infinite; }
-.globe.moon { background-image: url(../assets/maps/moon.jpg); }
-.globe.mars { background-image: url(../assets/maps/mars.jpg); }
+.globe.moon { background-image: url(../assets/maps/moon-sm.jpg); }
+.globe.mars { background-image: url(../assets/maps/mars-sm.jpg); }
 .globe.deep { background: radial-gradient(circle at 50% 50%, #fff 0 4%, #8fb8ff 10%, #1b2a4d 45%, #070b14 70%); animation: none; }
 .world-card b { display: block; font-family: var(--head); }
 .world-card small { color: var(--muted); font-size: .8rem; }

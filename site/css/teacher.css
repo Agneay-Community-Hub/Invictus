@@ -36,7 +36,7 @@
 .methods { list-style: none; padding: 0; margin: 10px 0; } .methods li { margin: 6px 0; } .methods b { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #ffe9c6; margin-right: 6px; }
 .chart-grid { border-left: 2px solid #333; border-bottom: 2px solid #333; padding: 6px 0; margin: 8px 0 12px; background-image: linear-gradient(90deg, #ddd 1px, transparent 1px); background-size: 8% 100%; }
 .cg-row { display: flex; align-items: center; height: 34px; } .cg-label { width: 130px; border-bottom: 1px solid #888; height: 22px; margin: 0 8px; }
-#keyBox h4 { margin: 16px 0 6px; } #keyBox ol { padding-left: 1.4em; } #keyBox li { margin: 4px 0; }
+#keyBox h3 { font-size: 1.05rem;  margin: 16px 0 6px; } #keyBox ol { padding-left: 1.4em; } #keyBox li { margin: 4px 0; }
 
 /* class quiz */
 .cq { background: var(--panel); border: 1px solid var(--line2); border-radius: 22px; padding: clamp(18px, 3vw, 34px); }

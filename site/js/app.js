@@ -441,7 +441,7 @@
   function initChapters() {
     $("#chapterNav").innerHTML = CHAPTERS.map((c, i) => {
       const a = byId[c.id];
-      return `<button role="tab" data-i="${i}" aria-selected="${i === 0}" class="${progress.chapters.includes(c.id) ? "read" : ""}">${cover(a) ? `<img src="${cover(a)}" alt="">` : ""}${i + 1}. ${esc(a.name)}</button>`;
+      return `<button role="tab" data-i="${i}" aria-selected="${i === 0}" class="${progress.chapters.includes(c.id) ? "read" : ""}">${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : ""}${i + 1}. ${esc(a.name)}</button>`;
     }).join("");
     $$("#chapterNav button").forEach(b => b.addEventListener("click", () => { chapter = +b.dataset.i; renderChapter(true); }));
     const sec = $("#logs");
@@ -457,7 +457,7 @@
     stopSpeech();
     const isSci = prefs.level === "scientist";
     $("#chapter").innerHTML = `
-      <div class="ch-media">${cover(a) ? `<img src="${cover(a)}" alt="${esc(a.media[0].cap)}">` : ""}<span class="ch-num">${String(chapter + 1).padStart(2, "0")}</span></div>
+      <div class="ch-media">${cover(a) ? `<img src="${cover(a)}" alt="${esc(a.media[0].cap)}" decoding="async">` : ""}<span class="ch-num">${String(chapter + 1).padStart(2, "0")}</span></div>
       <div class="ch-text">
         <p class="eyebrow">${esc(c.kicker)} · ${esc(a.name)}</p>
         <h3>${esc(c.title)}</h3>
@@ -522,7 +522,7 @@
       ${ticks.map(t => `<div class="tick" style="left:${X(t)}%"><span>${t} AU</span></div>`).join("")}
       <div class="body" style="left:0"><i style="width:22px;height:22px;background:radial-gradient(#fff6c8,#ffb347);box-shadow:0 0 18px #ffb347"></i><span>Sun →</span></div>
       ${bodies.map(([n, au, s, c], i) => `<div class="body" style="left:${X(au)}%"><i style="width:${s}px;height:${s}px;background:${c}"></i><span style="top:${i % 2 ? 34 : 18}px">${n}</span></div>`).join("")}
-      ${probes.map((p, i) => `<button class="probe" style="left:${X(p.au)}%;--c:${STATUS[p.a.status].color};--h:${heights[i]}px;bottom:93px" data-id="${p.a.id}" aria-label="${esc(p.a.name)}, about ${p.au.toFixed(0)} AU">
+      ${probes.map((p, i) => `<button class="probe" style="left:${X(p.au)}%;--c:${STATUS[p.a.status].color};--h:${heights[i]}px;bottom:93px" data-id="${p.a.id}">
         <b>${esc(p.a.name)}</b><small>~${p.au.toFixed(0)} AU</small><span class="pdot"></span></button>`).join("")}`;
     $("#ruler").setAttribute("aria-label", "Distances from the Sun: " + probes.map(p => `${p.a.name} about ${p.au.toFixed(0)} AU`).join(", "));
     $$("#ruler .probe").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
@@ -627,7 +627,7 @@
     BADGES.forEach(b => {
       if (e[b.id] && !progress.badges.includes(b.id)) { progress.badges.push(b.id); saveProgress(); toast(b.icon, `Badge earned: <b>${esc(b.name)}</b>`); }
     });
-    $("#badgeCount").textContent = progress.badges.length;
+    $("#badgeCount").textContent = progress.badges.length; $("#passportBtn").setAttribute("aria-label", `Open explorer passport, ${progress.badges.length} badges`);
     renderPassport();
   }
   function renderPassport() {

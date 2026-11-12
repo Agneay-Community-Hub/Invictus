@@ -56,7 +56,7 @@
   function renderMenu() {
     $("#lgLevels").innerHTML = LEVELS.map((L, i) => `
       <button class="lg-level" data-i="${i}">
-        <span class="lv-top"><span class="lv-globe" style="background-image:url(assets/maps/${L.globe}.jpg)"></span><span><small>Level ${i + 1}</small><br><b>${L.name}</b></span></span>
+        <span class="lv-top"><span class="lv-globe" style="background-image:url(assets/maps/${L.globe}-sm.jpg)"></span><span><small>Level ${i + 1}</small><br><b>${L.name}</b></span></span>
         <p>${L.sub}</p><p>${L.intro}</p>
         <span class="lv-best" aria-label="Best: ${best[L.id] || 0} of 3 stars">${"★".repeat(best[L.id] || 0)}${"☆".repeat(3 - (best[L.id] || 0))}</span>
       </button>`).join("");

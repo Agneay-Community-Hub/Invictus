@@ -5,10 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ghosts of Exploration — Abandoned but not Forgotten</title>
   <meta name="description" content="An interactive story archive of the robots, rovers and hardware NASA left behind on the Moon, Mars and in deep space.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Ghosts of Exploration — Abandoned but not Forgotten">
+  <meta property="og:description" content="An interactive story archive of the robots, rovers and hardware NASA left behind on the Moon, Mars and in deep space.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ghosts of Exploration: the Apollo 17 lunar rover parked on the Moon, beside the site title.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=d40fd665">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="css/style.css?v=cf386f8d">
   <link rel="icon" href="assets/ui/star.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
@@ -39,7 +50,7 @@
     </nav>
     <div class="top-actions">
       <a class="btn btn-glow" href="explore.html"><span aria-hidden="true">◎</span> 3D Explore</a>
-      <button class="icon-btn" id="passportBtn" aria-label="Open explorer passport">
+      <button class="icon-btn" id="passportBtn" aria-label="Open explorer passport, 0 badges">
         <img src="assets/ui/trophy.png" alt="" width="26" height="26"><span class="badge-count" id="badgeCount">0</span>
       </button>
       <button class="icon-btn" id="settingsBtn" aria-label="Reading and accessibility settings" aria-expanded="false" aria-controls="settings">
@@ -86,10 +97,14 @@
           <a class="btn" href="#map">Open the Ghost Map</a>
         </div>
         <p class="hero-teacher">Teacher or parent? <a href="teacher.html">Get the free lesson plans, worksheets and class quiz →</a></p>
-        <div class="world-cards" id="worldCards"></div>
+        <div class="world-cards" id="worldCards"><!-- pre-rendered so the hero doesn't jump; app.js refreshes it -->
+          <button class="world-card" data-go="moon"><span class="globe moon" aria-hidden="true"></span><span><b>The Moon</b><small>13 machines · 384,400 km away</small></span></button>
+          <button class="world-card" data-go="mars"><span class="globe mars" aria-hidden="true"></span><span><b>Mars</b><small>12 machines · 55–400 million km away</small></span></button>
+          <button class="world-card" data-go="deep"><span class="globe deep" aria-hidden="true"></span><span><b>Elsewhere</b><small>12 machines · Mercury to interstellar space</small></span></button>
+        </div>
       </div>
       <figure class="hero-photo">
-        <img src="assets/nasa/as17-137-20979.jpg" alt="The Apollo 17 lunar rover parked on the grey lunar surface." width="640" height="640">
+        <img src="assets/nasa/as17-137-20979-800.jpg" alt="The Apollo 17 lunar rover parked on the grey lunar surface." width="640" height="640" fetchpriority="high">
         <figcaption>Lunar Roving Vehicle 3 — parked on the Moon since December 1972. <span class="nasa-id">NASA · as17-137-20979</span></figcaption>
       </figure>
     </section>
@@ -128,7 +143,7 @@
         <div class="map-col">
           <div class="map-wrap" id="mapWrap">
             <div class="map-stage" id="mapStage">
-              <img id="mapImg" src="assets/maps/moon.jpg" alt="" draggable="false">
+              <img id="mapImg" src="assets/maps/moon.jpg" alt="" draggable="false" loading="lazy" decoding="async">
               <div class="map-grid" aria-hidden="true"></div>
               <div class="map-markers" id="mapMarkers"></div>
             </div>
@@ -347,7 +362,7 @@
   <script src="js/data.js?v=6a5d0737"></script>
   <script src="js/models.js?v=b98b4de6"></script>
   <script src="js/explainers.js?v=88475e9e"></script>
-  <script src="js/app.js?v=9c0764a3"></script>
+  <script src="js/app.js?v=0c701b37"></script>
   <script src="js/pwa.js?v=8659e77a"></script>
 </body>
 </html>

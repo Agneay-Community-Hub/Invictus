@@ -96,14 +96,14 @@
 
   function key() {
     $("#keyBox").innerHTML = `
-      <h4>Worksheet 1: Ghost hunt</h4><ol>${HUNT.map(q => `<li>${esc(q[2])}</li>`).join("")}</ol>
-      <h4>Worksheet 3: Planned vs. actual</h4>
+      <h3>Worksheet 1: Ghost hunt</h3><ol>${HUNT.map(q => `<li>${esc(q[2])}</li>`).join("")}</ol>
+      <h3>Worksheet 3: Planned vs. actual</h3>
       <table class="data-table"><thead><tr><th>Machine</th><th>Times longer (rounded)</th></tr></thead><tbody>${PVA.map(r => `<tr><td>${esc(r[0])}</td><td>${Math.round(times(r))}×</td></tr>`).join("")}</tbody></table>
       <p>1. Opportunity (about ${Math.round(times(PVA.find(r => r[0] === "Opportunity")))}× longer). 2. Phoenix (about 2×). 4. Sample answer: space is harsh and you can't repair a spacecraft, so engineers build in safety margins. When things go better than the worst case, missions keep going.</p>
-      <h4>Worksheet 4: Landing methods</h4>
+      <h3>Worksheet 4: Landing methods</h3>
       <p>${LANDERS.map(l => `${esc(l[0])}: <b>${l[1]}</b>`).join(" · ")}</p>
       <p>1. The Moon has no air, so a parachute has nothing to push against. 2. Mars's air is so thin that a parachute still leaves a lander falling far too fast (hundreds of km/h), so rockets are needed for the last part. 4. Mars's gravity (3.71 m/s²) is more than twice the Moon's (1.62 m/s²), so you need more thrust to slow down.</p>
-      <h4>Worksheet 2</h4><p>Any machine is fine. Check that facts match its dossier and that it is written in the first person.</p>`;
+      <h3>Worksheet 2</h3><p>Any machine is fine. Check that facts match its dossier and that it is written in the first person.</p>`;
   }
 
   /* ---- printing a single sheet ---- */
@@ -125,7 +125,7 @@
     renderTeams(); renderQ();
   }
   function renderTeams() {
-    $("#cqTeams").innerHTML = teams.map((t, i) => `<span class="cq-team"><b>${t.n}</b> <span class="cq-score">${t.s}</span><button class="btn btn-small" data-team="${i}" aria-label="Give ${t.n} a point">+1</button></span>`).join("");
+    $("#cqTeams").innerHTML = teams.map((t, i) => `<span class="cq-team"><b>${t.n}</b> <span class="cq-score">${t.s}</span><button class="btn btn-small" data-team="${i}" aria-label="+1 point for ${t.n}">+1</button></span>`).join("");
     $$("[data-team]").forEach(b => b.addEventListener("click", () => { teams[+b.dataset.team].s++; renderTeams(); }));
   }
   function renderQ() {
