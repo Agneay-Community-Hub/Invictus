@@ -88,7 +88,7 @@
     "ex.title": "Vuela alrededor de la Luna y Marte en 3D",
     "ex.desc": "Gira los globos, encuentra las balizas y viaja hasta donde están hoy las Voyager.",
     "ex.btn": "Abrir Explorar en 3D →",
-    "foot.links": "<a href=\"teacher.html\">Material docente</a> · <a href=\"lander.html\">Aterrízalo tú</a> · <a href=\"ask.html\">Pregunta al Archivo</a> · <a href=\"explore.html\">Explorar en 3D</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"browse.html\">Todas las máquinas</a> · <a href=\"compare.html\">Comparar dos máquinas</a> · <a href=\"timeline.html\">Cronología</a> · <a href=\"tracker.html\">Rastreador en vivo</a> · <a href=\"future.html\">Futuros fantasmas</a> · <a href=\"glossary.html\">Glosario</a> · <a href=\"poster.html\">Póster</a> · <a href=\"moon.html\">La Luna esta noche</a> · <a href=\"cards.html\">Cartas Fantasma</a> · <a href=\"signal.html\">Conduce en Marte</a> · <a href=\"voyager.html\">Viaja hasta la Voyager</a> · <a href=\"activities.html\">Hojas de actividades</a> · <a href=\"data.html\">Datos abiertos</a> · <a href=\"library.html\">Fotos, videos y sonidos</a> · <a href=\"landings.html\">Lugares de aterrizaje</a> · <a href=\"catalogue.html\">Catálogo de misiones</a> · <a href=\"adopt.html\">Adopta un fantasma</a> · <a href=\"sources.html\">Fuentes</a> · <a href=\"machines/index.es.html\">Las 49 máquinas</a>",
+    "foot.links": "<a href=\"teacher.html\">Material docente</a> · <a href=\"lander.html\">Aterrízalo tú</a> · <a href=\"ask.html\">Pregunta al Archivo</a> · <a href=\"explore.html\">Explorar en 3D</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"browse.html\">Todas las máquinas</a> · <a href=\"compare.html\">Comparar dos máquinas</a> · <a href=\"timeline.html\">Cronología</a> · <a href=\"tracker.html\">Rastreador en vivo</a> · <a href=\"future.html\">Futuros fantasmas</a> · <a href=\"glossary.html\">Glosario</a> · <a href=\"poster.html\">Póster</a> · <a href=\"moon.html\">La Luna esta noche</a> · <a href=\"cards.html\">Cartas Fantasma</a> · <a href=\"signal.html\">Conduce en Marte</a> · <a href=\"probe.html\">Construye una sonda</a> · <a href=\"voyager.html\">Viaja hasta la Voyager</a> · <a href=\"activities.html\">Hojas de actividades</a> · <a href=\"data.html\">Datos abiertos</a> · <a href=\"library.html\">Fotos, videos y sonidos</a> · <a href=\"landings.html\">Lugares de aterrizaje</a> · <a href=\"catalogue.html\">Catálogo de misiones</a> · <a href=\"adopt.html\">Adopta un fantasma</a> · <a href=\"sources.html\">Fuentes</a> · <a href=\"machines/index.es.html\">Las 49 máquinas</a>",
     "foot.made": "Hecho para el NASA Space Apps Challenge 2026: “Abandonados, pero no olvidados”.",
     "foot.credits": "Créditos",
     "foot.creditsText": "Fotos y videos: Biblioteca de Imágenes y Videos de la NASA (dominio público). Mapa lunar: NASA SVS CGI Moon Kit (datos de LRO). Texturas de Marte y estrellas: Solar System Scope (CC BY 4.0). Insignias: paquete Fantasy RPG UI Kit. Sistema solar 3D en vivo: Eyes on the Solar System de la NASA (NASA/JPL-Caltech).",
@@ -258,7 +258,9 @@
     "tour.no": "No, gracias",
     "xm.eyebrow": "Explora más",
     "xm.title": "Más formas de explorar",
-    "xm.desc": "Juegos, datos en vivo, cosas para imprimir y herramientas para proyectos. <a href=\"#top\" data-tour>O haz el recorrido de un minuto.</a>"
+    "xm.desc": "Juegos, datos en vivo, cosas para imprimir y herramientas para proyectos. <a href=\"#top\" data-tour>O haz el recorrido de un minuto.</a>",
+    "xm.pb": "Construye una sonda",
+    "xm.pbSub": "Diseña una nave y mira cuánto tiempo sobrevive."
   },
   "status": {
     "silent": {

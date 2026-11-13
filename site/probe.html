@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build a probe — Ghosts of Exploration</title>
+  <meta name="description" content="Design your own space probe: choose where it goes, how it is powered, its radio dish and protection, then launch and see how long it lasts.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Build a probe — Ghosts of Exploration">
+  <meta property="og:description" content="Design a space probe and see if it survives.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/probe.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/probe.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=0d5e4da5">
+  <link rel="stylesheet" href="css/catalogue.css?v=2747892f">
+  <link rel="icon" href="assets/ui/bolt.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="cat-page">
+  <a class="skip" href="#pbName">Skip to the content</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>Build a probe</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#map">Ghost Map</a></li>
+        <li><a href="browse.html">All machines</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="timeline.html">Timeline</a></li>
+        <li><a href="tracker.html">Live tracker</a></li>
+        <li><a href="library.html">Photos, videos, sounds</a></li>
+        <li><a href="landings.html">Landing sites</a></li>
+        <li><a href="catalogue.html">Mission catalogue</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cat-wrap" id="main">
+    <section class="cat-hero">
+      <p class="eyebrow">A design game</p>
+      <h1>Build a probe</h1>
+      <p class="lede">You have 9 coins. Choose where your probe goes, what powers it, how it talks to Earth and how it stays safe. Then launch it and find out how long it lasts, and which real machine made the same choices.</p>
+    </section>
+    <div class="pb-form">
+      <div class="pb-budget" id="pbBudgetBox"><span>Coins left</span><b id="pbCoins">9</b><i id="pbBudget"></i><p id="pbHint" aria-live="polite"></p></div>
+      <label class="pb-name">Name your probe <input id="pbName" type="text" maxlength="30" placeholder="Your probe" autocomplete="off"></label>
+      <fieldset><legend><span>1</span> Where is it going?</legend><div class="pb-opts" id="pbDest"></div></fieldset>
+      <fieldset><legend><span>2</span> What powers it?</legend><div class="pb-opts" id="pbPower"></div></fieldset>
+      <fieldset><legend><span>3</span> How does it talk to Earth?</legend><div class="pb-opts" id="pbDish"></div></fieldset>
+      <fieldset><legend><span>4</span> Protection (pick any)</legend><div class="pb-opts" id="pbExtra"></div></fieldset>
+      <button type="button" class="btn btn-primary pb-launch" id="pbLaunch" disabled><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg> Launch!</button>
+    </div>
+    <section class="pb-out" id="pbOut" hidden aria-live="polite"></section>
+    <p class="tr-fine">A simple model, not a real mission planner: real probes balance many more things, like weight, rockets and years of testing. But the big trade-offs here are the real ones.</p>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div><p><a href="index.html">← Back to the archive</a> · Photos: NASA Image and Video Library (public domain; NASA does not endorse this project).</p></div>
+  </footer>
+
+  <script src="js/icons.js?v=ed5e4fdc"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/probe.js?v=0285debb"></script>
+  <script src="js/search.js?v=64a4c6ae"></script>
+  <script src="js/glossary.js?v=f39d5e4e"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>
