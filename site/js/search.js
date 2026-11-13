@@ -24,6 +24,7 @@
     ["The Moon tonight", "moon.html", "moon", "phase full new sunlight apollo sites today sky"],
     ["Ghost Cards", "cards.html", "award", "card game trading top battle play print deck"],
     ["Drive on Mars: signal delay", "signal.html", "play", "game rover drive delay radio light minutes challenge"],
+    ["Last Light from Voyager (podcast)", "podcast.html", "speaker", "podcast audio listen episodes instruments voyager kids cosmic ray magnetometer plasma camera"],
     ["Ghost Comics", "comics.html", "book", "comic graphic novel story viking facing the wrong way read flip"],
     ["Build a probe", "probe.html", "rocket", "design spacecraft game power solar nuclear rtg antenna engineer"],
     ["Scroll to Voyager", "voyager.html", "rocket", "scale solar system distance size how far"],

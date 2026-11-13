@@ -1,0 +1,190 @@
+/* ===========================================================
+   Podcast player (podcast.html). There are no recordings yet, so the
+   episodes are performed live by the browser: each character gets its
+   own voice settings, sound effects are made with Web Audio, and the
+   transcript highlights each line as it plays. Progress and quiz
+   answers are kept in this browser.
+   =========================================================== */
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const EP = PODCAST.episodes;
+  const KEY = "goe-podcast";
+  const store = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })();
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch { } };
+  store.done ??= {}; store.quiz ??= {};
+
+  // ---- voices: one per character, plus a different pitch for each instrument ----
+  const NAME = { N: null, V: "Voyager", T: "Flight team", K: "Listener question" };
+  let voices = [];
+  const loadVoices = () => { voices = speechSynthesis.getVoices().filter(v => /^en(-|_|$)/i.test(v.lang)); };
+  if ("speechSynthesis" in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+  const nice = re => voices.find(v => re.test(v.name));
+  function voiceFor(sp, i) {
+    const pool = voices.length ? voices : [null];
+    const pick = {
+      N: nice(/natural|aria|jenny|samantha|google us/i) || pool[0],
+      V: nice(/guy|daniel|david|google uk english male|fred/i) || pool[1 % pool.length],
+      T: nice(/ryan|mark|alex|google uk english female|zira/i) || pool[2 % pool.length],
+      K: nice(/ana|child|kid|libby|sonia|susan|google uk english female/i) || pool[3 % pool.length]
+    }[sp];
+    const pitch = { N: .85 + (i % 5) * .12, V: .6, T: 1, K: 1.45 }[sp], rate = { N: .96, V: .86, T: 1.02, K: 1.05 }[sp];
+    return { voice: pick, pitch, rate };
+  }
+
+  // ---- sound effects, made on the fly ----
+  let ac = null;
+  const ctx = () => (ac ??= new (window.AudioContext || window.webkitAudioContext)());
+  function tone(type, f0, f1, dur, vol = .15, when = 0) {
+    const c = ctx(), o = c.createOscillator(), g = c.createGain(), t = c.currentTime + when;
+    o.type = type; o.frequency.setValueAtTime(f0, t); if (f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur + .05);
+  }
+  function noise(dur, vol = .12, freq = 1800, q = .7) {
+    const c = ctx(), b = c.createBuffer(1, c.sampleRate * dur, c.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+    s.buffer = b; f.type = "bandpass"; f.frequency.value = freq; f.Q.value = q; g.gain.value = vol;
+    s.connect(f).connect(g).connect(c.destination); s.start();
+  }
+  const SFX = {
+    jingle: () => { [523, 659, 784, 1047].forEach((f, i) => tone("triangle", f, 0, .5, .12, i * .16)); return 1100; },
+    beep: () => { tone("sine", 880, 0, .15, .14); tone("sine", 880, 0, .15, .14, .25); return 600; },
+    click: () => { tone("square", 220, 60, .12, .1); noise(.08, .1, 3000); return 700; },
+    static: () => { noise(.9, .09, 2400, .4); return 900; },
+    sweep: () => { tone("sine", 2600, 420, 1.8, .12); tone("sine", 1800, 300, 1.6, .06, .3); return 2100; },
+    hum: () => { tone("sawtooth", 70, 72, 1.6, .05); tone("sine", 140, 140, 1.6, .05); return 1500; },
+    boom: () => { tone("sine", 120, 30, 1, .3); noise(.6, .15, 400); return 1000; },
+    wind: () => { noise(2, .1, 500, .3); return 1800; }
+  };
+
+  // ---- the Voyager diagram: where each instrument lives ----
+  const PART = {
+    platform: { x: 318, y: 214, label: "Scan platform" }, boom: { x: 246, y: 186, label: "Science boom" },
+    antennas: { x: 150, y: 70, label: "Radio antennas" }, mag: { x: 52, y: 238, label: "Magnetometer boom" }, dish: { x: 200, y: 92, label: "High-gain dish" }
+  };
+  $("#pdDiagram").innerHTML = `<svg viewBox="0 0 400 300" role="img" aria-label="Voyager, with the instrument you're listening to highlighted">
+    <g fill="none" stroke="#9eabc2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M200 160 L50 250" stroke-width="1.6"/>
+      <path d="M190 150 L120 30 M210 150 L170 20" stroke-width="1.2"/>
+      <path d="M215 172 L330 216"/>
+      <path d="M195 178 L180 268"/><rect x="168" y="262" width="26" height="20" rx="3" transform="rotate(8 181 272)"/>
+      <ellipse cx="200" cy="96" rx="96" ry="30" fill="#142038"/><path d="M200 96 v-30"/><circle cx="200" cy="64" r="4"/>
+      <path d="M176 140 h48 l12 18 -12 18 h-48 l-12 -18z" fill="#2a2f45"/>
+      <rect x="310" y="204" width="34" height="26" rx="4" fill="#2a2f45"/><circle cx="352" cy="214" r="7"/><circle cx="352" cy="228" r="5"/>
+      <circle cx="200" cy="158" r="9" stroke="#ffb347"/>
+    </g>
+    <text x="214" y="166" fill="#ffd08a" font-size="10" font-family="sans-serif">Golden Record</text>
+    <g id="pdHot"></g>
+  </svg>`;
+  function hot(ep) {
+    const p = PART[ep.part];
+    $("#pdHot").innerHTML = `<circle cx="${p.x}" cy="${p.y}" r="22" fill="${ep.color}" opacity=".18"><animate attributeName="r" values="16;26;16" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="${p.x}" cy="${p.y}" r="8" fill="${ep.color}"/><text x="${p.x}" y="${p.y + 40 > 290 ? p.y - 30 : p.y + 40}" text-anchor="middle" fill="${ep.color}" font-size="15" font-weight="700" font-family="sans-serif">${esc(ep.short)} · ${esc(p.label)}</text>`;
+  }
+
+  // ---- episode list ----
+  const isOn = s => /still on|still talks/i.test(s);
+  $("#pdList").innerHTML = EP.map((e, i) => `
+    <li><button type="button" data-ep="${i}" style="--c:${e.color}">
+      <span class="pd-n">${String(i + 1).padStart(2, "0")}</span>
+      <span class="pd-t"><b>${esc(e.name)}</b><small>${esc(e.short)} · Voyager 1: ${esc(e.status.v1)}</small></span>
+      <span class="pd-dot ${isOn(e.status.v1) ? "on" : "off"}" title="${isOn(e.status.v1) ? "Still on" : "Switched off"}"></span>
+      <span class="pd-done" data-done="${e.id}" ${store.done[e.id] ? "" : "hidden"}>✓</span>
+    </button></li>`).join("");
+  $("#pdList").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) { load(+b.dataset.ep); play(); } });
+
+  // a strip of the years each instrument went quiet on Voyager 1
+  const year = s => +(s.match(/\b(19|20)\d\d\b/) || [])[0] || null;
+  // stack labels in rows so close years don't overlap
+  const lastX = [];
+  const ticks = EP.map((e, i) => ({ e, i, y: year(e.status.v1) })).map(t => ({ ...t, x: t.y ? (t.y - 1977) / (2028 - 1977) * 100 : 100 })).sort((a, b) => a.x - b.x)
+    .map(t => { let row = 0; while (lastX[row] != null && t.x - lastX[row] < 8) row++; lastX[row] = t.x; return { ...t, row }; });
+  $("#pdYears").style.height = (Math.max(...ticks.map(t => t.row)) + 1) * 22 + 52 + "px";
+  $("#pdYears").innerHTML = `<div class="pd-axis"><span>1977</span><span>Still on</span></div>` + ticks.map(({ e, i, y, x, row }) =>
+    `<button type="button" class="pd-tick ${y ? "" : "on"}" style="left:${Math.min(x, 97)}%;--c:${e.color};--row:${row}" data-ep="${i}" title="${esc(e.name)}: ${esc(e.status.v1)}">${esc(e.short)}${y ? ` <small>${y}</small>` : ""}</button>`).join("");
+  $("#pdYears").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) { load(+b.dataset.ep); play(); } });
+
+  // ---- the player ----
+  let cur = 0, line = 0, playing = false, token = 0;
+  function load(i) {
+    stop(); cur = i; line = 0;
+    const e = EP[i];
+    $$("#pdList [data-ep]").forEach(b => b.setAttribute("aria-current", String(+b.dataset.ep === i)));
+    $("#pdNow").innerHTML = `<p class="eyebrow" style="color:${e.color}">Episode ${i + 1} of ${EP.length} · ${esc(e.short)}</p><h2>${esc(e.name)}</h2>
+      <p class="pd-unique"><b>Only I could:</b> ${esc(e.unique)}</p>
+      <dl class="pd-status"><div><dt>Voyager 1</dt><dd class="${isOn(e.status.v1) ? "on" : ""}">${esc(e.status.v1)}</dd></div><div><dt>Voyager 2</dt><dd class="${isOn(e.status.v2) ? "on" : ""}">${esc(e.status.v2)}</dd></div></dl>`;
+    $("#pdScript").innerHTML = e.lines.map(([sp, text, o], k) => text ? `<p class="pd-line sp-${sp}" data-l="${k}"><b>${esc(sp === "N" ? e.short : NAME[sp])}</b> ${esc(text)}</p>`
+      : `<p class="pd-line pd-cue" data-l="${k}"><i>[${esc(o?.sfx || "")} sound]</i></p>`).join("");
+    const q = e.challenge, ans = store.quiz[e.id];
+    $("#pdQuiz").innerHTML = `<h3>Mission challenge</h3><p>${esc(q.q)}</p><div class="pd-opts">${q.options.map((o, k) => `<button type="button" data-a="${k}" class="${ans != null && k === q.a ? "right" : ans === k ? "wrong" : ""}">${esc(o)}</button>`).join("")}</div>
+      <p class="pd-qmsg" aria-live="polite">${ans == null ? "" : ans === q.a ? "Correct! Well done." : "Not quite. Listen again for the answer."}</p>
+      <a class="btn btn-small" href="${e.try[0]}">${ico("arrow")} Try this: ${esc(e.try[1])}</a>`;
+    hot(e); progress();
+    history.replaceState(null, "", "#" + e.id);
+  }
+  $("#pdQuiz").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-a]"); if (!b) return;
+    const e = EP[cur], k = +b.dataset.a; store.quiz[e.id] = k; save();
+    $$("#pdQuiz [data-a]").forEach(x => x.className = +x.dataset.a === e.challenge.a ? "right" : x === b ? "wrong" : "");
+    $("#pdQuiz .pd-qmsg").textContent = k === e.challenge.a ? "Correct! Well done." : "Not quite. The right answer is lit up in green.";
+    score();
+  });
+  function score() { const n = EP.filter(e => store.quiz[e.id] === e.challenge.a).length; $("#pdScore").textContent = `${n} of ${EP.length} challenges solved · ${Object.keys(store.done).length} episodes finished`; }
+
+  function progress() {
+    const e = EP[cur], n = e.lines.length;
+    $("#pdBar").style.setProperty("--p", line / n);
+    $$("#pdScript .pd-line").forEach(p => { const k = +p.dataset.l; p.classList.toggle("now", k === line && playing); p.classList.toggle("past", k < line); });
+    $("#pdPlay").innerHTML = playing ? `<span aria-hidden="true">❚❚</span> Pause` : `<span aria-hidden="true">▶</span> ${line ? "Resume" : "Play"}`;
+    $("#pdPlay").setAttribute("aria-pressed", String(playing));
+  }
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  function say(text, sp) {
+    return new Promise(res => {
+      if (!("speechSynthesis" in window)) return res();
+      const u = new SpeechSynthesisUtterance(text), v = voiceFor(sp, cur);
+      if (v.voice) u.voice = v.voice; u.lang = "en-US"; u.pitch = v.pitch; u.rate = v.rate * +$("#pdSpeed").value;
+      u.onend = u.onerror = () => res();
+      speechSynthesis.speak(u);
+    });
+  }
+  async function play() {
+    if (playing) return pause();
+    if (!("speechSynthesis" in window)) { $("#pdWarn").hidden = false; return; }
+    try { ctx().resume(); } catch { }
+    playing = true; const me = ++token; progress();
+    const e = EP[cur];
+    while (line < e.lines.length && playing && me === token) {
+      const [sp, text, o] = e.lines[line];
+      progress();
+      $(`#pdScript [data-l="${line}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      if (o?.sfx && SFX[o.sfx]) { let ms = 0; try { ms = SFX[o.sfx](); } catch { } await wait(text ? Math.min(ms, 700) : ms); }
+      if (text && me === token) await say(text, sp);
+      if (me !== token) return;
+      await wait(260);
+      line++;
+    }
+    if (me !== token) return;
+    playing = false;
+    if (line >= e.lines.length) { store.done[e.id] = 1; save(); $(`[data-done="${e.id}"]`).hidden = false; score(); line = 0; $("#pdQuiz").scrollIntoView({ block: "nearest", behavior: "smooth" }); if ($("#pdAuto").checked && cur < EP.length - 1) { await wait(1500); load(cur + 1); play(); return; } }
+    progress();
+  }
+  function pause() { playing = false; token++; try { speechSynthesis.cancel(); } catch { } progress(); }
+  function stop() { pause(); }
+  $("#pdPlay").addEventListener("click", play);
+  $("#pdBack").addEventListener("click", () => { const was = playing; pause(); line = Math.max(0, line - 1); progress(); if (was) play(); });
+  $("#pdFwd").addEventListener("click", () => { const was = playing; pause(); line = Math.min(EP[cur].lines.length - 1, line + 1); progress(); if (was) play(); });
+  $("#pdScript").addEventListener("click", e => { const p = e.target.closest("[data-l]"); if (!p) return; pause(); line = +p.dataset.l; progress(); play(); });
+  $("#pdPrint").addEventListener("click", () => print());
+  addEventListener("pagehide", pause);
+
+  // start on the episode in the # (e.g. podcast.html#crs), or the first one not yet finished
+  const fromHash = EP.findIndex(e => e.id === location.hash.slice(1));
+  load(fromHash >= 0 ? fromHash : Math.max(0, EP.findIndex(e => !store.done[e.id])));
+  score();
+
+  const nt = $(".nav-toggle"), ul = $("#navlist");
+  nt?.addEventListener("click", () => { const o = ul.classList.toggle("open"); nt.setAttribute("aria-expanded", String(o)); });
+})();

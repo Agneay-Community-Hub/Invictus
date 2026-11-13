@@ -740,3 +740,73 @@ body.cat-page { background:
   .cx-mini.feat { grid-column: span 2; grid-row: span 1; aspect-ratio: auto; min-height: 300px; }
 }
 @media (prefers-reduced-motion: reduce) { .cx-leaf, .cx-book { transition: none !important; } }
+
+/* ---- podcast.html ---- */
+.pd-score { color: var(--amber2); font-weight: 700; margin: 10px 0 0; }
+.pd-years { position: relative; height: 96px; margin: 8px 12px 26px; }
+.pd-axis { position: absolute; left: 0; right: 0; bottom: 18px; border-top: 2px solid var(--line2); display: flex; justify-content: space-between; }
+.pd-axis span { margin-top: 4px; color: var(--dim); font-size: .78rem; }
+.pd-tick { position: absolute; bottom: calc(26px + var(--row) * 22px); transform: translateX(-50%); padding: 1px 7px; border-radius: 999px; border: 1px solid var(--c); background: var(--bg2); color: var(--c); font: 700 .7rem var(--head); cursor: pointer; white-space: nowrap; }
+.pd-tick::after { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: calc(var(--row) * 22px + 8px); background: var(--c); opacity: .5; }
+.pd-tick.on { background: var(--c); color: #060a13; }
+.pd-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
+.pd-player { padding: 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--panel); min-width: 0; }
+.pd-now h2 { margin: 2px 0 6px; font-size: clamp(1.5rem, 3vw, 2.2rem); }
+.pd-unique { margin: 0 0 10px; color: var(--text); }
+.pd-unique b { color: var(--amber2); }
+.pd-status { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 12px; }
+.pd-status div { padding: 8px 12px; border-radius: 12px; background: var(--bg2); border: 1px solid var(--line); }
+.pd-status dt { color: var(--dim); font-size: .78rem; }
+.pd-status dd { margin: 0; font-weight: 700; color: var(--muted); }
+.pd-status dd.on { color: var(--ok); }
+.pd-diagram { max-width: 520px; margin: 0 auto; }
+.pd-diagram svg { width: 100%; height: auto; display: block; }
+.pd-ctrl { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: center; margin: 6px 0 10px; }
+.pd-play { min-width: 140px; font-size: 1.05rem; }
+.pd-speed { font-weight: 700; }
+.pd-speed select { min-height: 38px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); font: inherit; color-scheme: dark; margin-left: 4px; }
+.pd-bar { display: block; height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--amber) calc(var(--p, 0) * 100%), var(--line) 0); margin-bottom: 12px; transition: background .3s; }
+.pd-warn { color: #ffb0b0; }
+.pd-script { max-height: 380px; overflow-y: auto; padding: 4px 10px; border-radius: 14px; background: var(--bg2); border: 1px solid var(--line); scroll-behavior: smooth; }
+.pd-line { margin: 0; padding: 8px 10px; border-radius: 10px; line-height: 1.55; color: var(--muted); cursor: pointer; transition: background .2s, color .2s; }
+.pd-line b { display: inline-block; min-width: 4.5em; color: var(--dim); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+.pd-line.sp-N b { color: var(--amber); } .pd-line.sp-V b { color: var(--deep); } .pd-line.sp-T b { color: var(--cyan); } .pd-line.sp-K b { color: var(--ok); }
+.pd-line.past { color: var(--dim); }
+.pd-line.now { background: rgba(255,179,71,.12); color: var(--text); }
+.pd-line:hover { background: var(--panel2); }
+.pd-cue { color: var(--dim); font-size: .85rem; }
+.pd-quiz { margin-top: 16px; padding: 16px; border-radius: 16px; border: 1px solid rgba(255,179,71,.4); background: linear-gradient(135deg, rgba(255,179,71,.07), transparent 60%); }
+.pd-quiz h3 { margin: 0 0 4px; color: var(--amber2); font-size: 1rem; }
+.pd-quiz > p { margin: 0 0 10px; font-weight: 700; }
+.pd-opts { display: grid; gap: 6px; margin-bottom: 10px; }
+.pd-opts button { text-align: left; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line2); background: var(--panel); color: var(--text); font: inherit; cursor: pointer; }
+.pd-opts button:hover { border-color: var(--amber); }
+.pd-opts .right { border-color: var(--ok); background: rgba(94,230,168,.12); }
+.pd-opts .wrong { border-color: #ff7a7a; background: rgba(255,122,122,.1); }
+.pd-qmsg { min-height: 1.4em; margin: 0 0 10px; color: var(--amber2); font-weight: 700; }
+.pd-side { position: sticky; top: 76px; display: grid; gap: 14px; }
+.pd-side h2 { margin: 0; font-size: 1.2rem; }
+.pd-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 52vh; overflow-y: auto; }
+.pd-list button { display: grid; grid-template-columns: auto 1fr auto auto; gap: 10px; align-items: center; width: 100%; text-align: left; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); border-left: 4px solid var(--c); background: var(--panel); color: var(--text); font: inherit; cursor: pointer; }
+.pd-list button:hover { background: var(--panel2); }
+.pd-list button[aria-current=true] { border-color: var(--c); background: rgba(255,255,255,.05); }
+.pd-n { font: 700 .9rem var(--head); color: var(--dim); }
+.pd-t b { display: block; font-size: .92rem; }
+.pd-t small { color: var(--dim); font-size: .74rem; }
+.pd-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line2); }
+.pd-dot.on { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+.pd-done { color: var(--ok); font-weight: 700; }
+.pd-about { padding: 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel); font-size: .88rem; color: var(--muted); }
+.pd-about h3 { margin: 0 0 4px; font-size: .95rem; color: var(--text); }
+.pd-about p { margin: 0 0 10px; }
+@media (max-width: 900px) { .pd-grid { grid-template-columns: 1fr; } .pd-side { position: static; } .pd-years { height: 110px; } .pd-tick { font-size: .62rem; padding: 0 5px; } }
+@media print {
+  body:has(.pd-grid) .topbar, body:has(.pd-grid) .footer, body:has(.pd-grid) .no-print, body:has(.pd-grid) .pd-diagram, body:has(.pd-grid) .pd-bar { display: none !important; }
+  body:has(.pd-grid), body:has(.pd-grid) main { background: #fff !important; color: #111 !important; }
+  .pd-grid { display: block; } .pd-player { border: 0; background: #fff; padding: 0; }
+  .pd-now h2, .pd-unique, .pd-status dd { color: #111 !important; }
+  .pd-script { max-height: none; overflow: visible; background: #fff; border: 0; }
+  .pd-line { color: #111 !important; background: none !important; }
+  .pd-line b { color: #555 !important; }
+}
+.pd-tick small { font-weight: 400; opacity: .75; }
