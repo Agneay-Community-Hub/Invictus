@@ -901,3 +901,20 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
   .marker { width: 44px; height: 44px; margin: -22px 0 0 -22px; }
   .marker::after { inset: 7px; }
 }
+
+/* ---------- 3D Worlds (Prasanna's app) ---------- */
+.worlds3d .w3d-desc { color: var(--muted); max-width: 70ch; }
+.w3d-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 12px; margin-top: 18px; }
+.w3d-card {
+  display: grid; grid-template-columns: auto 1fr; grid-template-areas: "i b" "i s"; gap: 2px 12px; align-items: center;
+  padding: 16px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line2); color: var(--text); text-decoration: none;
+  transition: border-color .2s, transform .15s, background .2s; min-height: 44px;
+}
+.w3d-card:hover, .w3d-card:focus-visible { border-color: var(--amber); background: var(--panel2); transform: translateY(-2px); }
+.w3d-card.moon { background: linear-gradient(135deg, rgba(207,216,227,.12), var(--panel) 60%); }
+.w3d-card.mars { background: linear-gradient(135deg, rgba(255,138,92,.16), var(--panel) 60%); }
+.w3d-ico { grid-area: i; font-size: 1.6rem; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 12px; background: var(--bg2); }
+.w3d-card b { grid-area: b; font-family: var(--head); font-size: 1.05rem; }
+.w3d-card small { grid-area: s; color: var(--muted); font-size: .85rem; line-height: 1.4; }
+.w3d-note { color: var(--dim); font-size: .85rem; margin-top: 12px; }
+.btn-w3d { border-color: rgba(255,179,71,.55); }

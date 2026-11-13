@@ -41,3 +41,8 @@ site/js/i18n/
 site/machines/
 site/sitemap.xml
 site/robots.txt
+
+# Prasanna's 3D app (atlas/): built into site/atlas by scripts/build-atlas.mjs, never committed
+atlas/node_modules/
+atlas/unity-cache/
+site/atlas/

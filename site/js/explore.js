@@ -334,6 +334,7 @@ function openCard(a) {
       <div class="row">
         <a class="btn btn-primary btn-small" href="index.html#artifact=${a.id}">Open full dossier</a>
         ${window.hasModel && hasModel(a.id) ? `<button class="btn btn-small" id="xModel">🧊 3D model</button>` : ""}
+        ${typeof ATLAS_SITES !== "undefined" && ATLAS_SITES[a.id] ? `<a class="btn btn-small" data-atlas="site:${ATLAS_SITES[a.id]}" href="atlas/index.html?go=site&amp;id=${ATLAS_SITES[a.id]}">🚶 Walk there</a>` : ""}
         <button class="btn btn-small" id="xSpeak" aria-pressed="false">🔊 Read aloud</button>
       </div>
     </div>`;

@@ -384,6 +384,8 @@
         <div class="d-links">
           ${hasModel(a.id) ? `<button class="btn btn-small" data-model="${a.id}">🧊 Spin the NASA 3D model</button>` : ""}
           ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">${t("d.see3dDeep", "See it in 3D deep space →")}</a>`}
+          ${typeof ATLAS_SITES !== "undefined" && ATLAS_SITES[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="site:${ATLAS_SITES[a.id]}" href="atlas/index.html?go=site&amp;id=${ATLAS_SITES[a.id]}">🚶 ${t("d.walk3d", "Walk there in 3D")}</a>` : ""}
+          ${typeof ATLAS_RELIVE !== "undefined" && ATLAS_RELIVE[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="relive:${ATLAS_RELIVE[a.id]}" href="atlas/index.html?go=relive&amp;id=${ATLAS_RELIVE[a.id]}">▶ ${t("d.relive3d", "Relive the mission in 3D")}</a>` : ""}
           ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">🚀 Try landing it yourself</a>` : ""}
           ${a.id === "opportunity" || a.id === "spirit" ? `<a class="btn btn-small btn-upclose" href="#upclose" data-upclose>🔍 ${t("d.upclose", "Opportunity, up close: her life and insides")}</a>` : ""}
           <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">💬 Ask about ${esc(a.name)}</a>

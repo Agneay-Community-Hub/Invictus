@@ -25,7 +25,7 @@ for (const p of pagesToStamp) {
   after = after.replace(/"(js\/i18n\/[\w-]+\.js)(?:\?v=\w+)?"/g, (m, rel) => { try { stamped++; return `"${rel}?v=${fingerprint(rel)}"`; } catch { return m; } });
   if (after !== before) writeFileSync(p, after);
 }
-const SKIP = [/^sw\.js$/, /^assets\/models\//, /^assets\/maps\/hd\//, /^machines\//, /^js\/i18n\//, /^sitemap\.xml$/, /^robots\.txt$/]; // hd = optional NASA JPL mode textures // 3D models are large: cached the first time someone opens them
+const SKIP = [/^atlas\//, /^sw\.js$/, /^assets\/models\//, /^assets\/maps\/hd\//, /^machines\//, /^js\/i18n\//, /^sitemap\.xml$/, /^robots\.txt$/]; // hd = optional NASA JPL mode textures // 3D models are large: cached the first time someone opens them
 const files = [];
 (function walk(dir) {
   for (const name of readdirSync(dir)) {
@@ -61,6 +61,8 @@ self.addEventListener("fetch", e => {
   // Never cache video/audio streams (large files with range requests).
   if (/\\.(mp4|mp3|wav|m4a)$/i.test(url.pathname) || req.headers.has("range")) return;
   const same = url.origin === location.origin;
+  // The teammate 3D app (atlas/) manages its own large files (the Unity player is ~100 MB): leave it to the network.
+  if (same && url.pathname.includes("/atlas/")) return;
   if (same && (req.mode === "navigate" || FRESH.test(url.pathname))) {
     // Network first, so updates show up straight away; fall back to the saved copy offline.
     // cache: "no-cache" makes the browser re-check with the server instead of reusing
