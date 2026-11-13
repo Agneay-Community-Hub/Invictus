@@ -827,3 +827,16 @@ body.cat-page { background:
 .pd-photo img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 .pd-photo figcaption { padding: 8px 12px; font-size: .85rem; color: var(--muted); }
 .pd-photo figcaption b { color: var(--c); margin-right: 4px; }
+
+/* ---- Ghost Shorts strip (comics.html) ---- */
+.gs-strip:empty { display: none; }
+.gs-strip { margin: 0 0 26px; }
+.gs-strip h2 { font: 1.6rem "Bangers", var(--head); letter-spacing: .05em; color: var(--amber2); margin: 0 0 10px; }
+.gs-strip h2 small { font: 700 .8rem var(--font); letter-spacing: 0; color: var(--dim); margin-left: 8px; }
+.gs-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.gs-card { position: relative; display: grid; gap: 4px; text-align: left; padding: 0 0 12px; border-radius: 16px; overflow: hidden; border: 3px solid #111; background: #f2ead7; color: #111; cursor: pointer; box-shadow: 5px 5px 0 rgba(0,0,0,.55); font: inherit; }
+.gs-card:hover, .gs-card:focus-visible { transform: translate(-2px,-3px); box-shadow: 8px 9px 0 rgba(0,0,0,.6); }
+.gs-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+.gs-card b { font: 1.3rem "Bangers", var(--head); letter-spacing: .03em; padding: 4px 12px 0; }
+.gs-card small { font: 700 .8rem "Comic Neue", var(--font); color: #555; padding: 0 12px; }
+.gs-play { position: absolute; left: 50%; top: 34%; transform: translate(-50%,-50%); width: 64px; height: 64px; border-radius: 50%; background: rgba(17,17,17,.75); color: #ffd23f; display: grid; place-items: center; font-size: 1.6rem; border: 3px solid #ffd23f; }

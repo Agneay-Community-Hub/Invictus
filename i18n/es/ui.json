@@ -266,7 +266,8 @@
     "d.comic": "Leer su cómic",
     "xm.pd": "Pódcast Ghost Logs",
     "xm.pdSub": "Seis temporadas contadas por instrumentos, y un episodio para cada máquina.",
-    "d.podcast": "Escucha su pódcast"
+    "d.podcast": "Escucha su pódcast",
+    "d.short": "Ver su corto animado"
   },
   "status": {
     "silent": {

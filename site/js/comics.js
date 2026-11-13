@@ -13,6 +13,8 @@
 
   // ---- shelf ----
   function shelf() {
+    if (typeof SHORTS !== "undefined" && Object.keys(SHORTS).length) $("#gsStrip").innerHTML = `<h2>Ghost Shorts <small>cartoon videos, new</small></h2><div class="gs-row">${Object.entries(SHORTS).map(([id, s]) => `
+      <button type="button" class="gs-card" data-short="${id}"><img src="${s.poster}" alt="" loading="lazy"><span class="gs-play" aria-hidden="true">▶</span><b>${esc(s.title)}</b><small>${esc(s.length)} · with subtitles</small></button>`).join("")}</div>`;
     $("#cxShelf").innerHTML = ISSUES.order.map((id, i) => {
       const a = ARTIFACTS.find(x => x.id === id), feat = id === "viking1";
       return `<a class="cx-mini${feat ? " feat" : ""}" href="?issue=${id}" data-w="${a.world}" data-text="${esc((a.name + " " + a.mission + " " + a.year + " " + WORLDS[a.world].name).toLowerCase())}" style="--w:${WORLDS[a.world].color}">
@@ -45,6 +47,7 @@
         ${issue.featured ? `<p class="cx-sol">Today is sol <b>${ISSUES.solsSince(LANDING).toLocaleString("en")}</b> since Viking 1 landed. It has been silent for <b>${(ISSUES.solsSince(LANDING) - 2245).toLocaleString("en")}</b> of them.</p>
           <div class="cx-answer"><button type="button" class="btn btn-small" data-answer>${ico("chat")} Answer it</button><p class="cx-answer-out" hidden aria-live="polite"></p></div>` : ""}
         <div class="cx-back-links">
+          ${typeof SHORTS !== "undefined" && SHORTS[a.id] ? `<button type="button" class="btn btn-small btn-primary" data-short="${a.id}">${ico("play")} Watch the cartoon</button>` : ""}
           <a class="btn btn-small" href="index.html#artifact=${a.id}">${ico("book")} Read the full dossier</a>
           <a class="btn btn-small" href="compare.html?a=${a.id}">${ico("compare")} Compare</a>
           ${next(issue) ? `<a class="btn btn-small btn-primary" href="?issue=${next(issue)}">Next issue ${ico("arrow")}</a>` : ""}
