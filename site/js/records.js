@@ -1,4 +1,4 @@
-/* GENERATED from the Cosmic-Atlas mission catalogue (GuruPrasannaa Manikandan) by a one-off import, 2026-11-12.
+/* GENERATED from the Cosmic-Atlas mission catalogue (our team) by a one-off import, 2026-11-12.
    Sourced records for the dossiers: "What was on board" (instrument lists), "See it from orbit" (HiRISE images)
    and "Sources" (the documents each fact was read from). Edit by hand if needed. */
 const SOURCE_LIST = {

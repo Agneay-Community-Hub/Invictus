@@ -1,4 +1,4 @@
-// Builds "3D Worlds" (Prasanna's app in atlas/) into site/atlas/.
+// Builds "3D Worlds" (the 3D app in atlas/) into site/atlas/.
 // Run from the repo root:  node scripts/build-atlas.mjs
 // First run installs its packages and downloads the ~100 MB Mars Unity player into atlas/unity-cache/ (both git-ignored).
 import { execSync } from "node:child_process";
@@ -12,3 +12,4 @@ const run = cmd => execSync(cmd, { cwd: atlas, stdio: "inherit" });
 if (!existsSync(join(atlas, "node_modules"))) run("npm ci --no-audit --no-fund");
 run("npm run build"); // fetch the pinned Unity player if needed, type-check, then vite build → site/atlas/
 console.log("Built 3D Worlds into site/atlas/");
+execSync("node scripts/build-atlas-data.mjs", { cwd: join(atlas, ".."), stdio: "inherit" }); // site/js/atlas-data.js for catalogue.html and landings.html

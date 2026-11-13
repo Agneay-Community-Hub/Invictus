@@ -6,8 +6,8 @@
  *   atlas/index.html?go=relive&id=apollo-11           relive a mission (RELIVE_SCRIPTS id: apollo-11, mer-opportunity)
  *   atlas/index.html?go=missions | journey&id=moon|mars
  * plus &from=<page to come back to>. The calls are exactly the ones this app's own Home buttons make.
- * Without ?go= it opens on the Missions window (missionsHub): no homepage, no free Solar System view. A "← Ghosts of
- * Exploration" button is always shown.
+ * It is used as a player (playerOnly): one landing site or replay at a time, then back to the main site. A
+ * "← Ghosts of Exploration" button is always shown.
  */
 import { useStore } from '../store/store'
 import { useOpening, skipOpening } from '../opening/openingState'
@@ -39,7 +39,7 @@ function backHref(): string {
       if (u.origin === window.location.origin) return u.href
     } catch { /* ignore a malformed value */ }
   }
-  return new URL('../index.html', window.location.href).href
+  return new URL('../landings.html', window.location.href).href
 }
 
 function addBackButton() {
@@ -73,48 +73,32 @@ function run() {
   switch (go) {
     case 'site': { const s = siteId(id); if (s) leaveForSite(s); break }
     case 'relive': if (RELIVE_SCRIPTS[id]) relive.open(id); break
-    case 'missions': missionControl.open('catalogue', { dest: 'all' }); break
+    case 'missions': useStore.getState().set({ phase: 'explore' }); missionControl.open('relive', { dest: 'all' }); break
     case 'journey': if (id === 'moon' || id === 'mars') expedition.start(id); break
-    // 'solar' and 'tour' (old links) and anything unknown: the Missions window opens on its own (missionsHub)
+    // 'solar', 'tour' (old links) or nothing: there is nothing to show, so playerOnly() returns to the main site
   }
 }
 
 /**
- * Inside Ghosts of Exploration this app has no homepage and no free Solar System view: the Missions window is its
- * starting point. Whenever the visitor isn't at a landing site, in a replay or on an expedition, the Missions window
- * is open (Explore Planet: pick a Moon or Mars site). Closing it takes the visitor back to the main site, because there
- * is nothing behind it to use. CSS (ghosts-theme.css) hides the old homepage so it can never flash on screen.
+ * Inside Ghosts of Exploration this app is a player: the main site lists every landing site (landings.html) and mission
+ * (catalogue.html) and opens one simulation at a time. So there is no homepage, no free Solar System view, and the
+ * Missions window keeps only Relive and Discovered (Explore Planet and Mission Catalogue live on the main site).
+ * Whenever the visitor is not at a landing site, in a replay or on an expedition (they left the site, a replay ended,
+ * or they closed the Missions window), the app returns to the page they came from.
  */
-function missionsHub() {
+function playerOnly() {
   const idle = () => {
     const st = useStore.getState()
     return useOpening.getState().stage === 'done' && !st.surfaceSiteId && !useRelive.getState().id && !expedition.active() && st.phase !== 'travel'
   }
-  let wasOpen = useMissionControl.getState().open
-  let pendingClose = false
-  let reopen = 0
+  let timer = 0
   const check = () => {
-    const open = useMissionControl.getState().open
-    if (wasOpen && !open) {
-      // the window just closed: by the visitor (go back), or because they picked a site, replay or expedition
-      wasOpen = false
-      pendingClose = true
-      setTimeout(() => {
-        pendingClose = false
-        if (idle() && !useMissionControl.getState().open) window.location.href = backHref()
-      }, 400)
-      return
-    }
-    wasOpen = open
-    if (open || pendingClose || !idle()) return
-    // back from a site or a finished replay (or just arrived): show the Missions window again
-    clearTimeout(reopen)
-    reopen = window.setTimeout(() => {
-      if (idle() && !useMissionControl.getState().open && !pendingClose) {
-        if (useStore.getState().phase === 'intro') useStore.getState().set({ phase: 'explore' }) // not the homepage
-        missionControl.open('explore', { dest: 'all' }); wasOpen = true
-      }
-    }, 300)
+    const mc = useMissionControl.getState()
+    // the two tabs that moved to the main site
+    if (mc.tab === 'explore' || mc.tab === 'catalogue') mc.set({ tab: 'relive' })
+    if (mc.open || !idle()) { clearTimeout(timer); timer = 0; return }
+    // a moment's grace: picking a site or replay closes the window just before it starts
+    if (!timer) timer = window.setTimeout(() => { timer = 0; if (idle() && !useMissionControl.getState().open) window.location.href = backHref() }, 500)
   }
   useStore.subscribe(check)
   useOpening.subscribe(check)
@@ -134,7 +118,7 @@ export function initGhostsBridge() {
   // Every visit skips the opening flight (it ends on the homepage, which this site doesn't show).
   try { window.localStorage.setItem('abnf.opening.seen', '1') } catch { /* private mode */ }
   let done = false
-  const start = () => { if (done) return; done = true; setTimeout(() => { if (go) run(); missionsHub() }, 250) }
+  const start = () => { if (done) return; done = true; setTimeout(() => { if (go) run(); playerOnly() }, 250) }
   const check = () => { if (useOpening.getState().stage === 'done') start() }
   const unsub = useOpening.subscribe(() => { check(); if (done) unsub() })
   check()

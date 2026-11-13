@@ -99,3 +99,6 @@
 /* softer keyboard focus on the tabs (no boxy outline), and the floating back link steps aside while the window is open */
 .mc-overlay .mc-tabs [role=tab]:focus-visible { outline: none; background: var(--mc-panel2); border-radius: 8px 8px 0 0; }
 body:has(.mc-overlay) .goe-back { display: none; }
+
+/* Explore Planet and Mission Catalogue moved to the main site (landings.html, catalogue.html) */
+[data-testid="mc-tab-explore"], [data-testid="mc-tab-catalogue"] { display: none !important; }

@@ -88,10 +88,10 @@
     "ex.title": "Vuela alrededor de la Luna y Marte en 3D",
     "ex.desc": "Gira los globos, encuentra las balizas y viaja hasta donde están hoy las Voyager.",
     "ex.btn": "Abrir Explorar en 3D →",
-    "foot.links": "<a href=\"teacher.html\">Material docente</a> · <a href=\"lander.html\">Aterrízalo tú</a> · <a href=\"ask.html\">Pregunta al Archivo</a> · <a href=\"explore.html\">Explorar en 3D</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"atlas/index.html\">Mundos 3D</a> · <a href=\"adopt.html\">Adopta un fantasma</a> · <a href=\"sources.html\">Fuentes</a> · <a href=\"machines/index.es.html\">Las 49 máquinas</a>",
+    "foot.links": "<a href=\"teacher.html\">Material docente</a> · <a href=\"lander.html\">Aterrízalo tú</a> · <a href=\"ask.html\">Pregunta al Archivo</a> · <a href=\"explore.html\">Explorar en 3D</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"landings.html\">Lugares de aterrizaje</a> · <a href=\"catalogue.html\">Catálogo de misiones</a> · <a href=\"adopt.html\">Adopta un fantasma</a> · <a href=\"sources.html\">Fuentes</a> · <a href=\"machines/index.es.html\">Las 49 máquinas</a>",
     "foot.made": "Hecho para el NASA Space Apps Challenge 2026: “Abandonados, pero no olvidados”.",
     "foot.credits": "Créditos",
-    "foot.creditsText": "Fotos y videos: Biblioteca de Imágenes y Videos de la NASA (dominio público). Mapa lunar: NASA SVS CGI Moon Kit (datos de LRO). Texturas de Marte y estrellas: Solar System Scope (CC BY 4.0). Insignias: paquete Fantasy RPG UI Kit. Sistema solar 3D en vivo: Eyes on the Solar System de la NASA (NASA/JPL-Caltech). Mundos 3D: app de nuestro compañero GuruPrasannaa Manikandan.",
+    "foot.creditsText": "Fotos y videos: Biblioteca de Imágenes y Videos de la NASA (dominio público). Mapa lunar: NASA SVS CGI Moon Kit (datos de LRO). Texturas de Marte y estrellas: Solar System Scope (CC BY 4.0). Insignias: paquete Fantasy RPG UI Kit. Sistema solar 3D en vivo: Eyes on the Solar System de la NASA (NASA/JPL-Caltech).",
     "foot.acc": "Nota sobre la exactitud",
     "foot.accText": "Los diarios fantasma están escritos en primera persona para contar la historia, pero cada dato viene de los registros de las misiones de la NASA. Las distancias de las sondas en el espacio profundo son estimaciones. Algunos detalles técnicos se muestran en inglés.",
     "machines": "máquinas",
@@ -176,7 +176,7 @@
     "d.eyesClassic": "Lugar de aterrizaje",
     "chip.all": "Todos",
     "nav.w3d": "Mundos 3D",
-    "w3d.eyebrow": "Mundos 3D · creado por nuestro compañero GuruPrasannaa Manikandan",
+    "w3d.eyebrow": "Mundos 3D",
     "w3d.title": "Párate donde están ellos",
     "w3d.desc": "Camina por los lugares de aterrizaje reales sobre el terreno medido de la Luna y Marte, encuentra el equipo que sigue allí y revive dos misiones desde el lanzamiento hasta su último día. Cada botón cambia a la app 3D; usa “← Ghosts of Exploration” para volver.",
     "w3d.moon": "Camina en la Luna",
@@ -190,12 +190,14 @@
     "w3d.tour": "Recorrido por el Sistema Solar",
     "w3d.tourSub": "Un vuelo guiado junto a los planetas en sus órbitas reales.",
     "w3d.missions": "Registros de misiones",
-    "w3d.missionsSub": "Fechas, equipos y fuentes de cada misión.",
+    "w3d.missionsSub": "Fechas, hitos, equipos y fuentes de 44 misiones.",
     "w3d.note": "Necesita una computadora o un teléfono reciente con gráficos 3D. Los sitios de Marte descargan unos 100 MB la primera vez.",
     "d.walk3d": "Camina allí en 3D",
     "d.relive3d": "Revive la misión en 3D",
     "d.adopt": "Adopta este fantasma",
-    "d.upclose": "Opportunity, de cerca"
+    "d.upclose": "Opportunity, de cerca",
+    "w3d.all": "Los 14 lugares de aterrizaje",
+    "w3d.allSub": "Busca cualquier sitio de la Luna o de Marte y aterriza en él."
   },
   "status": {
     "silent": {

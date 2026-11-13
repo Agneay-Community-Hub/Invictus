@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mission catalogue — Ghosts of Exploration</title>
+  <meta name="description" content="Every mission behind the machines NASA left on the Moon, on Mars and across the solar system: launch, landing and end dates checked against NASA and NSSDCA records, milestones, hardware and sources.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Mission catalogue — Ghosts of Exploration">
+  <meta property="og:description" content="Dates, milestones, hardware and sources for every mission in the archive.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/catalogue.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/catalogue.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=67c11e64">
+  <link rel="stylesheet" href="css/catalogue.css?v=e2198cf2">
+  <link rel="icon" href="assets/ui/book.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="cat-page">
+  <a class="skip" href="#catSearch">Skip to the search</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>Mission catalogue</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#map">Ghost Map</a></li>
+        <li><a href="index.html#archive">Archive</a></li>
+        <li><a href="landings.html">Landing sites</a></li>
+        <li><a href="catalogue.html" class="active" aria-current="page">Mission catalogue</a></li>
+        <li><a href="sources.html">Sources</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cat-wrap" id="main">
+    <section class="cat-hero">
+      <p class="eyebrow">Mission catalogue</p>
+      <h1>Every mission, with its records</h1>
+      <p class="lede" id="catLede">Launch, landing and end dates checked against NASA, NSSDCA and partner-agency records, with each mission's milestones, the hardware it left behind and the documents every fact comes from.</p>
+    </section>
+
+    <div class="cat-tools">
+      <label class="cat-search"><span class="sr-only">Search missions</span>
+        <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg>
+        <input id="catSearch" type="search" placeholder="Search: Apollo, Viking, rover, 1976…" autocomplete="off">
+      </label>
+      <div class="cat-chips" role="group" aria-label="Filter by destination">
+        <button aria-pressed="true" data-f="all">All</button>
+        <button aria-pressed="false" data-f="moon">Moon</button>
+        <button aria-pressed="false" data-f="mars">Mars</button>
+        <button aria-pressed="false" data-f="deep">Elsewhere</button>
+      </div>
+      <p class="cat-count" id="catCount" aria-live="polite"></p>
+    </div>
+
+    <div class="cat-list" id="catList" role="list"></div>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div>
+      <p><a href="index.html">← Back to the archive</a> · Catalogue researched by our team, every fact linked to its source. Dates in UTC unless noted.</p>
+    </div>
+  </footer>
+
+  <script src="js/icons.js?v=7e5968c7"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/atlas-data.js?v=6827b031"></script>
+  <script src="js/atlas-links.js?v=d55edfe7"></script>
+  <script src="js/catalogue.js?v=d3d93772"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>

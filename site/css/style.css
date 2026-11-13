@@ -902,7 +902,7 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
   .marker::after { inset: 7px; }
 }
 
-/* ---------- 3D Worlds (Prasanna's app) ---------- */
+/* ---------- 3D Worlds ---------- */
 .worlds3d .w3d-desc { color: var(--muted); max-width: 70ch; }
 .w3d-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 12px; margin-top: 18px; }
 .w3d-card {

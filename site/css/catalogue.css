@@ -1,0 +1,104 @@
+/* Mission catalogue (catalogue.html) and Landing sites (landings.html) */
+body.cat-page { background:
+  radial-gradient(900px 500px at 85% -10%, rgba(255,179,71,.07), transparent 60%),
+  radial-gradient(800px 500px at -10% 110%, rgba(127,212,255,.06), transparent 60%), var(--bg); }
+.mainnav a.active { color: var(--text); background: var(--panel2); }
+
+.cat-wrap { max-width: 1200px; margin: 0 auto; padding: clamp(24px, 4vw, 48px) 16px 40px; }
+.cat-hero { max-width: 760px; margin-bottom: 22px; }
+.cat-hero h1 { font-size: clamp(2rem, 4vw, 2.8rem); margin: 0 0 .3em; }
+.cat-hero .lede { color: var(--muted); font-size: 1.05rem; margin: 0; }
+
+/* search and filters */
+.cat-tools { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; margin-bottom: 18px; position: sticky; top: 64px; z-index: 20;
+  padding: 10px 0; background: linear-gradient(var(--bg) 80%, transparent); }
+.cat-search { flex: 1 1 280px; display: flex; align-items: center; gap: 10px; padding: 0 14px; min-height: 46px; border-radius: 999px;
+  border: 1px solid var(--line2); background: var(--bg2); color: var(--muted); }
+.cat-search:focus-within { border-color: var(--amber); }
+.cat-search input { flex: 1; min-width: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 1rem; outline: none; padding: 10px 0; }
+.cat-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.cat-chips button { min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg2); color: var(--muted);
+  font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer; }
+.cat-chips button:hover { color: var(--text); border-color: var(--line2); }
+.cat-chips button[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); color: #1b1203; }
+.cat-count { margin: 0; color: var(--dim); font-size: .9rem; }
+
+/* ---------- Mission catalogue rows ---------- */
+.cat-list { display: grid; gap: 8px; }
+.cat-row { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; transition: border-color .15s; scroll-margin-top: 140px; }
+.cat-row:hover { border-color: var(--line2); }
+.cat-row[open] { border-color: rgba(255,179,71,.55); }
+.cat-row summary { display: grid; grid-template-columns: 14px minmax(0, 1fr) 190px 130px 230px; gap: 14px; align-items: center; padding: 14px 18px; cursor: pointer; list-style: none; }
+.cat-row summary::-webkit-details-marker { display: none; }
+.cat-row summary:focus-visible { outline: 2px solid var(--amber); outline-offset: -2px; border-radius: 16px; }
+.cat-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--deep); }
+.cat-dot.moon { background: var(--moon); } .cat-dot.mars { background: var(--mars); }
+.cat-name { display: grid; min-width: 0; }
+.cat-name b { font-family: var(--head); font-size: 1.08rem; }
+.cat-name small { color: var(--muted); font-size: .85rem; }
+.cat-date, .cat-status { color: var(--muted); font-size: .9rem; }
+.cat-status.s-operating, .cat-status.s-active { color: var(--ok); }
+.cat-status.s-lost, .cat-status.s-failed { color: #ff8f8f; }
+.cat-tags { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.cat-tag { display: inline-flex; align-items: center; gap: 5px; font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line2); color: var(--muted); white-space: nowrap; }
+.cat-tag.land { color: var(--amber2); border-color: rgba(255,179,71,.45); }
+.cat-tag.relive { color: var(--ok); border-color: rgba(94,230,168,.45); }
+
+.cat-body { padding: 16px 18px 20px; border-top: 1px solid var(--line); display: grid; gap: 14px; }
+.cat-summary { margin: 0; line-height: 1.6; max-width: 80ch; }
+.cat-note { margin: 0; color: var(--muted); font-size: .92rem; border-left: 3px solid var(--line2); padding-left: 12px; }
+.cat-body h3 { margin: 4px 0 0; font-size: .8rem; text-transform: uppercase; letter-spacing: .12em; color: var(--amber); }
+.cat-facts { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 10px; background: var(--bg2); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.cat-facts dt { font-size: .75rem; text-transform: uppercase; letter-spacing: .12em; color: var(--dim); font-weight: 700; }
+.cat-facts dd { margin: 2px 0 0; }
+.cat-facts small { display: block; color: var(--dim); font-size: .8rem; line-height: 1.4; margin-top: 3px; }
+.cat-unsourced { color: var(--dim); font-style: italic; }
+.cat-flag { font-size: .75rem; font-weight: 700; color: var(--amber2); border: 1px solid rgba(255,179,71,.4); border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+.cat-miles { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; border-left: 2px solid var(--line2); margin-left: 6px; }
+.cat-miles li { display: grid; grid-template-columns: 170px 1fr; gap: 12px; padding-left: 14px; position: relative; }
+.cat-miles li::before { content: ""; position: absolute; left: -6px; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: var(--amber); }
+.cat-miles time { color: var(--muted); font-size: .9rem; }
+.cat-miles b { display: block; }
+.cat-miles span { color: var(--muted); font-size: .92rem; }
+.cat-hw { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 10px; }
+.cat-hw li { background: var(--bg2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 4px; }
+.cat-hw li > span { color: var(--muted); font-size: .92rem; }
+.cat-hw .cat-parts { color: var(--dim); font-size: .85rem; }
+.cat-src { margin: 0; color: var(--muted); font-size: .9rem; }
+.cat-src a { color: var(--cyan); margin-right: 6px; }
+.cat-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- Landing site cards ---------- */
+.land-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr)); gap: 16px; }
+.land-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: border-color .15s; }
+.land-card:hover { border-color: var(--line2); }
+.land-img { position: relative; aspect-ratio: 16 / 9; background: #000; }
+.land-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.land-world { position: absolute; left: 12px; top: 12px; font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: rgba(6,10,19,.85); border: 1px solid var(--line2); }
+.land-world.moon { color: var(--moon); } .land-world.mars { color: var(--mars); } .land-world.replay { color: var(--ok); }
+.land-body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.land-body h3 { margin: 0; font-size: 1.15rem; }
+.land-place { margin: 0; color: var(--muted); font-size: .88rem; }
+.land-what { margin: 0; color: var(--text); font-size: .95rem; line-height: 1.5; }
+.land-meta { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; color: var(--muted); font-size: .88rem; }
+.land-meta li { display: flex; gap: 8px; align-items: flex-start; }
+.land-meta .ico { margin-top: .15em; color: var(--amber2); }
+.land-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px; }
+.land-more { margin-top: 36px; }
+.land-more h2 { font-size: 1.5rem; margin: 0 0 14px; }
+.land-note { color: var(--dim); font-size: .9rem; margin: 24px 0 0; max-width: 80ch; }
+
+.cat-foot { padding-top: 10px; }
+.cat-foot p { color: var(--dim); font-size: .88rem; }
+
+@media (max-width: 760px) {
+  .cat-tools { top: 56px; }
+  .cat-row summary { grid-template-columns: 12px minmax(0, 1fr) auto; padding: 12px 14px; }
+  .cat-date, .cat-tags { display: none; }
+  .cat-miles li { grid-template-columns: 1fr; gap: 2px; }
+}
+.cat-status.s-unknown { color: var(--dim); font-style: italic; font-size: .85rem; }
+/* rows never grow wider than the screen (long source names and notes wrap instead) */
+.cat-list { grid-template-columns: minmax(0, 1fr); }
+.cat-row, .land-card { min-width: 0; }
+.cat-body, .land-body { overflow-wrap: anywhere; }

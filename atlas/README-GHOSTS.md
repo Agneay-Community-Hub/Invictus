@@ -5,7 +5,8 @@ This folder is the frontend of **Abandoned but Not Forgotten**, by our teammate 
 It was copied from commit `129fcb6` (12 Nov 2026) so both projects ship as one website.
 
 It is built into `site/atlas/` and appears on the main site as **3D Worlds**: walk the six Apollo sites, explore eight
-Mars landing sites, and relive Apollo 11 and Opportunity, all starting from its Missions window.
+Mars landing sites, and relive Apollo 11 and Opportunity. The main site lists them on its own pages
+(`landings.html`, `catalogue.html`); this app plays one at a time and then returns to the page you came from.
 
 ## Build
 
@@ -32,6 +33,9 @@ Only four things, so updates from the original repo are easy to bring in:
    Home buttons), and a "← Ghosts of Exploration" button returns to the page you came from.
 4. **`src/mars/marsBridge.ts`** (one line in `startMars`): passes the Unity player the real address of `mars-sites/`,
    also for the Victoria scene (with an empty site id), because the player otherwise looks for it at the site root.
+6. **`src/embed/site-data.ts`** (new): exports the mission catalogue and landing sites as plain data; the main site's
+   `scripts/build-atlas-data.mjs` turns it into `site/js/atlas-data.js` for its Landing sites and Mission catalogue
+   pages. The Missions window here keeps only Relive and Discovered.
 
 Deep-link values: `go=site&id=` any Moon or Mars site id (`tranquility-base`, `apollo-12` … `apollo-17`,
 `victoria-crater`, `mars-viking-1`, `mars-viking-2`, `mars-pathfinder`, `mars-spirit`, `mars-phoenix`, `mars-curiosity`, `mars-insight`; the `mars-` prefix may be left out);
