@@ -388,6 +388,7 @@
           ${typeof ATLAS_RELIVE !== "undefined" && ATLAS_RELIVE[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="relive:${ATLAS_RELIVE[a.id]}" href="atlas/index.html?go=relive&amp;id=${ATLAS_RELIVE[a.id]}">▶ ${t("d.relive3d", "Relive the mission in 3D")}</a>` : ""}
           ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">🚀 Try landing it yourself</a>` : ""}
           ${a.id === "opportunity" || a.id === "spirit" ? `<a class="btn btn-small btn-upclose" href="#upclose" data-upclose>🔍 ${t("d.upclose", "Opportunity, up close: her life and insides")}</a>` : ""}
+          <a class="btn btn-small" href="adopt.html#${a.id}">🎖 ${t("d.adopt", "Adopt this ghost")}</a>
           <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">💬 Ask about ${esc(a.name)}</a>
           ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">${t("d.nasaLib", "Open in NASA library ↗")}</a>` : ""}
         </div>

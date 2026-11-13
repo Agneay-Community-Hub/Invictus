@@ -88,7 +88,7 @@
     "ex.title": "3D में चाँद और मंगल के चारों ओर उड़ें",
     "ex.desc": "गोलों को घुमाएँ, चमकते निशान ढूँढें, और वहाँ तक जाएँ जहाँ आज वॉयजर यान हैं।",
     "ex.btn": "3D में घूमना शुरू करें →",
-    "foot.links": "<a href=\"teacher.html\">शिक्षक सामग्री</a> · <a href=\"lander.html\">खुद उतारो</a> · <a href=\"ask.html\">संग्रह से पूछें</a> · <a href=\"explore.html\">3D में घूमें</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"atlas/index.html\">3D दुनिया</a> · <a href=\"sources.html\">स्रोत</a> · <a href=\"machines/index.hi.html\">सभी 49 मशीनें</a>",
+    "foot.links": "<a href=\"teacher.html\">शिक्षक सामग्री</a> · <a href=\"lander.html\">खुद उतारो</a> · <a href=\"ask.html\">संग्रह से पूछें</a> · <a href=\"explore.html\">3D में घूमें</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"atlas/index.html\">3D दुनिया</a> · <a href=\"adopt.html\">एक भूत गोद लो</a> · <a href=\"sources.html\">स्रोत</a> · <a href=\"machines/index.hi.html\">सभी 49 मशीनें</a>",
     "foot.made": "NASA Space Apps Challenge 2026 के लिए बनाया गया — “छोड़े गए, पर भुलाए नहीं गए।”",
     "foot.credits": "आभार",
     "foot.creditsText": "तस्वीरें और वीडियो: नासा इमेज और वीडियो लाइब्रेरी (सार्वजनिक)। चाँद का नक्शा: NASA SVS CGI Moon Kit (LRO डेटा)। मंगल और तारों के टेक्सचर: Solar System Scope (CC BY 4.0)। बैज चित्र: Fantasy RPG UI Kit। लाइव 3D सौर मंडल: NASA का Eyes on the Solar System (NASA/JPL-Caltech)। 3D दुनिया: हमारे साथी GuruPrasannaa Manikandan का ऐप।",
@@ -193,7 +193,8 @@
     "w3d.missionsSub": "हर मिशन की तारीख़ें, मशीनें और स्रोत।",
     "w3d.note": "3D ग्राफ़िक्स वाला कंप्यूटर या नया फ़ोन चाहिए। मंगल की जगहें पहली बार लगभग 100 MB डाउनलोड करती हैं।",
     "d.walk3d": "वहाँ 3D में चलो",
-    "d.relive3d": "मिशन 3D में फिर से जियो"
+    "d.relive3d": "मिशन 3D में फिर से जियो",
+    "d.adopt": "इस भूत को गोद लो"
   },
   "status": {
     "silent": {
