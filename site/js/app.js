@@ -6,7 +6,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
-  const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂", orbiter: "🛰️", telescope: "🔭" };
+  // machine-type icons: typeIco() in js/icons.js
   const t = window.t || ((k, f) => f);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -24,7 +24,7 @@
   const cover = a => a.media && a.media[0] ? "assets/nasa/" + a.media[0].f : null;
   const thumbHTML = (a, cls = "thumb") => cover(a)
     ? `<img class="${cls}" src="${cover(a)}" alt="" loading="lazy">`
-    : `<span class="${cls} ph" aria-hidden="true">${TYPE_EMOJI[a.type] || "✦"}</span>`;
+    : `<span class="${cls} ph" aria-hidden="true">${typeIco(a.type)}</span>`;
   const pill = s => `<span class="pill" style="color:${STATUS[s].color}">${STATUS[s].label}</span>`;
   const auNow = d => d.au2025 + d.rate * ((Date.now() - Date.UTC(2025, 0, 1)) / (365.25 * 864e5));
   const fmtKm = au => {
@@ -188,7 +188,7 @@
     const list = listFor().sort((a, b) => a.year - b.year);
     $("#alist").innerHTML = list.length ? list.map(a => `<li><button class="aitem" data-id="${a.id}">
         ${thumbHTML(a)}<span><b>${esc(a.name)}${hasModel(a.id) ? '<span class="tag3d" title="Has a 3D model">3D</span>' : ""}</b><small>${esc(TYPES[a.type])} · ${esc(a.place.split("(")[0])}</small><br>${pill(a.status)}</span><span class="yr">${a.year}</span></button></li>`).join("")
-      : `<li class="empty">${t("map.none", "Nothing matches. Try another word!")}</li>`;
+      : `<li class="empty">${t("map.none", "Nothing matches. Try another word.")}</li>`;
     $$("#alist .aitem").forEach(b => {
       b.addEventListener("click", () => openDrawer(b.dataset.id, b));
       b.addEventListener("mouseenter", () => $$(".marker", box).forEach(m => m.classList.toggle("on", m.dataset.id === b.dataset.id)));
@@ -334,7 +334,7 @@
         <li><span>${t("d.heading", "Heading")}</span><b>${esc(a.heading)}</b></li></ul></div>`;
     }
     $("#drawerBody").innerHTML = `
-      <div class="d-hero">${m0 ? `<img id="dImg" src="assets/nasa/${m0.f}" alt="${esc(m0.cap)}">` : `<div class="ph" aria-hidden="true">${TYPE_EMOJI[a.type]}</div>`}${hasModel(a.id) ? `<button class="btn btn-small model-btn" data-model="${a.id}">🧊 ${t("d.model", "View 3D model")}</button>` : ""}</div>
+      <div class="d-hero">${m0 ? `<img id="dImg" src="assets/nasa/${m0.f}" alt="${esc(m0.cap)}">` : `<div class="ph" aria-hidden="true">${typeIco(a.type)}</div>`}${hasModel(a.id) ? `<button class="btn btn-small model-btn" data-model="${a.id}">${ico("cube")} ${t("d.model", "View 3D model")}</button>` : ""}</div>
       ${a.media.length > 1 ? `<div class="d-thumbs" role="group" aria-label="More photos">${a.media.map((m, i) => `<button data-i="${i}" aria-current="${i === 0}" aria-label="Photo ${i + 1}"><img src="assets/nasa/${m.f}" alt=""></button>`).join("")}</div>` : ""}
       ${m0 ? `<p class="d-cap" id="dCap">${esc(m0.cap)} <a href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">NASA · ${esc(m0.id)}</a></p>` : `<p class="d-cap">No close-up photo exists of this one — it crashed where no camera could see.</p>`}
       <div class="d-main">
@@ -346,13 +346,13 @@
         <div class="ghost">
           <blockquote id="ghostText">${esc(a.ghost)}</blockquote>
           <div class="ghost-actions">
-            <button class="btn btn-small speak" id="speakBtn" aria-pressed="false"><span aria-hidden="true">🔊</span> ${t("readAloud", "Read aloud")}</button>
+            <button class="btn btn-small speak" id="speakBtn" aria-pressed="false">${ico("speaker")} ${t("readAloud", "Read aloud")}</button>
             <small style="color:var(--dim)">${t("d.voiceNote", "Written in {name}’s voice, from real mission facts.").replace("{name}", esc(a.name))}</small>
           </div>
         </div>
 
         <div class="d-block"><h3>${isSci ? t("d.sciStory", "The science story") : t("d.story", "The story")}</h3><p>${esc(isSci ? a.deep : a.story)}</p>
-          ${!isSci ? `<button class="btn btn-small" id="moreBtn">${t("d.more", "Tell me more (Scientist level)")}</button>` : ""}</div>
+          ${!isSci ? `<button class="btn btn-small" id="moreBtn">${t("d.more", "Read the scientist version")}</button>` : ""}</div>
 
         ${howList.length ? `<div class="d-block d-how"><h3>${t("d.how", "How it worked")}</h3>
           ${howList.length > 1 ? `<div class="ex-tabs" role="tablist" aria-label="Animations">${howList.map((h, i) => `<button role="tab" data-ex="${i}" aria-selected="${i === 0}">${esc(h.title)}</button>`).join("")}</div>` : ""}
@@ -382,14 +382,13 @@
         ${a.video ? `<div class="d-block"><h3>${t("d.watch", "Watch")}</h3>${videoHTML(a.video)}${a.video2 ? "<br>" + videoHTML(a.video2) : ""}</div>` : ""}
         ${sourcesHTML(a)}
         <div class="d-links">
-          ${hasModel(a.id) ? `<button class="btn btn-small" data-model="${a.id}">🧊 Spin the NASA 3D model</button>` : ""}
-          ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">See it on the 3D ${WORLDS[a.world].short} →</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">${t("d.see3dDeep", "See it in 3D deep space →")}</a>`}
-          ${typeof ATLAS_SITES !== "undefined" && ATLAS_SITES[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="site:${ATLAS_SITES[a.id]}" href="atlas/index.html?go=site&amp;id=${ATLAS_SITES[a.id]}">🚶 ${t("d.walk3d", "Walk there in 3D")}</a>` : ""}
-          ${typeof ATLAS_RELIVE !== "undefined" && ATLAS_RELIVE[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="relive:${ATLAS_RELIVE[a.id]}" href="atlas/index.html?go=relive&amp;id=${ATLAS_RELIVE[a.id]}">▶ ${t("d.relive3d", "Relive the mission in 3D")}</a>` : ""}
-          ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">🚀 Try landing it yourself</a>` : ""}
-          ${a.id === "opportunity" || a.id === "spirit" ? `<a class="btn btn-small btn-upclose" href="#upclose" data-upclose>🔍 ${t("d.upclose", "Opportunity, up close: her life and insides")}</a>` : ""}
-          <a class="btn btn-small" href="adopt.html#${a.id}">🎖 ${t("d.adopt", "Adopt this ghost")}</a>
-          <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">💬 Ask about ${esc(a.name)}</a>
+          ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">${ico("globe")} See it on the 3D ${WORLDS[a.world].short}</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">${ico("globe")} ${t("d.see3dDeep", "See it in 3D deep space")}</a>`}
+          ${typeof ATLAS_SITES !== "undefined" && ATLAS_SITES[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="site:${ATLAS_SITES[a.id]}" href="atlas/index.html?go=site&amp;id=${ATLAS_SITES[a.id]}">${ico("footprints")} ${t("d.walk3d", "Walk there in 3D")}</a>` : ""}
+          ${typeof ATLAS_RELIVE !== "undefined" && ATLAS_RELIVE[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="relive:${ATLAS_RELIVE[a.id]}" href="atlas/index.html?go=relive&amp;id=${ATLAS_RELIVE[a.id]}">${ico("play")} ${t("d.relive3d", "Relive the mission in 3D")}</a>` : ""}
+          ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">${ico("rocket")} Try landing it yourself</a>` : ""}
+          ${a.id === "opportunity" || a.id === "spirit" ? `<a class="btn btn-small btn-upclose" href="#upclose" data-upclose>${ico("eye")} ${t("d.upclose", "Opportunity, up close")}</a>` : ""}
+          <a class="btn btn-small" href="adopt.html#${a.id}">${ico("award")} ${t("d.adopt", "Adopt this ghost")}</a>
+          <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">${ico("chat")} Ask about ${esc(a.name)}</a>
           ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">${t("d.nasaLib", "Open in NASA library ↗")}</a>` : ""}
         </div>
       </div>`;
@@ -494,7 +493,7 @@
         <p class="ch-quote">${esc(a.ghost)}</p>
         <p class="ch-body">${esc(isSci ? a.deep : a.story)}</p>
         <div class="ch-foot">
-          <button class="btn btn-small speak" id="chSpeak" aria-pressed="false"><span aria-hidden="true">🔊</span> ${t("readAloud", "Read aloud")}</button>
+          <button class="btn btn-small speak" id="chSpeak" aria-pressed="false">${ico("speaker")} ${t("readAloud", "Read aloud")}</button>
           <button class="btn btn-small" id="chOpen">${t("ch.open", "Open dossier")}</button>
           <span class="spacer"></span>
           <button class="icon-btn" id="chPrev" aria-label="Previous chapter" ${chapter === 0 ? "disabled" : ""}>←</button>
@@ -525,7 +524,7 @@
     $("#tl").innerHTML = Object.entries(decades).map(([d, list]) => `
       <div class="decade"><h3>${d}s</h3>
         ${list.map(a => `<button class="tl-item" data-id="${a.id}" style="--c:${WORLDS[a.world].color}">
-          ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph" aria-hidden="true">${TYPE_EMOJI[a.type]}</span>`}
+          ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph" aria-hidden="true">${typeIco(a.type)}</span>`}
           <span><b>${esc(a.name)}</b><small>${a.year} · ${esc(WORLDS[a.world].short)} · ${esc(STATUS[a.status].label)}</small></span></button>`).join("")}
       </div>`).join("");
     $$("#tl .tl-item").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
@@ -558,7 +557,7 @@
     $$("#ruler .probe").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
     $("#deepCards").innerHTML = ARTIFACTS.filter(a => a.world === "deep").map(a => `
       <button class="card" data-id="${a.id}">
-        ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph">${TYPE_EMOJI[a.type]}</span>`}
+        ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph">${typeIco(a.type)}</span>`}
         <span class="card-body">${pill(a.status)}${hasModel(a.id) ? '<span class="tag3d">3D model</span>' : ""}<b>${esc(a.name)}</b>
           <p>${esc(a.dist ? "~" + fmtKm(auNow(a.dist)) + " from the Sun" : a.fixedPlace)}</p>
           <p class="live">${a.dist ? t("deep.signal", "Signal travel time: ~") + lightTime(auNow(a.dist)) : t("deep.launched", "Launched ") + a.dates.launch}</p></span>
@@ -589,7 +588,7 @@
     const o = rec(a.id)?.orbit;
     if (!o) return "";
     return `<div class="d-block d-orbit"><h3>${t("d.orbit", "See it from orbit")}</h3><p>${esc(o.cap)}</p>
-      <a class="btn btn-small" href="${esc(o.url)}" target="_blank" rel="noopener">🛰️ ${t("d.hirise", "Open HiRISE image")} ${esc(o.img)} ↗</a></div>`;
+      <a class="btn btn-small" href="${esc(o.url)}" target="_blank" rel="noopener">${ico("satellite")} ${t("d.hirise", "Open HiRISE image")} ${esc(o.img)} ↗</a></div>`;
   }
   // NASA Eyes block in the dossier: tap to load; "Show:" switches spacecraft ↔ classic landing site.
   function startEyes(b) {
@@ -619,11 +618,11 @@
     const m = eyesPick(a.id);
     const url = eyesForMachine(a.id, { settings: { featured: false, menu: false, shareButton: false, logo: true, detailPanel: false, search: false, timeControls: true, locked: true } });
     const when = m.at ? new Date(m.at).toUTCString().slice(5, 16) : t("d.eyesToday", "today");
-    const pick = EYES_MACHINES[a.id].c ? `<p class="ey-pick" role="group" aria-label="${t("d.eyesShow", "Show")}">${t("d.eyesShow", "Show")}: <button data-pick="craft" data-for="${a.id}" aria-pressed="${m.craft}">${a.type === "rover" ? t("d.eyesRover", "the rover itself") : t("d.eyesLander", "the lander itself")}</button><button data-pick="classic" data-for="${a.id}" aria-pressed="${!m.craft}">${t("d.eyesClassic", "its landing site (classic)")}</button></p>` : "";
+    const pick = EYES_MACHINES[a.id].c ? `<p class="ey-pick" role="group" aria-label="${t("d.eyesShow", "Show")}">${t("d.eyesShow", "Show")}: <button data-pick="craft" data-for="${a.id}" aria-pressed="${m.craft}">${a.type === "rover" ? t("d.eyesRover", "The rover") : t("d.eyesLander", "The lander")}</button><button data-pick="classic" data-for="${a.id}" aria-pressed="${!m.craft}">${t("d.eyesClassic", "Landing site")}</button></p>` : "";
     return `<div class="d-block d-eyes"><h3>${t("d.eyes", "Fly there in NASA Eyes")}</h3>${pick}
       <p>${(window.I18n?.lang || "en") === "en" ? esc(m.note) : `${esc(a.name)} · ${esc(when)}`}${m.self ? "" : ` <span class="ey-tag world">${t("d.eyesWorld", "Eyes shows its world, not the machine itself")}</span>`}</p>
       <div class="ey-mini"><button class="ey-mini-start" data-eyes-start="${esc(url)}"><span class="ey-play" aria-hidden="true">▶</span>
-        <b>${t("d.eyesStart", "Load NASA's live 3D view")}</b><span>${esc(when)} · ${t("d.eyesNeeds", "a big download, needs internet")}</span></button></div>
+        <b>${t("d.eyesStart", "Load NASA's live 3D view")}</b><span>${esc(when)} · ${t("d.eyesNeeds", "large download, needs internet")}</span></button></div>
       <div class="d-eyes-links"><a class="btn btn-small" href="eyes.html#${a.id}">${t("d.eyesPage", "More in NASA Eyes →")}</a>
         <a class="btn btn-small" href="${esc(eyesForMachine(a.id))}" target="_blank" rel="noopener">${t("d.eyesFull", "Open full screen ↗")}</a></div></div>`;
   }
@@ -675,7 +674,7 @@
       if (ok) quiz.score++;
       $$(".q-opt", box).forEach(x => { x.disabled = true; if (x.dataset.id === q.a.id) x.classList.add("right"); });
       if (!ok) b.classList.add("wrong");
-      $("#qFeed").innerHTML = `<p>${ok ? "✅ Correct!" : "❌ Not quite — it was <b>" + esc(q.a.name) + "</b>."} ${esc(q.a.fun)}</p>
+      $("#qFeed").innerHTML = `<p>${ok ? ico("check", "ok") + " Correct!" : ico("cross", "no") + " Not quite — it was <b>" + esc(q.a.name) + "</b>."} ${esc(q.a.fun)}</p>
         <button class="btn btn-primary btn-small" id="qNext">${quiz.i === quiz.qs.length - 1 ? t("q.score", "See my score") : t("q.next", "Next question →")}</button>
         <button class="btn btn-small" id="qLearn">${t("q.openDossier", "Open its dossier")}</button>`;
       $("#qNext").addEventListener("click", () => { quiz.i++; quiz.answered = false; renderQuiz(); $("#quizBox").scrollIntoView({ block: "nearest" }); });
@@ -776,10 +775,10 @@
     // Example conversations (short versions of real answers from the archive guide)
     const v1 = byId.voyager1.dist ? auNow(byId.voyager1.dist).toFixed(0) : "170";
     const DEMO = [
-      ["How did Curiosity land?", "A parachute slowed it down, then a rocket-powered <b>sky crane</b> lowered it on cables about 7.5 m long, and flew away to crash. 🪂", "curiosity"],
-      ["Talk to me as Ingenuity", "<i>“Nobody had ever flown on another planet. I was meant to fly five times. I flew 72.”</i> 🚁", "ingenuity"],
-      ["How far away is Voyager 1?", `About <b>${v1} AU</b> from the Sun: so far that its radio signal takes almost a whole day to reach us. 🛰️`, "voyager1"],
-      ["What did Opportunity discover?", "Tiny round “blueberries” of hematite that formed in water, proof that Mars was once wet. 💧", "opportunity"]
+      ["How did Curiosity land?", "A parachute slowed it down, then a rocket-powered <b>sky crane</b> lowered it on cables about 7.5 m long, and flew away to crash.", "curiosity"],
+      ["Talk to me as Ingenuity", "<i>“Nobody had ever flown on another planet. I was meant to fly five times. I flew 72.”</i>", "ingenuity"],
+      ["How far away is Voyager 1?", `About <b>${v1} AU</b> from the Sun: so far that its radio signal takes almost a whole day to reach us.`, "voyager1"],
+      ["What did Opportunity discover?", "Tiny round “blueberries” of hematite that formed in water, proof that Mars was once wet.", "opportunity"]
     ];
     const log = $("#askcLog");
     const still = () => prefs.motion || matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -811,7 +810,7 @@
   function soundHTML(s) {
     return `<div class="snd" data-sid="${esc(s.id)}">
       <button class="snd-play" aria-label="Play: ${esc(s.title)}"><span class="snd-ic" aria-hidden="true">▶</span></button>
-      <div class="snd-body"><b>${s.icon} ${esc(s.title)}</b><p>${esc(s.what)}</p>
+      <div class="snd-body"><b>${esc(s.title)}</b><p>${esc(s.what)}</p>
         <div class="snd-meta"><span class="snd-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="snd-time">tap ▶ to listen</span>
         ${byId[s.for] ? ` · <a href="#artifact=${s.for}" data-open="${s.for}">${esc(byId[s.for].name)}</a>` : ""} · <a href="${NASA_PAGE(s.id)}" target="_blank" rel="noopener">NASA source</a></div></div>
     </div>`;

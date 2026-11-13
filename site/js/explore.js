@@ -8,7 +8,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
-const TYPE_EMOJI = { rover: "🚙", lander: "🛸", vehicle: "🛞", experiment: "📡", impactor: "☄️", probe: "🛰️", helicopter: "🚁", debris: "🪂", orbiter: "🛰️", telescope: "🔭" };
+// machine-type icons: typeIco() in js/icons.js
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const auNow = d => d.au2025 + d.rate * ((Date.now() - Date.UTC(2025, 0, 1)) / (365.25 * 864e5));
 try { localStorage.setItem("goe:explored", "true"); } catch { /* ignore */ }
@@ -324,7 +324,7 @@ function openCard(a) {
   const dist = a.dist ? `<div><small>Distance now (est.)</small>~${auNow(a.dist).toFixed(0)} AU</div>` : "";
   $("#xCard").innerHTML = `
     <button class="icon-btn close" id="xClose" aria-label="Close">✕</button>
-    ${m ? `<img src="assets/nasa/${m.f}" alt="${esc(m.cap)}">` : `<div class="ph">${TYPE_EMOJI[a.type]}</div>`}
+    ${m ? `<img src="assets/nasa/${m.f}" alt="${esc(m.cap)}">` : `<div class="ph">${typeIco(a.type)}</div>`}
     <div class="in">
       <span class="pill" style="color:${STATUS[a.status].color}">${STATUS[a.status].label}</span>
       <h2>${esc(a.name)}</h2>
@@ -333,9 +333,9 @@ function openCard(a) {
       <div class="mini"><div><small>Arrived</small>${esc(a.dates.arrive)}</div><div><small>Last word</small>${esc(a.dates.last)}</div>${dist}<div><small>Type</small>${esc(TYPES[a.type])}</div></div>
       <div class="row">
         <a class="btn btn-primary btn-small" href="index.html#artifact=${a.id}">Open full dossier</a>
-        ${window.hasModel && hasModel(a.id) ? `<button class="btn btn-small" id="xModel">🧊 3D model</button>` : ""}
-        ${typeof ATLAS_SITES !== "undefined" && ATLAS_SITES[a.id] ? `<a class="btn btn-small" data-atlas="site:${ATLAS_SITES[a.id]}" href="atlas/index.html?go=site&amp;id=${ATLAS_SITES[a.id]}">🚶 Walk there</a>` : ""}
-        <button class="btn btn-small" id="xSpeak" aria-pressed="false">🔊 Read aloud</button>
+        ${window.hasModel && hasModel(a.id) ? `<button class="btn btn-small" id="xModel">${ico("cube")} 3D model</button>` : ""}
+        ${typeof ATLAS_SITES !== "undefined" && ATLAS_SITES[a.id] ? `<a class="btn btn-small" data-atlas="site:${ATLAS_SITES[a.id]}" href="atlas/index.html?go=site&amp;id=${ATLAS_SITES[a.id]}">${ico("footprints")} Walk there</a>` : ""}
+        <button class="btn btn-small" id="xSpeak" aria-pressed="false">${ico("speaker")} Read aloud</button>
       </div>
     </div>`;
   $("#xCard").hidden = false; document.body.classList.add("has-card");

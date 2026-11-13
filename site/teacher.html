@@ -19,8 +19,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
-  <link rel="stylesheet" href="css/style.css?v=499e3b05">
-  <link rel="stylesheet" href="css/teacher.css?v=0f88e40b">
+  <link rel="stylesheet" href="css/style.css?v=320b146f">
+  <link rel="stylesheet" href="css/teacher.css?v=e34aaf2e">
   <link rel="icon" href="assets/ui/book.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
@@ -69,7 +69,7 @@
           <ol>
             <li><b>Hook (5 min):</b> Show the Apollo 11 “Then &amp; now” slider. Ask: “Do you think it's still there?”</li>
             <li><b>Explore (20 min):</b> In pairs, students complete <a href="#sheet-hunt">Worksheet 1: Ghost hunt</a> using the Ghost Map, dossiers and the Elsewhere section.</li>
-            <li><b>Share (10 min):</b> Each pair presents one surprising fact. Play its “ghost log” aloud with 🔊.</li>
+            <li><b>Share (10 min):</b> Each pair presents one surprising fact. Play its “ghost log” aloud with the Read aloud button.</li>
             <li><b>Wrap up (10 min):</b> Run the <a href="#classquiz">Class quiz</a> on the projector.</li>
           </ol>
           <p class="tp-std"><b>Standards links (NGSS):</b> MS-ESS1-3 (scale properties of objects in the solar system).</p>
@@ -104,7 +104,7 @@
       <div class="tp-tips">
         <h3>Tips</h3>
         <ul>
-          <li><b>Mixed reading levels:</b> the ⚙ settings switch every story between <i>Explorer</i> (ages 8–11) and <i>Scientist</i> (12+), change text size, and add dyslexia-friendly spacing. Every story can be read aloud.</li>
+          <li><b>Mixed reading levels:</b> the settings (gear button) switch every story between <i>Explorer</i> (ages 8–11) and <i>Scientist</i> (12+), change text size, and add dyslexia-friendly spacing. Every story can be read aloud.</li>
           <li><b>No internet in class?</b> Open the site once while online. It then works offline, and on tablets it can be installed as an app. (Videos and sounds still need internet.)</li>
           <li><b>Myth-busting:</b> the site corrects common myths, such as Opportunity's “My battery is low and it's getting dark”, which was a journalist's summary, not a real message. That's a good discussion about checking sources.</li>
         </ul>
@@ -116,7 +116,7 @@
       <div class="no-print">
         <h2 id="sTitle">Printable worksheets</h2>
         <p>Each worksheet prints on its own page(s). Use “Print” on a worksheet to print just that one.</p>
-        <p class="no-print">🎖 <a href="adopt.html">Adopt a Ghost</a>: paste your class list and print an adoption certificate for every student, each with a different machine. A good end-of-unit activity or a hook for a research project on “their” machine.</p>
+        <p class="no-print"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-award"></use></svg> <a href="adopt.html">Adopt a Ghost</a>: paste your class list and print an adoption certificate for every student, each with a different machine. A good end-of-unit activity or a hook for a research project on “their” machine.</p>
       </div>
       <div id="sheetsBox"></div>
     </section>
@@ -124,7 +124,7 @@
     <!-- ===== ANSWER KEY ===== -->
     <section class="tp-sec" id="answers" aria-labelledby="aTitle">
       <div class="sheet" id="sheet-key">
-        <div class="sheet-head"><h2 id="aTitle">Answer key</h2><button class="btn btn-small no-print" data-print="sheet-key">🖨 Print</button></div>
+        <div class="sheet-head"><h2 id="aTitle">Answer key</h2><button class="btn btn-small no-print" data-print="sheet-key"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-printer"></use></svg> Print</button></div>
         <div id="keyBox"></div>
       </div>
     </section>
@@ -137,7 +137,7 @@
         <div class="cq-top">
           <span class="cq-count" id="cqCount"></span>
           <div class="cq-teams" id="cqTeams"></div>
-          <button class="btn btn-small" id="cqFull">⛶ Full screen</button>
+          <button class="btn btn-small" id="cqFull"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-maximize"></use></svg> Full screen</button>
         </div>
         <p class="cq-clue" id="cqClue"></p>
         <div class="cq-opts" id="cqOpts"></div>
@@ -151,8 +151,10 @@
     </section>
   </main>
 
+  <script src="js/icons.js?v=7e5968c7"></script>
+
   <script src="js/data.js?v=83e574d5"></script>
-  <script src="js/teacher.js?v=d4be1e62"></script>
-  <script src="js/pwa.js?v=68dca921"></script>
+  <script src="js/teacher.js?v=dc979375"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
 </body>
 </html>

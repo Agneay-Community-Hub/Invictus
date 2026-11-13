@@ -447,7 +447,7 @@
         <button class="ex-btn ex-play" data-a="play" aria-label="Play">▶</button>
         <button class="ex-btn" data-a="next" aria-label="Next step">⏭</button>
         <div class="ex-dots" role="group" aria-label="Steps"></div>
-        <button class="ex-btn ex-narr" data-a="narr" aria-pressed="false" title="Read the captions aloud">🔊</button>
+        <button class="ex-btn ex-narr" data-a="narr" aria-pressed="false" title="Read the captions aloud">${window.ico ? ico("speaker") : "🔊"}</button>
         <button class="ex-btn" data-a="replay" aria-label="Replay from the start">↻</button>
       </div>`;
     const svg = root.querySelector("svg"), cap = root.querySelector(".ex-cap"), dots = root.querySelector(".ex-dots");

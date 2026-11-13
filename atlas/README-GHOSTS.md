@@ -5,7 +5,7 @@ This folder is the frontend of **Abandoned but Not Forgotten**, by our teammate 
 It was copied from commit `129fcb6` (12 Nov 2026) so both projects ship as one website.
 
 It is built into `site/atlas/` and appears on the main site as **3D Worlds**: walk the six Apollo sites, explore eight
-Mars landing sites, relive Apollo 11 and Opportunity, tour the Solar System.
+Mars landing sites, and relive Apollo 11 and Opportunity, all starting from its Missions window.
 
 ## Build
 
@@ -35,7 +35,9 @@ Only four things, so updates from the original repo are easy to bring in:
 
 Deep-link values: `go=site&id=` any Moon or Mars site id (`tranquility-base`, `apollo-12` … `apollo-17`,
 `victoria-crater`, `mars-viking-1`, `mars-viking-2`, `mars-pathfinder`, `mars-spirit`, `mars-phoenix`, `mars-curiosity`, `mars-insight`; the `mars-` prefix may be left out);
-`go=relive&id=apollo-11|mer-opportunity`; `go=solar`; `go=tour`; `go=missions`; `go=journey&id=moon|mars`.
+`go=relive&id=apollo-11|mer-opportunity`; `go=missions`; `go=journey&id=moon|mars`. Without `go` (and after leaving a site
+or a replay) the Missions window opens: there is no homepage or free Solar System view, and closing the window returns
+to the main site.
 The main site's buttons are in `site/js/atlas-links.js`.
 
 ## Updating from the original repo
