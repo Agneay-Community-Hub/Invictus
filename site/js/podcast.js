@@ -2,20 +2,28 @@
    Podcast player (podcast.html). There are no recordings yet, so the
    episodes are performed live by the browser: each character gets its
    own voice settings, sound effects are made with Web Audio, and the
-   transcript highlights each line as it plays. Progress and quiz
-   answers are kept in this browser.
+   transcript highlights each line as it plays. Seasons come from
+   js/podcast-seasons.js. Progress and quiz answers stay in this
+   browser. Links: podcast.html#insight/mole opens an episode.
    =========================================================== */
 (() => {
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-  const EP = PODCAST.episodes;
+  const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
+  const coverOf = id => byId[id]?.media?.[0] ? "assets/nasa/" + byId[id].media[0].f : null;
   const KEY = "goe-podcast";
   const store = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })();
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch { } };
   store.done ??= {}; store.quiz ??= {};
+  // Season 1 saved its progress without a season prefix
+  for (const k of Object.keys(store.done)) if (!k.includes("/")) { store.done["voyager/" + k] = 1; delete store.done[k]; }
+  for (const k of Object.keys(store.quiz)) if (!k.includes("/")) { store.quiz["voyager/" + k] = store.quiz[k]; delete store.quiz[k]; }
 
-  // ---- voices: one per character, plus a different pitch for each instrument ----
-  const NAME = { N: null, V: "Voyager", T: "Flight team", K: "Listener question" };
+  let S = SEASONS[0], EP = S.episodes;
+  const key = e => `${S.id}/${e.id}`;
+  const starName = () => S.radio ? "Ghost Log Radio" : S.id === "voyager" ? "Voyager" : S.id === "apollo" ? "Mission Control" : (byId[S.star]?.name || "The spacecraft");
+
+  // ---- voices: one per character, plus a different pitch for each narrator ----
   let voices = [];
   const loadVoices = () => { voices = speechSynthesis.getVoices().filter(v => /^en(-|_|$)/i.test(v.lang)); };
   if ("speechSynthesis" in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
@@ -59,80 +67,105 @@
     wind: () => { noise(2, .1, 500, .3); return 1800; }
   };
 
-  // ---- the Voyager diagram: where each instrument lives ----
+  // ---- the picture: a Voyager diagram for Season 1, the machine's photo for the others ----
   const PART = {
     platform: { x: 318, y: 214, label: "Scan platform" }, boom: { x: 246, y: 186, label: "Science boom" },
     antennas: { x: 150, y: 70, label: "Radio antennas" }, mag: { x: 52, y: 238, label: "Magnetometer boom" }, dish: { x: 200, y: 92, label: "High-gain dish" }
   };
-  $("#pdDiagram").innerHTML = `<svg viewBox="0 0 400 300" role="img" aria-label="Voyager, with the instrument you're listening to highlighted">
+  const VOYAGER_SVG = `<svg viewBox="0 0 400 300" role="img" aria-label="Voyager, with the instrument you're listening to highlighted">
     <g fill="none" stroke="#9eabc2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M200 160 L50 250" stroke-width="1.6"/>
-      <path d="M190 150 L120 30 M210 150 L170 20" stroke-width="1.2"/>
-      <path d="M215 172 L330 216"/>
-      <path d="M195 178 L180 268"/><rect x="168" y="262" width="26" height="20" rx="3" transform="rotate(8 181 272)"/>
+      <path d="M200 160 L50 250" stroke-width="1.6"/><path d="M190 150 L120 30 M210 150 L170 20" stroke-width="1.2"/>
+      <path d="M215 172 L330 216"/><path d="M195 178 L180 268"/><rect x="168" y="262" width="26" height="20" rx="3" transform="rotate(8 181 272)"/>
       <ellipse cx="200" cy="96" rx="96" ry="30" fill="#142038"/><path d="M200 96 v-30"/><circle cx="200" cy="64" r="4"/>
       <path d="M176 140 h48 l12 18 -12 18 h-48 l-12 -18z" fill="#2a2f45"/>
       <rect x="310" y="204" width="34" height="26" rx="4" fill="#2a2f45"/><circle cx="352" cy="214" r="7"/><circle cx="352" cy="228" r="5"/>
-      <circle cx="200" cy="158" r="9" stroke="#ffb347"/>
-    </g>
-    <text x="214" y="166" fill="#ffd08a" font-size="10" font-family="sans-serif">Golden Record</text>
-    <g id="pdHot"></g>
-  </svg>`;
-  function hot(ep) {
-    const p = PART[ep.part];
-    $("#pdHot").innerHTML = `<circle cx="${p.x}" cy="${p.y}" r="22" fill="${ep.color}" opacity=".18"><animate attributeName="r" values="16;26;16" dur="2s" repeatCount="indefinite"/></circle>
-      <circle cx="${p.x}" cy="${p.y}" r="8" fill="${ep.color}"/><text x="${p.x}" y="${p.y + 40 > 290 ? p.y - 30 : p.y + 40}" text-anchor="middle" fill="${ep.color}" font-size="15" font-weight="700" font-family="sans-serif">${esc(ep.short)} · ${esc(p.label)}</text>`;
+      <circle cx="200" cy="158" r="9" stroke="#ffb347"/></g>
+    <text x="214" y="150" fill="#ffd08a" font-size="10" font-family="sans-serif">Golden Record</text><g id="pdHot"></g></svg>`;
+  function picture(e) {
+    if (S.diagram === "voyager") {
+      if (!$("#pdHot")) $("#pdDiagram").innerHTML = VOYAGER_SVG;
+      const p = PART[e.part];
+      $("#pdHot").innerHTML = `<circle cx="${p.x}" cy="${p.y}" r="22" fill="${e.color}" opacity=".18"><animate attributeName="r" values="16;26;16" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="${p.x}" cy="${p.y}" r="8" fill="${e.color}"/><text x="${p.x}" y="${p.y + 40 > 290 ? p.y - 30 : p.y + 40}" text-anchor="middle" fill="${e.color}" font-size="15" font-weight="700" font-family="sans-serif">${esc(e.short)} · ${esc(p.label)}</text>`;
+      return;
+    }
+    const id = e.art || S.star, src = coverOf(id), a = byId[id];
+    $("#pdDiagram").innerHTML = `<figure class="pd-photo" style="--c:${e.color}">${src ? `<img src="${src}" alt="${esc(a?.media?.[0]?.cap || a?.name || "")}">` : ""}
+      <figcaption><b>${esc(e.short)}</b> ${esc(a ? a.name : "")} ${a?.media?.[0] ? `· <span>${esc(a.media[0].cap)}</span>` : ""}</figcaption></figure>`;
   }
 
-  // ---- episode list ----
-  const isOn = s => /still on|still talks/i.test(s);
-  $("#pdList").innerHTML = EP.map((e, i) => `
-    <li><button type="button" data-ep="${i}" style="--c:${e.color}">
-      <span class="pd-n">${String(i + 1).padStart(2, "0")}</span>
-      <span class="pd-t"><b>${esc(e.name)}</b><small>${esc(e.short)} · Voyager 1: ${esc(e.status.v1)}</small></span>
-      <span class="pd-dot ${isOn(e.status.v1) ? "on" : "off"}" title="${isOn(e.status.v1) ? "Still on" : "Switched off"}"></span>
-      <span class="pd-done" data-done="${e.id}" ${store.done[e.id] ? "" : "hidden"}>✓</span>
-    </button></li>`).join("");
-  $("#pdList").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) { load(+b.dataset.ep); play(); } });
+  // ---- season tabs ----
+  $("#pdSeasons").innerHTML = SEASONS.map((s, i) => `<button type="button" role="tab" data-s="${i}" aria-selected="false">${s.radio ? "Ghost Log Radio" : `S${i + 1} · ${esc(s.title.split(":").pop().trim())}`}<small>${s.episodes.length} episodes</small></button>`).join("");
+  $("#pdSeasons").addEventListener("click", e => { const b = e.target.closest("[data-s]"); if (b) { setSeason(+b.dataset.s); load(firstUnfinished()); } });
+  const firstUnfinished = () => Math.max(0, EP.findIndex(e => !store.done[key(e)]));
 
-  // a strip of the years each instrument went quiet on Voyager 1
-  const year = s => +(s.match(/\b(19|20)\d\d\b/) || [])[0] || null;
-  // stack labels in rows so close years don't overlap
-  const lastX = [];
-  const ticks = EP.map((e, i) => ({ e, i, y: year(e.status.v1) })).map(t => ({ ...t, x: t.y ? (t.y - 1977) / (2028 - 1977) * 100 : 100 })).sort((a, b) => a.x - b.x)
-    .map(t => { let row = 0; while (lastX[row] != null && t.x - lastX[row] < 8) row++; lastX[row] = t.x; return { ...t, row }; });
-  $("#pdYears").style.height = (Math.max(...ticks.map(t => t.row)) + 1) * 22 + 52 + "px";
-  $("#pdYears").innerHTML = `<div class="pd-axis"><span>1977</span><span>Still on</span></div>` + ticks.map(({ e, i, y, x, row }) =>
-    `<button type="button" class="pd-tick ${y ? "" : "on"}" style="left:${Math.min(x, 97)}%;--c:${e.color};--row:${row}" data-ep="${i}" title="${esc(e.name)}: ${esc(e.status.v1)}">${esc(e.short)}${y ? ` <small>${y}</small>` : ""}</button>`).join("");
+  function setSeason(i) {
+    stop(); S = SEASONS[i]; EP = S.episodes;
+    $$("#pdSeasons [data-s]").forEach(b => b.setAttribute("aria-selected", String(+b.dataset.s === i)));
+    $("#pdSeasonTitle").textContent = S.title; $("#pdSeasonBlurb").textContent = S.blurb;
+    $("#pdDiagram").innerHTML = "";
+    // episode list
+    $("#pdList").innerHTML = EP.map((e, k) => `
+      <li><button type="button" data-ep="${k}" style="--c:${e.color}">
+        <span class="pd-n">${S.radio ? "" : String(k + 1).padStart(2, "0")}</span>
+        <span class="pd-t"><b>${esc(e.name)}</b><small>${S.radio ? `${esc(byId[e.id] ? TYPES[byId[e.id].type] : "")} · ${byId[e.id]?.year || ""}` : `${esc(e.short)} · ${esc(e.status[0][1])}`}</small></span>
+        <span class="pd-dot ${e.on ? "on" : "off"}" title="${e.on ? "Still working" : "Gone quiet"}"></span>
+        <span class="pd-done" data-done="${key(e)}" ${store.done[key(e)] ? "" : "hidden"}>✓</span>
+      </button></li>`).join("");
+    $("#pdFilter").hidden = !S.radio; $("#pdFilter input").value = "";
+    years();
+    score();
+  }
+  $("#pdList").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) { load(+b.dataset.ep); play(); } });
+  $("#pdFilter input").addEventListener("input", e => { const q = e.target.value.trim().toLowerCase(); $$("#pdList li").forEach((li, k) => (li.hidden = !!q && !EP[k].name.toLowerCase().includes(q))); });
+
+  // the year strip, for Voyager: when each instrument went quiet on Voyager 1
+  function years() {
+    const box = $("#pdYears");
+    if (!S.years) { box.hidden = true; return; }
+    box.hidden = false;
+    const yr = s => +(s.match(/\b(19|20)\d\d\b/) || [])[0] || null, lastX = [];
+    const ticks = EP.map((e, i) => ({ e, i, y: yr(e.status[0][1]) })).map(t => ({ ...t, x: t.y ? (t.y - 1977) / (2028 - 1977) * 100 : 100 })).sort((a, b) => a.x - b.x)
+      .map(t => { let row = 0; while (lastX[row] != null && t.x - lastX[row] < 8) row++; lastX[row] = t.x; return { ...t, row }; });
+    box.style.height = (Math.max(...ticks.map(t => t.row)) + 1) * 22 + 52 + "px";
+    box.innerHTML = `<div class="pd-axis"><span>1977</span><span>Still on</span></div>` + ticks.map(({ e, i, y, x, row }) =>
+      `<button type="button" class="pd-tick ${y ? "" : "on"}" style="left:${Math.min(x, 97)}%;--c:${e.color};--row:${row}" data-ep="${i}" title="${esc(e.name)}: ${esc(e.status[0][1])}">${esc(e.short)}${y ? ` <small>${y}</small>` : ""}</button>`).join("");
+  }
   $("#pdYears").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) { load(+b.dataset.ep); play(); } });
 
-  // ---- the player ----
+  // ---- one episode ----
   let cur = 0, line = 0, playing = false, token = 0;
+  const speaker = (sp, e) => sp === "N" ? (S.radio ? "Ghost" : e.short) : sp === "V" ? starName() : sp === "T" ? (S.radio ? "Radio" : "Team") : "Listener";
   function load(i) {
     stop(); cur = i; line = 0;
     const e = EP[i];
     $$("#pdList [data-ep]").forEach(b => b.setAttribute("aria-current", String(+b.dataset.ep === i)));
-    $("#pdNow").innerHTML = `<p class="eyebrow" style="color:${e.color}">Episode ${i + 1} of ${EP.length} · ${esc(e.short)}</p><h2>${esc(e.name)}</h2>
-      <p class="pd-unique"><b>Only I could:</b> ${esc(e.unique)}</p>
-      <dl class="pd-status"><div><dt>Voyager 1</dt><dd class="${isOn(e.status.v1) ? "on" : ""}">${esc(e.status.v1)}</dd></div><div><dt>Voyager 2</dt><dd class="${isOn(e.status.v2) ? "on" : ""}">${esc(e.status.v2)}</dd></div></dl>`;
-    $("#pdScript").innerHTML = e.lines.map(([sp, text, o], k) => text ? `<p class="pd-line sp-${sp}" data-l="${k}"><b>${esc(sp === "N" ? e.short : NAME[sp])}</b> ${esc(text)}</p>`
+    $("#pdNow").innerHTML = `<p class="eyebrow" style="color:${e.color}">${S.radio ? "Ghost Log Radio" : `Episode ${i + 1} of ${EP.length}`} · ${esc(e.short)}</p><h2>${esc(e.name)}</h2>
+      <p class="pd-unique"><b>${S.radio ? "The plan:" : "Only I could:"}</b> ${esc(e.unique)}</p>
+      <dl class="pd-status">${e.status.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd class="${/still|used today/i.test(v) ? "on" : ""}">${esc(v)}</dd></div>`).join("")}</dl>`;
+    $("#pdScript").innerHTML = e.lines.map(([sp, text, o], k) => text ? `<p class="pd-line sp-${sp}" data-l="${k}"><b>${esc(speaker(sp, e))}</b> ${esc(text)}</p>`
       : `<p class="pd-line pd-cue" data-l="${k}"><i>[${esc(o?.sfx || "")} sound]</i></p>`).join("");
-    const q = e.challenge, ans = store.quiz[e.id];
+    const q = e.challenge, ans = store.quiz[key(e)];
     $("#pdQuiz").innerHTML = `<h3>Mission challenge</h3><p>${esc(q.q)}</p><div class="pd-opts">${q.options.map((o, k) => `<button type="button" data-a="${k}" class="${ans != null && k === q.a ? "right" : ans === k ? "wrong" : ""}">${esc(o)}</button>`).join("")}</div>
-      <p class="pd-qmsg" aria-live="polite">${ans == null ? "" : ans === q.a ? "Correct! Well done." : "Not quite. Listen again for the answer."}</p>
+      <p class="pd-qmsg" aria-live="polite">${ans == null ? "" : ans === q.a ? "Correct! Well done." : "Not quite. The right answer is lit up in green."}</p>
       <a class="btn btn-small" href="${e.try[0]}">${ico("arrow")} Try this: ${esc(e.try[1])}</a>`;
-    hot(e); progress();
-    history.replaceState(null, "", "#" + e.id);
+    picture(e); progress();
+    history.replaceState(null, "", "#" + key(e));
   }
   $("#pdQuiz").addEventListener("click", ev => {
     const b = ev.target.closest("[data-a]"); if (!b) return;
-    const e = EP[cur], k = +b.dataset.a; store.quiz[e.id] = k; save();
-    $$("#pdQuiz [data-a]").forEach(x => x.className = +x.dataset.a === e.challenge.a ? "right" : x === b ? "wrong" : "");
+    const e = EP[cur], k = +b.dataset.a; store.quiz[key(e)] = k; save();
+    $$("#pdQuiz [data-a]").forEach(x => (x.className = +x.dataset.a === e.challenge.a ? "right" : x === b ? "wrong" : ""));
     $("#pdQuiz .pd-qmsg").textContent = k === e.challenge.a ? "Correct! Well done." : "Not quite. The right answer is lit up in green.";
     score();
   });
-  function score() { const n = EP.filter(e => store.quiz[e.id] === e.challenge.a).length; $("#pdScore").textContent = `${n} of ${EP.length} challenges solved · ${Object.keys(store.done).length} episodes finished`; }
+  function score() {
+    const solved = EP.filter(e => store.quiz[key(e)] === e.challenge.a).length, done = EP.filter(e => store.done[key(e)]).length;
+    const all = SEASONS.reduce((n, s) => n + s.episodes.length, 0);
+    $("#pdScore").textContent = `This season: ${done} of ${EP.length} episodes finished, ${solved} challenges solved · All seasons: ${Object.keys(store.done).length} of ${all} episodes`;
+  }
 
+  // ---- playing ----
   function progress() {
     const e = EP[cur], n = e.lines.length;
     $("#pdBar").style.setProperty("--p", line / n);
@@ -168,11 +201,15 @@
     }
     if (me !== token) return;
     playing = false;
-    if (line >= e.lines.length) { store.done[e.id] = 1; save(); $(`[data-done="${e.id}"]`).hidden = false; score(); line = 0; $("#pdQuiz").scrollIntoView({ block: "nearest", behavior: "smooth" }); if ($("#pdAuto").checked && cur < EP.length - 1) { await wait(1500); load(cur + 1); play(); return; } }
+    if (line >= e.lines.length) {
+      store.done[key(e)] = 1; save(); const d = $(`[data-done="${key(e)}"]`); if (d) d.hidden = false; score(); line = 0;
+      $("#pdQuiz").scrollIntoView({ block: "nearest", behavior: "smooth" });
+      if ($("#pdAuto").checked && cur < EP.length - 1) { await wait(1500); load(cur + 1); play(); return; }
+    }
     progress();
   }
   function pause() { playing = false; token++; try { speechSynthesis.cancel(); } catch { } progress(); }
-  function stop() { pause(); }
+  function stop() { if (playing) pause(); }
   $("#pdPlay").addEventListener("click", play);
   $("#pdBack").addEventListener("click", () => { const was = playing; pause(); line = Math.max(0, line - 1); progress(); if (was) play(); });
   $("#pdFwd").addEventListener("click", () => { const was = playing; pause(); line = Math.min(EP[cur].lines.length - 1, line + 1); progress(); if (was) play(); });
@@ -180,10 +217,18 @@
   $("#pdPrint").addEventListener("click", () => print());
   addEventListener("pagehide", pause);
 
-  // start on the episode in the # (e.g. podcast.html#crs), or the first one not yet finished
-  const fromHash = EP.findIndex(e => e.id === location.hash.slice(1));
-  load(fromHash >= 0 ? fromHash : Math.max(0, EP.findIndex(e => !store.done[e.id])));
-  score();
+  // ---- start: #season/episode, an old Season 1 link like #crs, or a machine's id for Ghost Log Radio ----
+  function fromHash() {
+    const h = decodeURIComponent(location.hash.slice(1));
+    let [sid, eid] = h.includes("/") ? h.split("/") : [null, h];
+    if (!sid && eid) sid = SEASONS[0].episodes.some(e => e.id === eid) ? "voyager" : byId[eid] ? "radio" : null;
+    const si = Math.max(0, SEASONS.findIndex(s => s.id === sid));
+    setSeason(si);
+    const ei = EP.findIndex(e => e.id === eid);
+    load(ei >= 0 ? ei : firstUnfinished());
+  }
+  fromHash();
+  addEventListener("hashchange", () => { if (location.hash.slice(1) !== key(EP[cur])) fromHash(); });
 
   const nt = $(".nav-toggle"), ul = $("#navlist");
   nt?.addEventListener("click", () => { const o = ul.classList.toggle("open"); nt.setAttribute("aria-expanded", String(o)); });

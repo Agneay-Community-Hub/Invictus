@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Last Light from Voyager — Ghosts of Exploration</title>
+  <title>Ghost Logs: the podcast — Ghosts of Exploration</title>
   <meta name="description" content="A podcast for kids: eleven episodes, each told by one of Voyager's science instruments, about the one thing only it could do and how its last day came.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Ghosts of Exploration">
@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="css/style.css?v=0d5e4da5">
-  <link rel="stylesheet" href="css/catalogue.css?v=c89fc6db">
+  <link rel="stylesheet" href="css/catalogue.css?v=4557b089">
   <link rel="icon" href="assets/ui/speaker.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
@@ -48,12 +48,14 @@
 
   <main class="cat-wrap" id="main">
     <section class="cat-hero no-print">
-      <p class="eyebrow">A podcast for kids · Season 1</p>
-      <h1>Last Light from Voyager</h1>
-      <p class="lede">Voyager 1 and 2 left Earth in 1977. To save power, their instruments are being switched off one by one. In each episode, a different instrument tells you the one thing only it could do, and how its last day came. Voyager 1 has just two left.</p>
+      <p class="eyebrow">A podcast for kids</p>
+      <h1>Ghost Logs: the podcast</h1>
+      <p class="lede">Machines in space tell their own stories. In the seasons, each episode is narrated by one instrument, about the one thing only it could do. In Ghost Log Radio, every machine in the archive gets an episode of its own.</p>
       <p class="pd-score" id="pdScore"></p>
     </section>
 
+    <div class="pd-seasons no-print" id="pdSeasons" role="tablist" aria-label="Seasons"></div>
+    <header class="pd-season-head"><h2 id="pdSeasonTitle"></h2><p id="pdSeasonBlurb"></p></header>
     <div class="pd-years no-print" id="pdYears" aria-label="When each instrument went quiet on Voyager 1"></div>
 
     <div class="pd-grid">
@@ -74,12 +76,13 @@
       </section>
       <aside class="pd-side no-print">
         <h2>Episodes</h2>
+        <label class="pd-filter" id="pdFilter" hidden><span class="sr-only">Find a machine</span><input type="search" placeholder="Find a machine…" autocomplete="off"></label>
         <ol class="pd-list" id="pdList"></ol>
         <div class="pd-about">
           <h3>About the voices</h3>
           <p>Each episode is read aloud by your device's built-in voices, so it sounds a bit robotic and changes from device to device. The scripts are ready to be recorded by real people, and those recordings will replace the robot voices.</p>
           <h3>For teachers</h3>
-          <p>Every transcript prints as a reading script. Facts and dates come from NASA's Voyager mission pages (2026). The flight team's lines are made up, not quotes from real people.</p>
+          <p>Every transcript prints as a reading script. Facts and dates come from NASA mission pages (read in 2026) and the sourced dossiers on this site. The flight team's lines are made up, not quotes from real people.</p>
           <button type="button" class="btn btn-small" id="pdPrint"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"></use></svg> Print this transcript</button>
         </div>
       </aside>
@@ -93,8 +96,9 @@
   <script src="js/icons.js?v=ed5e4fdc"></script>
   <script src="js/data.js?v=83e574d5"></script>
   <script src="js/podcast-episodes.js?v=0dc1bad6"></script>
-  <script src="js/podcast.js?v=d5008325"></script>
-  <script src="js/search.js?v=2d121a24"></script>
+  <script src="js/podcast-seasons.js?v=8d0e2b71"></script>
+  <script src="js/podcast.js?v=75689dbd"></script>
+  <script src="js/search.js?v=044426e8"></script>
   <script src="js/glossary.js?v=f39d5e4e"></script>
   <script src="js/pwa.js?v=7612dde4"></script>
 </body>

@@ -810,3 +810,20 @@ body.cat-page { background:
   .pd-line b { color: #555 !important; }
 }
 .pd-tick small { font-weight: 400; opacity: .75; }
+
+/* ---- podcast seasons ---- */
+.pd-seasons { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 10px; margin-bottom: 14px; scrollbar-width: thin; }
+.pd-seasons button { flex: none; display: grid; gap: 2px; text-align: left; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: 700 .9rem var(--font); cursor: pointer; }
+.pd-seasons button small { color: var(--dim); font-weight: 400; font-size: .76rem; }
+.pd-seasons button:hover { border-color: var(--line2); background: var(--panel2); }
+.pd-seasons button[aria-selected=true] { border-color: var(--amber); background: rgba(255,179,71,.12); color: var(--amber2); }
+.pd-season-head { max-width: 820px; margin: 0 0 10px; }
+.pd-season-head h2 { margin: 0 0 4px; font-size: clamp(1.4rem, 2.8vw, 2rem); }
+.pd-season-head p { margin: 0; color: var(--muted); }
+.pd-years[hidden] { display: none; }
+.pd-filter input { width: 100%; box-sizing: border-box; min-height: 40px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line2); background: var(--bg2); color: var(--text); font: inherit; }
+.pd-filter[hidden] { display: none; }
+.pd-photo { margin: 0 0 6px; border-radius: 16px; overflow: hidden; border: 2px solid var(--c); background: var(--bg2); }
+.pd-photo img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.pd-photo figcaption { padding: 8px 12px; font-size: .85rem; color: var(--muted); }
+.pd-photo figcaption b { color: var(--c); margin-right: 4px; }

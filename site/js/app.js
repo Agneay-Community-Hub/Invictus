@@ -387,7 +387,7 @@
           ${typeof ATLAS_RELIVE !== "undefined" && ATLAS_RELIVE[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="relive:${ATLAS_RELIVE[a.id]}" href="atlas/index.html?go=relive&amp;id=${ATLAS_RELIVE[a.id]}">${ico("play")} ${t("d.relive3d", "Relive the mission in 3D")}</a>` : ""}
           ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">${ico("rocket")} Try landing it yourself</a>` : ""}
           ${a.id === "opportunity" || a.id === "spirit" ? `<a class="btn btn-small btn-upclose" href="#upclose" data-upclose>${ico("eye")} ${t("d.upclose", "Opportunity, up close")}</a>` : ""}
-          ${a.id === "voyager1" || a.id === "voyager2" ? `<a class="btn btn-small" href="podcast.html">${ico("speaker")} ${t("d.podcast", "Listen to the Voyager podcast")}</a>` : ""}
+          <a class="btn btn-small" href="podcast.html#${{ voyager1: "voyager/", voyager2: "voyager/", insight: "insight/", cassini: "cassini/", opportunity: "opportunity/", kepler: "kepler/", apollo11: "apollo/a11seis", apollo12: "apollo/ring", apollo16: "apollo/uv" }[a.id] ?? "radio/" + a.id}">${ico("speaker")} ${t("d.podcast", "Listen to its podcast")}</a>
           <a class="btn btn-small" href="comics.html?issue=${a.id}">${ico("book")} ${t("d.comic", "Read its comic")}</a>
           <a class="btn btn-small" href="compare.html?a=${a.id}">${ico("compare")} ${t("d.compare", "Compare with another")}</a>
           <a class="btn btn-small" href="adopt.html#${a.id}">${ico("award")} ${t("d.adopt", "Adopt this ghost")}</a>
