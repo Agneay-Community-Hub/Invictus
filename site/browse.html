@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>All 49 machines — Ghosts of Exploration</title>
+  <meta name="description" content="All 49 machines NASA left on the Moon, on Mars and across the solar system: search and filter by world, type and status, then open any dossier.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="All 49 machines — Ghosts of Exploration">
+  <meta property="og:description" content="Search and filter every machine NASA left behind.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/browse.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/browse.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=18500d0d">
+  <link rel="stylesheet" href="css/catalogue.css?v=faebe965">
+  <link rel="icon" href="assets/ui/map.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="cat-page">
+  <a class="skip" href="#brSearch">Skip to the search</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>All machines</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#map">Ghost Map</a></li>
+        <li><a href="browse.html" class="active" aria-current="page">All machines</a></li>
+        <li><a href="library.html">Photos, videos, sounds</a></li>
+        <li><a href="landings.html">Landing sites</a></li>
+        <li><a href="catalogue.html">Mission catalogue</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cat-wrap" id="main">
+    <section class="cat-hero">
+      <p class="eyebrow">The archive</p>
+      <h1 id="brTitle">All 49 machines</h1>
+      <p class="lede">Every rover, lander, Moon car, science station, crashed probe and deep-space traveller in the archive. Filter them, search them, and open any one to read its story.</p>
+    </section>
+
+    <div class="cat-tools br-tools">
+      <label class="cat-search"><span class="sr-only">Search machines</span>
+        <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg>
+        <input id="brSearch" type="search" placeholder="Search: rover, ice, Saturn, 1977…" autocomplete="off">
+      </label>
+      <div class="cat-chips" role="group" aria-label="Filter by world">
+        <button aria-pressed="true" data-f="all">All</button>
+        <button aria-pressed="false" data-f="moon">Moon</button>
+        <button aria-pressed="false" data-f="mars">Mars</button>
+        <button aria-pressed="false" data-f="deep">Elsewhere</button>
+      </div>
+      <div class="br-selects">
+        <label><span class="sr-only">Type</span><select id="brType"><option value="">Every type</option></select></label>
+        <label><span class="sr-only">Status</span><select id="brStatus"><option value="">Any status</option></select></label>
+        <label><span class="sr-only">Sort</span><select id="brSort"><option value="year">Oldest first</option><option value="new">Newest first</option><option value="name">A to Z</option></select></label>
+      </div>
+      <p class="cat-count" id="brCount" aria-live="polite"></p>
+    </div>
+
+    <div class="deep-cards" id="brGrid"></div>
+    <p class="lib-empty" id="brEmpty" hidden>Nothing matches. Try another word or filter.</p>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div><p><a href="index.html">← Back to the archive</a> · Photos: NASA Image and Video Library (public domain; NASA does not endorse this project).</p></div>
+  </footer>
+
+  <script src="js/icons.js?v=55c57855"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/browse.js?v=8f65ca85"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>

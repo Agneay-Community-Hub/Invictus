@@ -102,3 +102,22 @@ body.cat-page { background:
 .cat-list { grid-template-columns: minmax(0, 1fr); }
 .cat-row, .land-card { min-width: 0; }
 .cat-body, .land-body { overflow-wrap: anywhere; }
+
+/* ---------- Photos, videos and sounds (library.html) ---------- */
+.lib-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 6px; }
+.lib-tabs [role=tab] { display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--muted); font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; }
+.lib-tabs [role=tab]:hover { color: var(--text); border-color: var(--line2); }
+.lib-tabs [role=tab][aria-selected="true"] { background: var(--panel2); color: var(--text); border-color: var(--amber); }
+.lib-n { font-size: .8rem; padding: 2px 8px; border-radius: 999px; background: var(--bg2); color: var(--muted); }
+.lib-tabs [aria-selected="true"] .lib-n { background: var(--amber); color: #1b1203; }
+.lib-note { color: var(--muted); max-width: 75ch; margin: 0 0 14px; }
+.lib-empty { color: var(--muted); padding: 24px 0; }
+.gallery figcaption a + a { margin-left: 0; }
+
+/* ---------- All machines (browse.html) ---------- */
+.br-selects { display: flex; gap: 8px; flex-wrap: wrap; }
+.br-selects select { min-height: 40px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg2); color: var(--text);
+  font: inherit; font-weight: 700; font-size: .9rem; color-scheme: dark; cursor: pointer; }
+.br-card { text-decoration: none; color: var(--text); }
+.br-card .br-where { color: var(--dim); font-size: .85rem; }

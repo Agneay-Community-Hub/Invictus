@@ -555,7 +555,8 @@
         <b>${esc(p.a.name)}</b><small>~${p.au.toFixed(0)} AU</small><span class="pdot"></span></button>`).join("")}`;
     $("#ruler").setAttribute("aria-label", "Distances from the Sun: " + probes.map(p => `${p.a.name} about ${p.au.toFixed(0)} AU`).join(", "));
     $$("#ruler .probe").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
-    $("#deepCards").innerHTML = ARTIFACTS.filter(a => a.world === "deep").map(a => `
+    const deep = ARTIFACTS.filter(a => a.world === "deep");
+    $("#deepCards").innerHTML = deep.slice(0, 8).map(a => `
       <button class="card" data-id="${a.id}">
         ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph">${typeIco(a.type)}</span>`}
         <span class="card-body">${pill(a.status)}${hasModel(a.id) ? '<span class="tag3d">3D model</span>' : ""}<b>${esc(a.name)}</b>
@@ -563,7 +564,16 @@
           <p class="live">${a.dist ? t("deep.signal", "Signal travel time: ~") + lightTime(auNow(a.dist)) : t("deep.launched", "Launched ") + a.dates.launch}</p></span>
       </button>`).join("");
     $$("#deepCards .card").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
+    moreLink($("#deepCards"), "moreDeep", "browse.html?world=deep", n("more.deep", "See all {n} machines beyond the Moon and Mars", deep.length));
   }
+
+  /* ---- "See all" under a long section: the home page shows a preview, the full list has its own page ---- */
+  function moreLink(after, id, href, label) {
+    let row = document.getElementById(id);
+    if (!row) { row = document.createElement("div"); row.className = "more-row"; row.id = id; after.insertAdjacentElement("afterend", row); }
+    row.innerHTML = `<a class="more-link" href="${href}">${label} ${ico("arrow")}</a>`;
+  }
+  const n = (key, fallback, count) => t(key, fallback).replace("{n}", count);
 
   /* ---- sourced records (site/js/records.js, from the Cosmic-Atlas catalogue) ---- */
   const rec = id => (typeof RECORDS !== "undefined" && RECORDS[id]) || null;
@@ -688,7 +698,7 @@
     const vids = [
       ["apollo11", "apollo11"], ["lrv", "apollo15"], ["ingenuity", "ingenuity"], ["marsquake", "insight"], ["meteoroid", "insight"], ["voyager", "voyager1"]
     ];
-    $("#videos").innerHTML = vids.map(([k, aid]) => { const v = VIDEOS[k]; return `
+    $("#videos").innerHTML = vids.slice(0, 3).map(([k, aid]) => { const v = VIDEOS[k]; return `
       <div class="vcard"><button class="vthumb" data-v="${k}" aria-label="Play video: ${esc(v.title)}"><img src="${v.poster}" alt="" loading="lazy"></button>
       <p>${esc(v.title)}<small>${esc(byId[aid].name)}${v.note ? " · " + esc(v.note) : ""}</small></p></div>`; }).join("");
     $$("#videos .vthumb").forEach(b => b.addEventListener("click", () => {
@@ -698,16 +708,18 @@
       vid.setAttribute("aria-label", v.title);
       b.replaceWith(vid); vid.focus();
     }));
+    moreLink($("#videos"), "moreVideos", "library.html#videos", n("more.videos", "See all {n} videos", vids.length));
     renderGallery("all");
     $$("[data-arc]").forEach(b => b.addEventListener("click", () => { $$("[data-arc]").forEach(x => x.setAttribute("aria-pressed", x === b)); renderGallery(b.dataset.arc); }));
   }
   function renderGallery(w) {
     const seen = new Set(), items = [];
     ARTIFACTS.filter(a => w === "all" || a.world === w).forEach(a => a.media.forEach(m => { if (!seen.has(m.f)) { seen.add(m.f); items.push({ a, m }); } }));
-    $("#gallery").innerHTML = items.map(({ a, m }) => `
+    $("#gallery").innerHTML = items.slice(0, 8).map(({ a, m }) => `
       <figure><button data-src="assets/nasa/${m.f}" data-cap="${esc(m.cap + " — NASA · " + m.id)}"><img src="assets/nasa/${m.f}" alt="${esc(m.cap)}" loading="lazy"></button>
       <figcaption><b>${esc(a.name)}</b>${esc(m.cap)}<br><a href="${NASA_PAGE(m.id)}" target="_blank" rel="noopener">NASA · ${esc(m.id)}</a></figcaption></figure>`).join("");
     $$("#gallery button").forEach(b => b.addEventListener("click", () => openLightbox(b.dataset.src, b.dataset.cap)));
+    moreLink($("#gallery"), "morePhotos", `library.html${w === "all" ? "" : "?world=" + w}#photos`, n("more.photos", "See all {n} photos", items.length));
   }
   let lbReturn = null;
   function openLightbox(src, cap) {
@@ -841,8 +853,9 @@
   }
   function initSounds() {
     if (typeof SOUNDS === "undefined" || !$("#sounds")) return;
-    $("#sounds").innerHTML = SOUNDS.map(soundHTML).join("");
+    $("#sounds").innerHTML = SOUNDS.slice(0, 3).map(soundHTML).join("");
     bindSounds($("#sounds"));
+    moreLink($("#sounds"), "moreSounds", "library.html#sounds", n("more.sounds", "Hear all {n} sounds", SOUNDS.length));
   }
 
   /* ---------------- THEN & NOW sliders ---------------- */

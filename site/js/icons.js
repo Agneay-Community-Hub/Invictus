@@ -35,6 +35,9 @@ const ICONS = {
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
   wave: '<path d="M2 12h2l2-6 3 12 3-14 3 16 3-10 2 2h2"/>',
   play: '<path d="M7 4v16l13-8z"/>',
+  arrow: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
+  film: '<rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 3v18"/><path d="M17 3v18"/><path d="M2 8h5"/><path d="M2 16h5"/><path d="M17 8h5"/><path d="M17 16h5"/>',
   // machine types (map lists, placeholders, chips)
   rover: '<rect x="4" y="9" width="16" height="6" rx="1.5"/><path d="M8 9V6h4"/><path d="M12 6V4"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>',
   lander: '<path d="M7 5h10l2 6H5z"/><path d="M8 11 4.5 19"/><path d="M16 11l3.5 8"/><path d="M12 11v8"/><path d="M3 19h3"/><path d="M18 19h3"/><path d="M10.5 19h3"/>',

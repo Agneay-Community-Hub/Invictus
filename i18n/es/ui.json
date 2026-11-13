@@ -88,7 +88,7 @@
     "ex.title": "Vuela alrededor de la Luna y Marte en 3D",
     "ex.desc": "Gira los globos, encuentra las balizas y viaja hasta donde están hoy las Voyager.",
     "ex.btn": "Abrir Explorar en 3D →",
-    "foot.links": "<a href=\"teacher.html\">Material docente</a> · <a href=\"lander.html\">Aterrízalo tú</a> · <a href=\"ask.html\">Pregunta al Archivo</a> · <a href=\"explore.html\">Explorar en 3D</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"landings.html\">Lugares de aterrizaje</a> · <a href=\"catalogue.html\">Catálogo de misiones</a> · <a href=\"adopt.html\">Adopta un fantasma</a> · <a href=\"sources.html\">Fuentes</a> · <a href=\"machines/index.es.html\">Las 49 máquinas</a>",
+    "foot.links": "<a href=\"teacher.html\">Material docente</a> · <a href=\"lander.html\">Aterrízalo tú</a> · <a href=\"ask.html\">Pregunta al Archivo</a> · <a href=\"explore.html\">Explorar en 3D</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"browse.html\">Todas las máquinas</a> · <a href=\"library.html\">Fotos, videos y sonidos</a> · <a href=\"landings.html\">Lugares de aterrizaje</a> · <a href=\"catalogue.html\">Catálogo de misiones</a> · <a href=\"adopt.html\">Adopta un fantasma</a> · <a href=\"sources.html\">Fuentes</a> · <a href=\"machines/index.es.html\">Las 49 máquinas</a>",
     "foot.made": "Hecho para el NASA Space Apps Challenge 2026: “Abandonados, pero no olvidados”.",
     "foot.credits": "Créditos",
     "foot.creditsText": "Fotos y videos: Biblioteca de Imágenes y Videos de la NASA (dominio público). Mapa lunar: NASA SVS CGI Moon Kit (datos de LRO). Texturas de Marte y estrellas: Solar System Scope (CC BY 4.0). Insignias: paquete Fantasy RPG UI Kit. Sistema solar 3D en vivo: Eyes on the Solar System de la NASA (NASA/JPL-Caltech).",
@@ -197,7 +197,11 @@
     "d.adopt": "Adopta este fantasma",
     "d.upclose": "Opportunity, de cerca",
     "w3d.all": "Los 14 lugares de aterrizaje",
-    "w3d.allSub": "Busca cualquier sitio de la Luna o de Marte y aterriza en él."
+    "w3d.allSub": "Busca cualquier sitio de la Luna o de Marte y aterriza en él.",
+    "more.deep": "Ver las {n} máquinas más allá de la Luna y Marte",
+    "more.videos": "Ver los {n} videos",
+    "more.photos": "Ver las {n} fotos",
+    "more.sounds": "Escuchar los {n} sonidos"
   },
   "status": {
     "silent": {

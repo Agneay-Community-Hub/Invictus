@@ -88,7 +88,7 @@
     "ex.title": "3D में चाँद और मंगल के चारों ओर उड़ें",
     "ex.desc": "गोलों को घुमाएँ, चमकते निशान ढूँढें, और वहाँ तक जाएँ जहाँ आज वॉयजर यान हैं।",
     "ex.btn": "3D में घूमना शुरू करें →",
-    "foot.links": "<a href=\"teacher.html\">शिक्षक सामग्री</a> · <a href=\"lander.html\">खुद उतारो</a> · <a href=\"ask.html\">संग्रह से पूछें</a> · <a href=\"explore.html\">3D में घूमें</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"landings.html\">उतरने की जगहें</a> · <a href=\"catalogue.html\">मिशन सूची</a> · <a href=\"adopt.html\">एक भूत गोद लो</a> · <a href=\"sources.html\">स्रोत</a> · <a href=\"machines/index.hi.html\">सभी 49 मशीनें</a>",
+    "foot.links": "<a href=\"teacher.html\">शिक्षक सामग्री</a> · <a href=\"lander.html\">खुद उतारो</a> · <a href=\"ask.html\">संग्रह से पूछें</a> · <a href=\"explore.html\">3D में घूमें</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"browse.html\">सभी मशीनें</a> · <a href=\"library.html\">तस्वीरें, वीडियो और आवाज़ें</a> · <a href=\"landings.html\">उतरने की जगहें</a> · <a href=\"catalogue.html\">मिशन सूची</a> · <a href=\"adopt.html\">एक भूत गोद लो</a> · <a href=\"sources.html\">स्रोत</a> · <a href=\"machines/index.hi.html\">सभी 49 मशीनें</a>",
     "foot.made": "NASA Space Apps Challenge 2026 के लिए बनाया गया — “छोड़े गए, पर भुलाए नहीं गए।”",
     "foot.credits": "आभार",
     "foot.creditsText": "तस्वीरें और वीडियो: नासा इमेज और वीडियो लाइब्रेरी (सार्वजनिक)। चाँद का नक्शा: NASA SVS CGI Moon Kit (LRO डेटा)। मंगल और तारों के टेक्सचर: Solar System Scope (CC BY 4.0)। बैज चित्र: Fantasy RPG UI Kit। लाइव 3D सौर मंडल: NASA का Eyes on the Solar System (NASA/JPL-Caltech)।",
@@ -197,7 +197,11 @@
     "d.adopt": "इस भूत को गोद लो",
     "d.upclose": "ऑपर्च्युनिटी, क़रीब से",
     "w3d.all": "सभी 14 उतरने की जगहें",
-    "w3d.allSub": "चाँद या मंगल की कोई भी जगह खोजो और वहाँ उतरो।"
+    "w3d.allSub": "चाँद या मंगल की कोई भी जगह खोजो और वहाँ उतरो।",
+    "more.deep": "चाँद और मंगल से आगे की सभी {n} मशीनें देखो",
+    "more.videos": "सभी {n} वीडियो देखो",
+    "more.photos": "सभी {n} तस्वीरें देखो",
+    "more.sounds": "सभी {n} आवाज़ें सुनो"
   },
   "status": {
     "silent": {
