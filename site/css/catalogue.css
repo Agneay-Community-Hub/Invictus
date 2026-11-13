@@ -631,3 +631,112 @@ body.cat-page { background:
   .pb3d-cap { font-size: .75rem; margin-top: 4px; }
   .pb-budget { position: static; }
 }
+
+/* ---- comics.html ---- */
+.cx-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+.cx-mini { position: relative; display: flex; flex-direction: column; aspect-ratio: 2 / 3; border: 3px solid #111; border-radius: 4px; overflow: hidden; background: #f2ead7; color: #111; text-decoration: none; box-shadow: 5px 5px 0 rgba(0,0,0,.55); transition: transform .15s, box-shadow .15s; }
+.cx-mini:hover, .cx-mini:focus-visible { transform: translate(-2px, -3px) rotate(-1deg); box-shadow: 8px 9px 0 rgba(0,0,0,.6); }
+.cx-mini[hidden] { display: none; }
+.cx-mini img, .cx-mini .cx-ph { flex: 1; min-height: 0; width: 100%; object-fit: cover; filter: grayscale(.6) contrast(1.3) sepia(.25); display: grid; place-items: center; }
+.cx-mini .cx-ph .ico { width: 48px; height: 48px; color: #555; }
+.cx-mast { display: flex; justify-content: space-between; align-items: baseline; padding: 4px 8px; background: var(--w); border-bottom: 3px solid #111; font: 1.5rem/1 "Bangers", var(--head); letter-spacing: .05em; color: #111; -webkit-text-stroke: .5px #111; }
+.cx-mast em { font-style: normal; font-size: .95rem; }
+.cx-mini b { font: 1.25rem/1.05 "Bangers", var(--head); letter-spacing: .03em; padding: 6px 8px 0; background: #f2ead7; }
+.cx-mini small { font: 700 .74rem "Comic Neue", var(--font); color: #444; padding: 0 8px 8px; background: #f2ead7; }
+.cx-mini.feat { grid-column: span 2; grid-row: span 2; }
+.cx-mini.feat b { font-size: 2rem; }
+.cx-mini.feat::after { content: "FULL ISSUE!"; position: absolute; right: -6px; top: 46px; transform: rotate(8deg); font: 1.1rem "Bangers", sans-serif; padding: 4px 12px; background: #ffd23f; border: 3px solid #111; }
+
+.cx-reader { display: grid; gap: 10px; justify-items: center; }
+.cx-reader[hidden] { display: none; }
+.cx-bar { display: flex; align-items: center; gap: 12px; width: 100%; justify-content: space-between; flex-wrap: wrap; }
+.cx-bar h1 { font: 1.7rem "Bangers", var(--head); letter-spacing: .05em; margin: 0; color: var(--amber2); }
+.cx-bar [aria-pressed=true] { border-color: var(--amber); color: var(--amber2); }
+.cx-stage { display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center; }
+.cx-nav { flex: none; width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--line2); background: var(--panel); color: var(--text); font-size: 1.8rem; line-height: 1; cursor: pointer; }
+.cx-nav:hover:not(:disabled) { border-color: var(--amber); color: var(--amber2); }
+.cx-nav:disabled { opacity: .3; cursor: default; }
+.cx-pageno { margin: 0; color: var(--muted); font-weight: 700; }
+.cx-hint { margin: 0; color: var(--dim); font-size: .82rem; }
+
+/* the book */
+.cx-book { --pw: min(40vw, (100vh - 210px) * .66); position: relative; width: calc(var(--pw) * 2); height: calc(var(--pw) / .66); perspective: 2600px; transition: transform .6s ease; outline: none; }
+.cx-book:focus-visible .cx-leaf:not(.flipped) .cx-face.front .cx-page { outline: 3px solid var(--cyan); outline-offset: 3px; }
+.cx-book.closed { transform: translateX(-25%); }
+.cx-book.ended { transform: translateX(25%); }
+.cx-leaf { position: absolute; top: 0; left: 50%; width: 50%; height: 100%; transform-origin: left center; transform-style: preserve-3d; transition: transform .85s cubic-bezier(.45,.05,.25,1); cursor: pointer; }
+.cx-leaf.instant { transition: none; }
+.cx-leaf.flipped { transform: rotateY(-180deg); }
+.cx-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.cx-face.back { transform: rotateY(180deg); }
+.cx-book.single { --pw: min(92vw, (100vh - 200px) * .66); width: var(--pw); }
+.cx-book.single .cx-leaf { left: 0; width: 100%; }
+.cx-book.single .cx-leaf.flipped { transform: rotateY(-100deg); opacity: 0; transition: transform .7s ease, opacity .7s ease .2s; }
+
+/* a page: paper, ink, panels */
+.cx-page { position: absolute; inset: 0; container-type: inline-size; background: #f2ead7; color: #111; box-shadow: inset 0 0 40px rgba(120,90,40,.25), 0 10px 30px rgba(0,0,0,.5); padding: 3.2cqw; display: grid; gap: 2.4cqw; overflow: hidden;
+  background-image: radial-gradient(rgba(120,90,40,.08) 1px, transparent 1.2px); background-size: 5px 5px; }
+.cx-face.front .cx-page { border-radius: 0 6px 6px 0; }
+.cx-face.back .cx-page { border-radius: 6px 0 0 6px; box-shadow: inset 0 0 40px rgba(120,90,40,.25), inset -14px 0 22px -14px rgba(0,0,0,.45); }
+.cx-l-splash { grid-template: 1fr / 1fr; }
+.cx-l-two { grid-template: 1fr 1fr / 1fr; }
+.cx-l-three { grid-template: 1.15fr 1fr / 1fr 1fr; } .cx-l-three .p1 { grid-column: 1 / -1; }
+.cx-l-four { grid-template: 1fr 1fr / 1fr 1fr; }
+.cx-l-tall { grid-template: 1fr 1fr / 1.1fr 1fr; } .cx-l-tall .p1 { grid-row: 1 / -1; }
+.cx-panel { position: relative; min-height: 0; border: .9cqw solid #111; background: #fff; overflow: hidden; box-shadow: .8cqw .8cqw 0 rgba(0,0,0,.18); }
+.cx-panel:nth-child(odd) { transform: rotate(-.35deg); } .cx-panel:nth-child(even) { transform: rotate(.3deg); }
+.cx-panel svg { position: absolute; inset: 0; width: 100%; height: 100%; filter: saturate(var(--fade, 1)); }
+.cx-panel.photo svg { filter: saturate(calc(var(--fade, 1) * .7)) sepia(.15); }
+.sk-lab { font: 700 13px "Comic Neue", sans-serif; fill: #fff; }
+.sk-screen { font: 22px "Bangers", sans-serif; fill: #9fe0ff; letter-spacing: 2px; }
+.cx-cap { position: absolute; max-width: 72%; margin: 0; padding: 1cqw 1.6cqw; background: #ffe9a3; border: .5cqw solid #111; font: 700 3.1cqw/1.25 "Comic Neue", var(--font); color: #111; box-shadow: .6cqw .6cqw 0 rgba(0,0,0,.25); z-index: 1; }
+.cx-l-four .cx-cap, .cx-l-tall .p2 .cx-cap, .cx-l-tall .p3 .cx-cap, .cx-l-three .p2 .cx-cap, .cx-l-three .p3 .cx-cap { max-width: 92%; font-size: 2.6cqw; }
+.cx-cap.tl { top: 1.2cqw; left: 1.2cqw; } .cx-cap.br { bottom: 1.2cqw; right: 1.2cqw; } .cx-cap.bl { bottom: 1.2cqw; left: 1.2cqw; } .cx-cap.tr { top: 1.2cqw; right: 1.2cqw; }
+.cx-bubble { position: absolute; max-width: 62%; margin: 0; padding: 1.6cqw 2.2cqw; background: #fff; border: .5cqw solid #111; border-radius: 50% / 40%; font: 700 3cqw/1.2 "Comic Neue", var(--font); text-align: center; z-index: 1; }
+.cx-bubble.radio { border-radius: 6px; background: #eaf7ff; clip-path: polygon(0 8%, 6% 0, 50% 4%, 94% 0, 100% 10%, 97% 50%, 100% 90%, 92% 100%, 50% 96%, 8% 100%, 0 92%, 3% 50%); padding: 2.2cqw 3cqw; font-family: ui-monospace, Consolas, monospace; font-size: 2.6cqw; }
+.cx-bubble.br { bottom: 3cqw; right: 3cqw; } .cx-bubble.tl { top: 3cqw; left: 3cqw; }
+.cx-sfx { position: absolute; z-index: 1; font-family: "Bangers", var(--head); letter-spacing: .04em; line-height: 1; -webkit-text-stroke: .5cqw #111; paint-order: stroke fill; text-shadow: .8cqw .8cqw 0 #111; pointer-events: none; white-space: nowrap; font-size: calc(var(--s, 1) * 9cqw); }
+.cx-link { position: absolute; right: 1.4cqw; bottom: 1.4cqw; z-index: 2; padding: .6cqw 1.6cqw; border-radius: 999px; background: #111; color: #ffd23f; font: 700 2.4cqw "Comic Neue", var(--font); text-decoration: none; }
+.cx-link:hover { background: #ffd23f; color: #111; }
+.cx-stats { position: absolute; left: 1.2cqw; right: 1.2cqw; bottom: 1.2cqw; margin: 0; display: grid; gap: 1cqw; z-index: 1; }
+.cx-stats div { background: #fff; border: .5cqw solid #111; padding: .8cqw 1.4cqw; box-shadow: .6cqw .6cqw 0 rgba(0,0,0,.25); }
+.cx-stats dt { font: 700 2.2cqw "Comic Neue", var(--font); color: #555; }
+.cx-stats dd { margin: 0; font: 5cqw/1 "Bangers", var(--head); letter-spacing: .03em; color: #c0392b; }
+.cx-num { position: absolute; bottom: .8cqw; left: 50%; transform: translateX(-50%); font: 700 2.2cqw "Comic Neue", sans-serif; color: #776; }
+.cx-dust { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(rgba(197,106,62,.55) 1px, transparent 1.6px) 0 0 / 7px 7px, radial-gradient(rgba(124,65,40,.4) 1.2px, transparent 2px) 3px 4px / 11px 11px; mix-blend-mode: multiply; }
+.cx-solbox { position: absolute; top: 4.5cqw; right: 4.5cqw; z-index: 2; font: 4cqw "Bangers", sans-serif; letter-spacing: .06em; background: #111; color: #ffd23f; padding: .6cqw 2cqw; transform: rotate(3deg); }
+.cx-blank { background: #e9e0ca; }
+
+/* covers */
+.cx-cover { display: block; padding: 0; }
+.cx-cover-art { position: absolute; inset: 0; }
+.cx-cover-art svg { width: 100%; height: 100%; }
+.cx-cover-mast { position: absolute; top: 0; left: 0; right: 0; display: grid; grid-template-columns: 1fr auto; padding: 2.4cqw 3cqw 1.6cqw; background: linear-gradient(#111 0 72%, transparent); }
+.cx-logo { font: 17cqw/0.9 "Bangers", var(--head); letter-spacing: .03em; color: var(--w, #ffd23f); -webkit-text-stroke: .7cqw #111; paint-order: stroke fill; text-shadow: 1.2cqw 1.2cqw 0 #c0392b; }
+.cx-logo.sm { font-size: 10cqw; margin: 0; color: #ffd23f; }
+.cx-sub { grid-column: 1; font: 700 3.2cqw "Comic Neue", sans-serif; letter-spacing: .5em; color: #fff; }
+.cx-no { grid-row: 1 / 3; grid-column: 2; align-self: start; text-align: center; font: 3.6cqw/1.1 "Bangers", sans-serif; background: #f2ead7; color: #111; border: .6cqw solid #111; padding: 1.2cqw 1.6cqw; }
+.cx-cover-title { position: absolute; left: 3cqw; right: 3cqw; bottom: 13cqw; transform: rotate(-3deg); }
+.cx-cover-title h2 { margin: 0; font: 11cqw/0.95 "Bangers", var(--head); letter-spacing: .02em; color: #fff; -webkit-text-stroke: .6cqw #111; paint-order: stroke fill; text-shadow: 1cqw 1cqw 0 #111; }
+.cx-cover-title p { display: inline-block; margin: 1.5cqw 0 0; padding: .6cqw 2cqw; background: #ffd23f; border: .5cqw solid #111; font: 700 3.4cqw "Comic Neue", sans-serif; }
+.cx-cover-tag { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 2.2cqw 3cqw; background: #111; color: #f2ead7; font: italic 700 3.2cqw/1.3 "Comic Neue", sans-serif; text-align: center; }
+
+/* back cover */
+.cx-back { display: flex; flex-direction: column; gap: 2.4cqw; padding: 7cqw 6cqw; background-color: #1d1814; color: #f2ead7; align-content: start; }
+.cx-back h2 { margin: 0; font: 8cqw/1 "Bangers", var(--head); letter-spacing: .03em; color: #fff; }
+.cx-ep { margin: 0; font: italic 700 4.4cqw/1.35 "Comic Neue", sans-serif; color: #ffd23f; }
+.cx-sol { margin: 0; font: 700 3.4cqw/1.45 "Comic Neue", sans-serif; }
+.cx-sol b { color: #ffd23f; }
+.cx-answer-out { margin: 2cqw 0 0; font: 700 3.1cqw/1.45 "Comic Neue", sans-serif; color: #cfe0ff; }
+.cx-answer-out b { color: #9fe0ff; }
+.cx-back-links { display: flex; flex-wrap: wrap; gap: 2cqw; margin-top: auto; }
+.cx-back .btn { font-size: 3cqw; }
+.cx-credit { margin: 0; font-size: 2.4cqw; color: #998; }
+
+@media (max-width: 860px) {
+  .cx-nav { position: fixed; bottom: 14px; z-index: 30; box-shadow: var(--shadow); }
+  .cx-nav.prev { left: 14px; } .cx-nav.next { right: 14px; }
+  .cx-bar h1 { font-size: 1.3rem; order: 3; width: 100%; }
+  .cx-mini.feat { grid-column: span 2; grid-row: span 1; aspect-ratio: auto; min-height: 300px; }
+}
+@media (prefers-reduced-motion: reduce) { .cx-leaf, .cx-book { transition: none !important; } }

@@ -387,6 +387,7 @@
           ${typeof ATLAS_RELIVE !== "undefined" && ATLAS_RELIVE[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="relive:${ATLAS_RELIVE[a.id]}" href="atlas/index.html?go=relive&amp;id=${ATLAS_RELIVE[a.id]}">${ico("play")} ${t("d.relive3d", "Relive the mission in 3D")}</a>` : ""}
           ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">${ico("rocket")} Try landing it yourself</a>` : ""}
           ${a.id === "opportunity" || a.id === "spirit" ? `<a class="btn btn-small btn-upclose" href="#upclose" data-upclose>${ico("eye")} ${t("d.upclose", "Opportunity, up close")}</a>` : ""}
+          <a class="btn btn-small" href="comics.html?issue=${a.id}">${ico("book")} ${t("d.comic", "Read its comic")}</a>
           <a class="btn btn-small" href="compare.html?a=${a.id}">${ico("compare")} ${t("d.compare", "Compare with another")}</a>
           <a class="btn btn-small" href="adopt.html#${a.id}">${ico("award")} ${t("d.adopt", "Adopt this ghost")}</a>
           <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">${ico("chat")} Ask about ${esc(a.name)}</a>
