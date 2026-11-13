@@ -71,6 +71,11 @@ const TYPES = {
   telescope:  "Space telescope",
   debris:     "Landing debris"
 };
+// Plural labels for the map's filter chips (translated in i18n/<lang>/ui.json → typesPlural).
+const TYPES_PLURAL = {
+  rover: "Rovers", lander: "Landers", vehicle: "Moon cars", experiment: "Science stations", impactor: "Impactors",
+  probe: "Deep-space probes", helicopter: "Helicopters", orbiter: "Orbiters", telescope: "Space telescopes", debris: "Landing debris"
+};
 
 const WORLDS = {
   moon: { name: "The Moon", short: "Moon", tagline: "384,400 km away · 1.3 light-seconds", color: "#cfd8e3" },

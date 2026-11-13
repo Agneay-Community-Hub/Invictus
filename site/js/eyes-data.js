@@ -13,6 +13,9 @@
             false means Eyes shows the world it is on instead (e.g. it has no
             Viking 1 lander, so it opens Mars on the day Viking landed).
      note – one line telling the visitor what they are looking at.
+     c    – optional: Eyes also has a 3D model of the spacecraft itself (the
+            same view NASA's own mission pages embed). Shown by default;
+            visitors can switch back to the classic landing-site view.
    =========================================================== */
 const EYES_BASE = "https://eyes.nasa.gov/apps/solar-system/";
 
@@ -39,9 +42,12 @@ const EYES_MACHINES = {
   pathfinder:  { t: "mars", at: "1997-07-04T16:57:00Z", self: false, note: "Mars on Pathfinder's bouncing landing day." },
   sojourner:   { t: "mars", at: "1997-07-04T16:57:00Z", self: false, note: "Mars on the day Sojourner arrived inside Pathfinder." },
   polarlander: { t: "mars", at: "1999-12-03T20:00:00Z", self: false, note: "Mars on the day Mars Polar Lander went silent." },
-  spirit:      { t: "sc_mars_exploration_rover_2_landing_site", self: true, note: "Spirit's landing site in Gusev crater." },
-  opportunity: { t: "sc_mars_exploration_rover_1_landing_site", self: true, note: "Opportunity's landing site at Meridiani Planum." },
-  phoenix:     { t: "sc_phoenix_landing_site", self: true, note: "Phoenix's landing site in the Martian Arctic." },
+  spirit:      { t: "sc_mars_exploration_rover_2_landing_site", self: true, note: "Spirit's landing site in Gusev crater.",
+                 c: { t: "sc_mars_exploration_rover_2", note: "Spirit herself, a 3D model of the rover on Mars." } },
+  opportunity: { t: "sc_mars_exploration_rover_1_landing_site", self: true, note: "Opportunity's landing site at Meridiani Planum.",
+                 c: { t: "sc_mars_exploration_rover_1", note: "Opportunity herself, a 3D model of the rover on Mars (the view NASA's own Opportunity page uses)." } },
+  phoenix:     { t: "sc_phoenix_landing_site", self: true, note: "Phoenix's landing site in the Martian Arctic.",
+                 c: { t: "sc_phoenix", note: "The Phoenix lander itself, in the Martian Arctic." } },
   insight:     { t: "sc_insight", self: true, note: "InSight on Elysium Planitia." },
   curiosity:   { t: "sc_mars_science_laboratory", self: true, note: "Curiosity, still driving up Mount Sharp right now." },
   ingenuity:   { t: "sc_mars_2020", self: true, note: "Perseverance, the rover that carried Ingenuity, in Jezero crater." },
@@ -143,8 +149,21 @@ function eyesURL(target, opts = {}) {
   return `${EYES_BASE}#/${path}${qs ? "?" + qs : ""}`;
 }
 
+// Spacecraft view ("craft", the default) or the classic landing-site view ("classic").
+// Remembered per browser; changed from a dossier or the NASA Eyes page.
+const EYES_VIEW_KEY = "goe-eyes-view";
+function eyesViewPref() { try { return localStorage.getItem(EYES_VIEW_KEY) === "classic" ? "classic" : "craft"; } catch { return "craft"; } }
+function setEyesViewPref(v) { try { if (v === "craft") localStorage.removeItem(EYES_VIEW_KEY); else localStorage.setItem(EYES_VIEW_KEY, v); } catch { /* private mode */ } }
+
+// What Eyes should show for a machine right now: { t, at, self, note, craft }
+function eyesPick(id) {
+  const m = EYES_MACHINES[id];
+  if (!m) return null;
+  return m.c && eyesViewPref() === "craft" ? { ...m, t: m.c.t, note: m.c.note, craft: true } : { ...m, craft: false };
+}
+
 // The Eyes address for one of our machines.
 function eyesForMachine(id, opts = {}) {
-  const m = EYES_MACHINES[id];
+  const m = eyesPick(id);
   return m ? eyesURL(m.t, { time: m.at, ...opts }) : null;
 }

@@ -169,7 +169,12 @@
     "d.eyesStart": "Cargar la vista 3D en vivo de la NASA",
     "d.eyesNeeds": "descarga grande, necesita internet",
     "d.eyesPage": "Más en NASA Eyes →",
-    "d.eyesFull": "Abrir en pantalla completa ↗"
+    "d.eyesFull": "Abrir en pantalla completa ↗",
+    "d.eyesShow": "Mostrar",
+    "d.eyesRover": "el róver",
+    "d.eyesLander": "el módulo de aterrizaje",
+    "d.eyesClassic": "su lugar de aterrizaje (clásico)",
+    "chip.all": "Todos"
   },
   "status": {
     "silent": {
@@ -271,5 +276,17 @@
       "title": "Cinco vuelos planeados. Setenta y dos realizados.",
       "kicker": "2021 · Marte"
     }
+  },
+  "typesPlural": {
+    "rover": "Róveres",
+    "lander": "Módulos de aterrizaje",
+    "vehicle": "Autos lunares",
+    "experiment": "Estaciones científicas",
+    "impactor": "Impactadores",
+    "probe": "Sondas espaciales",
+    "helicopter": "Helicópteros",
+    "orbiter": "Orbitadores",
+    "telescope": "Telescopios espaciales",
+    "debris": "Restos del aterrizaje"
   }
 }

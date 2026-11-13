@@ -16,6 +16,7 @@
   // ---- data: swap in translated labels and stories; keep the English under a._en ----
   if (D.status) for (const [k, v] of Object.entries(D.status)) if (STATUS[k]) Object.assign(STATUS[k], v);
   if (D.types) Object.assign(TYPES, D.types);
+  if (D.typesPlural && typeof TYPES_PLURAL !== "undefined") Object.assign(TYPES_PLURAL, D.typesPlural);
   if (D.worlds) for (const [k, v] of Object.entries(D.worlds)) if (WORLDS[k]) Object.assign(WORLDS[k], v);
   if (D.chapters && typeof CHAPTERS !== "undefined") CHAPTERS.forEach(c => Object.assign(c, D.chapters[c.id] || {}));
   if (D.m) ARTIFACTS.forEach(a => {

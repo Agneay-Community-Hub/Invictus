@@ -25,7 +25,7 @@
   function currentURL() {
     const o = { settings, view: state.view };
     if (state.kind === "machine") {
-      const m = EYES_MACHINES[state.id];
+      const m = eyesPick(state.id);
       return eyesURL(m.t, { ...o, time: state.when === "moment" ? m.at : undefined });
     }
     if (state.kind === "world") return eyesURL(state.id, o);
@@ -59,13 +59,14 @@
     const whenBox = $("#eyWhen"), views = $("#eyViews");
     whenBox.hidden = true; views.hidden = state.kind === "story" || state.kind === "home";
     if (state.kind === "machine") {
-      const a = ARTIFACTS.find(x => x.id === state.id), m = EYES_MACHINES[state.id];
+      const a = ARTIFACTS.find(x => x.id === state.id), m = eyesPick(state.id);
       kick.textContent = `${WORLD_NAMES[a.world]} · ${a.year}`;
       title.textContent = a.name;
       const when = m.at && state.when === "moment" ? `${new Date(m.at).toUTCString().slice(5, 16)}. ` : "";
       note.innerHTML = `${esc(when)}${esc(state.when === "moment" || !m.at ? m.note : `${m.self ? a.name : "Its world"} as it is today.`)}
         ${m.self ? "" : ` <span class="ey-tag world">Eyes doesn't model this machine itself</span>`}
-        <a href="index.html#${esc(a.id)}">Read its dossier →</a>`;
+        <a href="index.html#${esc(a.id)}">Read its dossier →</a>
+        ${EYES_MACHINES[a.id].c ? `<span class="ey-pick" role="group" aria-label="What to show">Show: <button data-pick="craft" aria-pressed="${m.craft}">the ${a.type === "rover" ? "rover" : "lander"} itself</button><button data-pick="classic" aria-pressed="${!m.craft}">its landing site (classic)</button></span>` : ""}`;
       whenBox.hidden = !m.at;
     } else if (state.kind === "world") {
       const w = EYES_WORLDS.find(x => x.t === state.id);
@@ -125,14 +126,16 @@
     $("#eyStories").innerHTML = EYES_STORIES.map(s => `<li><button data-story="${s.id}"><b>${esc(s.n)}</b><span>${esc(s.d)}</span></button></li>`).join("");
   }
   function buildOptions() {
-    $("#eyOpts").innerHTML = EYES_OPTIONS.map(o => `<li><label><input type="checkbox" data-opt="${o.q}" ${settings[o.q] ? "checked" : ""}>
+    $("#eyOpts").innerHTML = `<li><label><input type="checkbox" id="eyCraftOpt" ${eyesViewPref() === "craft" ? "checked" : ""}>
+      <span><b>Show spacecraft, not landing sites</b><small>For Spirit, Opportunity and Phoenix, show Eyes' 3D model of the machine itself. Untick for the classic landing-site view.</small></span></label></li>` + EYES_OPTIONS.map(o => `<li><label><input type="checkbox" data-opt="${o.q}" ${settings[o.q] ? "checked" : ""}>
       <span><b>${esc(o.n)}</b><small>${esc(o.d)}</small></span></label></li>`).join("");
   }
 
   // ---- events ----
   document.addEventListener("click", e => {
     const go = e.target.closest("[data-go]"), wd = e.target.closest("[data-world]"), st = e.target.closest("[data-story]");
-    const vw = e.target.closest("[data-view]"), wh = e.target.closest("[data-when]");
+    const vw = e.target.closest("[data-view]"), wh = e.target.closest("[data-when]"), pk = e.target.closest("[data-pick]");
+    if (pk) { setEyesViewPref(pk.dataset.pick); syncPickOpt(); render(); return; }
     if (go) { e.preventDefault(); state = { kind: "machine", id: go.dataset.go, view: "", when: "moment" }; render(); scrollToStage(); }
     else if (wd) { state = { kind: "world", id: wd.dataset.world, view: "", when: "now" }; render(); scrollToStage(); }
     else if (st) { state = { kind: "story", id: st.dataset.story, view: "", when: "now" }; render(); scrollToStage(); }
@@ -141,11 +144,13 @@
   });
   const scrollToStage = () => { if (matchMedia("(max-width: 959px)").matches) $(".ey-stage").scrollIntoView({ behavior: "smooth", block: "start" }); };
 
+  const syncPickOpt = () => { const c = $("#eyCraftOpt"); if (c) c.checked = eyesViewPref() === "craft"; };
   $("#eyOpts").addEventListener("change", e => {
+    if (e.target.id === "eyCraftOpt") { setEyesViewPref(e.target.checked ? "craft" : "classic"); render(); return; }
     const q = e.target.dataset.opt; if (!q) return;
     settings[q] = e.target.checked; saveSettings(); render();
   });
-  $("#eyReset").addEventListener("click", () => { settings = defaults(); saveSettings(); buildOptions(); render(); });
+  $("#eyReset").addEventListener("click", () => { settings = defaults(); saveSettings(); setEyesViewPref("craft"); buildOptions(); render(); });
 
   $("#eyFilter").addEventListener("input", e => {
     const q = e.target.value.trim().toLowerCase();

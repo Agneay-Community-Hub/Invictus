@@ -65,6 +65,20 @@
   function initNav() {
     const t = $(".nav-toggle"), ul = $("#navlist");
     t.addEventListener("click", () => { const o = ul.classList.toggle("open"); t.setAttribute("aria-expanded", o); });
+    // If the full menu doesn't fit on one line (narrow window, browser zoom, longer Spanish/Hindi
+    // labels), collapse it into the ☰ button instead of letting the page run off the screen.
+    const bar = $(".topbar");
+    const fit = () => {
+      bar.classList.remove("nav-compact");
+      if (bar.scrollWidth > bar.clientWidth + 1) bar.classList.add("nav-compact");
+      if (!bar.classList.contains("nav-compact") && !matchMedia("(max-width: 1260px)").matches) { ul.classList.remove("open"); t.setAttribute("aria-expanded", "false"); }
+    };
+    let timer = 0;
+    const refit = () => { clearTimeout(timer); timer = setTimeout(fit, 60); };
+    fit();
+    addEventListener("resize", refit);
+    document.fonts?.ready.then(refit);
+    addEventListener("load", refit);
     ul.addEventListener("click", e => { if (e.target.tagName === "A") { ul.classList.remove("open"); t.setAttribute("aria-expanded", "false"); } });
     const links = $$("#navlist a");
     const io = new IntersectionObserver(entries => {
@@ -137,7 +151,7 @@
   }
   function renderChips() {
     const types = [...new Set(ARTIFACTS.filter(a => a.world === world).map(a => a.type))];
-    const chips = [["all", "All"], ...types.map(t => [t, TYPES[t] + "s"]), ["active", t("chip.awake", "Still awake")]];
+    const chips = [["all", t("chip.all", "All")], ...types.map(k => [k, TYPES_PLURAL[k] || TYPES[k]]), ["active", t("chip.awake", "Still awake")]];
     $("#chips").innerHTML = chips.map(([k, l]) => `<button class="chip" aria-pressed="${k === typeFilter}" data-f="${k}">${l}</button>`).join("");
     $$("#chips .chip").forEach(c => c.addEventListener("click", () => { typeFilter = c.dataset.f; renderChips(); renderMap(); }));
   }
@@ -378,12 +392,6 @@
       </div>`;
     $("#drawerBody").scrollTop = 0;
     bindTn($("#drawerBody"));
-    $("#drawerBody [data-eyes-start]")?.addEventListener("click", e => {
-      const b = e.currentTarget, f = document.createElement("iframe");
-      f.src = b.dataset.eyesStart; f.title = t("d.eyesFrame", "NASA Eyes on the Solar System");
-      f.allow = "fullscreen"; f.allowFullscreen = true; f.referrerPolicy = "strict-origin-when-cross-origin";
-      b.replaceWith(f);
-    });
     $("#drawerBody [data-upclose]")?.addEventListener("click", () => closeDrawer());
     if (typeof SOUNDS !== "undefined") bindSounds($("#drawerBody"));
     // "How it worked" animation(s)
@@ -580,14 +588,36 @@
     return `<div class="d-block d-orbit"><h3>${t("d.orbit", "See it from orbit")}</h3><p>${esc(o.cap)}</p>
       <a class="btn btn-small" href="${esc(o.url)}" target="_blank" rel="noopener">🛰️ ${t("d.hirise", "Open HiRISE image")} ${esc(o.img)} ↗</a></div>`;
   }
+  // NASA Eyes block in the dossier: tap to load; "Show:" switches spacecraft ↔ classic landing site.
+  function startEyes(b) {
+    const f = document.createElement("iframe");
+    f.src = b.dataset.eyesStart; f.title = t("d.eyesFrame", "NASA Eyes on the Solar System");
+    f.allow = "fullscreen"; f.allowFullscreen = true; f.referrerPolicy = "strict-origin-when-cross-origin";
+    b.replaceWith(f);
+  }
+  document.addEventListener("click", e => {
+    const st = e.target.closest(".d-eyes [data-eyes-start]");
+    if (st) { startEyes(st); return; }
+    const pk = e.target.closest(".d-eyes [data-pick]");
+    if (!pk) return;
+    setEyesViewPref(pk.dataset.pick);
+    const block = pk.closest(".d-eyes"), wasOpen = !!block.querySelector("iframe");
+    const tmp = document.createElement("div");
+    tmp.innerHTML = eyesHTML(ARTIFACTS.find(x => x.id === pk.dataset.for));
+    const fresh = tmp.firstElementChild;
+    block.replaceWith(fresh);
+    if (wasOpen) startEyes(fresh.querySelector("[data-eyes-start]"));
+    fresh.querySelector(`[data-pick="${pk.dataset.pick}"]`)?.focus();
+  });
   // "Fly there in NASA Eyes": NASA/JPL's live 3D solar system, opened at this machine (or its world)
   // at the moment that matters. Loads only when tapped, since Eyes is a big download.
   function eyesHTML(a) {
     if (typeof EYES_MACHINES === "undefined" || !EYES_MACHINES[a.id]) return "";
-    const m = EYES_MACHINES[a.id];
+    const m = eyesPick(a.id);
     const url = eyesForMachine(a.id, { settings: { featured: false, menu: false, shareButton: false, logo: true, detailPanel: false, search: false, timeControls: true, locked: true } });
     const when = m.at ? new Date(m.at).toUTCString().slice(5, 16) : t("d.eyesToday", "today");
-    return `<div class="d-block d-eyes"><h3>${t("d.eyes", "Fly there in NASA Eyes")}</h3>
+    const pick = EYES_MACHINES[a.id].c ? `<p class="ey-pick" role="group" aria-label="${t("d.eyesShow", "Show")}">${t("d.eyesShow", "Show")}: <button data-pick="craft" data-for="${a.id}" aria-pressed="${m.craft}">${a.type === "rover" ? t("d.eyesRover", "the rover itself") : t("d.eyesLander", "the lander itself")}</button><button data-pick="classic" data-for="${a.id}" aria-pressed="${!m.craft}">${t("d.eyesClassic", "its landing site (classic)")}</button></p>` : "";
+    return `<div class="d-block d-eyes"><h3>${t("d.eyes", "Fly there in NASA Eyes")}</h3>${pick}
       <p>${(window.I18n?.lang || "en") === "en" ? esc(m.note) : `${esc(a.name)} · ${esc(when)}`}${m.self ? "" : ` <span class="ey-tag world">${t("d.eyesWorld", "Eyes shows its world, not the machine itself")}</span>`}</p>
       <div class="ey-mini"><button class="ey-mini-start" data-eyes-start="${esc(url)}"><span class="ey-play" aria-hidden="true">▶</span>
         <b>${t("d.eyesStart", "Load NASA's live 3D view")}</b><span>${esc(when)} · ${t("d.eyesNeeds", "a big download, needs internet")}</span></button></div>

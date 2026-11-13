@@ -169,7 +169,12 @@
     "d.eyesStart": "NASA का लाइव 3D दृश्य लोड करें",
     "d.eyesNeeds": "बड़ी डाउनलोड, इंटरनेट चाहिए",
     "d.eyesPage": "NASA Eyes में और →",
-    "d.eyesFull": "पूरी स्क्रीन पर खोलें ↗"
+    "d.eyesFull": "पूरी स्क्रीन पर खोलें ↗",
+    "d.eyesShow": "दिखाएँ",
+    "d.eyesRover": "ख़ुद रोवर",
+    "d.eyesLander": "ख़ुद लैंडर",
+    "d.eyesClassic": "उतरने की जगह (पुराना दृश्य)",
+    "chip.all": "सभी"
   },
   "status": {
     "silent": {
@@ -271,5 +276,17 @@
       "title": "पाँच उड़ानें तय थीं। बहत्तर भरीं।",
       "kicker": "2021 · मंगल"
     }
+  },
+  "typesPlural": {
+    "rover": "रोवर",
+    "lander": "लैंडर",
+    "vehicle": "चाँद की गाड़ी",
+    "experiment": "विज्ञान स्टेशन",
+    "impactor": "इम्पैक्टर",
+    "probe": "अंतरिक्ष यान",
+    "helicopter": "हेलिकॉप्टर",
+    "debris": "उतरने के बाद का मलबा",
+    "orbiter": "ऑर्बिटर",
+    "telescope": "अंतरिक्ष दूरबीन"
   }
 }

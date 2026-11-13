@@ -70,3 +70,7 @@ body.ask-page { min-height: 100vh; min-height: 100dvh; background:
   .ask-suggest button { flex-shrink: 0; }
   .bubble { max-width: calc(100% - 42px); }
 }
+@media (max-width: 600px) {
+  .msg-tools .speak-btn { min-height: 40px; padding: 8px 14px; font-size: .85rem; }
+  .badge-src { font-size: .75rem; }
+}
