@@ -949,3 +949,20 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 .more-link .ico { transition: transform .2s; }
 .more-link:hover .ico { transform: translateX(2px); }
 .more-link small { color: var(--muted); font-weight: 400; }
+
+/* ---- Ghost of the day (home) ---- */
+.gotd-sec { padding-top: 8px; padding-bottom: 8px; }
+.gotd { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); border: 1px solid rgba(255,179,71,.35); border-radius: 22px; overflow: hidden; background: linear-gradient(120deg, rgba(255,179,71,.07), transparent 55%), var(--panel); max-width: 1100px; margin: 0 auto; }
+.gotd-media { min-height: 260px; background: var(--bg2); display: grid; place-items: center; }
+.gotd-media img { width: 100%; height: 100%; object-fit: cover; }
+.gotd-text { padding: clamp(18px, 3vw, 32px); display: flex; flex-direction: column; gap: 8px; }
+.gotd-text h2 { margin: 0; font-size: clamp(1.6rem, 3.2vw, 2.4rem); }
+.gotd-sub { margin: 0; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.gotd-text .epitaph { margin: 6px 0; }
+.gotd-log { margin: 0; color: var(--text); font-style: italic; line-height: 1.6; }
+.gotd-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+@media (max-width: 760px) {
+  .gotd { grid-template-columns: 1fr; }
+  .gotd-media { min-height: 0; aspect-ratio: 16/8; }
+}
+.tracker-row { margin-top: 4px; }

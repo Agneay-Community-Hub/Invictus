@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
-  <link rel="stylesheet" href="css/style.css?v=18500d0d">
+  <link rel="stylesheet" href="css/style.css?v=0d5e4da5">
   <link rel="icon" href="assets/ui/star.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
@@ -147,6 +147,11 @@
         <li data-i="howto.2"><span class="step">2</span><b>Open a dossier</b> to hear the machine’s ghost log.</li>
         <li data-i="howto.3"><span class="step">3</span><b>Collect badges</b> in your explorer passport.</li>
       </ol>
+    </section>
+
+    <!-- ============ GHOST OF THE DAY ============ -->
+    <section class="section gotd-sec" id="today" aria-labelledby="gotdTitle">
+      <div class="gotd" id="gotd"></div>
     </section>
 
     <!-- ============ MAP ============ -->
@@ -266,6 +271,7 @@
         <button data-i="f.deep" aria-pressed="false" data-tl="deep">Elsewhere</button>
       </div>
       <div class="timeline" id="tl" tabindex="0" aria-label="Timeline, scrollable"></div>
+      <div class="more-row"><a class="more-link" href="timeline.html"><span data-i="more.timeline">Open the full timeline, year by year</span> <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a></div>
     </section>
 
     <!-- ============ DEEP SPACE ============ -->
@@ -279,6 +285,7 @@
         <div class="ruler" id="ruler" role="img" aria-label="Log-scale chart of distances from the Sun"></div>
         <p data-i="deep.note" class="ruler-note">Distance from the Sun in AU (1 AU = Earth–Sun distance, about 150 million km). Each step to the right is 10× farther.</p>
       </div>
+      <div class="more-row tracker-row"><a class="more-link" href="tracker.html"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg> <span data-i="more.tracker">Watch the far travellers move, live</span> <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a></div>
       <div class="deep-cards" id="deepCards"></div>
     </section>
 
@@ -378,7 +385,7 @@
   <footer class="footer">
     <div>
       <strong>Ghosts of Exploration</strong>
-      <p data-i="foot.links"><a href="teacher.html">Teacher pack</a> · <a href="lander.html">Land it yourself</a> · <a href="ask.html">Ask the Archive</a> · <a href="explore.html">3D Explore</a> · <a href="eyes.html">NASA Eyes</a> · <a href="browse.html">All machines</a> · <a href="compare.html">Compare two machines</a> · <a href="library.html">Photos, videos and sounds</a> · <a href="landings.html">Landing sites</a> · <a href="catalogue.html">Mission catalogue</a> · <a href="adopt.html">Adopt a Ghost</a> · <a href="sources.html">Sources</a> · <a href="machines/index.html">All 49 machines</a></p>
+      <p data-i="foot.links"><a href="teacher.html">Teacher pack</a> · <a href="lander.html">Land it yourself</a> · <a href="ask.html">Ask the Archive</a> · <a href="explore.html">3D Explore</a> · <a href="eyes.html">NASA Eyes</a> · <a href="browse.html">All machines</a> · <a href="compare.html">Compare two machines</a> · <a href="timeline.html">Timeline</a> · <a href="tracker.html">Live tracker</a> · <a href="future.html">Future ghosts</a> · <a href="glossary.html">Glossary</a> · <a href="poster.html">Wall poster</a> · <a href="library.html">Photos, videos and sounds</a> · <a href="landings.html">Landing sites</a> · <a href="catalogue.html">Mission catalogue</a> · <a href="adopt.html">Adopt a Ghost</a> · <a href="sources.html">Sources</a> · <a href="machines/index.html">All 49 machines</a></p>
       <p data-i="foot.made">Made for the NASA Space Apps Challenge 2026 — “Abandoned but not Forgotten.”</p>
     </div>
     <div>
@@ -431,12 +438,13 @@
   <script src="js/atlas-links.js?v=d55edfe7"></script>
   <script src="js/eyes-data.js?v=67a28b33"></script>
   <script src="js/explainers.js?v=24a770e8"></script>
-  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=de568d6a", hi: "js/i18n/hi.js?v=bf8cf950" }[window.GOE_LANG] + '"><\/script>');</script>
+  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=5725463c", hi: "js/i18n/hi.js?v=c6b446c3" }[window.GOE_LANG] + '"><\/script>');</script>
   <script src="js/oppy-data.js?v=9eef9b60"></script>
   <script src="js/i18n.js?v=22597147"></script>
-  <script src="js/app.js?v=ce70815a"></script>
+  <script src="js/app.js?v=95057324"></script>
   <script src="js/oppy.js?v=b2f94865"></script>
-  <script src="js/search.js?v=70494be9"></script>
+  <script src="js/search.js?v=47f468f8"></script>
+  <script src="js/glossary.js?v=f39d5e4e"></script>
   <script src="js/pwa.js?v=7612dde4"></script>
 </body>
 </html>

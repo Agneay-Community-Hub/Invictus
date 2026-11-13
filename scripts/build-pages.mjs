@@ -207,7 +207,7 @@ const pages = [
   { alts: { en: "", es: "?lang=es", hi: "?lang=hi" }, pri: "1.0" },
   { alts: { en: "machines/index.html", es: "machines/index.es.html", hi: "machines/index.hi.html" }, pri: "0.9" },
   ...urls.map(u => ({ ...u, pri: "0.8" })),
-  ...["explore.html", "eyes.html", "adopt.html", "landings.html", "catalogue.html", "browse.html", "compare.html", "library.html", "ask.html", "lander.html", "teacher.html", "sources.html", "pitch.html"].map(p => ({ alts: { en: p }, pri: "0.6" }))
+  ...["explore.html", "eyes.html", "adopt.html", "landings.html", "catalogue.html", "browse.html", "compare.html", "library.html", "timeline.html", "tracker.html", "future.html", "glossary.html", "poster.html", "ask.html", "lander.html", "teacher.html", "sources.html", "pitch.html"].map(p => ({ alts: { en: p }, pri: "0.6" }))
 ];
 const xmlEsc = s => s.replace(/&/g, "&amp;");
 const sm = `<?xml version="1.0" encoding="UTF-8"?>

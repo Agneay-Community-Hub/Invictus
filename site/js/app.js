@@ -918,9 +918,64 @@
     show(0);
   }
 
+  /* ---------------- GHOST OF THE DAY ----------------
+     The same machine for everyone on a given day, in a shuffled order so neighbours differ. */
+  function initToday() {
+    const box = $("#gotd"); if (!box) return;
+    const day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / 864e5);
+    const order = ARTIFACTS.map((a, i) => [((i + 1) * 2654435761) % 4294967296, a]).sort((p, q) => p[0] - q[0]).map(x => x[1]);
+    const a = order[day % order.length];
+    const first = a.ghost.split(/(?<=[.!?])\s+/).slice(0, 2).join(" ");
+    const date = new Date().toLocaleDateString(I18n.speech, { weekday: "long", day: "numeric", month: "long" });
+    box.innerHTML = `
+      <div class="gotd-media">${cover(a) ? `<img src="${cover(a)}" alt="${esc(a.media[0].cap)}" loading="lazy">` : typeIco(a.type)}</div>
+      <div class="gotd-text">
+        <p class="eyebrow">${t("gotd.eyebrow", "Ghost of the day")} · ${esc(date)}</p>
+        <h2 id="gotdTitle">${esc(a.name)}</h2>
+        <p class="gotd-sub">${pill(a.status)} ${esc(TYPES[a.type])} · ${esc(WORLDS[a.world].short)} · ${a.year}</p>
+        ${epitaphHTML(a, "gotd-ep")}
+        <p class="gotd-log">${esc(first)}</p>
+        <div class="gotd-actions">
+          <button class="btn btn-primary btn-small" id="gotdOpen">${ico("book")} ${t("gotd.open", "Read its story")}</button>
+          <button class="btn btn-small speak" id="gotdSpeak" aria-pressed="false">${ico("speaker")} ${t("readAloud", "Read aloud")}</button>
+          <button class="btn btn-small" id="gotdShare">${ico("arrow")} ${t("gotd.share", "Share")}</button>
+          <button class="btn btn-small" id="gotdSave">${ico("image")} ${t("gotd.save", "Save as a picture")}</button>
+        </div>
+      </div>`;
+    $("#gotdOpen").addEventListener("click", e => openDrawer(a.id, e.currentTarget));
+    $("#gotdSpeak").addEventListener("click", e => toggleSpeech(e.currentTarget, a.name + ". " + a.ghost));
+    const url = new URL("index.html#artifact=" + a.id, location.href).href;
+    $("#gotdShare").addEventListener("click", async () => {
+      const text = `${t("gotd.eyebrow", "Ghost of the day")}: ${a.name}. “${a.epitaph}”`;
+      if (navigator.share) { try { await navigator.share({ title: a.name, text, url }); } catch { } return; }
+      try { await navigator.clipboard.writeText(text + " " + url); toast("check", t("gotd.copied", "Link copied. Paste it anywhere to share.")); }
+      catch { prompt("Copy this link:", url); }
+    });
+    // a 1200×630 card picture for social media
+    $("#gotdSave").addEventListener("click", async () => {
+      const c = document.createElement("canvas"); c.width = 1200; c.height = 630;
+      const x = c.getContext("2d");
+      try { await document.fonts.ready; } catch { }
+      x.fillStyle = "#060a13"; x.fillRect(0, 0, 1200, 630);
+      if (cover(a)) {
+        const img = new Image(); img.src = cover(a);
+        try { await img.decode(); const s = Math.max(520 / img.width, 630 / img.height); x.drawImage(img, (520 - img.width * s) / 2, (630 - img.height * s) / 2, img.width * s, img.height * s); } catch { }
+        const g = x.createLinearGradient(380, 0, 560, 0); g.addColorStop(0, "rgba(6,10,19,0)"); g.addColorStop(1, "#060a13"); x.fillStyle = g; x.fillRect(380, 0, 180, 630);
+      }
+      const wrap = (text, X, Y, max, lh) => { let line = ""; for (const w of text.split(" ")) { if (x.measureText(line + w).width > max && line) { x.fillText(line.trim(), X, Y); Y += lh; line = ""; } line += w + " "; } x.fillText(line.trim(), X, Y); return Y + lh; };
+      x.fillStyle = "#ffb347"; x.font = "700 24px 'Space Grotesk', sans-serif"; x.fillText(t("gotd.eyebrow", "Ghost of the day").toUpperCase(), 580, 110);
+      x.fillStyle = "#e9eef7"; x.font = "700 64px 'Space Grotesk', sans-serif"; let y = wrap(a.name, 580, 190, 570, 70);
+      x.fillStyle = STATUS[a.status].color; x.font = "700 24px 'Atkinson Hyperlegible', sans-serif"; x.fillText(`${STATUS[a.status].label} · ${WORLDS[a.world].short} · ${a.year}`, 580, y); y += 60;
+      x.fillStyle = "#ffd08a"; x.font = "italic 32px 'Atkinson Hyperlegible', sans-serif"; wrap(`“${a.epitaph}”`, 580, y, 570, 44);
+      x.fillStyle = "#9eabc2"; x.font = "700 22px 'Atkinson Hyperlegible', sans-serif"; x.fillText("Ghosts of Exploration", 580, 580);
+      const link = document.createElement("a"); link.download = `ghost-of-the-day-${a.id}.png`;
+      link.href = c.toDataURL("image/png"); link.click();
+    });
+  }
+
   // ?scrollto=section jumps straight to a section (used for links and screenshots).
   addEventListener("load", () => { const id = new URLSearchParams(location.search).get("scrollto"); const el = id && document.getElementById(id); if (el) setTimeout(() => el.scrollIntoView({ behavior: "instant", block: "start" }), 300); });
-  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initChapters(); initHow(); initThenNow(); initSounds(); initAskTeaser(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
+  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initToday(); initChapters(); initHow(); initThenNow(); initSounds(); initAskTeaser(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
   $("#lbClose").addEventListener("click", closeLightbox);
   $("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") closeLightbox(); });
   if ("speechSynthesis" in window) speechSynthesis.getVoices();

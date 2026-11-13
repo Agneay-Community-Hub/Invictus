@@ -16,6 +16,12 @@
     ["Quiz", "index.html#quiz", "award", "game guess who am i"],
     ["All machines", "browse.html", "grid", "browse list filter rovers landers probes"],
     ["Compare two machines", "compare.html", "compare", "side by side versus vs"],
+    ["Timeline, year by year", "timeline.html", "clock", "history years dates when launched quiet listen"],
+    ["Live tracker", "tracker.html", "clock", "voyager pioneer new horizons distance now light time speed"],
+    ["Ghost of the day", "index.html#today", "award", "today daily featured random share"],
+    ["Future ghosts", "future.html", "rocket", "planned upcoming next artemis viper dragonfly europa clipper"],
+    ["Glossary", "glossary.html", "book", "words meaning define explain"],
+    ["Wall poster", "poster.html", "download", "print pdf map classroom"],
     ["Photos, videos and sounds", "library.html", "image", "gallery media audio pictures"],
     ["Landing sites", "landings.html", "footprints", "3d walk unity simulation"],
     ["Mission catalogue", "catalogue.html", "book", "missions records sources dates"],
@@ -27,7 +33,7 @@
     ["For teachers", "teacher.html", "book", "lesson plans worksheets class"],
     ["Sources", "sources.html", "book", "references citations"]
   ];
-  const KIND = { machine: "Machines", mission: "Missions", site: "Landing sites", media: "Videos and sounds", page: "Pages" };
+  const KIND = { machine: "Machines", mission: "Missions", site: "Landing sites", media: "Videos and sounds", word: "Words", page: "Pages" };
 
   // ---- data, loaded on first open when the page does not have it ----
   const load = src => new Promise(res => { const s = document.createElement("script"); s.src = src; s.onload = s.onerror = res; document.head.appendChild(s); });
@@ -52,6 +58,7 @@
       ATLAS_DATA.sites.forEach(s => add("site", s.name, `Landing site · ${where[s.body] || s.body}`, `landings.html?q=${encodeURIComponent(s.name.split(/ — /)[0])}`, "footprints", s.scene));
     }
     PAGES.forEach(([title, href, icon, words]) => add("page", title, "Page", href, icon, words));
+    if (typeof GLOSSARY !== "undefined") GLOSSARY.forEach((g, i) => add("word", g[0], g[2], `glossary.html#g${i}`, "book", g[1].join(" ")));
     return (index = items);
   }
 
@@ -63,7 +70,8 @@
     for (const i of items) {
       if (!words.every(w => i.text.includes(w))) continue;
       let s = i.t === q ? 100 : i.t.startsWith(q) ? 60 : i.t.includes(q) ? 40 : words.every(w => i.t.includes(w)) ? 30 : 10;
-      s += { machine: 5, page: 4, mission: 3, site: 2, media: 1 }[i.kind];
+      if (i.kind === "word" && s < 30 && !words.every(w => i.text.split(i.sub.toLowerCase()).join(" ").includes(w))) continue; // words: match the word, not its explanation
+      s += { machine: 5, page: 4, mission: 3, site: 2, media: 1, word: 1 }[i.kind];
       scored.push([s, i]);
     }
     scored.sort((a, b) => b[0] - a[0]);

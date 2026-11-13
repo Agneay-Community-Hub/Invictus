@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live tracker — Ghosts of Exploration</title>
+  <meta name="description" content="Where Voyager 1 and 2, Pioneer 10 and 11 and New Horizons are right now: distance, light-time and speed, ticking live.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Live tracker — Ghosts of Exploration">
+  <meta property="og:description" content="The five far travellers, ticking live.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/tracker.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/tracker.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=0d5e4da5">
+  <link rel="stylesheet" href="css/catalogue.css?v=c5e729b8">
+  <link rel="icon" href="assets/ui/map.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="cat-page">
+  <a class="skip" href="#trCards">Skip to the content</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>Live tracker</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#map">Ghost Map</a></li>
+        <li><a href="browse.html">All machines</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="timeline.html">Timeline</a></li>
+        <li><a href="tracker.html" class="active" aria-current="page">Live tracker</a></li>
+        <li><a href="library.html">Photos, videos, sounds</a></li>
+        <li><a href="landings.html">Landing sites</a></li>
+        <li><a href="catalogue.html">Mission catalogue</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cat-wrap" id="main">
+    <section class="cat-hero">
+      <p class="eyebrow">Right now</p>
+      <h1>The far travellers, live</h1>
+      <p class="lede">Five machines are leaving the solar system for good. Watch their distance tick up as you read. <span id="trLead" data-live></span></p>
+    </section>
+    <div class="tr-ruler-wrap"><div class="tr-ruler" id="trRuler" role="img" aria-label="Distance from the Sun on a log scale, with the five probes"></div>
+      <p class="tr-note">Distance from the Sun, log scale: each step right is 10× farther. 1 AU is the Earth–Sun distance.</p></div>
+    <div class="tr-cards" id="trCards"></div>
+    <p class="tr-fine">These are live estimates worked out from each probe's distance at the start of 2025 and its average speed, so they can be off by a little. For exact positions, see the spacecraft in <a href="eyes.html">NASA Eyes</a>.</p>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div><p><a href="index.html">← Back to the archive</a> · Photos: NASA Image and Video Library (public domain; NASA does not endorse this project).</p></div>
+  </footer>
+
+  <script src="js/icons.js?v=ed5e4fdc"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/tracker.js?v=563a8a2f"></script>
+  <script src="js/search.js?v=47f468f8"></script>
+  <script src="js/glossary.js?v=f39d5e4e"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>
