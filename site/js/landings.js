@@ -77,6 +77,8 @@
     document.querySelectorAll(".cat-chips button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     apply();
   }));
+  const q0 = new URLSearchParams(location.search).get("q");
+  if (q0) $("#landSearch").value = q0;
   apply();
 
   const nt = $(".nav-toggle"), ul = $("#navlist");

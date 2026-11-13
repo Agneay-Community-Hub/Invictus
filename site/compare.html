@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compare two machines — Ghosts of Exploration</title>
+  <meta name="description" content="Put any two of the 49 machines NASA left behind side by side: dates, lifespan, numbers, discoveries and how each one ended.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Compare two machines — Ghosts of Exploration">
+  <meta property="og:description" content="Put any two machines NASA left behind side by side.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/compare.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/compare.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=18500d0d">
+  <link rel="stylesheet" href="css/catalogue.css?v=3c4d7e73">
+  <link rel="icon" href="assets/ui/star.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="cat-page">
+  <a class="skip" href="#cmpA">Skip to the picker</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>Compare</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#map">Ghost Map</a></li>
+        <li><a href="browse.html">All machines</a></li>
+        <li><a href="compare.html" class="active" aria-current="page">Compare</a></li>
+        <li><a href="library.html">Photos, videos, sounds</a></li>
+        <li><a href="landings.html">Landing sites</a></li>
+        <li><a href="catalogue.html">Mission catalogue</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cat-wrap" id="main">
+    <section class="cat-hero">
+      <p class="eyebrow">Side by side</p>
+      <h1>Compare two machines</h1>
+      <p class="lede">Pick any two of the 49 machines to see how they stack up: when they flew, how long they lasted, what they found and how they ended.</p>
+    </section>
+
+    <div class="cmp-pick">
+      <label><span>First machine</span><select id="cmpA"></select></label>
+      <button type="button" class="cmp-swap" id="cmpSwap" aria-label="Swap the two machines"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-swap"></use></svg></button>
+      <label><span>Second machine</span><select id="cmpB"></select></label>
+      <button type="button" class="btn btn-small cmp-rand" id="cmpRand"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-shuffle"></use></svg> Surprise me</button>
+    </div>
+
+    <div id="cmpOut" aria-live="polite"></div>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div><p><a href="index.html">← Back to the archive</a> · Photos: NASA Image and Video Library (public domain; NASA does not endorse this project).</p></div>
+  </footer>
+
+  <script src="js/icons.js?v=ed5e4fdc"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/compare.js?v=7a6d8d6a"></script>
+  <script src="js/search.js?v=70494be9"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>

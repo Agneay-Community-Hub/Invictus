@@ -118,6 +118,8 @@
   window.addEventListener("hashchange", fromHash);
   const w0 = new URLSearchParams(location.search).get("world");
   if (["moon", "mars", "deep"].includes(w0)) $(`.cat-chips [data-f="${w0}"]`).click();
+  const q0 = new URLSearchParams(location.search).get("q");
+  if (q0) $("#libSearch").value = q0;
   fromHash();
 
   const nt = $(".nav-toggle"), ul = $("#navlist");
