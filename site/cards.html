@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ghost Cards — Ghosts of Exploration</title>
+  <meta name="description" content="A trading card game with all 49 machines NASA left behind. Battle the computer on Veteran, Stamina, Reach and Discovery, or print the deck.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Ghost Cards — Ghosts of Exploration">
+  <meta property="og:description" content="Play the machine trading card game, or print the deck.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/cards.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/cards.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=0d5e4da5">
+  <link rel="stylesheet" href="css/catalogue.css?v=50ea76d9">
+  <link rel="icon" href="assets/ui/trophy.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="cat-page">
+  <a class="skip" href="#gcMe">Skip to the content</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>Ghost Cards</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#map">Ghost Map</a></li>
+        <li><a href="browse.html">All machines</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="timeline.html">Timeline</a></li>
+        <li><a href="tracker.html">Live tracker</a></li>
+        <li><a href="library.html">Photos, videos, sounds</a></li>
+        <li><a href="landings.html">Landing sites</a></li>
+        <li><a href="catalogue.html">Mission catalogue</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cat-wrap" id="main">
+    <section class="cat-hero no-print">
+      <p class="eyebrow">A card game</p>
+      <h1>Ghost Cards</h1>
+      <p class="lede">Every machine is a card with four stats. Pick the stat you think beats the computer's card. Win the round and you take both cards.</p>
+    </section>
+    <details class="gc-how no-print" id="gcHow"><summary>How to play</summary>
+      <p><b>Veteran</b>: years since launch. <b>Stamina</b>: time from launch to its last contact. <b>Reach</b>: roughly how far it is from Earth. <b>Discovery</b>: how many big discoveries it made. The higher number wins. A tie puts both cards in the middle, and the next winner takes them too. Whoever wins a round picks the next stat.</p></details>
+    <div class="gc-bar no-print">
+      <p id="gcScore" aria-live="polite"></p>
+      <label>Game length <select id="gcLength"><option value="10">10 rounds</option><option value="20">20 rounds</option><option value="0">Until someone has every card</option></select></label>
+      <button type="button" class="btn btn-small" id="gcNew"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-shuffle"></use></svg> New game</button>
+    </div>
+    <div class="gc-play no-print">
+      <div class="gc-slot"><p class="gc-who">Your card</p><div id="gcMe"></div></div>
+      <div class="gc-mid"><p id="gcMsg" aria-live="polite"></p><button type="button" class="btn btn-primary" id="gcNext" hidden>Next round <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
+      <div class="gc-slot"><p class="gc-who">Computer's card</p><div id="gcCpu"></div></div>
+    </div>
+    <section class="gc-deck-wrap">
+      <div class="gc-deck-head no-print"><h2 class="tl-h">The whole deck</h2><button type="button" class="btn btn-small" id="gcPrint"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"></use></svg> Print the deck</button></div>
+      <p class="no-print tr-fine">Prints nine cards to a page. Cut them out and play with friends.</p>
+      <div class="gc-deck" id="gcDeck"></div>
+    </section>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div><p><a href="index.html">← Back to the archive</a> · Photos: NASA Image and Video Library (public domain; NASA does not endorse this project).</p></div>
+  </footer>
+
+  <script src="js/icons.js?v=ed5e4fdc"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/cards.js?v=5f285aa7"></script>
+  <script src="js/search.js?v=ac2e3db3"></script>
+  <script src="js/glossary.js?v=f39d5e4e"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>

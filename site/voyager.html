@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scroll to Voyager — Ghosts of Exploration</title>
+  <meta name="description" content="The solar system at true scale, one pixel for every 500,000 km. Scroll from the Sun past every planet and machine to Voyager 1.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Scroll to Voyager — Ghosts of Exploration">
+  <meta property="og:description" content="Scroll the solar system at true scale, all the way to Voyager 1.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/voyager.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/voyager.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=0d5e4da5">
+  <link rel="stylesheet" href="css/catalogue.css?v=50ea76d9">
+  <link rel="icon" href="assets/ui/map.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="cat-page">
+  <a class="skip" href="#scTrack">Skip to the content</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>Scroll to Voyager</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#map">Ghost Map</a></li>
+        <li><a href="browse.html">All machines</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="timeline.html">Timeline</a></li>
+        <li><a href="tracker.html">Live tracker</a></li>
+        <li><a href="library.html">Photos, videos, sounds</a></li>
+        <li><a href="landings.html">Landing sites</a></li>
+        <li><a href="catalogue.html">Mission catalogue</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="sc-wrap" id="main">
+    <section class="cat-hero sc-hero">
+      <p class="eyebrow">True scale</p>
+      <h1>Scroll to Voyager</h1>
+      <p class="lede">One pixel on your screen is 500,000 km of space. The Sun is at the top. Keep scrolling and you'll pass every planet and every machine in this archive, all the way out to Voyager 1. It's a long way. Dots are drawn bigger than they really are, or you couldn't see them.</p>
+      <div class="sc-go"><button type="button" class="btn btn-small" data-speed="1" aria-pressed="false"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg> Travel at light speed</button>
+        <button type="button" class="btn btn-small" data-speed="1000" aria-pressed="false"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg> 1,000× light speed</button></div>
+      <div class="sc-jumps" id="scJumps" aria-label="Jump to"></div>
+    </section>
+    <div class="sc-track" id="scTrack"></div>
+    <p class="sc-end">You made it. And Voyager 1 is still going, about 17 km farther every second.</p>
+    <div class="sc-hud" aria-live="off"><span>From the Sun</span><b id="scKm"></b><b id="scAu"></b><span id="scLight"></span><i class="sc-bar" id="scBar"></i></div>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div><p><a href="index.html">← Back to the archive</a> · Photos: NASA Image and Video Library (public domain; NASA does not endorse this project).</p></div>
+  </footer>
+
+  <script src="js/icons.js?v=ed5e4fdc"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/scale.js?v=12a3409a"></script>
+  <script src="js/search.js?v=ac2e3db3"></script>
+  <script src="js/glossary.js?v=f39d5e4e"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>
