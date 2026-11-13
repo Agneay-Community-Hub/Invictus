@@ -25,6 +25,7 @@
     ["Ghost Cards", "cards.html", "award", "card game trading top battle play print deck"],
     ["Drive on Mars: signal delay", "signal.html", "play", "game rover drive delay radio light minutes challenge"],
     ["Ghost Logs podcast", "podcast.html", "speaker", "podcast audio listen episodes instruments voyager insight mole cassini opportunity kepler apollo radio kids"],
+    ["Ghost Shorts (cartoon videos)", "shorts.html", "play", "video cartoon animation film watch short movie"],
     ["Ghost Comics", "comics.html", "book", "comic graphic novel story viking facing the wrong way read flip"],
     ["Build a probe", "probe.html", "rocket", "design spacecraft game power solar nuclear rtg antenna engineer"],
     ["Scroll to Voyager", "voyager.html", "rocket", "scale solar system distance size how far"],

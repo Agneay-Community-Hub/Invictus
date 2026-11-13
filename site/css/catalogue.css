@@ -840,3 +840,13 @@ body.cat-page { background:
 .gs-card b { font: 1.3rem "Bangers", var(--head); letter-spacing: .03em; padding: 4px 12px 0; }
 .gs-card small { font: 700 .8rem "Comic Neue", var(--font); color: #555; padding: 0 12px; }
 .gs-play { position: absolute; left: 50%; top: 34%; transform: translate(-50%,-50%); width: 64px; height: 64px; border-radius: 50%; background: rgba(17,17,17,.75); color: #ffd23f; display: grid; place-items: center; font-size: 1.6rem; border: 3px solid #ffd23f; }
+
+/* ---- shorts.html ---- */
+.gs-player { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-bottom: 34px; scroll-margin-top: 80px; }
+.gs-player video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 16px; border: 3px solid #111; box-shadow: 6px 6px 0 rgba(0,0,0,.5); display: block; }
+.gs-info h2 { margin: 0 0 6px; font: 2rem/1.05 "Bangers", var(--head); letter-spacing: .04em; color: var(--amber2); }
+.gs-info p { margin: 0 0 10px; color: var(--muted); }
+.gs-info .gs-ep { color: var(--text); font-style: italic; }
+.gs-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.gs-card[aria-current=true] { outline: 3px solid var(--amber); outline-offset: 3px; }
+@media (max-width: 860px) { .gs-player { grid-template-columns: 1fr; } }
