@@ -360,6 +360,7 @@
         <div class="d-block"><h3>${t("d.discovered", "What it discovered")}</h3><ul class="checks">${a.discoveries.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>
         ${a.left ? `<div class="d-block"><h3>${t("d.left", "What was left behind")}</h3><ul class="checks left">${a.left.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>` : ""}
         ${orbitHTML(a)}
+        ${eyesHTML(a)}
         ${onboardHTML(a)}
 
         <div class="d-block"><h3>${t("d.matters", "Why it matters today")}</h3><p class="legacy">${esc(a.legacy)}</p></div>
@@ -377,6 +378,12 @@
       </div>`;
     $("#drawerBody").scrollTop = 0;
     bindTn($("#drawerBody"));
+    $("#drawerBody [data-eyes-start]")?.addEventListener("click", e => {
+      const b = e.currentTarget, f = document.createElement("iframe");
+      f.src = b.dataset.eyesStart; f.title = t("d.eyesFrame", "NASA Eyes on the Solar System");
+      f.allow = "fullscreen"; f.allowFullscreen = true; f.referrerPolicy = "strict-origin-when-cross-origin";
+      b.replaceWith(f);
+    });
     $("#drawerBody [data-upclose]")?.addEventListener("click", () => closeDrawer());
     if (typeof SOUNDS !== "undefined") bindSounds($("#drawerBody"));
     // "How it worked" animation(s)
@@ -572,6 +579,20 @@
     if (!o) return "";
     return `<div class="d-block d-orbit"><h3>${t("d.orbit", "See it from orbit")}</h3><p>${esc(o.cap)}</p>
       <a class="btn btn-small" href="${esc(o.url)}" target="_blank" rel="noopener">🛰️ ${t("d.hirise", "Open HiRISE image")} ${esc(o.img)} ↗</a></div>`;
+  }
+  // "Fly there in NASA Eyes": NASA/JPL's live 3D solar system, opened at this machine (or its world)
+  // at the moment that matters. Loads only when tapped, since Eyes is a big download.
+  function eyesHTML(a) {
+    if (typeof EYES_MACHINES === "undefined" || !EYES_MACHINES[a.id]) return "";
+    const m = EYES_MACHINES[a.id];
+    const url = eyesForMachine(a.id, { settings: { featured: false, menu: false, shareButton: false, logo: true, detailPanel: false, search: false, timeControls: true, locked: true } });
+    const when = m.at ? new Date(m.at).toUTCString().slice(5, 16) : t("d.eyesToday", "today");
+    return `<div class="d-block d-eyes"><h3>${t("d.eyes", "Fly there in NASA Eyes")}</h3>
+      <p>${(window.I18n?.lang || "en") === "en" ? esc(m.note) : `${esc(a.name)} · ${esc(when)}`}${m.self ? "" : ` <span class="ey-tag world">${t("d.eyesWorld", "Eyes shows its world, not the machine itself")}</span>`}</p>
+      <div class="ey-mini"><button class="ey-mini-start" data-eyes-start="${esc(url)}"><span class="ey-play" aria-hidden="true">▶</span>
+        <b>${t("d.eyesStart", "Load NASA's live 3D view")}</b><span>${esc(when)} · ${t("d.eyesNeeds", "a big download, needs internet")}</span></button></div>
+      <div class="d-eyes-links"><a class="btn btn-small" href="eyes.html#${a.id}">${t("d.eyesPage", "More in NASA Eyes →")}</a>
+        <a class="btn btn-small" href="${esc(eyesForMachine(a.id))}" target="_blank" rel="noopener">${t("d.eyesFull", "Open full screen ↗")}</a></div></div>`;
   }
   // "Sources": the documents these facts were checked against.
   function sourcesHTML(a) {

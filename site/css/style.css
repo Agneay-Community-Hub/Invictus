@@ -836,3 +836,20 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
   .hot { width: 22px; height: 22px; font-size: .66rem; }
   .odo-stop em { font-size: .64rem; }
 }
+
+/* "Fly there in NASA Eyes" block inside a dossier */
+.d-eyes .ey-mini {
+  position: relative; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; border: 1px solid var(--line2);
+  background: radial-gradient(circle at 70% 40%, #1b2a48, #04070d 70%); margin-bottom: 10px;
+}
+.d-eyes .ey-mini iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.d-eyes .ey-mini-start {
+  position: absolute; inset: 0; width: 100%; display: grid; place-content: center; gap: 6px; text-align: center; color: var(--text);
+  border: 0; background: transparent; font: inherit; cursor: pointer; padding: 16px;
+}
+.d-eyes .ey-mini-start b { font-size: 1.05rem; }
+.d-eyes .ey-mini-start span { color: var(--muted); font-size: .85rem; }
+.d-eyes .ey-mini-start .ey-play { width: 56px; height: 56px; margin: 0 auto 4px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,179,71,.18); border: 1px solid var(--amber); font-size: 1.4rem; }
+.d-eyes .ey-mini-start:hover .ey-play { background: rgba(255,179,71,.3); }
+.d-eyes p { margin: 0 0 10px; color: var(--muted); }
+.d-eyes .d-eyes-links { display: flex; flex-wrap: wrap; gap: 8px; }

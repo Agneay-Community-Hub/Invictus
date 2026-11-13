@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
-  <link rel="stylesheet" href="css/style.css?v=658e770b">
+  <link rel="stylesheet" href="css/style.css?v=48fc8ea0">
   <link rel="icon" href="assets/ui/star.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
@@ -64,6 +64,7 @@
         <li><a data-i="nav.archive" href="#archive">Archive</a></li>
         <li><a data-i="nav.play" href="lander.html">Play</a></li>
         <li><a data-i="nav.ask" href="ask.html">Ask</a></li>
+        <li><a data-i="nav.eyes" href="eyes.html">NASA Eyes</a></li>
       </ul>
     </nav>
     <div class="top-actions">
@@ -345,17 +346,27 @@
       </div>
       <a data-i="ex.btn" class="btn btn-primary btn-lg" href="explore.html">Launch 3D Explore →</a>
     </section>
+
+    <!-- ============ NASA EYES CTA ============ -->
+    <section class="explore-cta eyes-cta">
+      <div>
+        <p data-i="eyes.eyebrow" class="eyebrow">NASA Eyes on the Solar System</p>
+        <h2 data-i="eyes.title">See where every machine really is</h2>
+        <p data-i="eyes.desc">NASA/JPL's live 3D solar system, built from real spacecraft data. Fly to Voyager 1 right now, or travel back to Cassini's last morning at Saturn.</p>
+      </div>
+      <a data-i="eyes.btn" class="btn btn-primary btn-lg" href="eyes.html">Open NASA Eyes →</a>
+    </section>
   </main>
 
   <footer class="footer">
     <div>
       <strong>Ghosts of Exploration</strong>
-      <p data-i="foot.links"><a href="teacher.html">Teacher pack</a> · <a href="lander.html">Land it yourself</a> · <a href="ask.html">Ask the Archive</a> · <a href="explore.html">3D Explore</a> · <a href="sources.html">Sources</a> · <a href="machines/index.html">All 49 machines</a></p>
+      <p data-i="foot.links"><a href="teacher.html">Teacher pack</a> · <a href="lander.html">Land it yourself</a> · <a href="ask.html">Ask the Archive</a> · <a href="explore.html">3D Explore</a> · <a href="eyes.html">NASA Eyes</a> · <a href="sources.html">Sources</a> · <a href="machines/index.html">All 49 machines</a></p>
       <p data-i="foot.made">Made for the NASA Space Apps Challenge 2026 — “Abandoned but not Forgotten.”</p>
     </div>
     <div>
       <strong data-i="foot.credits">Credits</strong>
-      <p data-i="foot.creditsText">Photos &amp; videos: NASA Image and Video Library (public domain). Moon map: NASA SVS CGI Moon Kit (LRO data). Mars &amp; star textures: Solar System Scope (CC BY 4.0). Badge art: Fantasy RPG UI Kit asset pack.</p>
+      <p data-i="foot.creditsText">Photos &amp; videos: NASA Image and Video Library (public domain). Moon map: NASA SVS CGI Moon Kit (LRO data). Mars &amp; star textures: Solar System Scope (CC BY 4.0). Live 3D solar system: NASA&#39;s Eyes on the Solar System (NASA/JPL-Caltech). Badge art: Fantasy RPG UI Kit asset pack.</p>
     </div>
     <div>
       <strong data-i="foot.acc">Accuracy note</strong>
@@ -398,11 +409,12 @@
   <script src="js/data.js?v=bb45a8c8"></script>
   <script src="js/records.js?v=8b8adcd6"></script>
   <script src="js/models.js?v=b98b4de6"></script>
+  <script src="js/eyes-data.js?v=eaebfbe8"></script>
   <script src="js/explainers.js?v=88475e9e"></script>
-  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=cd73e316", hi: "js/i18n/hi.js?v=41b43d0b" }[window.GOE_LANG] + '"><\/script>');</script>
+  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=c9468fc2", hi: "js/i18n/hi.js?v=c0a2e4a9" }[window.GOE_LANG] + '"><\/script>');</script>
   <script src="js/oppy-data.js?v=9eef9b60"></script>
   <script src="js/i18n.js?v=209e531b"></script>
-  <script src="js/app.js?v=b94febcc"></script>
+  <script src="js/app.js?v=709ac07d"></script>
   <script src="js/oppy.js?v=54cf126a"></script>
   <script src="js/pwa.js?v=68dca921"></script>
 </body>
