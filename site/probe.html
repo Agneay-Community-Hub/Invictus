@@ -17,8 +17,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="css/style.css?v=0d5e4da5">
-  <link rel="stylesheet" href="css/catalogue.css?v=2747892f">
+  <link rel="stylesheet" href="css/catalogue.css?v=92d5bc58">
   <link rel="icon" href="assets/ui/bolt.png">
+  <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
   <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
@@ -52,6 +58,7 @@
       <h1>Build a probe</h1>
       <p class="lede">You have 9 coins. Choose where your probe goes, what powers it, how it talks to Earth and how it stays safe. Then launch it and find out how long it lasts, and which real machine made the same choices.</p>
     </section>
+    <div class="pb-layout">
     <div class="pb-form">
       <div class="pb-budget" id="pbBudgetBox"><span>Coins left</span><b id="pbCoins">9</b><i id="pbBudget"></i><p id="pbHint" aria-live="polite"></p></div>
       <label class="pb-name">Name your probe <input id="pbName" type="text" maxlength="30" placeholder="Your probe" autocomplete="off"></label>
@@ -60,8 +67,19 @@
       <fieldset><legend><span>3</span> How does it talk to Earth?</legend><div class="pb-opts" id="pbDish"></div></fieldset>
       <fieldset><legend><span>4</span> Protection (pick any)</legend><div class="pb-opts" id="pbExtra"></div></fieldset>
       <button type="button" class="btn btn-primary pb-launch" id="pbLaunch" disabled><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg> Launch!</button>
+      <section class="pb-out" id="pbOut" hidden aria-live="polite"></section>
     </div>
-    <section class="pb-out" id="pbOut" hidden aria-live="polite"></section>
+
+    <aside class="pb3d" id="pb3d" aria-label="Your probe in 3D">
+      <div class="pb3d-stage" id="pb3dStage">
+        <div class="pb3d-labels" id="pb3dLabels" aria-hidden="true"></div>
+        <div class="pb3d-menu" id="pb3dMenu" role="menu" hidden></div>
+        <p class="pb3d-msg" hidden>3D needs a browser with WebGL. You can still build and launch with the choices on the left.</p>
+        <p class="pb3d-load">Building the workshop…</p>
+      </div>
+      <p class="pb3d-cap" id="pb3dCap">Choose parts on the left, or click a glowing + on the model</p>
+    </aside>
+    </div>
     <p class="tr-fine">A simple model, not a real mission planner: real probes balance many more things, like weight, rockets and years of testing. But the big trade-offs here are the real ones.</p>
   </main>
 
@@ -71,7 +89,8 @@
 
   <script src="js/icons.js?v=ed5e4fdc"></script>
   <script src="js/data.js?v=83e574d5"></script>
-  <script src="js/probe.js?v=0285debb"></script>
+  <script src="js/probe.js?v=e68e7e7a"></script>
+  <script type="module" src="js/probe3d.js?v=99abfa80"></script>
   <script src="js/search.js?v=64a4c6ae"></script>
   <script src="js/glossary.js?v=f39d5e4e"></script>
   <script src="js/pwa.js?v=7612dde4"></script>

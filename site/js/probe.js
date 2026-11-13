@@ -57,7 +57,10 @@
     const q = new URLSearchParams({ d: c.dest || "", p: c.power || "", r: c.dish || "", x: c.extra.join(".") });
     if (c.name !== "Your probe") q.set("n", c.name);
     history.replaceState(null, "", "?" + q);
+    window.Probe3D?.build(c);
   }
+  // for the 3D builder (js/probe3d.js)
+  window.PB = { DEST, POWER, DISH, EXTRA, BUDGET, pick, cost };
   document.querySelector(".pb-form").addEventListener("change", update);
   $("#pbName").addEventListener("input", update);
 
@@ -65,7 +68,7 @@
   function simulate(c) {
     const D = DEST[c.dest], heat = c.extra.includes("heat") || c.power === "rtg", vault = c.extra.includes("vault"), dish = DISH[c.dish].size;
     const sun = 1 / (D.au * D.au); // sunlight compared with Earth
-    const log = []; let years = null, end = "", data = "plenty of";
+    const log = []; let years = null, end = "", data = "plenty of", hot = false;
     const ok = (t, s) => log.push(["ok", t, s]), bad = (t, s) => log.push(["bad", t, s]), warn = (t, s) => log.push(["warn", t, s]);
     ok("Launch", "A perfect launch. You are on your way.");
 
@@ -91,6 +94,16 @@
       else ok("First cold night", c.power === "rtg" ? "The nuclear battery's waste heat keeps everything warm." : "Heaters and insulation keep it alive through the night.");
     }
 
+    // overheating: on the Moon the day is as fierce as the night
+    if (c.dest === "moon" && c.power === "rtg" && c.extra.includes("heat")) {
+      warn("Overheating", "The two-week lunar day heats the ground to about 120 °C. With a nuclear battery and thick insulation the heat has nowhere to go, so the electronics run hot and wear out faster.");
+      hot = true;
+    }
+    if (c.dest === "moon" && c.power === "battery" && !c.extra.includes("heat")) {
+      warn("Overheating", "In full lunar sunlight the batteries cook. They lose charge even faster.");
+      years = 1 / 365; end = "the batteries overheated and ran flat in a day";
+    }
+
     // dust on Mars
     if (D.dust && c.power !== "rtg" && c.power !== "battery" && years == null) {
       const storm = 3 + Math.random() * 12;
@@ -108,6 +121,7 @@
     // whatever is left: the power source wears out
     if (years == null) {
       if (c.power === "rtg") { years = c.dest === "moon" || c.dest === "mars" ? 15 + Math.random() * 15 : c.dest === "saturn" ? 20 : c.dest === "jupiter" ? 12 : 48; end = c.dest === "saturn" || c.dest === "jupiter" ? "it ran low on fuel and was sent on a final plunge" : "the nuclear battery slowly faded"; }
+      if (hot) { years *= .4; end = "years of running hot wore out its electronics"; }
       else { years = c.dest === "moon" ? 4 + Math.random() * 6 : 6 + Math.random() * 6; end = "parts slowly wore out"; }
     }
     ok("Science", `It sends home ${data} pictures and measurements.`);
@@ -151,11 +165,14 @@
     const c = pick(), r = simulate(c), tw = twin(c, r), out = $("#pbOut");
     out.hidden = false; out.innerHTML = `<h2>${esc(c.name)} · mission log</h2><ol class="pb-log" id="pbLog"></ol><div id="pbEnd"></div>`;
     out.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    window.Probe3D?.reset();
     for (const [kind, title, text] of r.log) {
-      await new Promise(res => setTimeout(res, 650));
+      await new Promise(res => setTimeout(res, window.Probe3D?.ready ? 1300 : 650));
+      window.Probe3D?.event(kind, title);
       $("#pbLog").insertAdjacentHTML("beforeend", `<li class="${kind}"><b>${esc(title)}</b> ${esc(text)}</li>`);
     }
-    await new Promise(res => setTimeout(res, 650));
+    await new Promise(res => setTimeout(res, 900));
+    window.Probe3D?.finish(r.years);
     const a = tw.id && ARTIFACTS.find(x => x.id === tw.id);
     const stars = r.years <= 0 ? 0 : r.years < .1 ? 1 : r.years < 2 ? 2 : r.years < 10 ? 3 : r.years < 25 ? 4 : 5;
     $("#pbEnd").innerHTML = `

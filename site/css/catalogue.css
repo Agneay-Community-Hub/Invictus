@@ -596,3 +596,38 @@ body.cat-page { background:
 .pb-twin p { margin: 0 0 8px; }
 .pb-again { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
 @media (max-width: 600px) { .pb-twin { grid-template-columns: 1fr; } .pb-budget { top: 56px; } }
+
+/* ---- probe.html: the 3D builder column ---- */
+.pb-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 46%); gap: 24px; align-items: start; }
+.pb3d { position: sticky; top: 72px; }
+.pb3d-stage { position: relative; height: calc(100vh - 150px); min-height: 360px; max-height: 760px; border-radius: 20px; border: 1px solid var(--line2); overflow: hidden;
+  background: radial-gradient(ellipse at 50% 35%, #16223d, #060a13 72%); }
+.pb3d-stage canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; touch-action: none; cursor: grab; }
+.pb3d-stage canvas:active { cursor: grabbing; }
+.pb3d-load, .pb3d-msg { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 20px; text-align: center; color: var(--muted); }
+.pb3d.ready .pb3d-load, .pb3d.no3d .pb3d-load { display: none; }
+.pb3d-cap { margin: 8px 4px 0; color: var(--dim); font-size: .85rem; text-align: center; }
+.pb3d-labels { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.pb3d-tag { position: absolute; left: 0; top: 0; white-space: nowrap; font: 700 .82rem var(--head); padding: 4px 10px; border-radius: 999px; background: rgba(6,10,19,.85); border: 1px solid var(--line2); color: var(--text); box-shadow: 0 6px 18px -6px rgba(0,0,0,.8); }
+.pb3d-tag.ok { border-color: rgba(94,230,168,.6); color: var(--ok); }
+.pb3d-tag.warn { border-color: rgba(255,179,71,.7); color: var(--amber2); }
+.pb3d-tag.bad { border-color: #ff7a7a; color: #ffb0b0; background: rgba(60,8,8,.9); animation: pb3dshake .4s ease 2; }
+.pb3d-tag.ghost { border-color: rgba(159,196,255,.6); color: #cfe0ff; font-style: italic; }
+@keyframes pb3dshake { 25% { margin-left: -4px; } 75% { margin-left: 4px; } }
+.pb3d-menu { position: absolute; z-index: 3; min-width: 220px; max-width: calc(100% - 16px); padding: 8px; border-radius: 14px; border: 1px solid rgba(255,179,71,.55); background: rgba(11,17,32,.97); box-shadow: var(--shadow); display: grid; gap: 4px; }
+.pb3d-menu[hidden] { display: none; }
+.pb3d-mh { margin: 2px 6px 4px; font: 700 .95rem var(--head); color: var(--amber2); }
+.pb3d-mn { margin: 2px 6px; color: var(--dim); font-size: .8rem; }
+.pb3d-menu button { display: flex; justify-content: space-between; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 8px 10px; border-radius: 10px; border: 1px solid transparent; background: var(--panel); color: var(--text); font: inherit; font-size: .88rem; cursor: pointer; }
+.pb3d-menu button:hover, .pb3d-menu button:focus-visible { border-color: var(--amber); background: var(--panel2); outline: none; }
+.pb3d-menu button em { font-style: normal; font-weight: 700; color: var(--amber2); }
+.pb3d-menu button.rm { color: #ffb0b0; }
+.pb3d-menu button.rm em { color: #ffb0b0; }
+.pb-layout .pb-opts { grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); }
+@media (max-width: 900px) {
+  .pb-layout { grid-template-columns: minmax(0, 1fr); }
+  .pb3d { order: -1; top: 56px; z-index: 22; background: var(--bg); padding-bottom: 6px; }
+  .pb3d-stage { height: 38vh; min-height: 240px; border-radius: 16px; }
+  .pb3d-cap { font-size: .75rem; margin-top: 4px; }
+  .pb-budget { position: static; }
+}
