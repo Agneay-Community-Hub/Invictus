@@ -100,19 +100,19 @@ FOR EVERYONE
 
 ## Future Implementation Plan
 
-NEXT MONTH
-- Cartoon shorts for all 49 machines, using NASA 3D models where they exist.
-- Real voice recordings for the podcast, and a podcast feed on Spotify and Apple Podcasts.
-- Translate every page into Spanish and Hindi, reviewed by fluent speakers.
+Our plan for the next 48 hours. Every change goes live on the website about a minute after we make it, so each step is small enough to finish in its time block.
 
-NEXT 3 MONTHS
-- Pilot the site in classrooms and collect feedback from teachers and students.
-- A full accessibility and speed audit.
-- Mars clocks: whether it is day or night at every Mars machine, live.
-- "Point your phone at the Moon": use the phone's sensors to find the Apollo sites in the real sky.
+HOURS 0–12: POLISH WHAT JUDGES SEE
+- Fix anything judges or testers report, live within minutes.
+- Submit the sitemap to Google Search Console so all 147 machine pages get indexed.
+- Run a speed and accessibility check on the main pages and fix what it finds.
 
-NEXT 6 TO 12 MONTHS
-- Add machines as missions end, and follow the Artemis era as it happens.
-- More languages, chosen with partner schools.
-- A classroom challenge mode with team progress.
-- Invite museums, planetariums and space clubs to embed the archive on their own websites.
+HOURS 12–24: MORE STORIES
+- Start the next Ghost Shorts cartoons from NASA 3D models (each video renders in about 5 minutes).
+- Publish a podcast feed for Ghost Logs and submit it to Spotify and Apple Podcasts.
+- Add Mars clocks: whether it is day or night at every Mars machine, live.
+
+HOURS 24–48: INTO CLASSROOMS
+- Have fluent speakers review the Spanish and Hindi text.
+- Share the teacher pack with teachers and collect their feedback through a short form.
+- Record real voices for the first podcast episodes, replacing the computer voices.
