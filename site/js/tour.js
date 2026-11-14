@@ -14,7 +14,7 @@
     ["#logs", T("tour.4t", "Ghost Logs"), T("tour.4", "Short stories told by the machines themselves. Press Read aloud to listen.")],
     [".top-actions .btn-glow", T("tour.5t", "3D Explore"), T("tour.5", "Spin the Moon and Mars in 3D and fly out to the far probes.")],
     ["#today", T("tour.2t", "Ghost of the day"), T("tour.2", "A different machine every day. Read it, hear it, or share it.")],
-    ["#quiz", T("tour.6t", "Who am I?"), T("tour.6", "Guess the machine from its clues.")],
+    ["#play", T("play.eyebrow", "Play"), T("tour.6p", "Land a spacecraft, play Ghost Cards, or guess the machine in Who am I?")],
     ["#passportBtn", T("tour.7t", "Your passport"), T("tour.7", "Collect badges as you explore. That's the tour. Have fun!")]
   ];
 

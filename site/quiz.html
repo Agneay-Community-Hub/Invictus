@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Who am I? — Ghosts of Exploration</title>
+  <meta name="description" content="A guessing game about the machines NASA left on the Moon, Mars and in deep space: read the clue, pick the machine, and earn the Archive Expert badge.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Who am I? — Ghosts of Exploration">
+  <meta property="og:description" content="Read the clue, guess the machine.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/Invictus/quiz.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/Invictus/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/Invictus/quiz.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=bad444e3">
+  <link rel="stylesheet" href="css/catalogue.css?v=2fd78819">
+  <link rel="icon" href="assets/ui/bolt.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+  <style>
+    .qw { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+    .qw button { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line2); background: var(--panel); color: var(--text); font: inherit; font-weight: 600; cursor: pointer; }
+    .qw button small { color: var(--dim); font-weight: 400; }
+    .qw button[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); color: #111; }
+    .qw button[aria-pressed="true"] small { color: #3a2a10; }
+    .q-best { color: var(--muted); margin: 14px 0 0; }
+    .q-done h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+    .q-done-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+    .q-opt .ph { display: grid; place-items: center; background: var(--bg2); color: var(--amber2); }
+  </style>
+</head>
+<body class="cat-page">
+  <a class="skip" href="#quizBox">Skip to the quiz</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>Who am I?</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#play">All games</a></li>
+        <li><a href="lander.html">Land it yourself</a></li>
+        <li><a href="signal.html">Drive on Mars</a></li>
+        <li><a href="cards.html">Ghost Cards</a></li>
+        <li><a href="probe.html">Build a probe</a></li>
+        <li><a href="index.html#map">Ghost Map</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cat-wrap" id="main">
+    <section class="cat-hero">
+      <p class="eyebrow">A guessing game</p>
+      <h1>Who am I?</h1>
+      <p class="lede">Each clue is something one of the machines did. Read it, pick the machine, and learn a fun fact either way. Eight questions a round.</p>
+    </section>
+
+    <div class="qw" role="group" aria-label="Which machines?">
+      <button type="button" data-qw="all" aria-pressed="true">All machines <small></small></button>
+      <button type="button" data-qw="moon" aria-pressed="false">The Moon <small></small></button>
+      <button type="button" data-qw="mars" aria-pressed="false">Mars <small></small></button>
+      <button type="button" data-qw="deep" aria-pressed="false">Elsewhere <small></small></button>
+    </div>
+    <section class="quiz" id="quizBox" aria-label="Quiz" tabindex="-1"></section>
+    <p class="q-best" id="qBest"></p>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div><p><a href="index.html#play">← Back to all games</a> · <a href="index.html">The archive</a> · Photos: NASA Image and Video Library (public domain; NASA does not endorse this project).</p></div>
+  </footer>
+
+  <script src="js/icons.js?v=0eb13eba"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/quiz.js?v=0ebc15aa"></script>
+  <script src="js/search.js?v=d9abefed"></script>
+  <script src="js/glossary.js?v=f39d5e4e"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>

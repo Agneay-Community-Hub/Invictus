@@ -86,7 +86,7 @@
         if (en.isIntersecting) links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + en.target.id));
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    ["map", "logs", "how", "timeline", "deep", "quiz", "archive"].forEach(id => io.observe(document.getElementById(id)));
+    ["map", "logs", "how", "timeline", "deep", "archive"].forEach(id => io.observe(document.getElementById(id)));
   }
 
   /* ---------------- starfield ---------------- */
@@ -742,46 +742,7 @@
   }
 
   /* ---------------- QUIZ ---------------- */
-  let quiz = null;
-  function newQuiz() {
-    const pool = ARTIFACTS.filter(a => a.quiz).sort(() => Math.random() - .5).slice(0, 8);
-    quiz = { qs: pool.map(a => {
-      const others = ARTIFACTS.filter(o => o.id !== a.id && o.quiz).sort((x, y) => (y.world === a.world) - (x.world === a.world) || Math.random() - .5).slice(0, 6).sort(() => Math.random() - .5).slice(0, 3);
-      return { a, opts: [a, ...others].sort(() => Math.random() - .5) };
-    }), i: 0, score: 0, answered: false };
-    renderQuiz();
-  }
-  function renderQuiz() {
-    const box = $("#quizBox");
-    if (quiz.i >= quiz.qs.length) {
-      const s = quiz.score, n = quiz.qs.length;
-      if (s > progress.quizBest) { progress.quizBest = s; saveProgress(); checkBadges(); }
-      box.innerHTML = `<div class="q-done"><img src="assets/ui/${s >= 6 ? "trophy" : "star"}.png" alt="">
-        <h3>${t("q.scored", "You scored {s} out of {n}!").replace("{s}", s).replace("{n}", n)}</h3><p>${s >= 6 ? t("q.amazing", "Amazing — you’re an Archive Expert.") : t("q.nice", "Nice try! Open a few more dossiers and try again.")}</p>
-        <button class="btn btn-primary" id="qAgain">${t("q.again", "Play again")}</button></div>`;
-      $("#qAgain").addEventListener("click", newQuiz);
-      return;
-    }
-    const q = quiz.qs[quiz.i];
-    box.innerHTML = `
-      <div class="q-top"><span class="tag">${t("q.questionXofY", "Question {x} of {y}").replace("{x}", quiz.i + 1).replace("{y}", quiz.qs.length)}</span><span class="q-progress" aria-hidden="true"><i style="width:${quiz.i / quiz.qs.length * 100}%"></i></span><span class="tag">${t("q.scoreLabel", "Score:")} ${quiz.score}</span></div>
-      <p class="q-clue">${esc(q.a.quiz)}</p>
-      <div class="q-opts">${q.opts.map(o => `<button class="q-opt" data-id="${o.id}">${thumbHTML(o, "")}<span><b>${esc(o.name)}</b><br><small style="color:var(--muted)">${esc(WORLDS[o.world].short)} · ${o.year}</small></span></button>`).join("")}</div>
-      <div class="q-feedback" id="qFeed" aria-live="polite"></div>`;
-    $$(".q-opt", box).forEach(b => b.addEventListener("click", () => {
-      if (quiz.answered) return; quiz.answered = true;
-      const ok = b.dataset.id === q.a.id;
-      if (ok) quiz.score++;
-      $$(".q-opt", box).forEach(x => { x.disabled = true; if (x.dataset.id === q.a.id) x.classList.add("right"); });
-      if (!ok) b.classList.add("wrong");
-      $("#qFeed").innerHTML = `<p>${ok ? ico("check", "ok") + " Correct!" : ico("cross", "no") + " Not quite — it was <b>" + esc(q.a.name) + "</b>."} ${esc(q.a.fun)}</p>
-        <button class="btn btn-primary btn-small" id="qNext">${quiz.i === quiz.qs.length - 1 ? t("q.score", "See my score") : t("q.next", "Next question →")}</button>
-        <button class="btn btn-small" id="qLearn">${t("q.openDossier", "Open its dossier")}</button>`;
-      $("#qNext").addEventListener("click", () => { quiz.i++; quiz.answered = false; renderQuiz(); $("#quizBox").scrollIntoView({ block: "nearest" }); });
-      $("#qLearn").addEventListener("click", e => openDrawer(q.a.id, e.currentTarget));
-      $("#qNext").focus();
-    }));
-  }
+  // The Who am I? quiz has its own page now: quiz.html (js/quiz.js).
 
   /* ---------------- ARCHIVE ---------------- */
   function initArchive() {
@@ -1059,7 +1020,7 @@
 
   // ?scrollto=section jumps straight to a section (used for links and screenshots).
   addEventListener("load", () => { const id = new URLSearchParams(location.search).get("scrollto"); const el = id && document.getElementById(id); if (el) setTimeout(() => el.scrollIntoView({ behavior: "instant", block: "start" }), 300); });
-  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initToday(); initChapters(); initHow(); initThenNow(); initSounds(); initAskTeaser(); initTimeline(); initDeep(); newQuiz(); initArchive(); initPassport();
+  initSettings(); initNav(); initStars(); initHero(); initMap(); initDrawer(); initToday(); initChapters(); initHow(); initThenNow(); initSounds(); initAskTeaser(); initTimeline(); initDeep(); initArchive(); initPassport();
   $("#lbClose").addEventListener("click", closeLightbox);
   $("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") closeLightbox(); });
   if ("speechSynthesis" in window) speechSynthesis.getVoices();

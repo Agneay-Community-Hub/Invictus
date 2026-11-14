@@ -13,7 +13,7 @@
     ["Ghost Map", "index.html#map", "map", "home moon mars where"],
     ["Ghost Logs", "index.html#logs", "book", "stories diary first person"],
     ["Timeline", "index.html#timeline", "clock", "history years dates"],
-    ["Quiz", "index.html#quiz", "award", "game guess who am i"],
+    ["Who am I? quiz", "quiz.html", "award", "quiz game guess who am i"],
     ["All machines", "browse.html", "grid", "browse list filter rovers landers probes"],
     ["Compare two machines", "compare.html", "compare", "side by side versus vs"],
     ["Timeline, year by year", "timeline.html", "clock", "history years dates when launched quiet listen"],

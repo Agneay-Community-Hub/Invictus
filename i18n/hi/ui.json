@@ -88,7 +88,7 @@
     "ex.title": "3D में चाँद और मंगल के चारों ओर उड़ें",
     "ex.desc": "गोलों को घुमाएँ, चमकते निशान ढूँढें, और वहाँ तक जाएँ जहाँ आज वॉयजर यान हैं।",
     "ex.btn": "3D में घूमना शुरू करें →",
-    "foot.links": "<a href=\"teacher.html\">शिक्षक सामग्री</a> · <a href=\"lander.html\">खुद उतारो</a> · <a href=\"ask.html\">संग्रह से पूछें</a> · <a href=\"explore.html\">3D में घूमें</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"browse.html\">सभी मशीनें</a> · <a href=\"compare.html\">दो मशीनों की तुलना</a> · <a href=\"timeline.html\">समय-रेखा</a> · <a href=\"tracker.html\">लाइव ट्रैकर</a> · <a href=\"future.html\">भविष्य के भूत</a> · <a href=\"glossary.html\">शब्दकोश</a> · <a href=\"poster.html\">पोस्टर</a> · <a href=\"comics.html\">भूत कॉमिक्स</a> · <a href=\"shorts.html\">भूत शॉर्ट्स</a> · <a href=\"podcast.html\">घोस्ट लॉग्स पॉडकास्ट</a> · <a href=\"moon.html\">आज रात का चाँद</a> · <a href=\"cards.html\">भूत कार्ड</a> · <a href=\"signal.html\">मंगल पर गाड़ी चलाओ</a> · <a href=\"probe.html\">यान बनाओ</a> · <a href=\"voyager.html\">वॉयजर तक स्क्रॉल करो</a> · <a href=\"activities.html\">गतिविधि पन्ने</a> · <a href=\"data.html\">खुला डेटा</a> · <a href=\"library.html\">तस्वीरें, वीडियो और आवाज़ें</a> · <a href=\"landings.html\">उतरने की जगहें</a> · <a href=\"catalogue.html\">मिशन सूची</a> · <a href=\"adopt.html\">एक भूत गोद लो</a> · <a href=\"sources.html\">स्रोत</a> · <a href=\"machines/index.hi.html\">सभी 49 मशीनें</a>",
+    "foot.links": "<a href=\"teacher.html\">शिक्षक सामग्री</a> · <a href=\"lander.html\">खुद उतारो</a> · <a href=\"ask.html\">संग्रह से पूछें</a> · <a href=\"explore.html\">3D में घूमें</a> · <a href=\"eyes.html\">NASA Eyes</a> · <a href=\"browse.html\">सभी मशीनें</a> · <a href=\"compare.html\">दो मशीनों की तुलना</a> · <a href=\"timeline.html\">समय-रेखा</a> · <a href=\"tracker.html\">लाइव ट्रैकर</a> · <a href=\"future.html\">भविष्य के भूत</a> · <a href=\"glossary.html\">शब्दकोश</a> · <a href=\"poster.html\">पोस्टर</a> · <a href=\"comics.html\">भूत कॉमिक्स</a> · <a href=\"shorts.html\">भूत शॉर्ट्स</a> · <a href=\"podcast.html\">घोस्ट लॉग्स पॉडकास्ट</a> · <a href=\"moon.html\">आज रात का चाँद</a> · <a href=\"cards.html\">भूत कार्ड</a> · <a href=\"signal.html\">मंगल पर गाड़ी चलाओ</a> · <a href=\"probe.html\">यान बनाओ</a> · <a href=\"voyager.html\">वॉयजर तक स्क्रॉल करो</a> · <a href=\"activities.html\">गतिविधि पन्ने</a> · <a href=\"data.html\">खुला डेटा</a> · <a href=\"library.html\">तस्वीरें, वीडियो और आवाज़ें</a> · <a href=\"landings.html\">उतरने की जगहें</a> · <a href=\"catalogue.html\">मिशन सूची</a> · <a href=\"adopt.html\">एक भूत गोद लो</a> · <a href=\"quiz.html\">मैं कौन हूँ?</a> · <a href=\"sources.html\">स्रोत</a> · <a href=\"machines/index.hi.html\">सभी 49 मशीनें</a>",
     "foot.made": "NASA Space Apps Challenge 2026 के लिए बनाया गया — “छोड़े गए, पर भुलाए नहीं गए।”",
     "foot.credits": "आभार",
     "foot.creditsText": "तस्वीरें और वीडियो: नासा इमेज और वीडियो लाइब्रेरी (सार्वजनिक)। चाँद का नक्शा: NASA SVS CGI Moon Kit (LRO डेटा)। मंगल और तारों के टेक्सचर: Solar System Scope (CC BY 4.0)। बैज चित्र: Fantasy RPG UI Kit। लाइव 3D सौर मंडल: NASA का Eyes on the Solar System (NASA/JPL-Caltech)।",
@@ -351,9 +351,10 @@
     "play.mars": "मंगल",
     "play.jezero": "जेज़ेरो क्रेटर",
     "play.quiz": "मैं कौन हूँ?",
-    "play.quizSub": "सुरागों से मशीन पहचानो। ठीक नीचे।",
+    "play.quizSub": "सुरागों से मशीन पहचानो, हर दौर में आठ सवाल।",
     "play.print": "छापने वाली पहेलियाँ",
-    "play.printSub": "शब्द खोज, रंग भरने के पन्ने और भी बहुत कुछ।"
+    "play.printSub": "शब्द खोज, रंग भरने के पन्ने और भी बहुत कुछ।",
+    "tour.6p": "यान उतारो, भूत कार्ड खेलो, या \"मैं कौन हूँ?\" में मशीन पहचानो।"
   },
   "status": {
     "silent": {

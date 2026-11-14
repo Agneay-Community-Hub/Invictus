@@ -324,19 +324,9 @@
         <a class="play-card" href="signal.html"><span class="play-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rover"></use></svg></span><b data-i="xm.sg">Drive on Mars</b><small data-i="xm.sgSub">Steer a rover when every command arrives minutes late.</small></a>
         <a class="play-card" href="cards.html"><span class="play-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-award"></use></svg></span><b data-i="xm.gc">Ghost Cards</b><small data-i="xm.gcSub">A trading card game. Beat the computer, or print the deck.</small></a>
         <a class="play-card" href="probe.html"><span class="play-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-satellite"></use></svg></span><b data-i="xm.pb">Build a probe</b><small data-i="xm.pbSub">Design a spacecraft and see how long it survives.</small></a>
-        <a class="play-card" href="#quiz"><span class="play-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><b data-i="play.quiz">Who am I?</b><small data-i="play.quizSub">Guess the machine from its clues. Just below.</small></a>
+        <a class="play-card" href="quiz.html"><span class="play-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><b data-i="play.quiz">Who am I?</b><small data-i="play.quizSub">Guess the machine from its clues, eight questions a round.</small></a>
         <a class="play-card" href="activities.html"><span class="play-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-printer"></use></svg></span><b data-i="play.print">Puzzles to print</b><small data-i="play.printSub">A word search, colouring pages and more.</small></a>
       </div>
-    </section>
-
-    <!-- ============ QUIZ ============ -->
-    <section class="section" id="quiz" aria-labelledby="quizTitle">
-      <header class="sec-head">
-        <p data-i="quiz.eyebrow" class="eyebrow">Who am I?</p>
-        <h2 data-i="quiz.title" id="quizTitle">Can you name the ghost?</h2>
-        <p data-i="quiz.desc">Read the clue, pick the machine. Score 6 or more to earn the <b>Archive Expert</b> badge.</p>
-      </header>
-      <div class="quiz" id="quizBox"></div>
     </section>
 
     <!-- ============ THEN & NOW ============ -->
@@ -477,7 +467,7 @@
   <footer class="footer">
     <div>
       <strong>Ghosts of Exploration</strong>
-      <p data-i="foot.links"><a href="teacher.html">Teacher pack</a> · <a href="lander.html">Land it yourself</a> · <a href="ask.html">Ask the Archive</a> · <a href="explore.html">3D Explore</a> · <a href="eyes.html">NASA Eyes</a> · <a href="browse.html">All machines</a> · <a href="compare.html">Compare two machines</a> · <a href="timeline.html">Timeline</a> · <a href="tracker.html">Live tracker</a> · <a href="future.html">Future ghosts</a> · <a href="glossary.html">Glossary</a> · <a href="poster.html">Wall poster</a> · <a href="comics.html">Ghost Comics</a> · <a href="shorts.html">Ghost Shorts</a> · <a href="podcast.html">Ghost Logs podcast</a> · <a href="moon.html">The Moon tonight</a> · <a href="cards.html">Ghost Cards</a> · <a href="signal.html">Drive on Mars</a> · <a href="probe.html">Build a probe</a> · <a href="voyager.html">Scroll to Voyager</a> · <a href="activities.html">Activity sheets</a> · <a href="data.html">Open data</a> · <a href="library.html">Photos, videos and sounds</a> · <a href="landings.html">Landing sites</a> · <a href="catalogue.html">Mission catalogue</a> · <a href="adopt.html">Adopt a Ghost</a> · <a href="sources.html">Sources</a> · <a href="machines/index.html">All 49 machines</a></p>
+      <p data-i="foot.links"><a href="teacher.html">Teacher pack</a> · <a href="lander.html">Land it yourself</a> · <a href="ask.html">Ask the Archive</a> · <a href="explore.html">3D Explore</a> · <a href="eyes.html">NASA Eyes</a> · <a href="browse.html">All machines</a> · <a href="compare.html">Compare two machines</a> · <a href="timeline.html">Timeline</a> · <a href="tracker.html">Live tracker</a> · <a href="future.html">Future ghosts</a> · <a href="glossary.html">Glossary</a> · <a href="poster.html">Wall poster</a> · <a href="comics.html">Ghost Comics</a> · <a href="shorts.html">Ghost Shorts</a> · <a href="podcast.html">Ghost Logs podcast</a> · <a href="moon.html">The Moon tonight</a> · <a href="cards.html">Ghost Cards</a> · <a href="signal.html">Drive on Mars</a> · <a href="probe.html">Build a probe</a> · <a href="voyager.html">Scroll to Voyager</a> · <a href="activities.html">Activity sheets</a> · <a href="data.html">Open data</a> · <a href="library.html">Photos, videos and sounds</a> · <a href="landings.html">Landing sites</a> · <a href="catalogue.html">Mission catalogue</a> · <a href="adopt.html">Adopt a Ghost</a> · <a href="quiz.html">Who am I? quiz</a> · <a href="sources.html">Sources</a> · <a href="machines/index.html">All 49 machines</a></p>
       <p data-i="foot.made">Made for the NASA Space Apps Challenge 2026 — “Abandoned but not Forgotten.”</p>
     </div>
     <div>
@@ -531,15 +521,15 @@
   <script src="js/atlas-links.js?v=0d026fd0"></script>
   <script src="js/eyes-data.js?v=67a28b33"></script>
   <script src="js/explainers.js?v=24a770e8"></script>
-  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=fb293be0", hi: "js/i18n/hi.js?v=59263639" }[window.GOE_LANG] + '"><\/script>');</script>
+  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=a1b98d20", hi: "js/i18n/hi.js?v=acec58c3" }[window.GOE_LANG] + '"><\/script>');</script>
   <script src="js/oppy-data.js?v=7b093852"></script>
   <script src="js/i18n.js?v=22597147"></script>
-  <script src="js/app.js?v=afdc2134"></script>
-  <script src="js/tour.js?v=22814c43"></script>
+  <script src="js/app.js?v=0d73726e"></script>
+  <script src="js/tour.js?v=029bc312"></script>
   <script src="js/start.js?v=04933759"></script>
   <script src="js/oppy.js?v=b2f94865"></script>
   <script src="js/shorts.js?v=76335e28"></script>
-  <script src="js/search.js?v=1616f10d"></script>
+  <script src="js/search.js?v=d9abefed"></script>
   <script src="js/glossary.js?v=f39d5e4e"></script>
   <script src="js/pwa.js?v=7612dde4"></script>
 </body>
