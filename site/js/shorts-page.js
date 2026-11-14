@@ -22,7 +22,9 @@
     <button type="button" class="gs-card" data-id="${id}"><img src="${SHORTS[id].poster}" alt="" loading="lazy"><span class="gs-play" aria-hidden="true">▶</span>
       <b>${esc(SHORTS[id].title)}</b><small>${esc(SHORTS[id].length)} · with subtitles</small></button>`).join("");
   $("#gsGrid").addEventListener("click", e => { const c = e.target.closest(".gs-card"); if (c) { play(c.dataset.id); $("#gsPlayer").scrollIntoView({ behavior: "smooth", block: "start" }); $("#gsPlayer video")?.play().catch(() => {}); } });
-  $("#gsCount").textContent = `${ids.length} of ${ARTIFACTS.length} machines have a short so far. More are on the way.`;
+  $("#gsCount").textContent = ids.length >= ARTIFACTS.length
+    ? `All ${ARTIFACTS.length} machines have their own short, each narrated with its ghost log.`
+    : `${ids.length} of ${ARTIFACTS.length} machines have a short so far. More are on the way.`;
   play(ids.includes(location.hash.slice(1)) ? location.hash.slice(1) : ids[0]);
 
   const nt = $(".nav-toggle"), ul = $("#navlist");
