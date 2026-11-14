@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ghosts of Exploration — Abandoned but not Forgotten</title>
+  <meta name="description" content="An interactive story archive of the robots, rovers and hardware NASA left behind on the Moon, Mars and in deep space.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Ghosts of Exploration — Abandoned but not Forgotten">
+  <meta property="og:description" content="An interactive story archive of the robots, rovers and hardware NASA left behind on the Moon, Mars and in deep space.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ghosts of Exploration: the Apollo 17 lunar rover parked on the Moon, beside the site title.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/">
+  <link rel="alternate" hreflang="en" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/">
+  <link rel="alternate" hreflang="es" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/?lang=es">
+  <link rel="alternate" hreflang="hi" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/?lang=hi">
+  <link rel="alternate" hreflang="x-default" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="keywords" content="NASA, Moon, Mars, rovers, landers, Apollo, Opportunity, Curiosity, Voyager, space history, space for kids, STEM education, abandoned spacecraft, Space Apps 2026">
+  <script>
+    // Pick the language before the page renders: ?lang= wins, then the last choice, else English.
+    window.GOE_LANG = (function () {
+      var l = "";
+      try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("goe:lang") || ""; if (l) localStorage.setItem("goe:lang", l); } catch (e) { }
+      l = l === "es" || l === "hi" ? l : "en";
+      document.documentElement.lang = l;
+      if (l === "hi") document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap">');
+      return l;
+    })();
+  </script>
+  <script type="application/ld+json" id="ldSite">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"Ghosts of Exploration","alternateName":["Abandoned but not Forgotten","Fantasmas de la Exploración","अन्वेषण के भूत"],"url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/","inLanguage":["en","es","hi"],"description":"An interactive story archive of the robots, rovers and hardware NASA left behind on the Moon, Mars and in deep space, for students aged 8–14.","publisher":{"@type":"Organization","name":"Ghosts of Exploration team (NASA Space Apps Challenge 2026)"}},{"@type":"LearningResource","name":"Ghosts of Exploration","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/","inLanguage":["en","es","hi"],"isAccessibleForFree":true,"educationalLevel":"Primary and middle school","audience":{"@type":"EducationalAudience","educationalRole":"student","audienceType":"Students aged 8–14"},"learningResourceType":["Interactive map","Story","Quiz","Game"],"teaches":"The history and science of NASA hardware left on the Moon, Mars and in deep space","about":[{"@type":"Thing","name":"Moon"},{"@type":"Thing","name":"Mars"},{"@type":"Thing","name":"NASA"},{"@type":"Thing","name":"Space exploration"},{"@type":"Thing","name":"Planetary science"}]},{"@type":"ItemList","name":"All 49 machines NASA left behind","numberOfItems":49,"itemListElement":[{"@type":"ListItem","position":1,"name":"Ranger 7","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/ranger7.html"},{"@type":"ListItem","position":2,"name":"Surveyor 1","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/surveyor1.html"},{"@type":"ListItem","position":3,"name":"Surveyor 3","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/surveyor3.html"},{"@type":"ListItem","position":4,"name":"Tranquility Base","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/apollo11.html"},{"@type":"ListItem","position":5,"name":"Apollo 12 ALSEP","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/apollo12.html"},{"@type":"ListItem","position":6,"name":"Apollo 14 site","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/apollo14.html"},{"@type":"ListItem","position":7,"name":"Lunar Roving Vehicle 1","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/apollo15.html"},{"@type":"ListItem","position":8,"name":"Lunar Roving Vehicle 2","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/apollo16.html"},{"@type":"ListItem","position":9,"name":"Lunar Roving Vehicle 3","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/apollo17.html"},{"@type":"ListItem","position":10,"name":"Apollo 16 S-IVB stage","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/sivb16.html"},{"@type":"ListItem","position":11,"name":"Lunar Prospector","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/prospector.html"},{"@type":"ListItem","position":12,"name":"LCROSS & Centaur","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/lcross.html"},{"@type":"ListItem","position":13,"name":"GRAIL Ebb & Flow","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/grail.html"},{"@type":"ListItem","position":14,"name":"LADEE","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/ladee.html"},{"@type":"ListItem","position":15,"name":"Viking 1 Lander","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/viking1.html"},{"@type":"ListItem","position":16,"name":"Viking 2 Lander","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/viking2.html"},{"@type":"ListItem","position":17,"name":"Mars Pathfinder","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/pathfinder.html"},{"@type":"ListItem","position":18,"name":"Sojourner","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/sojourner.html"},{"@type":"ListItem","position":19,"name":"Mars Polar Lander","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/polarlander.html"},{"@type":"ListItem","position":20,"name":"Spirit","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/spirit.html"},{"@type":"ListItem","position":21,"name":"Opportunity","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/opportunity.html"},{"@type":"ListItem","position":22,"name":"Phoenix","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/phoenix.html"},{"@type":"ListItem","position":23,"name":"Curiosity","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/curiosity.html"},{"@type":"ListItem","position":24,"name":"InSight","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/insight.html"},{"@type":"ListItem","position":25,"name":"Ingenuity","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/ingenuity.html"},{"@type":"ListItem","position":26,"name":"Perseverance backshell & parachute","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/backshell.html"},{"@type":"ListItem","position":27,"name":"Mariner 2","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/mariner2.html"},{"@type":"ListItem","position":28,"name":"Vanguard 1","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/vanguard1.html"},{"@type":"ListItem","position":29,"name":"Mariner 4","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/mariner4.html"},{"@type":"ListItem","position":30,"name":"Pioneer 10","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/pioneer10.html"},{"@type":"ListItem","position":31,"name":"Mariner 9","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/mariner9.html"},{"@type":"ListItem","position":32,"name":"Pioneer 11","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/pioneer11.html"},{"@type":"ListItem","position":33,"name":"Voyager 1","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/voyager1.html"},{"@type":"ListItem","position":34,"name":"Voyager 2","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/voyager2.html"},{"@type":"ListItem","position":35,"name":"Pioneer Venus probes","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/pioneervenus.html"},{"@type":"ListItem","position":36,"name":"Magellan","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/magellan.html"},{"@type":"ListItem","position":37,"name":"Galileo & its probe","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/galileo.html"},{"@type":"ListItem","position":38,"name":"Mars Climate Orbiter","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/mco.html"},{"@type":"ListItem","position":39,"name":"NEAR Shoemaker","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/near.html"},{"@type":"ListItem","position":40,"name":"Deep Impact impactor","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/deepimpact.html"},{"@type":"ListItem","position":41,"name":"New Horizons","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/newhorizons.html"},{"@type":"ListItem","position":42,"name":"Mars Global Surveyor","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/mgs.html"},{"@type":"ListItem","position":43,"name":"Stardust","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/stardust.html"},{"@type":"ListItem","position":44,"name":"ISEE-3 / ICE","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/isee3.html"},{"@type":"ListItem","position":45,"name":"MESSENGER","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/messenger.html"},{"@type":"ListItem","position":46,"name":"Cassini","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/cassini.html"},{"@type":"ListItem","position":47,"name":"Dawn","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/dawn.html"},{"@type":"ListItem","position":48,"name":"Kepler","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/kepler.html"},{"@type":"ListItem","position":49,"name":"Spitzer Space Telescope","url":"https://agneay-community-hub.github.io/PROJECT-AREA-51/machines/spitzer.html"}]}]}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="css/style.css?v=0efac139">
+  <link rel="icon" href="assets/ui/star.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body>
+  <a data-i="skip" class="skip" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="topbar" id="top">
+    <a class="brand" href="#top" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small data-i="brand.sub">Abandoned but not Forgotten</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a data-i="nav.map" href="#map">Ghost Map</a></li>
+        <li><a data-i="nav.logs" href="#logs">Ghost Logs</a></li>
+        <li><a data-i="nav.how" href="#how">How it worked</a></li>
+        <li><a data-i="nav.timeline" href="#timeline">Timeline</a></li>
+        <li><a data-i="nav.deep" href="#deep">Elsewhere</a></li>
+        <li><a data-i="nav.quiz" href="#quiz">Quiz</a></li>
+        <li><a data-i="nav.archive" href="#archive">Archive</a></li>
+        <li><a data-i="nav.play" href="lander.html">Play</a></li>
+        <li><a data-i="nav.ask" href="ask.html">Ask</a></li>
+        <li><a data-i="nav.eyes" href="eyes.html">NASA Eyes</a></li>
+        <li><a data-i="nav.w3d" href="#worlds3d">3D Worlds</a></li>
+      </ul>
+    </nav>
+    <div class="top-actions">
+      <a data-i="top.3d" class="btn btn-glow" href="explore.html"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg> 3D Explore</a>
+      <button class="icon-btn" id="passportBtn" aria-label="Open explorer passport, 0 badges">
+        <img src="assets/ui/trophy.png" alt="" width="26" height="26"><span class="badge-count" id="badgeCount">0</span>
+      </button>
+      <div class="lang-switch" role="group" aria-label="Language / Idioma / भाषा">
+        <a data-lang="en" href="?lang=en" hreflang="en" lang="en" title="English">EN</a><a data-lang="es" href="?lang=es" hreflang="es" lang="es" title="Español">ES</a><a data-lang="hi" href="?lang=hi" hreflang="hi" lang="hi" title="हिंदी">हिं</a>
+      </div>
+      <button data-i-al="set.open" class="icon-btn" id="settingsBtn" aria-label="Reading and accessibility settings" aria-expanded="false" aria-controls="settings">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm8.6 4.6-.1-1.1 2-1.6-2-3.4-2.4.9a8 8 0 0 0-1.9-1.1L15.8 3h-3.9l-.4 2.6a8 8 0 0 0-1.9 1.1l-2.4-.9-2 3.4 2 1.6a8 8 0 0 0 0 2.2l-2 1.6 2 3.4 2.4-.9c.6.5 1.2.8 1.9 1.1l.4 2.6h3.9l.4-2.6c.7-.3 1.3-.6 1.9-1.1l2.4.9 2-3.4-2-1.6.1-1.1Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- settings popover -->
+  <section class="settings" id="settings" hidden aria-label="Settings">
+    <h2 data-i="set.title">Make it yours</h2>
+    <div class="set-row">
+      <span data-i="set.level" class="set-label">Story level</span>
+      <div class="seg" role="radiogroup" aria-label="Story level">
+        <button data-i="set.explorer" role="radio" aria-checked="true" data-level="explorer">Explorer <small>ages 8–11</small></button>
+        <button data-i="set.scientist" role="radio" aria-checked="false" data-level="scientist">Scientist <small>ages 12+</small></button>
+      </div>
+    </div>
+    <div class="set-row">
+      <span data-i="set.size" class="set-label">Text size</span>
+      <div class="seg" role="radiogroup" aria-label="Text size">
+        <button role="radio" aria-checked="false" data-size="0.92">A</button>
+        <button role="radio" aria-checked="true" data-size="1">A</button>
+        <button role="radio" aria-checked="false" data-size="1.15">A</button>
+        <button role="radio" aria-checked="false" data-size="1.3">A</button>
+      </div>
+    </div>
+    <label class="set-row switch"><span data-i="set.motion" class="set-label">Reduce motion</span><input type="checkbox" id="reduceMotion"><span class="track" aria-hidden="true"></span></label>
+    <label class="set-row switch"><span data-i="set.spacing" class="set-label">Dyslexia-friendly spacing</span><input type="checkbox" id="spacing"><span class="track" aria-hidden="true"></span></label>
+    <button data-i="set.install" class="btn btn-small" id="installBtn" type="button" hidden><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"></use></svg> Install as an app (works offline)</button>
+    <p data-i="set.note" class="set-note">Every story can be read aloud — look for the <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-speaker"></use></svg> button.</p>
+  </section>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-labelledby="heroTitle">
+      <canvas id="stars" aria-hidden="true"></canvas>
+      <div class="hero-inner">
+        <p data-i="hero.eyebrow" class="eyebrow">An archive of the machines we left behind</p>
+        <h1 data-i="hero.title" id="heroTitle">They stopped talking.<br><span>Their stories didn’t.</span></h1>
+        <p data-i="hero.lede" class="lede">Since 1958, NASA has left rovers, landers, Moon cars and science stations on other worlds — and sent probes sailing out of the solar system. Meet them, hear their “ghost logs”, and find out what they discovered.</p>
+        <div class="hero-cta">
+          <a data-i="hero.startHere" class="btn btn-primary" href="#start">Start here: the 10-minute tour</a>
+          <a data-i="hero.map" class="btn" href="#map">Open the Ghost Map</a>
+        </div>
+        <p data-i="hero.teacher" class="hero-teacher">Teacher or parent? <a href="teacher.html">Get the free lesson plans, worksheets and class quiz →</a></p>
+        <div class="world-cards" id="worldCards"><!-- pre-rendered so the hero doesn't jump; app.js refreshes it -->
+          <button class="world-card" data-go="moon"><span class="globe moon" aria-hidden="true"></span><span><b>The Moon</b><small>14 machines · 384,400 km away</small></span></button>
+          <button class="world-card" data-go="mars"><span class="globe mars" aria-hidden="true"></span><span><b>Mars</b><small>12 machines · 55–400 million km away</small></span></button>
+          <button class="world-card" data-go="deep"><span class="globe deep" aria-hidden="true"></span><span><b>Elsewhere</b><small>23 machines · Earth orbit to interstellar space</small></span></button>
+        </div>
+      </div>
+      <figure class="hero-photo">
+        <img src="assets/nasa/as17-137-20979-800.jpg" alt="The Apollo 17 lunar rover parked on the grey lunar surface." width="640" height="640" fetchpriority="high">
+        <figcaption data-i="hero.cap">Lunar Roving Vehicle 3 — parked on the Moon since December 1972. <span class="nasa-id">NASA · as17-137-20979</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ STATS BAND ============ -->
+    <section class="statband" aria-label="Key numbers">
+      <div><strong>180+ t</strong><span data-i="stat.moon">of human-made material on the Moon (estimates vary)</span></div>
+      <div><strong>~7 t</strong><span data-i="stat.mars">of hardware on Mars, from rovers to parachutes (estimate)</span></div>
+      <div><strong id="v1dist">—</strong><span data-i="stat.v1">estimated distance of Voyager 1 from the Sun today</span></div>
+      <div><strong data-i="stat.laserN">55+ yrs</strong><span data-i="stat.laser">the Apollo 11 laser mirror has been answering scientists</span></div>
+    </section>
+
+    <!-- ============ START HERE: the best of the site in about 10 minutes ============ -->
+    <section class="section start" id="start" aria-labelledby="startTitle">
+      <header class="sec-head">
+        <p class="eyebrow" data-i="start.eyebrow">Start here</p>
+        <h2 id="startTitle" data-i="start.title">Six stops, about ten minutes</h2>
+        <p data-i="start.desc">New here? Follow this path through the best of the archive: find the machines, hear their stories, see how they worked, and ask them anything.</p>
+        <p class="start-progress" id="startProgress" aria-live="polite"></p>
+      </header>
+      <ol class="start-path">
+        <li class="start-stop" data-stop="1">
+          <span class="ss-num" aria-hidden="true">1</span>
+          <span class="ss-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-map"></use></svg></span>
+          <h3><a class="ss-link" href="#map" data-i="start.s1T">Find the ghosts</a></h3>
+          <p data-i="start.s1D">The Ghost Map shows every machine where it really lies on the Moon and Mars. Tap a glowing dot to open its dossier.</p>
+          
+          <p class="ss-foot"><span class="ss-tag" data-i="start.tagWhere">What was left, and where</span><span class="ss-time" data-i="start.s1M">1 min</span></p>
+        </li>
+        <li class="start-stop" data-stop="2">
+          <span class="ss-num" aria-hidden="true">2</span>
+          <span class="ss-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span>
+          <h3><a class="ss-link" href="#logs" data-i="start.s2T">Hear them speak</a></h3>
+          <p data-i="start.s2D">Twelve machines tell their own story in short Ghost Log chapters. Press Read aloud to listen.</p>
+          
+          <p class="ss-foot"><span class="ss-tag" data-i="start.tagVoice">Told by the machines themselves</span><span class="ss-time" data-i="start.s2M">2 min</span></p>
+        </li>
+        <li class="start-stop" data-stop="3">
+          <span class="ss-num" aria-hidden="true">3</span>
+          <span class="ss-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-glasses"></use></svg></span>
+          <h3><a class="ss-link" href="#upclose" data-i="start.s3T">Opportunity, up close</a></h3>
+          <p data-i="start.s3D">Follow one rover's 14-year life, moment by moment, then put on X-ray goggles to see the parts that made her discoveries.</p>
+          
+          <p class="ss-foot"><span class="ss-tag" data-i="start.tagScience">From engineering to science</span><span class="ss-time" data-i="start.s3M">2 min</span></p>
+        </li>
+        <li class="start-stop" data-stop="4">
+          <span class="ss-num" aria-hidden="true">4</span>
+          <span class="ss-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-parachute"></use></svg></span>
+          <h3><a class="ss-link" href="#how" data-i="start.s4T">How did they land?</a></h3>
+          <p data-i="start.s4D">Watch parachutes, airbags and sky cranes in step-by-step animations, then try landing on the Moon and Mars yourself.</p>
+          <p class="ss-more"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg> <a href="lander.html" data-i="start.s4L">Land it yourself</a></p>
+          <p class="ss-foot"><span class="ss-tag" data-i="start.tagHow">How the missions worked</span><span class="ss-time" data-i="start.s4M">2 min</span></p>
+        </li>
+        <li class="start-stop" data-stop="5">
+          <span class="ss-num" aria-hidden="true">5</span>
+          <span class="ss-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-film"></use></svg></span>
+          <h3><a class="ss-link" href="comics.html" data-i="start.s5T">Comics, podcast and cartoons</a></h3>
+          <p data-i="start.s5D">The same true stories as a flip-book comic, a kids' podcast and a short cartoon: pick the one you like best.</p>
+          <p class="ss-more"><a href="comics.html" data-i="start.s5a">Comics</a> · <a href="podcast.html" data-i="start.s5b">Podcast</a> · <a href="shorts.html" data-i="start.s5c">Cartoons</a></p>
+          <p class="ss-foot"><span class="ss-tag" data-i="start.tagFormats">One story, many formats</span><span class="ss-time" data-i="start.s5M">2 min</span></p>
+        </li>
+        <li class="start-stop" data-stop="6">
+          <span class="ss-num" aria-hidden="true">6</span>
+          <span class="ss-ic" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chat"></use></svg></span>
+          <h3><a class="ss-link" href="ask.html" data-i="start.s6T">Ask the ghosts</a></h3>
+          <p data-i="start.s6D">Ask anything about the machines, in English, Spanish or Hindi, and get an answer built from NASA mission records.</p>
+          
+          <p class="ss-foot"><span class="ss-tag" data-i="start.tagAll">For every learner</span><span class="ss-time" data-i="start.s6M">1 min</span></p>
+        </li>
+      </ol>
+      <p class="start-facts" data-i="start.facts">Made for ages 8–14 · every story can be read aloud · English, Español and हिंदी · works offline · every fact checked against NASA records (<a href="sources.html">Sources</a>) · free <a href="teacher.html">teacher pack</a></p>
+    </section>
+
+    <!-- ============ GHOST OF THE DAY ============ -->
+    <section class="section gotd-sec" id="today" aria-labelledby="gotdTitle">
+      <div class="gotd" id="gotd"></div>
+    </section>
+
+    <!-- ============ MAP ============ -->
+    <section class="section" id="map" aria-labelledby="mapTitle">
+      <header class="sec-head">
+        <p data-i="map.eyebrow" class="eyebrow">Ghost Map</p>
+        <h2 data-i="map.title" id="mapTitle">Where are they now?</h2>
+        <p data-i="map.desc">Every glowing marker is real hardware, placed at its true latitude and longitude. Tap one to open its dossier.</p>
+      </header>
+
+      <div class="map-tabs" role="tablist" aria-label="Choose a world">
+        <button data-i="map.tabMoon" role="tab" aria-selected="true" data-world="moon" id="tab-moon"><span class="dot moon"></span>The Moon</button>
+        <button data-i="map.tabMars" role="tab" aria-selected="false" data-world="mars" id="tab-mars"><span class="dot mars"></span>Mars</button>
+      </div>
+
+      <div class="map-layout">
+        <div class="map-col">
+          <div class="map-wrap" id="mapWrap">
+            <div class="map-stage" id="mapStage">
+              <img id="mapImg" src="assets/maps/moon.jpg" alt="" draggable="false" loading="lazy" decoding="async">
+              <div class="map-grid" aria-hidden="true"></div>
+              <div class="map-markers" id="mapMarkers"></div>
+            </div>
+            <div class="map-tip" id="mapTip" role="tooltip" hidden></div>
+            <div class="map-zoom" role="group" aria-label="Map zoom">
+              <button class="zbtn" id="zIn" aria-label="Zoom in">+</button>
+              <button class="zbtn" id="zOut" aria-label="Zoom out">−</button>
+              <button class="zbtn" id="zReset" aria-label="Show whole map">⤢</button>
+            </div>
+            <button class="map-preset btn btn-small" id="zPreset"></button>
+            <p data-i="map.hint" class="map-hint" id="mapHint">Double-click to zoom · drag to move</p>
+          </div>
+          <div class="map-under">
+            <ul class="legend" id="legend" aria-label="Status legend"></ul>
+            <p class="map-credit" id="mapCredit"></p>
+          </div>
+        </div>
+        <aside class="map-list" aria-label="Artifact list">
+          <label class="search">
+            <span class="sr-only">Search artifacts</span>
+            <input data-i-ph="map.search" type="search" id="search" placeholder="Search: rover, ice, Apollo…" autocomplete="off">
+          </label>
+          <div class="chips" id="chips" role="group" aria-label="Filter by type"></div>
+          <ul class="alist" id="alist"></ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ GHOST LOGS ============ -->
+    <section class="section logs" id="logs" aria-labelledby="logsTitle">
+      <header class="sec-head">
+        <p data-i="logs.eyebrow" class="eyebrow">Ghost Logs</p>
+        <h2 data-i="logs.title" id="logsTitle">Twelve machines tell their own stories</h2>
+        <p data-i="logs.desc">Short chapters written from each machine’s point of view, based on real mission data. Use the arrows or your keyboard (← →).</p>
+      </header>
+      <div class="chapter-nav" id="chapterNav" role="tablist" aria-label="Chapters"></div>
+      <article class="chapter" id="chapter" aria-live="polite"></article>
+    </section>
+
+    <!-- ============ OPPORTUNITY, UP CLOSE ============ -->
+    <section class="section oppy" id="upclose" aria-labelledby="oppyTitle">
+      <header class="sec-head">
+        <p class="eyebrow" data-i="oppy.eyebrow">Up close</p>
+        <h2 id="oppyTitle" data-i="oppy.title">Opportunity: a life in 14 moments</h2>
+        <p data-i="oppy.desc">Built to last 90 days, she explored Mars for more than 14 years. Step through her life with her own memories of each moment, then put on the X-ray goggles and look inside her.</p>
+      </header>
+      <div class="oppy-tabs seg" role="tablist" aria-label="Opportunity, up close">
+        <button role="tab" aria-selected="true" aria-controls="oppyLife" id="oppyTabLife" data-i="oppy.tabLife"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-calendar"></use></svg> Her life</button>
+        <button role="tab" aria-selected="false" aria-controls="oppyBody" id="oppyTabBody" data-i="oppy.tabBody"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-eye"></use></svg> Inside the rover</button>
+      </div>
+      <div id="oppyLife" role="tabpanel" aria-labelledby="oppyTabLife"></div>
+      <div id="oppyBody" role="tabpanel" aria-labelledby="oppyTabBody" hidden></div>
+    </section>
+
+    <!-- ============ TIMELINE ============ -->
+    <section class="section" id="how" aria-labelledby="howTitle">
+      <header class="sec-head">
+        <p data-i="how.eyebrow" class="eyebrow">How it worked</p>
+        <h2 data-i="how.title" id="howTitle">How do you land on another world?</h2>
+        <p data-i="how.desc">Parachutes, airbags, sky cranes, crashing on purpose… Pick an animation and press play, or step through it at your own pace.</p>
+      </header>
+      <div class="how-layout">
+        <div class="how-list" id="howList" role="tablist" aria-label="Animations"></div>
+        <div class="how-player">
+          <h3 id="howTitle2"></h3>
+          <div id="howPlayer"></div>
+          <p class="how-who" id="howWho"></p>
+        </div>
+      </div>
+      <div class="play-cta">
+        <img src="assets/ui/trophy.png" alt="" width="56" height="56">
+        <div data-i="how.cta"><b>Think you could do better than a robot?</b><br><span>Try landing on the Moon, on Mars and in Jezero crater yourself, with real gravity.</span></div>
+        <a data-i="how.play" class="btn btn-primary" href="lander.html"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg> Play Land it yourself</a>
+      </div>
+    </section>
+
+    <section class="section" id="thennow" aria-labelledby="tnTitle">
+      <header class="sec-head">
+        <p data-i="tn.eyebrow" class="eyebrow">Then &amp; now</p>
+        <h2 data-i="tn.title" id="tnTitle">Still there, years later</h2>
+        <p data-i="tn.desc">Drag the slider (or use the arrow keys) to switch between a photo taken during the mission and a view of the same place years later.</p>
+      </header>
+      <div class="tn-tabs" id="tnTabs" role="tablist" aria-label="Places"></div>
+      <div class="tn-wrap" id="tnStage"></div>
+    </section>
+
+    <section class="section" id="timeline" aria-labelledby="tlTitle">
+      <header class="sec-head">
+        <p data-i="tl.eyebrow" class="eyebrow">Timeline</p>
+        <h2 data-i="tl.title" id="tlTitle">Sixty years of leaving things behind</h2>
+        <p data-i="tl.desc">Scroll sideways through the decades. Colours show where each machine went.</p>
+      </header>
+      <div class="tl-filter seg" role="group" aria-label="Filter timeline">
+        <button data-i="f.all" aria-pressed="true" data-tl="all">All</button>
+        <button data-i="f.moon" aria-pressed="false" data-tl="moon">Moon</button>
+        <button data-i="f.mars" aria-pressed="false" data-tl="mars">Mars</button>
+        <button data-i="f.deep" aria-pressed="false" data-tl="deep">Elsewhere</button>
+      </div>
+      <div class="timeline" id="tl" tabindex="0" aria-label="Timeline, scrollable"></div>
+      <div class="more-row"><a class="more-link" href="timeline.html"><span data-i="more.timeline">Open the full timeline, year by year</span> <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a></div>
+    </section>
+
+    <!-- ============ DEEP SPACE ============ -->
+    <section class="section" id="deep" aria-labelledby="deepTitle">
+      <header class="sec-head">
+        <p data-i="deep.eyebrow" class="eyebrow">Elsewhere in the Solar System</p>
+        <h2 data-i="deep.title" id="deepTitle">From Mercury to the stars</h2>
+        <p data-i="deep.desc">NASA hardware also rests on Mercury, sank into Venus, Jupiter and Saturn, circles a dwarf planet, sits on an asteroid and a comet, and some is still sailing out of the solar system. Distances for the travelling probes are estimates for today’s date, calculated from each probe’s speed.</p>
+      </header>
+      <div class="ruler-wrap">
+        <div class="ruler" id="ruler" role="img" aria-label="Log-scale chart of distances from the Sun"></div>
+        <p data-i="deep.note" class="ruler-note">Distance from the Sun in AU (1 AU = Earth–Sun distance, about 150 million km). Each step to the right is 10× farther.</p>
+      </div>
+      <div class="more-row tracker-row"><a class="more-link" href="tracker.html"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg> <span data-i="more.tracker">Watch the far travellers move, live</span> <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a></div>
+      <div class="deep-cards" id="deepCards"></div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="section" id="quiz" aria-labelledby="quizTitle">
+      <header class="sec-head">
+        <p data-i="quiz.eyebrow" class="eyebrow">Who am I?</p>
+        <h2 data-i="quiz.title" id="quizTitle">Can you name the ghost?</h2>
+        <p data-i="quiz.desc">Read the clue, pick the machine. Score 6 or more to earn the <b>Archive Expert</b> badge.</p>
+      </header>
+      <div class="quiz" id="quizBox"></div>
+    </section>
+
+    <!-- ============ ASK THE ARCHIVE ============ -->
+    <section class="section" id="ask" aria-labelledby="askTitle">
+      <div class="askc">
+        <div class="askc-text">
+          <p data-i="ask.eyebrow" class="eyebrow">Ask the Archive</p>
+          <h2 data-i="ask.title" id="askTitle">Still curious? Ask the ghosts.</h2>
+          <p data-i="ask.lede" class="askc-lede">Ask anything about the machines in this archive: how they landed, what they found, where they are now, or what they'd say if they could talk.</p>
+          <form class="askc-form" id="askcForm" action="ask.html" method="get">
+            <label for="askcInput" class="sr-only">Your question</label>
+            <input data-i-ph="ask.ph" id="askcInput" name="q" type="text" maxlength="200" placeholder="e.g. How did Curiosity land?" autocomplete="off" enterkeyhint="go">
+            <button data-i="ask.btn" class="btn btn-primary" type="submit">Ask <span aria-hidden="true">→</span></button>
+          </form>
+          <div class="askc-chips" id="askcChips" role="group" aria-label="Example questions"></div>
+          <p data-i="ask.note" class="askc-note"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg> Answers come from this site's NASA mission facts, and it works offline. <a href="ask.html">Open the full chat →</a></p>
+        </div>
+        <div class="askc-preview" aria-hidden="true">
+          <div class="askc-window">
+            <div class="askc-bar"><i></i><i></i><i></i><span>Ask the Archive</span></div>
+            <div class="askc-log" id="askcLog"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ARCHIVE ============ -->
+    <section class="section" id="archive" aria-labelledby="arcTitle">
+      <header class="sec-head">
+        <p data-i="arc.eyebrow" class="eyebrow">From the NASA Image and Video Library</p>
+        <h2 data-i="arc.title" id="arcTitle">The archive</h2>
+        <p data-i="arc.desc">Every picture and video on this site comes from <a href="https://images.nasa.gov" target="_blank" rel="noopener">images.nasa.gov</a>. Click any image to see it large, with its NASA ID.</p>
+      </header>
+      <h3 data-i="arc.listen" class="sub">Listen: real sounds from space</h3>
+      <p data-i="arc.listenNote" class="sub-note">Real recordings made by these machines, plus astronauts on the Moon. Sound needs air to travel, so most of space is silent. These were picked up on Mars and the Moon, or turned into sound from vibrations.</p>
+      <div class="sounds" id="sounds"></div>
+      <h3 data-i="arc.videos" class="sub">Videos</h3>
+      <div class="videos" id="videos"></div>
+      <h3 data-i="arc.photos" class="sub">Photos</h3>
+      <div class="seg arc-filter" role="group" aria-label="Filter photos">
+        <button data-i="f.all" aria-pressed="true" data-arc="all">All</button>
+        <button data-i="f.moon" aria-pressed="false" data-arc="moon">Moon</button>
+        <button data-i="f.mars" aria-pressed="false" data-arc="mars">Mars</button>
+        <button data-i="f.deep" aria-pressed="false" data-arc="deep">Elsewhere</button>
+      </div>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <!-- ============ EXPLORE CTA ============ -->
+    <section class="explore-cta">
+      <div>
+        <p data-i="ex.eyebrow" class="eyebrow">Space Exploration Mode</p>
+        <h2 data-i="ex.title">Fly around the Moon and Mars in 3D</h2>
+        <p data-i="ex.desc">Spin the globes, find the beacons, and travel out to where the Voyagers are now.</p>
+      </div>
+      <a data-i="ex.btn" class="btn btn-primary btn-lg" href="explore.html">Launch 3D Explore →</a>
+    </section>
+
+    <!-- ============ NASA EYES CTA ============ -->
+    <section class="explore-cta eyes-cta">
+      <div>
+        <p data-i="eyes.eyebrow" class="eyebrow">NASA Eyes on the Solar System</p>
+        <h2 data-i="eyes.title">See where every machine really is</h2>
+        <p data-i="eyes.desc">NASA/JPL's live 3D solar system, built from real spacecraft data. Fly to Voyager 1 right now, or travel back to Cassini's last morning at Saturn.</p>
+      </div>
+      <a data-i="eyes.btn" class="btn btn-primary btn-lg" href="eyes.html">Open NASA Eyes →</a>
+    </section>
+
+    <!-- ============ 3D WORLDS (site/atlas/) ============ -->
+    <section class="section worlds3d" id="worlds3d" aria-labelledby="w3dTitle">
+      <p data-i="w3d.eyebrow" class="eyebrow">3D Worlds</p>
+      <h2 id="w3dTitle" data-i="w3d.title">Stand where they stand</h2>
+      <p data-i="w3d.desc" class="w3d-desc">Walk around the real landing sites on measured Moon and Mars terrain, find the hardware still sitting there, and relive two missions from launch to their last day. Each button switches into the 3D app; use “← Home” to come back.</p>
+      <div class="w3d-grid">
+        <a class="w3d-card moon" data-atlas="site:tranquility-base" href="atlas/index.html?go=site&amp;id=tranquility-base"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><b data-i="w3d.moon">Walk on the Moon</b><small data-i="w3d.moonSub">Tranquility Base, where Eagle landed. Five more Apollo sites inside.</small></a>
+        <a class="w3d-card mars" data-atlas="site:victoria-crater" href="atlas/index.html?go=site&amp;id=victoria-crater"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg></span><b data-i="w3d.mars">Drive on Mars</b><small data-i="w3d.marsSub">Victoria crater with Opportunity. Seven more Mars sites inside.</small></a>
+        <a class="w3d-card" data-atlas="relive:apollo-11" href="atlas/index.html?go=relive&amp;id=apollo-11"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="w3d.a11">Relive Apollo 11</b><small data-i="w3d.a11Sub">From launch to splashdown, step by step.</small></a>
+        <a class="w3d-card" data-atlas="relive:mer-opportunity" href="atlas/index.html?go=relive&amp;id=mer-opportunity"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="w3d.opp">Relive Opportunity</b><small data-i="w3d.oppSub">Fourteen years on Mars, drive by drive.</small></a>
+        <a class="w3d-card" href="catalogue.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b data-i="w3d.missions">Mission records</b><small data-i="w3d.missionsSub">Dates, milestones, hardware and sources for 44 missions.</small></a>
+        <a class="w3d-card" href="landings.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg></span><b data-i="w3d.all">All 14 landing sites</b><small data-i="w3d.allSub">Search every Moon and Mars site and land at any of them.</small></a>
+      </div>
+      <p class="w3d-note" data-i="w3d.note">Needs a computer or a recent phone with 3D graphics. Mars sites download about 100 MB the first time.</p>
+    </section>
+
+    <!-- ============ EXPLORE MORE ============ -->
+    <section class="section more-sec" id="more" aria-labelledby="moreTitle">
+      <p data-i="xm.eyebrow" class="eyebrow">Explore more</p>
+      <h2 id="moreTitle" data-i="xm.title">More ways to explore</h2>
+      <p data-i="xm.desc" class="w3d-desc">Games, live data, things to print and tools for projects. <a href="#top" data-tour>Or take the one-minute tour.</a></p>
+      <div class="w3d-grid more-grid">
+        <a class="w3d-card" href="shorts.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="xm.gs">Ghost Shorts</b><small data-i="xm.gsSub">Cartoon videos of the machines, in their own voices.</small></a>
+        <a class="w3d-card" href="comics.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b data-i="xm.cx">Ghost Comics</b><small data-i="xm.cxSub">A comic for every machine. Issue #1: Viking 1, facing the wrong way.</small></a>
+        <a class="w3d-card" href="podcast.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-speaker"></use></svg></span><b data-i="xm.pd">Ghost Logs podcast</b><small data-i="xm.pdSub">Six seasons told by instruments, and an episode for every machine.</small></a>
+        <a class="w3d-card" href="moon.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><b data-i="xm.moon">The Moon tonight</b><small data-i="xm.moonSub">Today's real Moon, and which Apollo sites are in sunlight.</small></a>
+        <a class="w3d-card" href="timeline.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><b data-i="xm.tl">Timeline</b><small data-i="xm.tlSub">Every machine from launch to last word. Drag through the years.</small></a>
+        <a class="w3d-card" href="tracker.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><b data-i="xm.tr">Live tracker</b><small data-i="xm.trSub">Watch Voyager and the far travellers move, live.</small></a>
+        <a class="w3d-card" href="voyager.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg></span><b data-i="xm.sc">Scroll to Voyager</b><small data-i="xm.scSub">The solar system at true scale, all the way out.</small></a>
+        <a class="w3d-card" href="cards.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-award"></use></svg></span><b data-i="xm.gc">Ghost Cards</b><small data-i="xm.gcSub">A trading card game. Beat the computer, or print the deck.</small></a>
+        <a class="w3d-card" href="signal.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="xm.sg">Drive on Mars</b><small data-i="xm.sgSub">Steer a rover when every command arrives minutes late.</small></a>
+        <a class="w3d-card" href="probe.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg></span><b data-i="xm.pb">Build a probe</b><small data-i="xm.pbSub">Design a spacecraft and see how long it survives.</small></a>
+        <a class="w3d-card" href="compare.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-compare"></use></svg></span><b data-i="xm.cmp">Compare two machines</b><small data-i="xm.cmpSub">Put any two side by side.</small></a>
+        <a class="w3d-card" href="future.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg></span><b data-i="xm.fu">Future ghosts</b><small data-i="xm.fuSub">The machines that will join the archive next.</small></a>
+        <a class="w3d-card" href="activities.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-image"></use></svg></span><b data-i="xm.as">Activity sheets</b><small data-i="xm.asSub">Colouring pages, a word search and more to print.</small></a>
+        <a class="w3d-card" href="poster.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-map"></use></svg></span><b data-i="xm.pz">Wall poster</b><small data-i="xm.pzSub">Print a map of every machine.</small></a>
+        <a class="w3d-card" href="glossary.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b data-i="xm.gl">Glossary</b><small data-i="xm.glSub">Space words, explained simply.</small></a>
+        <a class="w3d-card" href="data.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"></use></svg></span><b data-i="xm.od">Open data</b><small data-i="xm.odSub">Download the archive, or embed a machine.</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Ghosts of Exploration</strong>
+      <p data-i="foot.links"><a href="teacher.html">Teacher pack</a> · <a href="lander.html">Land it yourself</a> · <a href="ask.html">Ask the Archive</a> · <a href="explore.html">3D Explore</a> · <a href="eyes.html">NASA Eyes</a> · <a href="browse.html">All machines</a> · <a href="compare.html">Compare two machines</a> · <a href="timeline.html">Timeline</a> · <a href="tracker.html">Live tracker</a> · <a href="future.html">Future ghosts</a> · <a href="glossary.html">Glossary</a> · <a href="poster.html">Wall poster</a> · <a href="comics.html">Ghost Comics</a> · <a href="shorts.html">Ghost Shorts</a> · <a href="podcast.html">Ghost Logs podcast</a> · <a href="moon.html">The Moon tonight</a> · <a href="cards.html">Ghost Cards</a> · <a href="signal.html">Drive on Mars</a> · <a href="probe.html">Build a probe</a> · <a href="voyager.html">Scroll to Voyager</a> · <a href="activities.html">Activity sheets</a> · <a href="data.html">Open data</a> · <a href="library.html">Photos, videos and sounds</a> · <a href="landings.html">Landing sites</a> · <a href="catalogue.html">Mission catalogue</a> · <a href="adopt.html">Adopt a Ghost</a> · <a href="sources.html">Sources</a> · <a href="machines/index.html">All 49 machines</a></p>
+      <p data-i="foot.made">Made for the NASA Space Apps Challenge 2026 — “Abandoned but not Forgotten.”</p>
+    </div>
+    <div>
+      <strong data-i="foot.credits">Credits</strong>
+      <p data-i="foot.creditsText">Photos &amp; videos: NASA Image and Video Library (public domain). Moon map: NASA SVS CGI Moon Kit (LRO data). Mars &amp; star textures: Solar System Scope (CC BY 4.0). Live 3D solar system: NASA&#39;s Eyes on the Solar System (NASA/JPL-Caltech). Badge art: Fantasy RPG UI Kit asset pack.</p>
+    </div>
+    <div>
+      <strong data-i="foot.acc">Accuracy note</strong>
+      <p data-i="foot.accText">Ghost logs are written in the first person for storytelling, but every fact comes from NASA mission records. Distances for deep-space probes are estimates.</p>
+    </div>
+  </footer>
+
+  <!-- ============ DOSSIER DRAWER ============ -->
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dName" hidden tabindex="-1">
+    <div class="drawer-bar">
+      <button class="icon-btn" id="dPrev" aria-label="Previous artifact">‹</button>
+      <span class="drawer-count" id="dCount"></span>
+      <button class="icon-btn" id="dNext" aria-label="Next artifact">›</button>
+      <button class="icon-btn close" id="dClose" aria-label="Close dossier">✕</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </aside>
+
+  <!-- lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <button class="icon-btn close" id="lbClose" aria-label="Close image">✕</button>
+    <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  </div>
+
+  <!-- passport -->
+  <div class="modal" id="passport" role="dialog" aria-modal="true" aria-labelledby="ppTitle" hidden>
+    <div class="modal-card">
+      <button class="icon-btn close" data-close aria-label="Close passport">✕</button>
+      <p class="eyebrow">Explorer Passport</p>
+      <h2 id="ppTitle">Your badges</h2>
+      <p class="pp-progress" id="ppProgress"></p>
+      <div class="badges" id="badges"></div>
+      <button class="btn btn-small" id="resetProgress">Reset progress</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/icons.js?v=ed5e4fdc"></script>
+
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/records.js?v=4d60be0b"></script>
+  <script src="js/models.js?v=3954279e"></script>
+  <script src="js/atlas-links.js?v=0d026fd0"></script>
+  <script src="js/eyes-data.js?v=67a28b33"></script>
+  <script src="js/explainers.js?v=24a770e8"></script>
+  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=5195828e", hi: "js/i18n/hi.js?v=b2575339" }[window.GOE_LANG] + '"><\/script>');</script>
+  <script src="js/oppy-data.js?v=9eef9b60"></script>
+  <script src="js/i18n.js?v=22597147"></script>
+  <script src="js/app.js?v=566c8024"></script>
+  <script src="js/tour.js?v=b6741249"></script>
+  <script src="js/start.js?v=3acb6390"></script>
+  <script src="js/oppy.js?v=b2f94865"></script>
+  <script src="js/shorts.js?v=a76d4a96"></script>
+  <script src="js/search.js?v=1616f10d"></script>
+  <script src="js/glossary.js?v=f39d5e4e"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Moon tonight — Ghosts of Exploration</title>
+  <meta name="description" content="Today's real Moon phase with every machine on the near side marked, and whether the Sun is up over each Apollo site right now.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="The Moon tonight — Ghosts of Exploration">
+  <meta property="og:description" content="Which Apollo sites are in sunlight tonight?">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/moon.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/PROJECT-AREA-51/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/PROJECT-AREA-51/moon.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=0efac139">
+  <link rel="stylesheet" href="css/catalogue.css?v=cdfff6c4">
+  <link rel="icon" href="assets/ui/star.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="cat-page">
+  <a class="skip" href="#mnDays">Skip to the content</a>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>The Moon tonight</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul id="navlist">
+        <li><a href="index.html#map">Ghost Map</a></li>
+        <li><a href="browse.html">All machines</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="timeline.html">Timeline</a></li>
+        <li><a href="tracker.html">Live tracker</a></li>
+        <li><a href="library.html">Photos, videos, sounds</a></li>
+        <li><a href="landings.html">Landing sites</a></li>
+        <li><a href="catalogue.html">Mission catalogue</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cat-wrap" id="main">
+    <section class="cat-hero">
+      <p class="eyebrow" id="mnDate">Tonight</p>
+      <h1>The Moon tonight</h1>
+      <p class="lede">This is the Moon as it really looks today, made from NASA's map of its surface. Every dot is a machine we left there. Gold dots are in daytime right now, blue dots are in the long lunar night.</p>
+    </section>
+    <div class="mn-wrap">
+      <figure class="mn-globe">
+        <div class="mn-disc"><canvas id="moonCanvas" width="520" height="520" role="img" aria-label="Today's Moon phase with the machines marked"></canvas><div id="moonPins"></div></div>
+        <figcaption>As seen from the northern half of Earth. From the southern half, turn it upside down.</figcaption>
+      </figure>
+      <div class="mn-side">
+        <div class="mn-facts"><p class="mn-phase" id="mnPhase"></p><p><b id="mnLit"></b> · <span id="mnAge"></span></p><p id="mnWhen" class="mn-when"></p></div>
+        <div class="mn-slide"><label for="mnDays">Move the date: <output id="mnDaysOut">Today</output></label>
+          <input type="range" id="mnDays" min="-15" max="15" step="1" value="0"><button type="button" class="btn btn-small" id="mnToday">Back to today</button></div>
+        <p class="mn-tip">No telescope on Earth can see the machines themselves: even the biggest Apollo leftovers are far too small. But now you know exactly where to point.</p>
+      </div>
+    </div>
+    <h2 class="tl-h" id="mnCount"></h2>
+    <ul class="mn-list" id="mnList"></ul>
+  </main>
+
+  <footer class="footer cat-foot">
+    <div><p><a href="index.html">← Back to the archive</a> · Photos: NASA Image and Video Library (public domain; NASA does not endorse this project).</p></div>
+  </footer>
+
+  <script src="js/icons.js?v=ed5e4fdc"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script src="js/moontonight.js?v=2290da47"></script>
+  <script src="js/search.js?v=1616f10d"></script>
+  <script src="js/glossary.js?v=f39d5e4e"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>

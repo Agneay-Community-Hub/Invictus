@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Ghosts of Exploration</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: #0b1120; color: #e9eef7; font: 15px/1.45 "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif; }
+    a { color: inherit; }
+    .em { display: flex; flex-direction: column; height: 100%; border: 1px solid #2f4166; border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, rgba(255,179,71,.08), transparent 55%), #0f1729; text-decoration: none; }
+    .em img { width: 100%; height: 46%; object-fit: cover; display: block; background: #060a13; }
+    .em-b { padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; min-height: 0; }
+    .em-eye { font: 700 11px "Space Grotesk", system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #ffb347; margin: 0; }
+    .em h1 { font: 700 20px/1.15 "Space Grotesk", system-ui, sans-serif; margin: 0; }
+    .em-sub { color: #9eabc2; font-size: 13px; margin: 0; }
+    .em q { color: #ffd08a; font-style: italic; margin: 4px 0 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .em-go { margin-top: auto; color: #7fd4ff; font-weight: 700; font-size: 13px; }
+    @media (min-aspect-ratio: 3/2) { .em { flex-direction: row; } .em img { width: 40%; height: 100%; } }
+  </style>
+</head>
+<body>
+  <a class="em" id="em" target="_blank" rel="noopener"></a>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script>
+    (() => {
+      const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+      const p = new URLSearchParams(location.search);
+      let a = ARTIFACTS.find(x => x.id === p.get("id")), today = !a;
+      if (!a) { // the same Ghost of the day as the home page
+        const day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / 864e5);
+        const order = ARTIFACTS.map((x, i) => [((i + 1) * 2654435761) % 4294967296, x]).sort((m, n) => m[0] - n[0]).map(x => x[1]);
+        a = order[day % order.length];
+      }
+      const el = document.getElementById("em");
+      el.href = new URL("index.html#artifact=" + a.id, location.href).href;
+      el.innerHTML = `${a.media && a.media[0] ? `<img src="assets/nasa/${a.media[0].f}" alt="">` : ""}
+        <div class="em-b"><p class="em-eye">${today ? "Ghost of the day" : "Ghosts of Exploration"}</p><h1>${esc(a.name)}</h1>
+        <p class="em-sub"><span style="color:${STATUS[a.status].color}">${esc(STATUS[a.status].label)}</span> · ${esc(TYPES[a.type])} · ${esc(WORLDS[a.world].short)} · ${a.year}</p>
+        <q>${esc(a.epitaph)}</q><span class="em-go">Read its story →</span></div>`;
+      el.setAttribute("aria-label", `${a.name}: read its story on Ghosts of Exploration`);
+    })();
+  </script>
+</body>
+</html>
