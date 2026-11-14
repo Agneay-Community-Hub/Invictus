@@ -2,7 +2,7 @@
 
 Paste each section into the matching field of the form. The text under each heading is plain text, so it pastes cleanly into Google Forms.
 
-**PPT field:** upload `docs/pitch-deck.pptx` (PowerPoint, 10 slides, about 2.4 MB), or `docs/pitch-deck.pdf` (same slides, about 1.2 MB) if the form wants a PDF. The same deck is online at https://agneay-community-hub.github.io/Invictus/pitch.html
+**PPT field:** upload `docs/pitch-deck.pptx` (PowerPoint, 11 slides, about 2.8 MB), or `docs/pitch-deck.pdf` (same slides, about 1.3 MB) if the form wants a PDF. The same deck is online at https://agneay-community-hub.github.io/Invictus/pitch.html
 
 ---
 
