@@ -7,6 +7,7 @@
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const cover = a => a.media && a.media[0] ? "assets/nasa/" + a.media[0].f : null;
+  const thumb = a => a.media && a.media[0] ? "assets/nasa/thumb/" + a.media[0].f.replace(/\.\w+$/, ".jpg") : null; // small copy for cards (scripts/build-thumbs.py)
   const AU = 1.496e8, YR = 365.25 * 864e5, DAY = 864e5;
   const when = s => { const d = Date.parse(String(s || "").replace(/\(.*?\)/g, "").split("/")[0].trim()); return isNaN(d) ? null : d; };
 
@@ -47,7 +48,7 @@
     const a = c.a;
     return `<article class="gc-card ${cls}" style="--w:${WORLDS[a.world].color}">
       <header><span class="gc-world">${esc(WORLDS[a.world].short)}</span><span class="gc-year">${a.year}</span></header>
-      <div class="gc-img">${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : typeIco(a.type)}</div>
+      <div class="gc-img">${cover(a) ? `<img src="${thumb(a)}" alt="" loading="lazy" decoding="async">` : typeIco(a.type)}</div>
       <h3>${esc(a.name)}</h3>
       <p class="gc-type">${esc(TYPES[a.type])} · <span style="color:${STATUS[a.status].color}">${esc(STATUS[a.status].label)}</span></p>
       <ul class="gc-stats">${STATS.map(([k, name, help, , fmt]) => `<li>${pick ? `<button type="button" data-stat="${k}" title="${esc(help)}">` : "<span>"}

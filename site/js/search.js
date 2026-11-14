@@ -19,6 +19,7 @@
     ["Timeline, year by year", "timeline.html", "clock", "history years dates when launched quiet listen"],
     ["Live tracker", "tracker.html", "clock", "voyager pioneer new horizons distance now light time speed"],
     ["Ghost of the day", "index.html#today", "award", "today daily featured random share"],
+    ["Ghost Calendar: on this day", "calendar.html", "calendar", "on this day anniversary birthday date calendar ics launched landed"],
     ["Future ghosts", "future.html", "rocket", "planned upcoming next artemis viper dragonfly europa clipper"],
     ["Glossary", "glossary.html", "book", "words meaning define explain"],
     ["The Moon tonight", "moon.html", "moon", "phase full new sunlight apollo sites today sky"],

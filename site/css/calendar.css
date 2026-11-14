@@ -1,0 +1,51 @@
+/* Ghost Calendar (calendar.html). Builds on style.css and catalogue.css. */
+.cal-page section, main.cat-wrap > section { margin-bottom: 34px; }
+main.cat-wrap h2 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); margin: 0 0 .5em; }
+.cal-help { color: var(--muted); margin: 0 0 14px; max-width: 70ch; }
+.cal-none { color: var(--muted); }
+.cal-date { color: var(--amber2); font-weight: 700; margin: 0 0 10px; }
+
+.cal-today { border: 1px solid rgba(255,179,71,.35); border-radius: 22px; padding: clamp(16px, 3vw, 28px);
+  background: linear-gradient(120deg, rgba(255,179,71,.08), transparent 60%), var(--panel); }
+.cal-today:focus { outline: none; }
+
+.cal-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.cal-item a { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px; border-radius: var(--radius-sm);
+  border: 1px solid var(--line); border-left: 4px solid var(--c, var(--line2)); background: var(--bg2); color: var(--text); text-decoration: none; }
+.cal-item a:hover, .cal-item a:focus-visible { border-color: var(--muted); border-left-color: var(--c); background: var(--panel2); }
+.cal-item img, .cal-ph { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; background: var(--panel); display: grid; place-items: center; }
+.cal-item b { font-family: var(--head); }
+.cal-what { color: var(--amber2); }
+.cal-item small { display: block; color: var(--dim); margin-top: 2px; }
+.cal-big .cal-item a { grid-template-columns: 96px minmax(0, 1fr); padding: 12px; }
+.cal-big .cal-item img, .cal-big .cal-ph { width: 96px; height: 96px; }
+.cal-big .cal-item b { font-size: 1.15rem; }
+
+.cal-pick-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 18px; }
+.cal-pick-row label { display: grid; gap: 6px; }
+.cal-pick-row label span { font-size: .8rem; font-weight: 700; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.cal-pick-row input { min-height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line2); background: var(--bg2); color: var(--text); font: inherit; font-weight: 700; color-scheme: dark; }
+.cal-pick-grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
+.cal-pick-grid h3 { margin: 0 0 10px; font-size: 1.05rem; }
+.cal-pick-grid .cal-list { grid-template-columns: 1fr; }
+
+.cal-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.cal-chip { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px; border: 1px solid var(--line2);
+  border-left: 3px solid var(--c); background: var(--bg2); color: var(--text); text-decoration: none; font-size: .92rem; }
+.cal-chip img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+.cal-chip:hover, .cal-chip:focus-visible { background: var(--panel2); }
+
+.cal-year-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.cal-year-head h2 { margin: 0; }
+.cal-year { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); align-items: start; }
+.cal-month { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg2); }
+.cal-month.now { border-color: rgba(255,179,71,.55); }
+.cal-month summary { cursor: pointer; padding: 12px 14px; display: flex; justify-content: space-between; gap: 10px; }
+.cal-month summary span { color: var(--dim); font-size: .88rem; }
+.cal-month ul { list-style: none; margin: 0; padding: 0 14px 12px; display: grid; gap: 6px; }
+.cal-month li { font-size: .93rem; color: var(--muted); }
+.cal-month li a { color: var(--text); font-weight: 700; }
+.cal-month small { color: var(--dim); }
+.cal-day { display: inline-block; min-width: 2.1em; color: var(--amber2); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+@media print { .cal-pick, .cal-year-head .btn, .topbar, .footer { display: none; } .cal-month { break-inside: avoid; } }

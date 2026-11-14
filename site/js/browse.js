@@ -7,13 +7,14 @@
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const cover = a => a.media && a.media[0] ? "assets/nasa/" + a.media[0].f : null;
+  const thumb = a => a.media && a.media[0] ? "assets/nasa/thumb/" + a.media[0].f.replace(/\.\w+$/, ".jpg") : null; // small copy for cards (scripts/build-thumbs.py)
   const pill = s => `<span class="pill" style="color:${STATUS[s].color}">${STATUS[s].label}</span>`;
   const where = a => a.place || a.fixedPlace || a.heading || "";
 
   $("#brGrid").innerHTML = ARTIFACTS.map(a => `
     <a class="card br-card" href="index.html#artifact=${a.id}" data-id="${a.id}" data-w="${a.world}" data-type="${a.type}" data-status="${a.status}" data-year="${a.year}" data-name="${esc(a.name.toLowerCase())}"
        data-text="${esc([a.name, a.mission, a.year, where(a), TYPES[a.type], WORLDS[a.world].name, STATUS[a.status].label, a.body || ""].join(" ").toLowerCase())}">
-      ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph">${typeIco(a.type)}</span>`}
+      ${cover(a) ? `<img src="${thumb(a)}" alt="" loading="lazy" decoding="async">` : `<span class="ph">${typeIco(a.type)}</span>`}
       <span class="card-body">${pill(a.status)}<b>${esc(a.name)}</b>
         <p>${esc(TYPES[a.type])} · ${esc(WORLDS[a.world].short)} · ${a.year}</p>
         <p class="br-where">${esc(where(a))}</p></span>

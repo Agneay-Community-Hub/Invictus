@@ -8,6 +8,7 @@
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const cover = a => a.media && a.media[0] ? "assets/nasa/" + a.media[0].f : null;
+  const thumb = a => a.media && a.media[0] ? "assets/nasa/thumb/" + a.media[0].f.replace(/\.\w+$/, ".jpg") : null; // small copy for cards (scripts/build-thumbs.py)
   const YEAR = 365.25 * 864e5;
   const when = s => { const d = Date.parse(String(s || "").replace(/\(.*?\)/g, "").split("/")[0].trim()); return isNaN(d) ? null : d; };
   const toY = ms => 1970 + ms / YEAR; // fractional year
@@ -41,7 +42,7 @@
   const range = $("#tlRange");
   range.min = MIN; range.max = THIS;
   let world = "all";
-  const chip = r => `<a class="tl-chip" href="index.html#artifact=${r.a.id}" style="--c:${WORLDS[r.a.world].color}">${cover(r.a) ? `<img src="${cover(r.a)}" alt="" loading="lazy">` : typeIco(r.a.type)}<span>${esc(r.a.name)}</span></a>`;
+  const chip = r => `<a class="tl-chip" href="index.html#artifact=${r.a.id}" style="--c:${WORLDS[r.a.world].color}">${cover(r.a) ? `<img src="${thumb(r.a)}" alt="" loading="lazy" decoding="async">` : typeIco(r.a.type)}<span>${esc(r.a.name)}</span></a>`;
   const list = (arr, empty) => arr.length ? arr.map(chip).join("") : `<p class="tl-none">${empty}</p>`;
   function setYear(y, fromUser) {
     y = Math.max(MIN, Math.min(THIS, +y));

@@ -8,6 +8,7 @@
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const cover = a => a.media && a.media[0] ? "assets/nasa/" + a.media[0].f : null;
+  const thumb = a => a.media && a.media[0] ? "assets/nasa/thumb/" + a.media[0].f.replace(/\.\w+$/, ".jpg") : null; // small copy for cards (scripts/build-thumbs.py)
   const svg = spec => `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${ComicArt.scene(spec)}</svg>`;
   const LANDING = Date.UTC(1976, 6, 20);
 
@@ -17,7 +18,7 @@
       const a = ARTIFACTS.find(x => x.id === id), feat = id === "viking1";
       return `<a class="cx-mini${feat ? " feat" : ""}" href="?issue=${id}" data-w="${a.world}" data-text="${esc((a.name + " " + a.mission + " " + a.year + " " + WORLDS[a.world].name).toLowerCase())}" style="--w:${WORLDS[a.world].color}">
         <span class="cx-mast">GHOSTS<em>#${String(i + 1).padStart(2, "0")}</em></span>
-        ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="cx-ph">${typeIco(a.type)}</span>`}
+        ${cover(a) ? `<img src="${thumb(a)}" alt="" loading="lazy" decoding="async">` : `<span class="cx-ph">${typeIco(a.type)}</span>`}
         <b>${esc(feat ? "Facing the Wrong Way" : a.name)}</b><small>${feat ? "Viking 1 Lander · full issue" : `${esc(TYPES[a.type])} · ${a.year}`}</small>
       </a>`;
     }).join("");
