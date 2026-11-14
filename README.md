@@ -5,7 +5,7 @@ NASA Space Apps Challenge 2026 entry. It's an interactive story archive, for age
 ## For the judges
 
 - **Project description:** `docs/PROJECT_SUBMISSION.md` (ready to paste into the Space Apps project page).
-- **Pitch deck:** `site/pitch.html`, live at `/pitch.html`, plus `docs/pitch-deck.pdf`.
+- **Pitch deck:** `site/pitch.html`, live at `/pitch.html`, plus `docs/pitch-deck.pptx` and `docs/pitch-deck.pdf`.
 - **30-second demo video script:** `docs/DEMO_VIDEO_SCRIPT.md`.
 - **Screenshots:** `docs/screenshots/`.
 
