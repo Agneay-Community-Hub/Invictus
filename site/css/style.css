@@ -999,3 +999,43 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 /* accuracy promise under the key numbers */
 .accuracy-line { margin: 0; padding: 10px clamp(16px, 3vw, 32px); text-align: center; font-size: .9rem; color: var(--muted); background: var(--bg2); border-bottom: 1px solid var(--line); }
 .accuracy-line a { color: var(--amber2); font-weight: 600; }
+
+/* ---- Dossier: "This story, three ways", "Go there", "Ask about it", and the quiet footer ---- */
+.ways { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 10px; }
+.way { display: grid; grid-template-rows: auto auto auto; text-align: left; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--text); font: inherit; cursor: pointer; text-decoration: none; transition: border-color .15s, transform .15s; }
+.way:hover, .way:focus-visible { border-color: var(--amber); transform: translateY(-2px); }
+.way-media { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 9; background: var(--bg2); color: var(--amber2); }
+.way-media .ico { width: 30px; height: 30px; }
+.way-comic .way-media { background: rgba(167, 139, 250, .16); color: #c4b5fd; }
+.way-pod .way-media { background: rgba(255, 138, 92, .16); color: #ffb08f; }
+.way-short .way-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.way-play { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--amber); color: #111; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+.way-play .ico { width: 20px; height: 20px; }
+.way-len { position: absolute; right: 8px; bottom: 6px; font-size: .75rem; font-weight: 700; background: rgba(3,6,12,.75); color: #fff; padding: 1px 7px; border-radius: 6px; }
+.way b { padding: 9px 12px 0; font-family: var(--head); font-size: .95rem; line-height: 1.25; }
+.way small { padding: 2px 12px 11px; color: var(--muted); font-size: .8rem; }
+.gos { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr)); gap: 8px; }
+.go { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--text); text-decoration: none; font-weight: 600; font-size: .9rem; line-height: 1.25; }
+.go:hover, .go:focus-visible { border-color: var(--amber); background: var(--panel2); }
+.go .ico { flex: none; width: 20px; height: 20px; color: var(--amber2); }
+.d-askf { display: flex; gap: 8px; }
+.d-askf input { flex: 1; min-width: 0; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line2); background: var(--bg2); color: var(--text); font: inherit; }
+.d-askq { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.d-askq a { font-size: .82rem; padding: 4px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); text-decoration: none; }
+.d-askq a:hover, .d-askq a:focus-visible { color: var(--text); border-color: var(--amber); }
+.d-foot { margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); display: grid; gap: 10px; }
+.d-foot-links { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.d-foot-links a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 600; font-size: .9rem; text-decoration: none; }
+.d-foot-links a:hover, .d-foot-links a:focus-visible { color: var(--text); }
+.d-foot-links .ico { width: 17px; height: 17px; }
+.d-foot .d-sources summary { text-transform: none; letter-spacing: 0; font-size: .92rem; font-weight: 600; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.d-foot .d-sources summary small { font-weight: 400; }
+.d-check { display: inline-flex; align-items: center; gap: 6px; color: var(--text); }
+.d-check .ico { width: 17px; height: 17px; color: #7ee0a8; }
+.d-recs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+.d-rec { display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; }
+.d-rec .ico { width: 15px; height: 15px; }
+@media (max-width: 560px) {
+  .ways { grid-template-columns: 1fr 1fr; }
+  .way-short { grid-column: 1 / -1; }
+}

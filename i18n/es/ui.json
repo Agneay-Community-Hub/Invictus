@@ -323,7 +323,21 @@
     "w3d.ex": "Gira la Luna y Marte",
     "w3d.exSub": "Globos en 3D con cada máquina, y un viaje hasta donde están hoy las Voyager.",
     "w3d.eyes": "NASA Eyes on the Solar System",
-    "w3d.eyesSub": "El sistema solar en 3D y en vivo de NASA/JPL: vuela hasta la Voyager 1 ahora mismo."
+    "w3d.eyesSub": "El sistema solar en 3D y en vivo de NASA/JPL: vuela hasta la Voyager 1 ahora mismo.",
+    "d.ways": "Esta historia, de tres maneras",
+    "d.waysShort": "Un dibujo animado con su propia voz",
+    "d.waysComic": "Su propio número de cómic",
+    "d.waysPod": "Su episodio del pódcast",
+    "d.goThere": "Ve hasta allí",
+    "d.go3d": "Verlo en 3D:",
+    "d.land": "Intenta aterrizarlo tú",
+    "d.askIt": "Pregunta sobre él",
+    "d.askLabel": "Tu pregunta",
+    "d.askPh": "Pregunta lo que quieras sobre {name}",
+    "d.askQ1": "¿Dónde está {name} ahora?",
+    "d.askQ2": "¿Qué descubrió {name}?",
+    "d.askBtn": "Preguntar",
+    "d.checkFacts": "Comprueba los datos"
   },
   "status": {
     "silent": {

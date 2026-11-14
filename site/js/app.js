@@ -350,6 +350,7 @@
             <small style="color:var(--dim)">${t("d.voiceNote", "Written in {name}’s voice, from real mission facts.").replace("{name}", esc(a.name))}</small>
           </div>
         </div>
+        ${waysHTML(a)}
 
         <div class="d-block"><h3>${isSci ? t("d.sciStory", "The science story") : t("d.story", "The story")}</h3><p>${esc(isSci ? a.deep : a.story)}</p>
           ${!isSci ? `<button class="btn btn-small" id="moreBtn">${t("d.more", "Read the scientist version")}</button>` : ""}</div>
@@ -380,25 +381,14 @@
         <div class="d-block"><h3>${t("d.matters", "Why it matters today")}</h3><p class="legacy">${esc(a.legacy)}</p></div>
         <div class="d-block"><div class="funbox"><img src="assets/ui/star.png" alt=""><div><b>${t("d.fun", "Fun fact")}</b><br>${esc(a.fun)}</div></div></div>
         ${a.video ? `<div class="d-block"><h3>${t("d.watch", "Watch")}</h3>${videoHTML(a.video)}${a.video2 ? "<br>" + videoHTML(a.video2) : ""}</div>` : ""}
-        ${sourcesHTML(a)}
-        <div class="d-links">
-          ${a.world !== "deep" ? `<a class="btn btn-small" href="explore.html#${a.world}:${a.id}">${ico("globe")} See it on the 3D ${WORLDS[a.world].short}</a>` : `<a class="btn btn-small" href="explore.html#deep:${a.id}">${ico("globe")} ${t("d.see3dDeep", "See it in 3D deep space")}</a>`}
-          ${typeof ATLAS_SITES !== "undefined" && ATLAS_SITES[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="site:${ATLAS_SITES[a.id]}" href="atlas/index.html?go=site&amp;id=${ATLAS_SITES[a.id]}">${ico("footprints")} ${t("d.walk3d", "Walk there in 3D")}</a>` : ""}
-          ${typeof ATLAS_RELIVE !== "undefined" && ATLAS_RELIVE[a.id] ? `<a class="btn btn-small btn-w3d" data-atlas="relive:${ATLAS_RELIVE[a.id]}" href="atlas/index.html?go=relive&amp;id=${ATLAS_RELIVE[a.id]}">${ico("play")} ${t("d.relive3d", "Relive the mission in 3D")}</a>` : ""}
-          ${a.world !== "deep" && a.type !== "impactor" ? `<a class="btn btn-small" href="lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}">${ico("rocket")} Try landing it yourself</a>` : ""}
-          ${a.id === "opportunity" || a.id === "spirit" ? `<a class="btn btn-small btn-upclose" href="#upclose" data-upclose>${ico("eye")} ${t("d.upclose", "Opportunity, up close")}</a>` : ""}
-          <a class="btn btn-small" href="podcast.html#${{ voyager1: "voyager/", voyager2: "voyager/", insight: "insight/", cassini: "cassini/", opportunity: "opportunity/", kepler: "kepler/", apollo11: "apollo/a11seis", apollo12: "apollo/ring", apollo16: "apollo/uv" }[a.id] ?? "radio/" + a.id}">${ico("speaker")} ${t("d.podcast", "Listen to its podcast")}</a>
-          ${typeof SHORTS !== "undefined" && SHORTS[a.id] ? `<button type="button" class="btn btn-small btn-primary" data-short="${a.id}">${ico("play")} ${t("d.short", "Watch its cartoon short")}</button>` : ""}
-          <a class="btn btn-small" href="comics.html?issue=${a.id}">${ico("book")} ${t("d.comic", "Read its comic")}</a>
-          <a class="btn btn-small" href="compare.html?a=${a.id}">${ico("compare")} ${t("d.compare", "Compare with another")}</a>
-          <a class="btn btn-small" href="adopt.html#${a.id}">${ico("award")} ${t("d.adopt", "Adopt this ghost")}</a>
-          <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">${ico("chat")} Ask about ${esc(a.name)}</a>
-          ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">${t("d.nasaLib", "Open in NASA library ↗")}</a>` : ""}
-          ${(() => {
-            // the machine's own NSSDCA record: its spacecraft entry first, else its NSSDCA mission page (never the shared chronologies)
-            const all = (rec(a.id)?.sources || []).map(id => typeof SOURCE_LIST !== "undefined" && SOURCE_LIST[id]).filter(Boolean);
-            const s = (rec(a.id)?.nssdca && typeof SOURCE_LIST !== "undefined" && SOURCE_LIST[rec(a.id).nssdca]) || all.find(x => /nssdc\.gsfc\.nasa\.gov\/nmc\/spacecraft\//.test(x.url)) || all.find(x => /nssdc\.gsfc\.nasa\.gov\/planetary\/(?!chronology)[\w-]+\.html$/.test(x.url));
-            return s ? `<a class="btn btn-small" href="${esc(s.url)}" target="_blank" rel="noopener" title="${esc(s.title)}">📂 ${t("d.nssdca", "NASA's official record (NSSDCA) ↗")}</a>` : ""; })()}
+        ${goHTML(a)}
+        ${askHTML(a)}
+        <div class="d-foot">
+          <div class="d-foot-links">
+            <a href="compare.html?a=${a.id}">${ico("compare")} ${t("d.compare", "Compare with another")}</a>
+            <a href="adopt.html#${a.id}">${ico("award")} ${t("d.adopt", "Adopt this ghost")}</a>
+          </div>
+          ${sourcesHTML(a)}
         </div>
       </div>`;
     $("#drawerBody").scrollTop = 0;
@@ -653,10 +643,48 @@
   // "Sources": the documents these facts were checked against.
   function sourcesHTML(a) {
     const list = (rec(a.id)?.sources || []).map(id => typeof SOURCE_LIST !== "undefined" && SOURCE_LIST[id]).filter(Boolean);
-    const photos = a.media.length ? `${t("d.photos", "Photos:")} <a href="${NASA_PAGE(a.media[0].id)}" target="_blank" rel="noopener">NASA Image and Video Library</a>. ` : "";
-    return `<div class="d-block d-sources"><details><summary>${t("d.sources", "Sources")}${list.length ? ` (${list.length})` : ""}</summary>
+    // the machine's own NSSDCA record: its spacecraft entry first, else its NSSDCA mission page (never the shared chronologies)
+    const nssdca = (rec(a.id)?.nssdca && typeof SOURCE_LIST !== "undefined" && SOURCE_LIST[rec(a.id).nssdca]) || list.find(x => /nssdc\.gsfc\.nasa\.gov\/nmc\/spacecraft\//.test(x.url)) || list.find(x => /nssdc\.gsfc\.nasa\.gov\/planetary\/(?!chronology)[\w-]+\.html$/.test(x.url));
+    const m0 = a.media[0];
+    const quick = [
+      nssdca ? `<a class="d-rec" href="${esc(nssdca.url)}" target="_blank" rel="noopener" title="${esc(nssdca.title)}">${ico("book")} ${t("d.nssdca", "NASA's official record (NSSDCA) ↗")}</a>` : "",
+      m0 ? `<a class="d-rec" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">${ico("image")} ${t("d.nasaLib", "Open in NASA library ↗")}</a>` : ""].join("");
+    return `<details class="d-sources"><summary><span class="d-check">${ico("check")} ${t("d.checkFacts", "Check the facts")}</span> <small>${t("d.sources", "Sources")}${list.length ? ` (${list.length})` : ""}${nssdca ? " · NSSDCA" : ""}${m0 ? " · NASA" : ""}</small></summary>
+      ${quick ? `<div class="d-recs">${quick}</div>` : ""}
       ${list.length ? `<ul>${list.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> <small>${esc(s.org)}${s.read ? ` · read ${esc(s.read)}` : ""}</small></li>`).join("")}</ul>` : ""}
-      <p class="d-note">${photos}<a href="sources.html#${a.id}">${t("d.allSources", "Every source in the archive →")}</a></p></details></div>`;
+      <p class="d-note">${m0 ? `${t("d.photos", "Photos:")} <a href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">NASA Image and Video Library</a>. ` : ""}<a href="sources.html#${a.id}">${t("d.allSources", "Every source in the archive →")}</a></p></details>`;
+  }
+  const PODCAST_EP = { voyager1: "voyager/", voyager2: "voyager/", insight: "insight/", cassini: "cassini/", opportunity: "opportunity/", kepler: "kepler/", apollo11: "apollo/a11seis", apollo12: "apollo/ring", apollo16: "apollo/uv" };
+  // "This story, three ways": the cartoon, the comic and the podcast, as picture cards under the ghost log
+  function waysHTML(a) {
+    const sh = typeof SHORTS !== "undefined" && SHORTS[a.id];
+    const card = (tag, attrs, cls, media, title, sub) => `<${tag} ${attrs} class="way ${cls}"><span class="way-media">${media}</span><b>${title}</b><small>${sub}</small></${tag}>`;
+    return `<div class="d-block d-ways"><h3>${t("d.ways", "This story, three ways")}</h3><div class="ways">
+      ${sh ? card("button", `type="button" data-short="${a.id}"`, "way-short", `<img src="${sh.poster}" alt="" loading="lazy"><span class="way-play" aria-hidden="true">${ico("play")}</span><span class="way-len">${esc(sh.length)}</span>`, t("d.short", "Watch its cartoon short"), t("d.waysShort", "A cartoon in its own voice")) : ""}
+      ${card("a", `href="comics.html?issue=${a.id}"`, "way-comic", ico("book"), t("d.comic", "Read its comic"), t("d.waysComic", "Its own comic issue"))}
+      ${card("a", `href="podcast.html#${PODCAST_EP[a.id] ?? "radio/" + a.id}"`, "way-pod", ico("speaker"), t("d.podcast", "Listen to its podcast"), t("d.waysPod", "Its podcast episode"))}
+    </div></div>`;
+  }
+  // "Go there": only the 3D views and games that fit this machine
+  function goHTML(a) {
+    const tile = (href, icon, label, extra = "") => `<a class="go" href="${href}" ${extra}>${ico(icon)}<span>${label}</span></a>`;
+    const tiles = [
+      a.world !== "deep" ? tile(`explore.html#${a.world}:${a.id}`, "globe", `${t("d.go3d", "See it on the 3D")} ${esc(WORLDS[a.world].short)}`) : tile(`explore.html#deep:${a.id}`, "globe", t("d.see3dDeep", "See it in 3D deep space")),
+      typeof ATLAS_SITES !== "undefined" && ATLAS_SITES[a.id] ? tile(`atlas/index.html?go=site&amp;id=${ATLAS_SITES[a.id]}`, "footprints", t("d.walk3d", "Walk there in 3D"), `data-atlas="site:${ATLAS_SITES[a.id]}"`) : "",
+      typeof ATLAS_RELIVE !== "undefined" && ATLAS_RELIVE[a.id] ? tile(`atlas/index.html?go=relive&amp;id=${ATLAS_RELIVE[a.id]}`, "play", t("d.relive3d", "Relive the mission in 3D"), `data-atlas="relive:${ATLAS_RELIVE[a.id]}"`) : "",
+      a.world !== "deep" && a.type !== "impactor" ? tile(`lander.html?level=${a.world === "moon" ? "moon" : ["curiosity", "backshell", "ingenuity"].includes(a.id) ? "jezero" : "mars"}`, "rocket", t("d.land", "Try landing it yourself")) : "",
+      a.id === "opportunity" || a.id === "spirit" ? tile("#upclose", "eye", t("d.upclose", "Opportunity, up close"), "data-upclose") : ""
+    ].join("");
+    return `<div class="d-block d-go"><h3>${t("d.goThere", "Go there")}</h3><div class="gos">${tiles}</div></div>`;
+  }
+  // "Ask it": a question box that opens the Ask page with the answer
+  function askHTML(a) {
+    const qs = [t("d.askQ1", "Where is {name} now?"), t("d.askQ2", "What did {name} discover?")].map(q => q.replace("{name}", a.name));
+    return `<div class="d-block d-ask"><h3>${t("d.askIt", "Ask about it")}</h3>
+      <form class="d-askf" action="ask.html" method="get"><label class="sr-only" for="dAskQ">${t("d.askLabel", "Your question")}</label>
+        <input id="dAskQ" name="q" type="text" maxlength="200" autocomplete="off" enterkeyhint="go" placeholder="${esc(t("d.askPh", "Ask anything about {name}").replace("{name}", a.name))}">
+        <button class="btn btn-small btn-primary" type="submit">${t("d.askBtn", "Ask")}</button></form>
+      <div class="d-askq">${qs.map(q => `<a href="ask.html?q=${encodeURIComponent(q)}">${esc(q)}</a>`).join("")}</div></div>`;
   }
 
   // One-line epitaph, carved like a memorial. Machines still working get a "not yet" label.
