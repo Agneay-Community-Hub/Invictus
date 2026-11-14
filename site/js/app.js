@@ -334,7 +334,7 @@
     if (cover) {
       cover.addEventListener("animationend", cleanCover, { once: true });
     }
-    setTimeout(cleanCover, 1200);
+    setTimeout(cleanCover, 2100);
 
     drawer.focus();
     history.replaceState(null, "", "#artifact=" + id);

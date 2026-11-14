@@ -16,7 +16,7 @@ This document provides technical specifications for the centered folder dossier 
   - Border Radius: `20px`
   - Z-Index: `61` (above scrim at `60`, below toast at `90`)
   - **No 2D Clipping (`overflow: visible`):** Outer `.drawer` maintains `overflow: visible` so that the 3D swinging cover flap is not clipped along the left boundary during rotation. Internal scrolling is safely encapsulated inside `#drawerBody` (`overflow-y: auto`, `border-radius: 0 0 20px 20px`).
-  - **Stationary Y-Axis:** The modal container never shifts along the Y-axis during entry (`translate(-50%, -50%) scale(0.975) -> scale(1)`), eliminating any double-hovering or bobbing effect.
+  - **Stationary Shell:** The modal container appears via a quick 0.35s scale settle (`scale(0.97) -> scale(1)`) while anchored firmly at `translate(-50%, -50%)`. It never shifts vertically during entry.
 - **3D Context:**
   - `perspective: 1600px;`
   - `transform-style: preserve-3d;`
@@ -26,22 +26,24 @@ This document provides technical specifications for the centered folder dossier 
 
 ## 2. Animation Sequences & Keyframes
 
-### Sequence Timeline (On Open - Total Duration: 1.08s)
+### Sequence Timeline (On Open - Total Duration: 1.80s)
 ```
-0.00s ----------------------- 0.50s ----------------------- 1.08s
-|-- Scrim Fades In ---------|
-|-- Folder Settles Scale (0.975 -> 1.0) -------------------|
-|-- Clasp Unfastens (Pop & Slide) --|
-|-- Cover Flap Opens (0deg -> -22deg -> -78deg -> -125deg)-|
-     |-- Content Glides Up & Settles (TranslateY 22px -> 0)|
+0.00s ---------------- 0.35s ------------- 0.75s ---- 0.85s ---------------- 1.80s
+|-- Scrim Fades In -----|
+|-- Folder Arrives -----|
+|========== Name & Cover Visible Beat =============|
+                                           |-- Clasp --|
+                                                       |-- Smooth Cover Swing Open -->|
+                                                       |-- Content Slides Up & Fades ->|
 ```
 
 ### Keyframe Details
 
 #### 1. Folder Cover Flap Opening (`@keyframes folderFlapOpen`)
 - **Transform Origin:** `0% 50%` (left edge / folder spine)
-- **Timing Function:** `cubic-bezier(0.2, 0.9, 0.25, 1)`
-- **Duration:** `1.08s`
+- **Timing Function:** `cubic-bezier(0.25, 1, 0.35, 1)` (continuous pure ease-out)
+- **Animation Delay:** `0.85s` (holds closed cover stationary for reading)
+- **Duration:** `0.95s`
 ```css
 @keyframes folderFlapOpen {
   0% {
@@ -50,19 +52,8 @@ This document provides technical specifications for the centered folder dossier 
     filter: brightness(1) drop-shadow(10px 0 25px rgba(0,0,0,0.85));
     visibility: visible;
   }
-  26% {
-    transform: perspective(1400px) rotateY(-22deg);
-    opacity: 0.98;
-    filter: brightness(1.06) drop-shadow(20px 0 35px rgba(0,0,0,0.8));
-  }
-  62% {
-    transform: perspective(1400px) rotateY(-78deg);
-    opacity: 0.88;
-    filter: brightness(0.95) drop-shadow(10px 0 20px rgba(0,0,0,0.5));
-  }
-  90% {
-    transform: perspective(1400px) rotateY(-112deg);
-    opacity: 0.15;
+  70% {
+    opacity: 0.9;
   }
   100% {
     transform: perspective(1400px) rotateY(-125deg);
@@ -73,31 +64,28 @@ This document provides technical specifications for the centered folder dossier 
 ```
 
 #### 2. Clasp Unfastening (`@keyframes claspUnfasten`)
-- **Duration:** `0.50s`
 - **Timing Function:** `ease-out`
+- **Animation Delay:** `0.75s` (fires right before the cover begins to swing)
+- **Duration:** `0.35s`
 ```css
 @keyframes claspUnfasten {
   0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.12); opacity: 0.9; }
-  100% { transform: scale(0.9) translateY(6px); opacity: 0.3; }
+  50% { transform: scale(1.1); opacity: 0.95; }
+  100% { transform: scale(0.9) translateY(4px); opacity: 0.2; }
 }
 ```
 
 #### 3. Inner Content Sheet Reveal (`@keyframes folderContentReveal`)
 - **Target:** `.drawer-body` inside `.drawer.is-opening`
-- **Timing Function:** `cubic-bezier(0.2, 0.9, 0.25, 1)`
-- **Duration:** `1.08s`
+- **Timing Function:** `cubic-bezier(0.25, 1, 0.35, 1)`
+- **Animation Delay:** `0.85s` (runs in lockstep with the swinging cover)
+- **Duration:** `0.95s`
 ```css
 @keyframes folderContentReveal {
   0% {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(24px);
     filter: blur(2px) brightness(0.8);
-  }
-  35% {
-    opacity: 0.6;
-    transform: translateY(10px);
-    filter: blur(1px) brightness(0.9);
   }
   100% {
     opacity: 1;
@@ -107,14 +95,14 @@ This document provides technical specifications for the centered folder dossier 
 }
 ```
 
-#### 4. Modal Shell Entrance (`@keyframes folderModalEnter`)
-- **Duration:** `1.08s`
-- **Curve:** `cubic-bezier(0.16, 1, 0.3, 1)`
+#### 4. Modal Shell Arrival (`@keyframes folderModalEnter`)
+- **Duration:** `0.35s`
+- **Timing Function:** `ease-out`
 ```css
 @keyframes folderModalEnter {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.975);
+    transform: translate(-50%, -50%) scale(0.97);
   }
   100% {
     opacity: 1;
