@@ -20,6 +20,22 @@
     return `<section class="src-sec" id="${w}"><h2>${esc(W.name)} <small>${list.length} machines</small></h2>${list.map(machine).join("")}</section>`;
   }).join("");
   document.getElementById("srcList").innerHTML = html;
+
+  // The NASA resources named in the challenge brief, and the machines each one informs.
+  const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
+  const nssdcaCount = ARTIFACTS.filter(a => (rec(a.id).sources || []).some(id => /nssdc\.gsfc\.nasa\.gov\/(nmc|planetary)/.test(SL[id]?.url || ""))).length;
+  if (typeof CHALLENGE_RESOURCES !== "undefined" && document.getElementById("srcBrief")) {
+    document.getElementById("srcBrief").innerHTML = CHALLENGE_RESOURCES.map(r => `
+      <article class="brief-item">
+        <h3><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)} ↗</a></h3>
+        <p>${esc(r.use.replace(/for 48 of our 49 machines/, `for ${nssdcaCount} of our ${ARTIFACTS.length} machines`))}</p>
+        ${r.machines.length ? `<p class="brief-m">${r.machines.filter(id => byId[id]).map(id => `<a href="#${id}">${esc(byId[id].name)}</a>`).join("")}</p>` : `<p class="brief-m"><a href="#moon">See every machine's NSSDCA record below ↓</a></p>`}
+      </article>`).join("");
+    document.querySelectorAll(".brief-m a[href^='#']").forEach(a => a.addEventListener("click", () => {
+      document.querySelectorAll(".src-item.hl").forEach(x => x.classList.remove("hl"));
+      document.getElementById(a.getAttribute("href").slice(1))?.classList.add("hl");
+    }));
+  }
   document.getElementById("srcStats").innerHTML =
     `<div><b>${ARTIFACTS.length}</b><span>machines</span></div><div><b>${docs.size}</b><span>mission documents</span></div><div><b>${photos.size}</b><span>NASA photo records</span></div>`;
 

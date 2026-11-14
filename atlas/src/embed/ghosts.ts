@@ -7,7 +7,7 @@
  *   atlas/index.html?go=missions | journey&id=moon|mars
  * plus &from=<page to come back to>. The calls are exactly the ones this app's own Home buttons make.
  * It is used as a player (playerOnly): one landing site or replay at a time, then back to the main site. A
- * "← Ghosts of Exploration" button is always shown.
+ * "← Home" button is always shown (it returns to the main-site page you came from).
  */
 import { useStore } from '../store/store'
 import { useOpening, skipOpening } from '../opening/openingState'
@@ -46,9 +46,9 @@ function addBackButton() {
   const a = document.createElement('a')
   a.href = backHref()
   a.className = 'goe-back'
-  a.innerHTML = '← <span class="goe-long">Ghosts of Exploration</span><span class="goe-short">Ghosts</span>'
-  a.setAttribute('aria-label', 'Back to Ghosts of Exploration')
-  a.title = 'Back to the Ghosts of Exploration archive'
+  a.innerHTML = '← <span>Home</span>'
+  a.setAttribute('aria-label', 'Home: back to Ghosts of Exploration')
+  a.title = 'Back to the Ghosts of Exploration site'
   const style = document.createElement('style')
   style.textContent = `
     /* above the app's own bottom toolbar (time, labels, settings), centred so it clears the touch controls in the corners */
@@ -57,12 +57,11 @@ function addBackButton() {
       background: rgba(6,10,19,.86); color: #ffd08a; border: 1px solid rgba(255,179,71,.55); backdrop-filter: blur(8px);
       font: 700 13px/1 system-ui, -apple-system, "Segoe UI", sans-serif; text-decoration: none; box-shadow: 0 6px 20px rgba(0,0,0,.45); }
     .goe-back:hover, .goe-back:focus-visible { background: rgba(20,32,56,.95); color: #fff; }
-    .goe-back { gap: 4px; } .goe-short { display: none; }
+    .goe-back { gap: 4px; }
     /* Phones: the bottom holds the walking joystick, minimap and jump buttons, so use a small tab on the right edge */
     @media (max-width: 760px) {
       .goe-back { left: auto; right: 0; bottom: auto; top: 46%; transform: translateY(-50%); border-right: 0;
         border-radius: 999px 0 0 999px; padding: 8px 10px 8px 12px; min-height: 44px; }
-      .goe-long { display: none; } .goe-short { display: inline; }
     }
     body[data-goe-opening] .goe-back { opacity: .6; }`
   document.head.appendChild(style)

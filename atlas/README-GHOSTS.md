@@ -30,7 +30,7 @@ Only four things, so updates from the original repo are easy to bring in:
 2. **`unity-player.json`**: `dir` points at `unity-cache/`.
 3. **`src/embed/ghosts.ts`** (new) and one import in **`src/main.tsx`**: links such as
    `atlas/index.html?go=site&id=tranquility-base` open one feature directly (using the same calls as the app's own
-   Home buttons), and a "← Ghosts of Exploration" button returns to the page you came from.
+   Home buttons), and a "← Home" button returns to the page you came from.
 4. **`src/mars/marsBridge.ts`** (one line in `startMars`): passes the Unity player the real address of `mars-sites/`,
    also for the Victoria scene (with an empty site id), because the player otherwise looks for it at the site root.
 6. **`src/embed/site-data.ts`** (new): exports the mission catalogue and landing sites as plain data; the main site's

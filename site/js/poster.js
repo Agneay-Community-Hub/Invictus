@@ -33,7 +33,7 @@
       <section class="pz-col">${map("mars")}${key("mars")}</section>
       <section class="pz-col pz-deep"><h2>${esc(WORLDS.deep.name)}</h2><p class="pz-sub">${esc(WORLDS.deep.tagline)}</p>${key("deep")}</section>
     </div>
-    <footer class="pz-foot">Maps and photos: NASA. Positions from NASA mission records. Explore every machine at agneay-community-hub.github.io/PROJECT-AREA-51</footer>`;
+    <footer class="pz-foot">Maps and photos: NASA. Positions from NASA mission records. Explore every machine at agneay-community-hub.github.io/Invictus</footer>`;
 
   // spread out pins that would overlap (the Apollo sites sit close together) and draw a short line to the true spot
   document.querySelectorAll(".pz-img").forEach(box => {

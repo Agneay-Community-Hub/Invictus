@@ -5,7 +5,7 @@ NASA Space Apps Challenge 2026 entry. It's an interactive story archive, for age
 ## For the judges
 
 - **Project description:** `docs/PROJECT_SUBMISSION.md` (ready to paste into the Space Apps project page).
-- **Pitch deck:** `site/pitch.html`, live at `/pitch.html`, plus `docs/pitch-deck.pdf`.
+- **Pitch deck:** `site/pitch.html`, live at `/pitch.html`, plus `docs/pitch-deck.pptx` and `docs/pitch-deck.pdf`.
 - **30-second demo video script:** `docs/DEMO_VIDEO_SCRIPT.md`.
 - **Screenshots:** `docs/screenshots/`.
 
@@ -34,11 +34,11 @@ The main page has a language switcher (EN / ES / हिं). It remembers the ch
 
 The dossiers open with `#` links, which search engines barely index, so `scripts/build-pages.mjs` also writes a plain, fast page for every machine in all three languages: 147 pages in `site/machines/`, plus an index page per language ("All 49 machines", linked in the footer). Each page has its own title, description, canonical link, `hreflang` language alternates, Open Graph image (the machine's NASA photo) and schema.org structured data (Article, BreadcrumbList, educational audience, citations). The script also writes `sitemap.xml` (159 URLs with language alternates and images), `robots.txt`, and the home page's structured data (WebSite, LearningResource and an ItemList of all machines).
 
-To get indexed faster, add the site to [Google Search Console](https://search.google.com/search-console) and submit `https://agneay-community-hub.github.io/PROJECT-AREA-51/sitemap.xml`. (A project site's `robots.txt` is not at the domain root, so search engines find the sitemap through Search Console or the links between pages rather than through `robots.txt`.)
+To get indexed faster, add the site to [Google Search Console](https://search.google.com/search-console) and submit `https://agneay-community-hub.github.io/Invictus/sitemap.xml`. (A project site's `robots.txt` is not at the domain root, so search engines find the sitemap through Search Console or the links between pages rather than through `robots.txt`.)
 
 ## Live site
 
-https://agneay-community-hub.github.io/PROJECT-AREA-51/
+https://agneay-community-hub.github.io/Invictus/
 
 GitHub Pages publishes the `site/` folder automatically on every push to `main` that changes it, using `.github/workflows/pages.yml`. You can also re-run it by hand from the repo's **Actions** tab. `netlify.toml` is kept in case you ever want to host on Netlify instead.
 
@@ -69,6 +69,7 @@ The Ask page works without this. The AI mode needs a tiny server to keep your Ge
 
 | Section | What it does |
 |---|---|
+| **Start here** (home page, under the hero) | A curated 10-minute path for first-time visitors and judges: six stops chosen against the challenge brief (find the machines on the Ghost Map, hear the Ghost Logs, Opportunity up close, how they landed plus the landing game, the comics/podcast/cartoons, and Ask). Each stop says which part of the brief it answers and how long it takes, ticks itself off when visited, and the hero's first button points here. Translated into Spanish and Hindi. |
 | **Ghost Map** | Moon and Mars maps with every artifact at its real latitude and longitude. You can zoom with the + and − buttons, by double-clicking, with ctrl+scroll, or with the "Zoom to Apollo sites" and "Zoom to Jezero" presets. When zoomed in you can drag the map. Labels are spread out automatically so they don't overlap. A searchable, filterable list sits beside the map. |
 | **Dossier** (slide-over) | Each machine has **Sources** (the NASA, NSSDCA, PDS and HiRISE documents its facts were checked against, linked), a **What was on board** list of instruments and parts for 16 landers, rovers and Apollo sites, **See it from orbit** links to HiRISE photos showing the hardware still on Mars, a one-line **epitaph** in its own voice (machines still working get a "not an epitaph yet" line), a first-person **Ghost Log**, a story at Explorer level (ages 8–11) or Scientist level (12+), a "planned vs. what happened" comparison, numbers, dates, discoveries, what was left behind, why it matters today, a fun fact, a NASA video, and links to the original NASA records. |
 | **How it worked** (explainer animations) | 11 step-by-step animations: Apollo landing and liftoff (with each mission's own lunar module and crew), Surveyor's rocket landing (including Surveyor 3's bounces), airbag bouncing, the sky crane, parachute-and-legs landings (including what probably went wrong for Mars Polar Lander), Ingenuity's flights, crashing on purpose (Ranger, LCROSS, Deep Impact, GRAIL, the S-IVB, LADEE), laser ranging to the Moon, marsquakes and moonquakes, gravity assists, and plunges into Venus, Jupiter and Saturn (Pioneer Venus, Galileo, Cassini). Each has captions, play/pause/step controls, optional narration, and follows Reduce motion. They're in a gallery on the main page and in every matching dossier, and the Ask page uses their steps to answer "How did X land?". |
@@ -164,6 +165,7 @@ To add an artifact, add an object to `ARTIFACTS` in `js/data.js`. The map, list,
 - Opportunity, up close (`site/js/oppy-data.js`): her 14 milestones, memories and rover parts adapted from the mission history and X-ray view in Chetan Kumar G's project (below), checked against NASA/JPL records. The rover drawing is our own.
 - Ask's 22 short answers about Opportunity and Mars: adapted from ASTRA's answers in Chetan Kumar G's project (below), checked against NASA/JPL Mars Exploration Rover records.
 - Sources, instrument lists and HiRISE hardware locations (`site/js/records.js`, plus the **Sources** page `sources.html`): imported from the Cosmic-Atlas mission catalogue by GuruPrasannaa Manikandan, which cites NASA, NSSDCA, PDS, LROC and HiRISE documents.
+- The NASA resources listed in the challenge brief: every one is used and linked (the NSSDCA catalogue, the Apollo lunar module, LRV and ALSEP records, and the NASA mission pages for Surveyor, Mars Pathfinder, Spirit & Opportunity, Viking, Phoenix & InSight, Dawn, NEAR Shoemaker, Pioneer 10 & 11, Ingenuity and Kepler). 48 of 49 dossiers link the machine's own NSSDCA record, and the Sources page has a "From the challenge brief" section showing how each resource is used.
 - Stories for Vanguard 1, Lunar Prospector, Magellan, Mariner 2, 4 and 9, Mars Climate Orbiter, Mars Global Surveyor, ISEE-3, Kepler, Spitzer and Stardust: adapted from "The Silent Fleet" in [Abandoned, But Not Forgotten](https://agneay-community-hub.github.io/AbandonedNotForgotten/) by Chetan Kumar G, checked against NASA mission records.
 - 3D: Three.js (MIT) and Google model-viewer (Apache 2.0).
 - Icons (`site/js/icons.js`): shapes adapted from [Lucide](https://lucide.dev) (ISC licence).

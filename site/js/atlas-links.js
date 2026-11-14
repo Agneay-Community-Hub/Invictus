@@ -2,7 +2,7 @@
    Links into "3D Worlds" (site/atlas/): the walkable Moon and
    Mars landing sites and mission replays, built from
    atlas/ (see atlas/README-GHOSTS.md). Each button switches the page
-   to his app at one feature; his app shows "← Ghosts of Exploration"
+   to his app at one feature; his app shows "← Home"
    to come back to where you were.
    =========================================================== */
 const ATLAS_SITES = {

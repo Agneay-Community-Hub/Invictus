@@ -14,9 +14,9 @@ Abandoned but not Forgotten: Storytelling about NASA's Discarded Equipment on th
 ✏️ Team name, members and roles.
 
 ## Links
-- **Live project:** https://agneay-community-hub.github.io/PROJECT-AREA-51/
-- **Code:** https://github.com/Agneay-Community-Hub/PROJECT-AREA-51
-- **Pitch deck (7 slides):** https://agneay-community-hub.github.io/PROJECT-AREA-51/pitch.html (press → to advance; print to PDF if a file is required)
+- **Live project:** https://agneay-community-hub.github.io/Invictus/
+- **Code:** https://github.com/Agneay-Community-Hub/Invictus
+- **Pitch deck (7 slides):** https://agneay-community-hub.github.io/Invictus/pitch.html (press → to advance; print to PDF if a file is required)
 - **Demo video (30 s):** ✏️ add the link after recording it with `docs/DEMO_VIDEO_SCRIPT.md`
 
 ## High-level summary

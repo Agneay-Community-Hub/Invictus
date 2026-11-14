@@ -284,86 +284,88 @@
   }
 
   /* ---------------- DRAWER ---------------- */
-  let openId = null, returnFocus = null, isClosingDrawer = false;
+  let openId = null, returnFocus = null;
   const ORDER = [...ARTIFACTS].sort((a, b) => ["moon", "mars", "deep"].indexOf(a.world) - ["moon", "mars", "deep"].indexOf(b.world) || a.year - b.year).map(a => a.id);
+
+  let isClosingDrawer = false;
+  let coverAnimTimeout = null;
 
   function openDrawer(id, from) {
     if (isClosingDrawer) return;
     returnFocus = from || document.activeElement;
     openId = id;
-    renderDrawer(id, false); // initial open: do not trigger page-flip
+    renderDrawer(id, false);
+
     const scrim = $("#scrim");
     const drawer = $("#drawer");
     const cover = $("#folderCover");
 
-    // Reset any ongoing closing/opening state
+    if (coverAnimTimeout) clearTimeout(coverAnimTimeout);
+
     drawer.classList.remove("is-closing", "is-opening");
-    scrim.classList.remove("is-closing", "is-opening");
+    scrim.classList.remove("is-closing");
     if (cover) {
-      cover.classList.remove("is-opening");
       cover.style.display = "flex";
-      cover.style.opacity = "1";
-      cover.style.visibility = "visible";
-      cover.style.pointerEvents = "none";
+      cover.classList.remove("is-open");
     }
 
-    // Unhide elements in DOM
     scrim.hidden = false;
     drawer.hidden = false;
     document.body.style.overflow = "hidden";
 
-    // Force synchronous reflow so browser registers display: flex before animating
+    // Force reflow before applying opening animations to ensure clean replay
     void drawer.offsetWidth;
     if (cover) void cover.offsetWidth;
 
-    // Trigger opening animation sequence
-    scrim.classList.add("is-opening");
     drawer.classList.add("is-opening");
-    if (cover) cover.classList.add("is-opening");
 
-    // Clean up cover flap once the 3D swing completes without abrupt timer resets on .drawer
-    let cleaned = false;
-    const cleanCover = () => {
-      if (cleaned) return;
-      cleaned = true;
+    const onCoverEnd = e => {
+      if (e && e.target !== cover) return;
       if (cover) {
+        cover.removeEventListener("animationend", onCoverEnd);
         cover.style.display = "none";
-        cover.classList.remove("is-opening");
       }
     };
     if (cover) {
-      cover.addEventListener("animationend", cleanCover, { once: true });
+      cover.addEventListener("animationend", onCoverEnd, { once: true });
+      coverAnimTimeout = setTimeout(onCoverEnd, 2100);
     }
-    setTimeout(cleanCover, 2100);
 
-    drawer.focus();
+    $("#drawer").focus();
     history.replaceState(null, "", "#artifact=" + id);
     if (!progress.opened.includes(id)) { progress.opened.push(id); saveProgress(); checkBadges(); }
   }
   let dHow = null;
   function destroyHow() { if (dHow) { dHow.destroy(); dHow = null; } }
   function closeDrawer() {
-    if (isClosingDrawer || $("#drawer").hidden) return;
+    if (isClosingDrawer) return;
     isClosingDrawer = true;
     stopSpeech();
     destroyHow();
     if (soundPlaying) soundPlaying.pause();
     $$("#drawer video").forEach(v => v.pause());
+
+    if (coverAnimTimeout) {
+      clearTimeout(coverAnimTimeout);
+      coverAnimTimeout = null;
+    }
+
     const drawer = $("#drawer");
     const scrim = $("#scrim");
+
     drawer.classList.remove("is-opening");
     drawer.classList.add("is-closing");
-    scrim.classList.remove("is-opening");
     scrim.classList.add("is-closing");
+
     setTimeout(() => {
-      scrim.hidden = true;
       drawer.hidden = true;
+      scrim.hidden = true;
       drawer.classList.remove("is-closing");
       scrim.classList.remove("is-closing");
       document.body.style.overflow = "";
       openId = null;
-      history.replaceState(null, "", location.pathname);
       isClosingDrawer = false;
+      history.replaceState(null, "", location.pathname);
       if (returnFocus && document.contains(returnFocus)) returnFocus.focus();
     }, 240);
   }
@@ -383,14 +385,6 @@
     if (coverName) coverName.textContent = a.name.toUpperCase();
     const coverWorld = $("#dCoverWorld");
     if (coverWorld) coverWorld.textContent = `${WORLDS[a.world].short.toUpperCase()} ARCHIVE · RECORD #${String(idx + 1).padStart(2, "0")}`;
-    const body = $("#drawerBody");
-    if (body) {
-      body.classList.remove("page-flip");
-      if (isFlip) {
-        void body.offsetWidth;
-        body.classList.add("page-flip");
-      }
-    }
     const m0 = a.media[0];
     const facts = a.stats.map(([k, v]) => {
       let val = v;
@@ -469,9 +463,22 @@
           <a class="btn btn-small" href="adopt.html#${a.id}">${ico("award")} ${t("d.adopt", "Adopt this ghost")}</a>
           <a class="btn btn-small" href="ask.html?q=${encodeURIComponent("Tell me about " + a.name)}">${ico("chat")} Ask about ${esc(a.name)}</a>
           ${m0 ? `<a class="btn btn-small" href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">${t("d.nasaLib", "Open in NASA library ↗")}</a>` : ""}
+          ${(() => {
+            // the machine's own NSSDCA record: its spacecraft entry first, else its NSSDCA mission page (never the shared chronologies)
+            const all = (rec(a.id)?.sources || []).map(id => typeof SOURCE_LIST !== "undefined" && SOURCE_LIST[id]).filter(Boolean);
+            const s = (rec(a.id)?.nssdca && typeof SOURCE_LIST !== "undefined" && SOURCE_LIST[rec(a.id).nssdca]) || all.find(x => /nssdc\.gsfc\.nasa\.gov\/nmc\/spacecraft\//.test(x.url)) || all.find(x => /nssdc\.gsfc\.nasa\.gov\/planetary\/(?!chronology)[\w-]+\.html$/.test(x.url));
+            return s ? `<a class="btn btn-small" href="${esc(s.url)}" target="_blank" rel="noopener" title="${esc(s.title)}">📂 ${t("d.nssdca", "NASA's official record (NSSDCA) ↗")}</a>` : ""; })()}
         </div>
       </div>`;
-    $("#drawerBody").scrollTop = 0;
+    const drawerBody = $("#drawerBody");
+    drawerBody.scrollTop = 0;
+    if (isFlip) {
+      drawerBody.classList.remove("page-flip");
+      void drawerBody.offsetWidth;
+      drawerBody.classList.add("page-flip");
+    } else {
+      drawerBody.classList.remove("page-flip");
+    }
     bindTn($("#drawerBody"));
     $("#drawerBody [data-upclose]")?.addEventListener("click", () => closeDrawer());
     if (typeof SOUNDS !== "undefined") bindSounds($("#drawerBody"));

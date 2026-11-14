@@ -355,15 +355,231 @@ const SOURCE_LIST = {
   "org": "NASA NSSDCA",
   "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-031B",
   "read": "2026-11-12"
+ },
+ "nssdca-home": {
+  "title": "NASA Space Science Data Coordinated Archive (NSSDCA): NASA's catalogue of every spacecraft and instrument",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/",
+  "read": "2026-11-14"
+ },
+ "nssdca-1969-099c": {
+  "title": "Apollo 12 Lunar Module / ALSEP (NSSDCA/COSPAR ID 1969-099C)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C",
+  "read": "2026-11-14"
+ },
+ "nasa-surveyor-3": {
+  "title": "Surveyor 3 mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/surveyor-3/",
+  "read": "2026-11-14"
+ },
+ "nasa-surveyor-1": {
+  "title": "Surveyor 1 mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/surveyor-1/",
+  "read": "2026-11-14"
+ },
+ "nasa-mer": {
+  "title": "Mars Exploration Rovers: Spirit and Opportunity mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+  "read": "2026-11-14"
+ },
+ "nasa-viking-1": {
+  "title": "Viking 1 mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/viking-1/",
+  "read": "2026-11-14"
+ },
+ "nasa-dawn": {
+  "title": "Dawn mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/dawn/",
+  "read": "2026-11-14"
+ },
+ "nasa-near-shoemaker": {
+  "title": "NEAR Shoemaker mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/near-shoemaker/",
+  "read": "2026-11-14"
+ },
+ "nasa-pioneer-10": {
+  "title": "Pioneer 10 mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/pioneer-10/",
+  "read": "2026-11-14"
+ },
+ "nasa-pioneer-11": {
+  "title": "Pioneer 11 mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/pioneer-11/",
+  "read": "2026-11-14"
+ },
+ "nasa-kepler": {
+  "title": "Kepler / K2 mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/kepler/",
+  "read": "2026-11-14"
+ },
+ "nasa-mars-2020": {
+  "title": "Mars 2020: Perseverance Rover mission page",
+  "org": "NASA Science",
+  "url": "https://science.nasa.gov/mission/mars-2020-perseverance/",
+  "read": "2026-11-14"
+ },
+ "nssdca-2018-042a": {
+  "title": "InSight (NSSDCA/COSPAR ID 2018-042A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2018-042A",
+  "read": "2026-11-14"
+ },
+ "nssdca-2020-052a": {
+  "title": "Mars 2020 (NSSDCA/COSPAR ID 2020-052A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-052A",
+  "read": "2026-11-14"
+ },
+ "nssdca-2011-070a": {
+  "title": "Mars Science Laboratory (MSL) (NSSDCA/COSPAR ID 2011-070A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2011-070A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1972-012a": {
+  "title": "Pioneer 10 (NSSDCA/COSPAR ID 1972-012A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-012A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1973-019a": {
+  "title": "Pioneer 11 (NSSDCA/COSPAR ID 1973-019A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1973-019A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1977-084a": {
+  "title": "Voyager 1 (NSSDCA/COSPAR ID 1977-084A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1977-084A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1977-076a": {
+  "title": "Voyager 2 (NSSDCA/COSPAR ID 1977-076A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1977-076A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1996-008a": {
+  "title": "NEAR Shoemaker (NSSDCA/COSPAR ID 1996-008A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1996-008A",
+  "read": "2026-11-14"
+ },
+ "nssdca-2005-001a": {
+  "title": "Deep Impact/EPOXI (NSSDCA/COSPAR ID 2005-001A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2005-001A",
+  "read": "2026-11-14"
+ },
+ "nssdca-2006-001a": {
+  "title": "New Horizons (NSSDCA/COSPAR ID 2006-001A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2006-001A",
+  "read": "2026-11-14"
+ },
+ "nssdca-2004-030a": {
+  "title": "MESSENGER (NSSDCA/COSPAR ID 2004-030A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2004-030A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1978-078a": {
+  "title": "Pioneer Venus Probe Bus (NSSDCA/COSPAR ID 1978-078A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1978-078A",
+  "read": "2026-11-14"
+ },
+ "nssdca-2007-043a": {
+  "title": "Dawn (NSSDCA/COSPAR ID 2007-043A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2007-043A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1971-051a": {
+  "title": "Mariner 9 (NSSDCA/COSPAR ID 1971-051A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-051A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1996-062a": {
+  "title": "Mars Global Surveyor (NSSDCA/COSPAR ID 1996-062A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1996-062A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1962-041a": {
+  "title": "Mariner 2 (NSSDCA/COSPAR ID 1962-041A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1962-041A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1964-077a": {
+  "title": "Mariner 4 (NSSDCA/COSPAR ID 1964-077A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1964-077A",
+  "read": "2026-11-14"
+ },
+ "nssdca-1999-003a": {
+  "title": "Stardust/NExT (NSSDCA/COSPAR ID 1999-003A)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1999-003A",
+  "read": "2026-11-14"
+ },
+ "nssdca-planetary-galileo": {
+  "title": "Galileo Project Information (NSSDCA planetary mission page)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/planetary/galileo.html",
+  "read": "2026-11-14"
+ },
+ "nssdca-planetary-cassini": {
+  "title": "Cassini Information (NSSDCA planetary mission page)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/planetary/cassini.html",
+  "read": "2026-11-14"
+ },
+ "nssdca-planetary-magellan": {
+  "title": "Magellan Mission to Venus (NSSDCA planetary mission page)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/planetary/magellan.html",
+  "read": "2026-11-14"
+ },
+ "nssdca-1971-008c": {
+  "title": "Apollo 14 Lunar Module / ALSEP (NSSDCA/COSPAR ID 1971-008C)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-008C",
+  "read": "2026-11-14"
+ },
+ "nssdca-1972-031c": {
+  "title": "Apollo 16 Lunar Module / ALSEP (NSSDCA/COSPAR ID 1972-031C)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-031C",
+  "read": "2026-11-14"
+ },
+ "nssdca-1972-096c": {
+  "title": "Apollo 17 Lunar Module / ALSEP (NSSDCA/COSPAR ID 1972-096C)",
+  "org": "NASA NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-096C",
+  "read": "2026-11-14"
  }
 };
 const RECORDS = {
  "apollo11": {
   "sources": [
+   "nssdca-a11-lm",
    "nssdca-a11-csm",
    "nssdca-apollo-landings",
    "nasa-apollo11",
-   "nssdca-a11-lm",
    "lroc-2016-coords",
    "nssdca-apollo-sites",
    "nssdca-a11-lrrr"
@@ -430,10 +646,12 @@ const RECORDS = {
      }
     ]
    }
-  ]
+  ],
+  "nssdca": "nssdca-a11-lm"
  },
  "apollo12": {
   "sources": [
+   "nssdca-1969-099c",
    "nssdca-apollo-landings",
    "nssdca-chronology",
    "lroc-2016-coords",
@@ -480,10 +698,12 @@ const RECORDS = {
      }
     ]
    }
-  ]
+  ],
+  "nssdca": "nssdca-1969-099c"
  },
  "apollo14": {
   "sources": [
+   "nssdca-1971-008c",
    "nssdca-apollo-landings",
    "nssdca-chronology",
    "lroc-2016-coords",
@@ -536,16 +756,17 @@ const RECORDS = {
     "status": "on the lunar surface",
     "items": []
    }
-  ]
+  ],
+  "nssdca": "nssdca-1971-008c"
  },
  "apollo15": {
   "sources": [
+   "nssdca-a15-lm-alsep",
    "nssdca-apollo-landings",
    "nssdca-chronology",
    "lroc-2016-coords",
    "nssdca-apollo-sites",
    "nssdca-a11-lm",
-   "nssdca-a15-lm-alsep",
    "nssdca-lrv"
   ],
   "onboard": [
@@ -616,10 +837,12 @@ const RECORDS = {
      }
     ]
    }
-  ]
+  ],
+  "nssdca": "nssdca-a15-lm-alsep"
  },
  "apollo16": {
   "sources": [
+   "nssdca-1972-031c",
    "nssdca-apollo-landings",
    "nssdca-chronology",
    "lroc-2016-coords",
@@ -690,10 +913,12 @@ const RECORDS = {
      }
     ]
    }
-  ]
+  ],
+  "nssdca": "nssdca-1972-031c"
  },
  "apollo17": {
   "sources": [
+   "nssdca-1972-096c",
    "nssdca-apollo-landings",
    "nssdca-chronology",
    "lroc-2016-coords",
@@ -770,7 +995,8 @@ const RECORDS = {
     "status": "on the lunar surface",
     "items": []
    }
-  ]
+  ],
+  "nssdca": "nssdca-1972-096c"
  },
  "lcross": {
   "sources": [
@@ -787,7 +1013,8 @@ const RECORDS = {
    "nssdca-viking1-lander-instruments",
    "nssdca-viking1-experiments",
    "nssdca-viking1-seismology",
-   "nssdca-viking2-lander"
+   "nssdca-viking2-lander",
+   "nasa-viking-1"
   ],
   "onboard": [
    {
@@ -1075,7 +1302,8 @@ const RECORDS = {
    "pds-mer-insthost",
    "nssdca-mer-b",
    "jpl-mer-spacecraft",
-   "hirise-psp-001513-1655"
+   "hirise-psp-001513-1655",
+   "nasa-mer"
   ],
   "onboard": [
    {
@@ -1183,7 +1411,8 @@ const RECORDS = {
    "nssdca-mars-chronology",
    "pds-ode-mars-sites",
    "pds-mer-insthost",
-   "nssdca-mer-b"
+   "nssdca-mer-b",
+   "nasa-mer"
   ],
   "onboard": [
    {
@@ -1350,7 +1579,8 @@ const RECORDS = {
    "nasa-msl-curiosity",
    "pds-ode-mars-sites",
    "nasa-msl-instruments",
-   "nasa-mmrtg-factsheet"
+   "nasa-mmrtg-factsheet",
+   "nssdca-2011-070a"
   ],
   "onboard": [
    {
@@ -1491,7 +1721,8 @@ const RECORDS = {
    "nasa-insight-instruments",
    "jpl-insight-seis-placed",
    "nasa-pia-hp3-deployed",
-   "nasa-insight-spacecraft"
+   "nasa-insight-spacecraft",
+   "nssdca-2018-042a"
   ],
   "onboard": [
    {
@@ -1570,7 +1801,9 @@ const RECORDS = {
    "nssdca-mars-chronology",
    "nssdca-chronology",
    "nasa-perseverance",
-   "nasa-ingenuity"
+   "nasa-ingenuity",
+   "nasa-mars-2020",
+   "nssdca-2020-052a"
   ],
   "onboard": [
    {
@@ -1586,98 +1819,122 @@ const RECORDS = {
    "nssdca-mars-chronology",
    "nssdca-chronology",
    "nasa-perseverance",
-   "nasa-ingenuity"
+   "nasa-ingenuity",
+   "nasa-mars-2020",
+   "nssdca-2020-052a"
   ]
  },
  "mariner9": {
   "sources": [
-   "nasa-mariner-9"
+   "nasa-mariner-9",
+   "nssdca-1971-051a"
   ]
  },
  "mgs": {
   "sources": [
-   "nasa-mgs"
+   "nasa-mgs",
+   "nssdca-1996-062a"
   ]
  },
  "mariner2": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-1962-041a"
   ]
  },
  "mariner4": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-1964-077a"
   ]
  },
  "pioneer10": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nasa-pioneer-10",
+   "nssdca-1972-012a"
   ]
  },
  "pioneer11": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nasa-pioneer-11",
+   "nssdca-1973-019a"
   ]
  },
  "voyager1": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-1977-084a"
   ]
  },
  "voyager2": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-1977-076a"
   ]
  },
  "pioneervenus": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-1978-078a"
   ]
  },
  "magellan": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-planetary-magellan"
   ]
  },
  "galileo": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-planetary-galileo"
   ]
  },
  "cassini": {
   "sources": [
    "nasa-cassini",
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-planetary-cassini"
   ]
  },
  "near": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nasa-near-shoemaker",
+   "nssdca-1996-008a"
   ]
  },
  "stardust": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-1999-003a"
   ]
  },
  "messenger": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-2004-030a"
   ]
  },
  "deepimpact": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-2005-001a"
   ]
  },
  "newhorizons": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nssdca-2006-001a"
   ]
  },
  "dawn": {
   "sources": [
-   "nssdca-chronology"
+   "nssdca-chronology",
+   "nasa-dawn",
+   "nssdca-2007-043a"
   ]
  },
  "ranger7": {
@@ -1687,12 +1944,14 @@ const RECORDS = {
  },
  "surveyor1": {
   "sources": [
-   "nssdca-1966-045a"
+   "nssdca-1966-045a",
+   "nasa-surveyor-1"
   ]
  },
  "surveyor3": {
   "sources": [
-   "nssdca-1967-035a"
+   "nssdca-1967-035a",
+   "nasa-surveyor-3"
   ]
  },
  "grail": {
@@ -1727,7 +1986,8 @@ const RECORDS = {
  },
  "kepler": {
   "sources": [
-   "nssdca-2009-011a"
+   "nssdca-2009-011a",
+   "nasa-kepler"
   ]
  },
  "spitzer": {
@@ -1741,3 +2001,134 @@ const RECORDS = {
   ]
  }
 };
+/* The NASA resources listed in the Space Apps challenge brief, and how this site uses each one. */
+const CHALLENGE_RESOURCES = [
+ {
+  "name": "NASA Space Science Data Coordinated Archive (NSSDCA)",
+  "url": "https://nssdc.gsfc.nasa.gov/",
+  "use": "NASA's catalogue of every spacecraft and instrument. We link the official NSSDCA record (or NSSDCA mission page) for 48 of our 49 machines, and used them to check launch dates, final resting places and status.",
+  "machines": []
+ },
+ {
+  "name": "Apollo Lunar Modules",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C",
+  "use": "The descent stages left as launch pads: every Apollo dossier, the Ghost Map and the instrument lists.",
+  "machines": [
+   "apollo11",
+   "apollo12",
+   "apollo14",
+   "apollo15",
+   "apollo16",
+   "apollo17"
+  ]
+ },
+ {
+  "name": "Lunar Roving Vehicles",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-063C",
+  "use": "The three electric Moon buggies (this record is Apollo 15's lunar module and science station, which carried the first one).",
+  "machines": [
+   "apollo15",
+   "apollo16",
+   "apollo17"
+  ]
+ },
+ {
+  "name": "ALSEP science packages",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C",
+  "use": "The seismometers, retroreflectors and other instruments left behind, in the Apollo dossiers and the What was on board lists.",
+  "machines": [
+   "apollo12",
+   "apollo14",
+   "apollo15",
+   "apollo16",
+   "apollo17"
+  ]
+ },
+ {
+  "name": "Surveyor landers",
+  "url": "https://science.nasa.gov/mission/surveyor-3/",
+  "use": "The robots that proved soft landings were possible, including Surveyor 3, which Apollo 12's astronauts visited.",
+  "machines": [
+   "surveyor1",
+   "surveyor3"
+  ]
+ },
+ {
+  "name": "Sojourner rover (Mars Pathfinder)",
+  "url": "https://science.nasa.gov/mission/mars-pathfinder/",
+  "use": "The first rover on Mars and the lander that carried it, with a HiRISE photo of the hardware still there.",
+  "machines": [
+   "pathfinder",
+   "sojourner"
+  ]
+ },
+ {
+  "name": "Spirit & Opportunity",
+  "url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+  "use": "The twin rovers, including Opportunity, up close: her life in 14 moments and an X-ray view of her parts.",
+  "machines": [
+   "spirit",
+   "opportunity"
+  ]
+ },
+ {
+  "name": "Viking 1 & 2 landers",
+  "url": "https://science.nasa.gov/mission/viking-1/",
+  "use": "The first U.S. landers to work on Mars, still where they touched down, with their full instrument lists.",
+  "machines": [
+   "viking1",
+   "viking2"
+  ]
+ },
+ {
+  "name": "Phoenix & InSight landers",
+  "url": "https://science.nasa.gov/mission/insight/",
+  "use": "Phoenix's ice and InSight's marsquakes, with instrument lists and an orbital photo of Phoenix's hardware.",
+  "machines": [
+   "phoenix",
+   "insight"
+  ]
+ },
+ {
+  "name": "Dawn",
+  "url": "https://science.nasa.gov/mission/dawn/",
+  "use": "Still in a silent, unpowered orbit around Ceres, shown in 3D Explore.",
+  "machines": [
+   "dawn"
+  ]
+ },
+ {
+  "name": "NEAR Shoemaker",
+  "url": "https://science.nasa.gov/mission/near-shoemaker/",
+  "use": "The first spacecraft to orbit and land on an asteroid, still resting on 433 Eros.",
+  "machines": [
+   "near"
+  ]
+ },
+ {
+  "name": "Pioneer 10 & 11",
+  "url": "https://science.nasa.gov/mission/pioneer-10/",
+  "use": "Drifting out of the solar system, with live distance estimates on the deep-space ruler.",
+  "machines": [
+   "pioneer10",
+   "pioneer11"
+  ]
+ },
+ {
+  "name": "Ingenuity helicopter",
+  "url": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
+  "use": "The first aircraft on another planet, now a stationary artifact in Jezero crater.",
+  "machines": [
+   "ingenuity",
+   "backshell"
+  ]
+ },
+ {
+  "name": "Kepler Space Telescope",
+  "url": "https://science.nasa.gov/mission/kepler/",
+  "use": "Drifting in an Earth-trailing orbit; 3D Explore's NASA JPL mode places it behind Earth's real position.",
+  "machines": [
+   "kepler"
+  ]
+ }
+];

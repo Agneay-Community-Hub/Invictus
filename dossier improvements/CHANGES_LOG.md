@@ -61,3 +61,22 @@ PROJECT-AREA-51/
    - No second hover: Window shell stays firmly anchored at `translate(-50%, -50%)`.
    - Prev/Next navigation: Smooth 0.30s `page-flip` between records inside the open folder.
    - Close: Graceful 0.22s scale-down and fade-out.
+
+---
+
+## 4. Merge Conflict Resolution & State Synchronization
+
+### Context:
+Merging branch `dossier_improvements` with the latest updates from incoming branch (`MERGE_HEAD` / `424e0d5ad467e1269ad160803ffcc80af7a0c54e`) introduced conflicts across 49 files.
+
+### Resolution Strategy:
+1. **Incoming Features Accepted:**
+   - All 49 files from `MERGE_HEAD` were incorporated, including `site/js/start.js`, the curated "Start here: six curated stops" section, updated canonical links to `Invictus`, NSSDCA official record link buttons in `site/js/app.js`, and updated pitch deck documentation.
+2. **Dossier Improvements Preserved:**
+   - `site/index.html`: Restored the centered physical folder dossier markup (`#drawer.folder-dossier`, `#folderCover`, `.folder-spine`, `.folder-tab-bar`, and `#drawerBody`).
+   - `site/js/app.js`: Reintegrated folder opening and closing orchestration (`openDrawer`, `closeDrawer`, `renderDrawer(id, isFlip)`), the 0.85s readable name delay on cover, reflow triggers, and the NSSDCA official record link button.
+   - `site/css/style.css`: Restored centered `.drawer` modal container, tactile folder details (spine rivets, stitching, metallic paper clip, declassified watermark), and all 3D opening keyframes while preserving `MERGE_HEAD`'s styles (`.start`, `.gotd`, etc.).
+3. **Cache Synchronization:**
+   - Executed `node scripts/build-sw.mjs` to re-stamp all 558 script/link fingerprints and update `site/sw.js` cache version.
+4. **Merge Finalization:**
+   - All unmerged paths staged cleanly with `git add .` and committed.

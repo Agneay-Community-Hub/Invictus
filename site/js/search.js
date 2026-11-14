@@ -53,11 +53,20 @@
     if (index) return index;
     if (typeof ARTIFACTS === "undefined") await load("js/data.js");
     if (typeof ATLAS_DATA === "undefined") await load("js/atlas-data.js");
+    if (typeof RECORDS === "undefined") await load("js/records.js");
     const items = [];
-    const add = (kind, title, sub, href, icon, text) => items.push({ kind, title, sub, href, icon, t: title.toLowerCase(), text: (title + " " + sub + " " + (text || "")).toLowerCase() });
+    // key = words that describe the item directly (name, type, place); text = everything searchable, including the story
+    const add = (kind, title, sub, href, icon, text, key) => items.push({ kind, title, sub, href, icon, t: title.toLowerCase(),
+      key: (title + " " + sub + " " + (key || "")).toLowerCase(), text: (title + " " + sub + " " + (key || "") + " " + (text || "")).toLowerCase() });
     if (typeof ARTIFACTS !== "undefined") {
-      ARTIFACTS.forEach(a => add("machine", a.name, `${TYPES[a.type]} · ${WORLDS[a.world].short} · ${a.year}`, `index.html#artifact=${a.id}`,
-        typeof typeIco === "function" ? null : "rocket", [a.mission, a.nick, a.place, a.fixedPlace, a.heading, a.body, STATUS[a.status].label, a.type].join(" ")));
+      const REC = typeof RECORDS !== "undefined" ? RECORDS : {};
+      ARTIFACTS.forEach(a => {
+        const parts = (REC[a.id]?.onboard || []).flatMap(g => [g.name, ...g.items.map(i => i.name + " " + (i.full || ""))]);
+        add("machine", a.name, `${TYPES[a.type]} · ${WORLDS[a.world].short} · ${a.year}`, `index.html#artifact=${a.id}`,
+          typeof typeIco === "function" ? null : "rocket",
+          [a.story, a.ghost, a.epitaph, a.fun, a.legacy, ...(a.left || []), ...(a.discoveries || []), ...parts, REC[a.id]?.orbit?.cap || ""].join(" "),
+          [a.mission, a.nick, a.place, a.fixedPlace, a.heading, a.body, STATUS[a.status].label, a.type, TYPES[a.type], WORLDS[a.world].name, ...(a.left || []), ...(REC[a.id]?.onboard || []).map(g => g.name)].join(" "));
+      });
       const byId = Object.fromEntries(ARTIFACTS.map(a => [a.id, a]));
       Object.entries(VIDEOS).forEach(([k, v]) => add("media", v.title, "Video", `library.html?q=${encodeURIComponent(v.title.split(/[:(]/)[0].trim())}#videos`, "film", v.note));
       if (typeof SOUNDS !== "undefined") SOUNDS.forEach(s => add("media", s.title, "Sound" + (byId[s.for] ? " · " + byId[s.for].name : ""), `library.html?q=${encodeURIComponent(s.title)}#sounds`, "speaker", s.what));
@@ -73,18 +82,49 @@
     return (index = items);
   }
 
+  // Small words that don't help a search, and everyday words that mean the same thing here.
+  const STOP = new Set(["a", "an", "the", "of", "on", "in", "at", "to", "for", "and", "or", "is", "are", "was", "were", "what", "which", "who", "how", "did", "does", "do", "it", "its", "with", "from", "by", "about", "me", "show", "find"]);
+  const SYN = { moon: ["lunar"], lunar: ["moon"], buggy: ["roving vehicle", "rover", "moon car"], buggies: ["roving vehicle", "rover", "moon car"], car: ["roving vehicle", "moon car"], cars: ["roving vehicle", "moon car"],
+    lm: ["lunar module"], robot: ["rover", "lander"], robots: ["rover", "lander"], quake: ["seismometer", "marsquake", "moonquake"], quakes: ["seismometer", "marsquake", "moonquake"],
+    helicopter: ["ingenuity"], plane: ["helicopter", "aircraft"], telescope: ["kepler", "spitzer"], crash: ["impact"], crashed: ["impact"], dead: ["silent"], working: ["still working", "active"] };
+  // "modules" → "module", "batteries" → "battery", "landing" → "land": the forms a word can take
+  const forms = w => {
+    const f = new Set([w]);
+    if (w.length > 4 && w.endsWith("ies")) f.add(w.slice(0, -3) + "y");
+    if (w.length > 4 && w.endsWith("es")) f.add(w.slice(0, -2));
+    if (w.length > 3 && w.endsWith("s") && !w.endsWith("ss")) f.add(w.slice(0, -1));
+    if (w.length > 5 && w.endsWith("ing")) f.add(w.slice(0, -3));
+    if (w.length > 4 && w.endsWith("ed")) f.add(w.slice(0, -2));
+    for (const x of [...f]) (SYN[x] || []).forEach(s => f.add(s));
+    return [...f];
+  };
   function search(items, q) {
-    q = q.trim().toLowerCase();
-    if (!q) return items.filter(i => i.kind === "page").slice(0, 8);
-    const words = q.split(/\s+/);
+    q = q.trim().toLowerCase().replace(/[^\p{L}\p{N}\s'-]/gu, " ");
+    if (!q.trim()) return items.filter(i => i.kind === "page").slice(0, 8);
+    const all = q.split(/\s+/).filter(Boolean);
+    const words = all.filter(w => !STOP.has(w)).length ? all.filter(w => !STOP.has(w)) : all;
+    // short words (like "ice") must start a word, so they don't match inside "device"
+    const wf = words.map(w => forms(w).map(x => x.length <= 4 ? new RegExp("(^|[^\\p{L}\\p{N}])" + x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "u") : x));
+    const phrase = words.join(" ");
     const scored = [];
     for (const i of items) {
-      if (!words.every(w => i.text.includes(w))) continue;
-      let s = i.t === q ? 100 : i.t.startsWith(q) ? 60 : i.t.includes(q) ? 40 : words.every(w => i.t.includes(w)) ? 30 : 10;
-      if (i.kind === "word" && s < 30 && !words.every(w => i.text.split(i.sub.toLowerCase()).join(" ").includes(w))) continue; // words: match the word, not its explanation
+      const hitIn = (txt, f) => f.some(x => typeof x === "string" ? txt.includes(x) : x.test(txt));
+      const inText = wf.map(f => hitIn(i.text, f));
+      const n = inText.filter(Boolean).length;
+      if (!n) continue;
+      const allHit = n === words.length;
+      // words: match the word itself, not only its explanation
+      if (i.kind === "word" && !wf.some(f => hitIn(i.t, f))) continue;
+      let s = i.t === phrase ? 100 : i.t.startsWith(phrase) ? 60 : i.t.includes(phrase) ? 45
+        : wf.every(f => hitIn(i.t, f)) ? 35 : wf.every(f => hitIn(i.key, f)) ? 25 : i.text.includes(phrase) ? 18 : allHit ? 12 : 4 * n;
+      if (allHit) s += 20;
       s += { machine: 5, page: 4, mission: 3, site: 2, media: 1, word: 1 }[i.kind];
-      scored.push([s, i]);
+      scored.push([s, i, allHit]);
     }
+    // everything that matches every word first; if nothing does, the closest matches (at least half the words)
+    const strict = scored.filter(x => x[2]);
+    const use = strict.length ? strict : scored.filter(x => x[0] >= 4 * Math.ceil(words.length / 2));
+    scored.length = 0; scored.push(...use);
     scored.sort((a, b) => b[0] - a[0]);
     // keep groups in a steady order, best group first
     const out = scored.slice(0, 24).map(x => x[1]);

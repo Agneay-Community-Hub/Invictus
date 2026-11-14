@@ -8,7 +8,7 @@ import vm from "node:vm";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(root, "site");
-const BASE = "https://agneay-community-hub.github.io/PROJECT-AREA-51/";
+const BASE = "https://agneay-community-hub.github.io/Invictus/";
 const TODAY = new Date().toISOString().slice(0, 10);
 
 // ---- load data, records and translations ----

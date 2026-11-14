@@ -17,3 +17,12 @@
 .src-docs { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; font-size: .92rem; overflow-wrap: anywhere; }
 .src-docs small, .src-none { color: var(--dim); }
 .src-photos { margin: 8px 0 0; font-size: .86rem; color: var(--muted); overflow-wrap: anywhere; }
+.src-brief { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 12px; margin-top: 14px; }
+.brief-item { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px 16px; }
+.brief-item h3 { font-size: 1.02rem; margin: 0 0 6px; }
+.brief-item h3 a { color: var(--amber2); text-decoration: none; }
+.brief-item h3 a:hover { text-decoration: underline; }
+.brief-item p { margin: 0 0 8px; font-size: .9rem; }
+.brief-m { display: flex; flex-wrap: wrap; gap: 6px; }
+.brief-m a { font-size: .8rem; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line2); color: var(--text); text-decoration: none; }
+.brief-m a:hover { border-color: var(--amber); }
