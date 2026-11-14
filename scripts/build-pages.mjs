@@ -30,19 +30,19 @@ const LABEL = { en: "English", es: "Español", hi: "हिंदी" };
 
 // page words (the machine pages have their own short vocabulary)
 const W = {
-  en: { site: "Ghosts of Exploration", tagline: "Abandoned but not Forgotten", home: "Home", all: "All 49 machines", epitaph: "Epitaph", notEpitaph: "Not an epitaph yet",
+  en: { site: "Ghosts of Exploration", tagline: "Abandoned but not Forgotten", home: "Home", back: "Back", all: "All 49 machines", epitaph: "Epitaph", notEpitaph: "Not an epitaph yet",
         story: "The story", ghost: "Ghost log (in its own voice)", science: "The science story", disc: "What it discovered", matters: "Why it matters today", fun: "Fun fact",
         dates: "Mission dates", launched: "Launched", arrived: "Arrived", last: "Last word / status", onboard: "What was on board", orbit: "See it from orbit",
         sources: "Sources", open: "Open the interactive dossier", see3d: "See it in 3D", ask: "Ask about it", prev: "Previous", next: "Next", photo: "Photo",
         allIntro: "Every machine in the Ghosts of Exploration archive: the rovers, landers, Moon cars and probes NASA left on the Moon, on Mars and across the solar system, each with its story.",
         allTitle: "All 49 machines NASA left behind", machines: "machines", noteEn: "", made: "Made for the NASA Space Apps Challenge 2026. Photos: NASA Image and Video Library." },
-  es: { site: "Fantasmas de la Exploración", tagline: "Abandonados, pero no olvidados", home: "Inicio", all: "Las 49 máquinas", epitaph: "Epitafio", notEpitaph: "Aún no es un epitafio",
+  es: { site: "Fantasmas de la Exploración", tagline: "Abandonados, pero no olvidados", home: "Inicio", back: "Volver", all: "Las 49 máquinas", epitaph: "Epitafio", notEpitaph: "Aún no es un epitafio",
         story: "La historia", ghost: "Diario fantasma (con su propia voz)", science: "", disc: "", matters: "", fun: "Dato curioso",
         dates: "Fechas de la misión", launched: "Lanzamiento", arrived: "Llegada", last: "Última señal / estado", onboard: "", orbit: "Míralo desde la órbita",
         sources: "Fuentes (en inglés)", open: "Abrir el expediente interactivo", see3d: "Verlo en 3D", ask: "Preguntar sobre esta máquina", prev: "Anterior", next: "Siguiente", photo: "Foto",
         allIntro: "Todas las máquinas del archivo Fantasmas de la Exploración: los róveres, módulos de aterrizaje, autos lunares y sondas que la NASA dejó en la Luna, en Marte y en todo el sistema solar, cada una con su historia.",
         allTitle: "Las 49 máquinas que la NASA dejó atrás", machines: "máquinas", noteEn: "Las fechas y algunos detalles técnicos se muestran en inglés.", made: "Hecho para el NASA Space Apps Challenge 2026. Fotos: Biblioteca de Imágenes y Videos de la NASA." },
-  hi: { site: "अन्वेषण के भूत", tagline: "छोड़े गए, पर भुलाए नहीं गए", home: "मुख्य पेज", all: "सभी 49 मशीनें", epitaph: "समाधि-लेख", notEpitaph: "अभी समाधि-लेख नहीं",
+  hi: { site: "अन्वेषण के भूत", tagline: "छोड़े गए, पर भुलाए नहीं गए", home: "मुख्य पेज", back: "वापस", all: "सभी 49 मशीनें", epitaph: "समाधि-लेख", notEpitaph: "अभी समाधि-लेख नहीं",
         story: "कहानी", ghost: "भूत-डायरी (उसकी अपनी आवाज़ में)", science: "", disc: "", matters: "", fun: "मज़ेदार तथ्य",
         dates: "मिशन की तारीख़ें", launched: "प्रक्षेपण", arrived: "पहुँचा", last: "आख़िरी संदेश / स्थिति", onboard: "", orbit: "कक्षा से देखें",
         sources: "स्रोत (अंग्रेज़ी में)", open: "इंटरैक्टिव फ़ाइल खोलें", see3d: "3D में देखें", ask: "इसके बारे में पूछें", prev: "पिछली", next: "अगली", photo: "तस्वीर",
@@ -93,11 +93,13 @@ ${LANGS.filter(x => x !== l).map(x => `  <meta property="og:locale:alternate" co
   <link rel="stylesheet" href="../css/machine.css">
   <link rel="icon" href="../assets/ui/star.png">
   <meta name="theme-color" content="#060a13">
+  <script src="../js/back.js" defer></script>
   <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>
 </head>`;
 
-const topbar = (l, alt) => `<body class="mpage">
+const topbar = (l, alt, back = idx(l)) => `<body class="mpage">
   <header class="topbar">
+    <a class="back-btn" href="${back}" data-back aria-label="${esc(W[l].back)}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg><span>${esc(W[l].back)}</span></a>
     <a class="brand" href="../index.html?lang=${l}" aria-label="${esc(W[l].site)}"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text"><strong>${esc(W[l].site)}</strong><small>${esc(W[l].tagline)}</small></span></a>
     <nav class="lang-switch" aria-label="Language / Idioma / भाषा">${LANGS.map(x => `<a href="${alt(x)}" hreflang="${x}" lang="${x}"${x === l ? ' aria-current="true"' : ""} title="${LABEL[x]}">${x === "hi" ? "हिं" : x.toUpperCase()}</a>`).join("")}</nav>
   </header>`;
@@ -192,7 +194,7 @@ for (const l of LANGS) {
     }).join("")}</ul></section>`;
   }).join("");
   writeFileSync(join(outDir, idx(l)), `${head({ l, title: `${w.allTitle} | ${w.site}`, desc: clip(w.allIntro, 158), path, alt: x => idx(x), img: `${BASE}assets/share/og.jpg`, imgAlt: w.site, ld, type: "website" })}
-${topbar(l, x => idx(x))}
+${topbar(l, x => idx(x), `../index.html?lang=${l}`)}
   <main class="mwrap mwide" id="main">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html?lang=${l}">${esc(w.home)}</a> › <span aria-current="page">${esc(w.all)}</span></nav>
     <h1>${esc(w.allTitle)}</h1>

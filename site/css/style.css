@@ -1086,3 +1086,20 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 @media (max-width: 760px) { .play-hero { grid-template-columns: auto 1fr; } .play-levels { grid-column: 1 / -1; } }
 .drawer.full .d-toc { scrollbar-width: none; mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent); }
 .drawer.full .d-toc::-webkit-scrollbar { display: none; }
+
+/* ---------- back button (every inner page, left of the logo; js/back.js) ---------- */
+.back-btn {
+  display: inline-flex; align-items: center; gap: .4em; flex-shrink: 0;
+  min-height: 40px; padding: .4em .95em .4em .7em; border-radius: 999px;
+  border: 1px solid var(--line2); background: var(--panel); color: var(--text);
+  font-family: var(--head); font-weight: 600; font-size: .9rem; text-decoration: none; white-space: nowrap;
+  transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+}
+.back-btn svg { width: 18px; height: 18px; transition: transform .2s; }
+.back-btn:hover { background: var(--panel2); border-color: var(--amber); color: var(--amber2); box-shadow: 0 0 16px rgba(255,179,71,.18); }
+.back-btn:hover svg { transform: translateX(-3px); }
+.back-btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.back-btn:active { transform: translateY(1px); }
+@media (max-width: 640px) { .back-btn { padding: .4em .6em; min-height: 40px; } .back-btn span { display: none; } }
+@media (prefers-reduced-motion: reduce) { .back-btn, .back-btn svg { transition: none; } .back-btn:hover svg { transform: none; } }
+@media print { .back-btn { display: none !important; } }

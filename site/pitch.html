@@ -82,9 +82,17 @@
       .nav { display: none; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
+    .back-btn { position: fixed; top: 14px; left: 14px; z-index: 5; display: inline-flex; align-items: center; gap: .4em; min-height: 40px; padding: .4em .95em .4em .7em; border-radius: 999px; background: rgba(15,23,41,.85); border: 1px solid var(--line); color: var(--text); font: 600 .9rem "Space Grotesk", sans-serif; text-decoration: none; backdrop-filter: blur(8px); transition: background .2s, border-color .2s, color .2s; }
+    .back-btn svg { width: 18px; height: 18px; transition: transform .2s; }
+    .back-btn:hover { background: #1b2742; border-color: var(--amber); color: var(--amber2); }
+    .back-btn:hover svg { transform: translateX(-3px); }
+    .back-btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+    @media (max-width: 640px) { .back-btn span { display: none; } .back-btn { padding: .4em .6em; } }
+    @media print { .back-btn { display: none !important; } }
   </style>
 </head>
 <body>
+<a class="back-btn" href="index.html" data-back aria-label="Go back"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg><span>Back</span></a>
 <div class="deck" id="deck">
   <section class="slide" aria-label="Slide 1: Title">
     <p class="eyebrow">NASA Space Apps Challenge 2026 · Abandoned but not Forgotten</p>
@@ -309,6 +317,7 @@
   <button id="fs" aria-label="Full screen" title="Full screen">⛶</button>
 </nav>
 <script>
+  document.querySelector("a[data-back]").addEventListener("click", e => { try { if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) { e.preventDefault(); history.back(); } } catch {} });
   (() => {
     const slides = [...document.querySelectorAll(".slide")];
     let i = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
