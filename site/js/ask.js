@@ -349,7 +349,20 @@
   }
   function finishBot(el, text, ids, source) {
     const bubble = $(".bubble", el);
-    bubble.innerHTML = `<span class="badge-src">${source === "ai" ? ico("sparkle") + " AI guide" : ico("book") + " Archive guide"}</span>` + md(text);
+    let thoughtEl = null;
+    if (el._thoughtLine) {
+      el._thoughtLine.settle();
+      thoughtEl = el._thoughtLine.el;
+    }
+    bubble.innerHTML = "";
+    if (thoughtEl) {
+      bubble.appendChild(thoughtEl);
+    }
+    const ans = document.createElement("div");
+    ans.className = "bot-answer";
+    ans.innerHTML = `<span class="badge-src">${source === "ai" ? ico("sparkle") + " AI guide" : ico("book") + " Archive guide"}</span>` + md(text);
+    bubble.appendChild(ans);
+
     const tools = document.createElement("div");
     tools.className = "msg-tools";
     tools.innerHTML = (ids || []).filter(id => byId[id]).map(id => {
@@ -400,7 +413,16 @@
       if (text.startsWith("\u0000ERROR")) { history.pop(); return { failed: "server" }; }
       if (performance.now() - last > 60) {
         last = performance.now();
-        bubble.innerHTML = `<span class="badge-src">${ico("sparkle")} AI guide</span>` + md(text);
+        if (el._thoughtLine && !el._thoughtLine.settled) {
+          el._thoughtLine.settle();
+        }
+        let ans = bubble.querySelector(".bot-answer");
+        if (!ans) {
+          ans = document.createElement("div");
+          ans.className = "bot-answer";
+          bubble.appendChild(ans);
+        }
+        ans.innerHTML = `<span class="badge-src">${ico("sparkle")} AI guide</span>` + md(text);
         el.scrollIntoView({ block: "end" });
       }
     }
@@ -414,7 +436,17 @@
     question = question.trim().slice(0, 800);
     if (!question) return;
     addMsg("user", esc(question));
-    const el = addMsg("bot", `<span class="typing" aria-label="Thinking"><i></i><i></i><i></i></span>`);
+    const el = addMsg("bot", "");
+    const bubble = $(".bubble", el);
+
+    if (window.ThoughtLine) {
+      el._thoughtLine = new window.ThoughtLine(bubble, {
+        mode: mode === "ai" && ENDPOINT ? "ai" : "offline"
+      });
+    } else {
+      bubble.innerHTML = `<span class="typing" aria-label="Thinking"><i></i><i></i><i></i></span>`;
+    }
+
     setBusy(true);
     try {
       if (mode === "ai" && ENDPOINT) {
@@ -425,7 +457,7 @@
         finishBot(el, off.text + `\n\n*${why}, so this answer comes from the archive guide.*`, off.ids, "offline");
         return;
       }
-      await new Promise(r => setTimeout(r, 350)); // a short pause feels more natural
+      await new Promise(r => setTimeout(r, 650)); // organic pause allowing thinking trace animation
       const off = offlineAnswer(question);
       finishBot(el, off.text, off.ids, "offline");
     } finally {
@@ -482,9 +514,87 @@
   }
   greet();
 
-  // Nav toggle (same behaviour as the main page)
+  // Nav toggle & topbar responsive fit
+  const bar = $(".topbar");
+  if (bar) {
+    const fit = () => {
+      bar.classList.remove("nav-compact");
+      if (bar.scrollWidth > bar.clientWidth + 1) bar.classList.add("nav-compact");
+    };
+    let timer = 0;
+    const refit = () => { clearTimeout(timer); timer = setTimeout(fit, 60); };
+    fit();
+    addEventListener("resize", refit);
+    document.fonts?.ready.then(refit);
+    addEventListener("load", refit);
+  }
+
   const t = $(".nav-toggle"), ul = $("#navlist");
-  t.addEventListener("click", () => { const o = ul.classList.toggle("open"); t.setAttribute("aria-expanded", o); });
+  if (t && ul && !window.OptionWheel) {
+    t.addEventListener("click", () => {
+      const o = ul.classList.toggle("open");
+      t.setAttribute("aria-expanded", o);
+    });
+  }
+
+  // Sync explorer passport notification count
+  try {
+    const raw = localStorage.getItem("goe:progress");
+    if (raw) {
+      const p = JSON.parse(raw);
+      const badges = Array.isArray(p.badges) ? p.badges : [];
+      const seen = Array.isArray(p.seenBadges) ? p.seenBadges : [];
+      const unviewed = badges.filter(id => !seen.includes(id)).length;
+      const bc = document.getElementById("badgeCount");
+      if (bc) {
+        if (unviewed > 0) {
+          bc.textContent = unviewed;
+          bc.style.display = "grid";
+          bc.classList.add("has-unread");
+        } else {
+          bc.textContent = "0";
+          bc.style.display = "none";
+          bc.classList.remove("has-unread");
+        }
+      }
+    }
+  } catch (e) { }
+
+  // Settings popover & preferences
+  const PREFS_KEY = "goe:prefs";
+  let prefs = { level: "explorer", size: 1, motion: false, spacing: false };
+  try { const raw = localStorage.getItem(PREFS_KEY); if (raw) prefs = { ...prefs, ...JSON.parse(raw) }; } catch (e) { }
+  function savePrefs() { try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch (e) { } }
+  function applyPrefs() {
+    document.documentElement.style.setProperty("--fs", prefs.size);
+    document.body.classList.toggle("reduce-motion", !!prefs.motion);
+    document.body.classList.toggle("spacing", !!prefs.spacing);
+    $$("[data-level]").forEach(b => b.setAttribute("aria-checked", b.dataset.level === prefs.level));
+    $$("[data-size]").forEach(b => b.setAttribute("aria-checked", +b.dataset.size === +prefs.size));
+    const rm = $("#reduceMotion"); if (rm) rm.checked = !!prefs.motion;
+    const sp = $("#spacing"); if (sp) sp.checked = !!prefs.spacing;
+  }
+  function initSettings() {
+    const btn = $("#settingsBtn"), panel = $("#settings");
+    if (!btn || !panel) return;
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      panel.hidden = !panel.hidden;
+      btn.setAttribute("aria-expanded", !panel.hidden);
+    });
+    document.addEventListener("click", e => {
+      if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) {
+        panel.hidden = true;
+        btn.setAttribute("aria-expanded", "false");
+      }
+    });
+    $$("[data-level]").forEach(b => b.addEventListener("click", () => { prefs.level = b.dataset.level; savePrefs(); applyPrefs(); }));
+    $$("[data-size]").forEach(b => b.addEventListener("click", () => { prefs.size = +b.dataset.size; savePrefs(); applyPrefs(); }));
+    $("#reduceMotion")?.addEventListener("change", e => { prefs.motion = e.target.checked; savePrefs(); applyPrefs(); });
+    $("#spacing")?.addEventListener("change", e => { prefs.spacing = e.target.checked; savePrefs(); applyPrefs(); });
+    applyPrefs();
+  }
+  initSettings();
 
   // Allow ?q=... links (e.g. from a dossier) to ask a question straight away.
   const q0 = new URLSearchParams(location.search).get("q");

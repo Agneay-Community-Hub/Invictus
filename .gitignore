@@ -49,4 +49,7 @@ site/atlas/
 
 # Local project analysis / guides
 PROJECT_STRUCTURE_GUIDE.md
+PHASE_*.md
+docs/phases/
+
 
