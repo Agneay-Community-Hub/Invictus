@@ -1108,3 +1108,12 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 @media (max-width: 380px) { .back-btn { padding: 4px; } .back-txt { display: none; } }
 @media (prefers-reduced-motion: reduce) { .back-btn, .back-ic, .back-ic svg { transition: none; } .back-btn:hover .back-ic svg { transform: none; } }
 @media print { .back-btn { display: none !important; } }
+
+/* ---- GitHub link: icon in the header, labelled pill in the footer ---- */
+.gh-btn { color: var(--text); text-decoration: none; }
+.gh-btn .gh-mark { width: 21px; height: 21px; }
+.gh-btn:hover, .gh-btn:focus-visible { color: var(--amber2); }
+@media (max-width: 640px) { .gh-btn { display: none; } }   /* phones: the footer link is enough */
+.gh-foot { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; padding: 7px 14px 7px 10px; border-radius: 999px; border: 1px solid var(--line2); background: var(--panel); color: var(--text); font-weight: 600; text-decoration: none; }
+.gh-foot .gh-mark { width: 18px; height: 18px; }
+.gh-foot:hover, .gh-foot:focus-visible { border-color: var(--amber); color: var(--amber2); }

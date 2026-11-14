@@ -357,7 +357,9 @@
     "tour.6p": "Aterriza una nave, juega a Cartas Fantasma o adivina la máquina en ¿Quién soy?",
     "hero.story": "Mira la historia de Echo en 5 minutos",
     "xm.story": "El viaje de Echo",
-    "xm.storySub": "Todo el archivo en unos 5 minutos, contado por Echo, el último mensaje a casa (en inglés)."
+    "xm.storySub": "Todo el archivo en unos 5 minutos, contado por Echo, el último mensaje a casa (en inglés).",
+    "gh.label": "Nuestro código en GitHub (se abre en otra pestaña)",
+    "gh.foot": "Ver el código en GitHub"
   },
   "status": {
     "silent": {
