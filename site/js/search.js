@@ -14,6 +14,7 @@
     ["Ghost Logs", "index.html#logs", "book", "stories diary first person"],
     ["Timeline", "index.html#timeline", "clock", "history years dates"],
     ["Who am I? quiz", "quiz.html", "award", "quiz game guess who am i"],
+    ["Echo's journey: the 5-minute story", "story.html", "play", "story guided tour echo video narrated summary"],
     ["All machines", "browse.html", "grid", "browse list filter rovers landers probes"],
     ["Compare two machines", "compare.html", "compare", "side by side versus vs"],
     ["Timeline, year by year", "timeline.html", "clock", "history years dates when launched quiet listen"],

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Echo's journey — Ghosts of Exploration</title>
+  <meta name="description" content="A 5-minute guided story: Echo, the last radio message a spacecraft ever sends home, takes you from the Moon to interstellar space to meet the machines NASA left behind.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Echo's journey — Ghosts of Exploration">
+  <meta property="og:description" content="The whole archive in about 5 minutes, told by Echo.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/Invictus/story.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/Invictus/assets/share/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/Invictus/story.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=f26443d9">
+  <link rel="stylesheet" href="css/story.css?v=00e96c79">
+  <link rel="icon" href="assets/ui/bolt.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#060a13">
+  <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+</head>
+<body class="story-page">
+  <a class="skip" href="#stStart">Skip to the start button</a>
+
+  <!-- background photos (two layers, cross-faded) -->
+  <div class="st-bg" id="stBgA" aria-hidden="true"></div>
+  <div class="st-bg" id="stBgB" aria-hidden="true"></div>
+  <div class="st-shade" aria-hidden="true"></div>
+
+  <header class="st-top">
+    <a class="back-btn" href="index.html" data-back aria-label="Go back"><span>Back</span></a>
+    <div class="st-head"><small>Echo's journey · <span id="stNum">1 / 9</span></small><h1 id="stTitle">Hello from Echo</h1></div>
+    <nav class="st-dots" id="stDots" aria-label="Scenes"></nav>
+  </header>
+
+  <main class="st-stage" id="main">
+    <!-- Echo: the last radio message a spacecraft ever sends home -->
+    <figure class="st-echo" id="stEcho" aria-hidden="true">
+      <span class="st-ring r1"></span><span class="st-ring r2"></span><span class="st-ring r3"></span>
+      <svg viewBox="0 0 120 140" class="st-echo-body">
+        <defs>
+          <radialGradient id="echoGlow" cx="50%" cy="38%" r="65%"><stop offset="0" stop-color="#e8f7ff"/><stop offset=".55" stop-color="#9fdcff"/><stop offset="1" stop-color="#5fb8f0"/></radialGradient>
+        </defs>
+        <path class="st-echo-ghost" d="M60 8C33 8 16 29 16 55v62c0 6 6 9 11 5l9-7 9 8c4 3 8 3 12 0l3-3 3 3c4 3 8 3 12 0l9-8 9 7c5 4 11 1 11-5V55C104 29 87 8 60 8Z" fill="url(#echoGlow)" stroke="#0b1a2e" stroke-width="3"/>
+        <g class="st-echo-face">
+          <ellipse cx="45" cy="56" rx="7" ry="9" fill="#0b1a2e"/><ellipse cx="75" cy="56" rx="7" ry="9" fill="#0b1a2e"/>
+          <circle cx="47.5" cy="52.5" r="2.4" fill="#fff"/><circle cx="77.5" cy="52.5" r="2.4" fill="#fff"/>
+          <ellipse class="st-echo-cheek" cx="35" cy="70" rx="6" ry="3.5" fill="#ffb347" opacity=".55"/><ellipse class="st-echo-cheek" cx="85" cy="70" rx="6" ry="3.5" fill="#ffb347" opacity=".55"/>
+          <path class="st-echo-mouth" d="M52 74q8 7 16 0" fill="none" stroke="#0b1a2e" stroke-width="3.2" stroke-linecap="round"/>
+        </g>
+        <g class="st-echo-waves" fill="none" stroke="#ffb347" stroke-width="3.4" stroke-linecap="round">
+          <path d="M60 22a6 6 0 0 1 0 0"/><path d="M53 24q7-6 14 0"/><path d="M48 19q12-10 24 0"/>
+        </g>
+      </svg>
+      <figcaption>Echo</figcaption>
+    </figure>
+
+    <div class="st-talk">
+      <p class="st-cap" id="stCap" aria-live="polite"></p>
+    </div>
+
+    <aside class="st-fact" id="stFact" aria-label="Key fact">
+      <b id="stFactN"></b>
+      <span id="stFactL"></span>
+      <a class="st-deeper" id="stDeeper" href="index.html"><span>Go deeper</span> →</a>
+    </aside>
+
+    <!-- light-speed travel between worlds -->
+    <div class="st-warp" id="stWarp" hidden aria-live="polite"><div><small>Travelling at the speed of light to</small><b></b><small></small></div></div>
+
+    <!-- the end -->
+    <div class="st-end" id="stEnd" hidden>
+      <a class="btn btn-primary" href="index.html#map">Explore the Ghost Map</a>
+      <a class="btn" href="index.html#play">Play the games</a>
+      <a class="btn" href="ask.html">Ask anything</a>
+      <button class="btn" type="button" id="stAgain">Watch again</button>
+    </div>
+  </main>
+
+  <footer class="st-controls" aria-label="Story controls">
+    <button class="st-btn" id="stPrev" type="button" aria-label="Previous"></button>
+    <button class="st-btn st-play" id="stPlay" type="button" aria-label="Pause" aria-pressed="true"></button>
+    <button class="st-btn" id="stNext" type="button" aria-label="Next scene"></button>
+    <button class="st-btn" id="stVoice" type="button" aria-label="Narration on" aria-pressed="true"></button>
+    <p class="st-hint">Space: pause · ← →: scenes · M: voice</p>
+  </footer>
+
+  <!-- start card (a tap is needed before the browser may speak) -->
+  <div class="st-intro" id="stIntro">
+    <div class="st-intro-card">
+      <p class="eyebrow">A guided story</p>
+      <h2>Echo's journey</h2>
+      <p>Meet Echo, the last radio message a spacecraft ever sends home. Travel at the speed of light from the Moon to interstellar space and meet the machines NASA left behind, in <b id="stLen">about 5 minutes</b>.</p>
+      <button class="btn btn-primary btn-lg" id="stStart" type="button">▶ Start the journey</button>
+      <p class="st-intro-note">Echo talks out loud. Captions are always on, so it works with the sound off too. Every fact comes from NASA mission records.</p>
+    </div>
+  </div>
+
+  <script src="js/icons.js?v=835e5414"></script>
+  <script src="js/data.js?v=83e574d5"></script>
+  <script>
+    // button icons
+    document.getElementById("stPrev").innerHTML = ico("arrow").replace("<svg", '<svg style="transform:scaleX(-1)"');
+    document.getElementById("stNext").innerHTML = ico("arrow");
+    document.getElementById("stPlay").innerHTML = ico("pause");
+    document.getElementById("stVoice").innerHTML = ico("speaker");
+  </script>
+  <script src="js/story.js?v=8bf89c46"></script>
+  <script src="js/back.js?v=0ad31277"></script>
+  <script src="js/pwa.js?v=7612dde4"></script>
+</body>
+</html>

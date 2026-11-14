@@ -1,0 +1,102 @@
+/* ---------- Echo's journey (story.html): a full-screen guided story ---------- */
+body.story-page { margin: 0; min-height: 100dvh; overflow: hidden; background: #03060c; color: var(--text); }
+.st-bg { position: fixed; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease; transform: scale(1.02); }
+.st-bg.on { opacity: 1; }
+.st-bg.zoom { animation: stZoom 46s linear forwards; }
+@keyframes stZoom { from { transform: scale(1.04); } to { transform: scale(1.16); } }
+.st-shade { position: fixed; inset: 0; background:
+  radial-gradient(ellipse at 30% 75%, rgba(3,6,12,.25), transparent 55%),
+  linear-gradient(180deg, rgba(3,6,12,.82) 0%, rgba(3,6,12,.25) 26%, rgba(3,6,12,.35) 55%, rgba(3,6,12,.92) 100%); }
+
+/* top bar: back, scene title, scene dots */
+.st-top { position: fixed; top: 0; left: 0; right: 0; z-index: 5; display: flex; align-items: center; gap: 16px; padding: 14px clamp(14px, 3vw, 28px); }
+.st-head { min-width: 0; flex: 1; }
+.st-head small { display: block; color: var(--amber2); font-weight: 700; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+.st-head h1 { margin: 0; font-size: clamp(1.15rem, 2.4vw, 1.7rem); line-height: 1.15; text-shadow: 0 2px 12px #000; }
+.st-dots { display: flex; gap: 6px; }
+.st-dots button { width: 26px; height: 26px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.st-dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(233,238,247,.25); border: 1px solid rgba(233,238,247,.45); transition: background .3s, transform .3s; }
+.st-dots button.done i { background: var(--amber2); border-color: var(--amber2); opacity: .7; }
+.st-dots button[aria-current="true"] i { background: var(--amber); border-color: var(--amber); transform: scale(1.5); box-shadow: 0 0 10px var(--amber); }
+.st-dots button:focus-visible { outline: 2px solid var(--amber); border-radius: 50%; }
+
+/* the stage: Echo and its words on the left, the fact card on the right */
+.st-stage { position: fixed; inset: 0; z-index: 2; display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(220px, 300px); grid-template-areas: "echo talk fact"; align-items: end; gap: clamp(14px, 2.5vw, 30px); padding: 90px clamp(16px, 4vw, 48px) 110px; }
+.st-echo { grid-area: echo; position: relative; width: clamp(96px, 12vw, 150px); margin: 0; animation: stBob 3.6s ease-in-out infinite; transition: transform .6s ease, opacity .6s; }
+.st-echo-body { width: 100%; display: block; filter: drop-shadow(0 0 22px rgba(127,212,255,.55)); }
+.st-echo figcaption { text-align: center; font-family: var(--head); font-weight: 700; color: #bfe8ff; font-size: .85rem; letter-spacing: .08em; margin-top: 4px; }
+@keyframes stBob { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-10px) rotate(1.5deg); } }
+.st-ring { position: absolute; left: 50%; top: 42%; width: 70%; aspect-ratio: 1; border: 2px solid rgba(127,212,255,.6); border-radius: 50%; transform: translate(-50%, -50%) scale(.6); opacity: 0; pointer-events: none; }
+.st-echo.talking .st-ring { animation: stPing 1.8s ease-out infinite; }
+.st-echo.talking .r2 { animation-delay: .6s; } .st-echo.talking .r3 { animation-delay: 1.2s; }
+@keyframes stPing { from { transform: translate(-50%, -50%) scale(.7); opacity: .8; } to { transform: translate(-50%, -50%) scale(2.1); opacity: 0; } }
+.st-echo.talking .st-echo-mouth { animation: stTalk .32s ease-in-out infinite alternate; transform-origin: 60px 75px; }
+@keyframes stTalk { from { transform: scaleY(.6); } to { transform: scaleY(1.6); } }
+.st-echo.talking .st-echo-waves { animation: stWaves 1s ease-in-out infinite; }
+@keyframes stWaves { 50% { opacity: .35; } }
+.st-echo.zoom-off { transform: translateX(120vw) scale(.6); opacity: 0; }
+
+.st-talk { grid-area: talk; position: relative; }
+.st-cap { margin: 0; max-width: 62ch; padding: clamp(14px, 2vw, 22px) clamp(16px, 2.4vw, 26px); border-radius: 22px 22px 22px 6px; background: rgba(11,17,32,.86); border: 1px solid rgba(127,212,255,.35); box-shadow: 0 18px 50px -10px rgba(0,0,0,.7); font-size: clamp(1.05rem, 1.7vw, 1.38rem); line-height: 1.55; backdrop-filter: blur(6px); }
+.st-cap.in { animation: stIn .45s ease-out; }
+@keyframes stIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.st-fact { grid-area: fact; display: grid; gap: 6px; padding: 18px 20px; border-radius: 20px; background: rgba(11,17,32,.82); border: 1px solid rgba(255,179,71,.45); backdrop-filter: blur(6px); }
+.st-fact.in { animation: stIn .6s ease-out .3s both; }
+.st-fact b { font-family: var(--head); font-size: clamp(1.8rem, 3.4vw, 2.7rem); line-height: 1.05; color: var(--amber2); }
+.st-fact span { color: var(--muted); line-height: 1.45; font-size: .95rem; }
+.st-deeper { margin-top: 6px; font-weight: 700; color: #bfe8ff; text-decoration: none; }
+.st-deeper:hover, .st-deeper:focus-visible { color: var(--amber2); text-decoration: underline; }
+
+/* light-speed travel card */
+.st-warp { position: fixed; inset: 0; z-index: 4; display: grid; place-items: center; background: radial-gradient(circle at 50% 50%, rgba(127,212,255,.18), rgba(3,6,12,.94) 60%); }
+.st-warp::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 46px, rgba(191,232,255,.55) 46px 48px, transparent 48px 120px); opacity: 0; }
+.st-warp.go::before { animation: stStreak 2.4s ease-in-out; }
+@keyframes stStreak { 0% { opacity: 0; transform: scaleX(.2); } 30% { opacity: .5; transform: scaleX(1.6); } 100% { opacity: 0; transform: scaleX(3); } }
+.st-warp div { position: relative; text-align: center; animation: stIn .5s ease-out; }
+.st-warp small { display: block; color: var(--muted); font-size: .95rem; letter-spacing: .04em; }
+.st-warp b { display: block; font-family: var(--head); font-size: clamp(2.2rem, 6vw, 4rem); color: #fff; text-shadow: 0 0 30px rgba(127,212,255,.6); margin: 6px 0; }
+
+/* the end buttons */
+.st-end { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -60%); z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; width: min(92vw, 620px); }
+.st-end[hidden] { display: none; }
+
+/* bottom controls */
+.st-controls { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 16px calc(14px + env(safe-area-inset-bottom)); }
+.st-btn { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line2); background: rgba(11,17,32,.86); color: var(--text); cursor: pointer; backdrop-filter: blur(6px); }
+.st-btn .ico { width: 20px; height: 20px; }
+.st-btn:hover, .st-btn:focus-visible { border-color: var(--amber); color: var(--amber2); }
+.st-btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.st-play { width: 60px; height: 60px; background: var(--amber); border-color: var(--amber); color: #111; }
+.st-play:hover, .st-play:focus-visible { color: #111; background: var(--amber2); }
+.st-play .ico { width: 24px; height: 24px; }
+#stVoice[aria-pressed="false"] { color: var(--dim); }
+.st-hint { position: absolute; right: 18px; bottom: 26px; margin: 0; color: var(--dim); font-size: .78rem; }
+
+/* start card */
+.st-intro { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 16px; background: radial-gradient(circle at 50% 40%, rgba(11,17,32,.55), rgba(3,6,12,.92)); }
+.st-intro[hidden] { display: none; }
+.st-intro-card { max-width: 560px; text-align: center; padding: clamp(22px, 4vw, 40px); border-radius: 26px; background: rgba(11,17,32,.92); border: 1px solid rgba(127,212,255,.35); box-shadow: 0 30px 80px -20px #000; }
+.st-intro-card h2 { font-size: clamp(2rem, 5vw, 3rem); margin: 4px 0 10px; }
+.st-intro-card p { color: var(--muted); line-height: 1.6; }
+.st-intro-card b { color: var(--text); }
+.st-intro-note { font-size: .85rem; margin-top: 14px; }
+body:not(.running) .st-controls, body:not(.running) .st-fact, body:not(.running) .st-talk { visibility: hidden; }
+
+/* back button sits in the top bar */
+.st-top .back-btn { flex: none; }
+
+/* phones: Echo above the words, the fact card on top */
+@media (max-width: 820px) {
+  .st-stage { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "fact fact" "echo talk"; align-content: end; padding-bottom: 96px; }
+  .st-fact { padding: 12px 16px; }
+  .st-fact b { font-size: 1.6rem; }
+  .st-dots { display: none; }
+  .st-hint { display: none; }
+  .st-echo { width: 78px; }
+  .st-cap { font-size: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-echo, .st-echo.talking .st-ring, .st-echo.talking .st-echo-mouth, .st-echo.talking .st-echo-waves, .st-bg.zoom, .st-warp.go::before { animation: none !important; }
+  .st-bg { transition: opacity .3s; }
+}
