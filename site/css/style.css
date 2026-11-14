@@ -1087,19 +1087,24 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 .drawer.full .d-toc { scrollbar-width: none; mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent); }
 .drawer.full .d-toc::-webkit-scrollbar { display: none; }
 
-/* ---------- back button (every inner page, left of the logo; js/back.js) ---------- */
+/* ---------- back button (every inner page, left of the logo; js/back.js names where it goes) ---------- */
 .back-btn {
-  display: inline-flex; align-items: center; gap: .4em; flex-shrink: 0;
-  min-height: 40px; padding: .4em .95em .4em .7em; border-radius: 999px;
-  border: 1px solid var(--line2); background: var(--panel); color: var(--text);
-  font-family: var(--head); font-weight: 600; font-size: .9rem; text-decoration: none; white-space: nowrap;
-  transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+  display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; max-width: min(250px, 40vw);
+  min-height: 44px; padding: 4px 16px 4px 4px; border-radius: 999px;
+  border: 1px solid var(--line2); background: var(--panel); color: var(--text); text-decoration: none;
+  transition: background .2s, border-color .2s, box-shadow .2s;
 }
-.back-btn svg { width: 18px; height: 18px; transition: transform .2s; }
-.back-btn:hover { background: var(--panel2); border-color: var(--amber); color: var(--amber2); box-shadow: 0 0 16px rgba(255,179,71,.18); }
-.back-btn:hover svg { transform: translateX(-3px); }
+.back-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,179,71,.14); color: var(--amber2); transition: background .2s, color .2s; }
+.back-ic svg { width: 18px; height: 18px; transition: transform .2s; }
+.back-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+.back-txt small { font-size: .66rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.back-txt b { font-family: var(--head); font-size: .92rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.back-btn:hover, .back-btn:focus-visible { background: var(--panel2); border-color: var(--amber); box-shadow: 0 0 18px rgba(255,179,71,.18); }
+.back-btn:hover .back-ic, .back-btn:focus-visible .back-ic { background: var(--amber); color: #111; }
+.back-btn:hover .back-ic svg { transform: translateX(-2px); }
 .back-btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .back-btn:active { transform: translateY(1px); }
-@media (max-width: 640px) { .back-btn { padding: .4em .6em; min-height: 40px; } .back-btn span { display: none; } }
-@media (prefers-reduced-motion: reduce) { .back-btn, .back-btn svg { transition: none; } .back-btn:hover svg { transform: none; } }
+@media (max-width: 640px) { .back-btn { padding: 4px 12px 4px 4px; gap: 8px; max-width: 42vw; } .back-txt small { display: none; } .back-txt b { font-size: .88rem; } }
+@media (max-width: 380px) { .back-btn { padding: 4px; } .back-txt { display: none; } }
+@media (prefers-reduced-motion: reduce) { .back-btn, .back-ic, .back-ic svg { transition: none; } .back-btn:hover .back-ic svg { transform: none; } }
 @media print { .back-btn { display: none !important; } }

@@ -82,12 +82,18 @@
       .nav { display: none; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
-    .back-btn { position: fixed; top: 14px; left: 14px; z-index: 5; display: inline-flex; align-items: center; gap: .4em; min-height: 40px; padding: .4em .95em .4em .7em; border-radius: 999px; background: rgba(15,23,41,.85); border: 1px solid var(--line); color: var(--text); font: 600 .9rem "Space Grotesk", sans-serif; text-decoration: none; backdrop-filter: blur(8px); transition: background .2s, border-color .2s, color .2s; }
-    .back-btn svg { width: 18px; height: 18px; transition: transform .2s; }
-    .back-btn:hover { background: #1b2742; border-color: var(--amber); color: var(--amber2); }
-    .back-btn:hover svg { transform: translateX(-3px); }
+    /* back button: same look as the site's (css/style.css), floating over the slides */
+    .back-btn { position: fixed; top: 14px; left: 14px; z-index: 5; display: inline-flex; align-items: center; gap: 10px; max-width: min(250px, 40vw); min-height: 44px; padding: 4px 16px 4px 4px; border-radius: 999px; border: 1px solid var(--line); background: rgba(15,23,41,.85); backdrop-filter: blur(8px); color: var(--text); text-decoration: none; font-size: 16px; transition: border-color .2s, box-shadow .2s; }
+    .back-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,179,71,.14); color: var(--amber2); transition: background .2s, color .2s; }
+    .back-ic svg { width: 18px; height: 18px; }
+    .back-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+    .back-txt small { font-size: .66rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+    .back-txt b { font-family: "Space Grotesk", sans-serif; font-size: .92rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .back-btn:hover, .back-btn:focus-visible { border-color: var(--amber); box-shadow: 0 0 18px rgba(255,179,71,.18); }
+    .back-btn:hover .back-ic, .back-btn:focus-visible .back-ic { background: var(--amber); color: #111; }
     .back-btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-    @media (max-width: 640px) { .back-btn span { display: none; } .back-btn { padding: .4em .6em; } }
+    @media (max-width: 640px) { .back-btn { padding: 4px 12px 4px 4px; gap: 8px; max-width: 42vw; } .back-txt small { display: none; } }
+    @media (max-width: 380px) { .back-btn { padding: 4px; } .back-txt { display: none; } }
     @media print { .back-btn { display: none !important; } }
   </style>
 </head>
@@ -317,7 +323,6 @@
   <button id="fs" aria-label="Full screen" title="Full screen">⛶</button>
 </nav>
 <script>
-  document.querySelector("a[data-back]").addEventListener("click", e => { try { if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) { e.preventDefault(); history.back(); } } catch {} });
   (() => {
     const slides = [...document.querySelectorAll(".slide")];
     let i = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
@@ -335,5 +340,6 @@
     show(i);
   })();
 </script>
+<script src="js/back.js?v=be4036ce"></script>
 </body>
 </html>
