@@ -10,10 +10,10 @@
   const set = v => { try { localStorage.setItem(KEY, v); } catch { } };
   const STEPS = [
     ["#map", T("tour.1t", "The Ghost Map"), T("tour.1", "Every glowing dot is a real machine, placed where it lies. Tap one to open its story.")],
-    ["#today", T("tour.2t", "Ghost of the day"), T("tour.2", "A different machine every day. Read it, hear it, or share it.")],
     [".sx-btn", T("tour.3t", "Search everything"), T("tour.3", "Find any machine, mission, sound or page. Press Ctrl+K or / on a keyboard.")],
     ["#logs", T("tour.4t", "Ghost Logs"), T("tour.4", "Short stories told by the machines themselves. Press Read aloud to listen.")],
     [".top-actions .btn-glow", T("tour.5t", "3D Explore"), T("tour.5", "Spin the Moon and Mars in 3D and fly out to the far probes.")],
+    ["#today", T("tour.2t", "Ghost of the day"), T("tour.2", "A different machine every day. Read it, hear it, or share it.")],
     ["#quiz", T("tour.6t", "Who am I?"), T("tour.6", "Guess the machine from its clues.")],
     ["#passportBtn", T("tour.7t", "Your passport"), T("tour.7", "Collect badges as you explore. That's the tour. Have fun!")]
   ];

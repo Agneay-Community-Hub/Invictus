@@ -307,7 +307,23 @@
     "start.visited": "visitada",
     "start.progress": "{n} de {t} paradas visitadas",
     "start.reset": "Empezar de nuevo",
-    "start.allDone": "¡Visitaste las seis paradas! Abajo hay mucho más para explorar."
+    "start.allDone": "¡Visitaste las seis paradas! Abajo hay mucho más para explorar.",
+    "nav.stories": "Historias",
+    "nav.teach": "Docentes",
+    "stat.src": "Cada dato está comprobado con los registros de misión de la NASA. <a href=\"sources.html\">Mira nuestras fuentes →</a>",
+    "stories.eyebrow": "Una historia, muchos formatos",
+    "stories.title": "Léela, escúchala, mírala",
+    "stories.desc": "Las mismas historias reales, contadas como más te guste: un cómic narrado por un módulo de aterrizaje que sigue en Marte, un pódcast sobre los últimos días de cada máquina y dibujos animados cortos con sus propias voces.",
+    "xm.tp": "Material docente",
+    "xm.tpSub": "Planes de clase, fichas y un juego para la clase, gratis.",
+    "xm.ad": "Adopta un fantasma",
+    "xm.adSub": "Imprime un certificado para tu propia máquina, o uno para cada estudiante.",
+    "xm.src": "Fuentes",
+    "xm.srcSub": "Los registros de la NASA con los que se comprobó cada dato de este sitio.",
+    "w3d.ex": "Gira la Luna y Marte",
+    "w3d.exSub": "Globos en 3D con cada máquina, y un viaje hasta donde están hoy las Voyager.",
+    "w3d.eyes": "NASA Eyes on the Solar System",
+    "w3d.eyesSub": "El sistema solar en 3D y en vivo de NASA/JPL: vuela hasta la Voyager 1 ahora mismo."
   },
   "status": {
     "silent": {

@@ -4,8 +4,8 @@
     {
       "name": "ghosts-site",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["serve.py", "5174"],
-      "port": 5174
+      "runtimeArgs": ["serve.py", "5176"],
+      "port": 5176
     }
   ]
 }

@@ -995,3 +995,7 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 :lang(hi) .ss-tag { text-transform: none; letter-spacing: 0; }
 @media (max-width: 980px) { .start-path { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .start-path { grid-template-columns: 1fr; } }
+
+/* accuracy promise under the key numbers */
+.accuracy-line { margin: 0; padding: 10px clamp(16px, 3vw, 32px); text-align: center; font-size: .9rem; color: var(--muted); background: var(--bg2); border-bottom: 1px solid var(--line); }
+.accuracy-line a { color: var(--amber2); font-weight: 600; }

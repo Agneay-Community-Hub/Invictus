@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
-  <link rel="stylesheet" href="css/style.css?v=0efac139">
+  <link rel="stylesheet" href="css/style.css?v=c41360f8">
   <link rel="icon" href="assets/ui/star.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
@@ -57,15 +57,13 @@
       <ul id="navlist">
         <li><a data-i="nav.map" href="#map">Ghost Map</a></li>
         <li><a data-i="nav.logs" href="#logs">Ghost Logs</a></li>
+        <li><a data-i="nav.stories" href="#stories">Stories</a></li>
         <li><a data-i="nav.how" href="#how">How it worked</a></li>
-        <li><a data-i="nav.timeline" href="#timeline">Timeline</a></li>
         <li><a data-i="nav.deep" href="#deep">Elsewhere</a></li>
-        <li><a data-i="nav.quiz" href="#quiz">Quiz</a></li>
-        <li><a data-i="nav.archive" href="#archive">Archive</a></li>
-        <li><a data-i="nav.play" href="lander.html">Play</a></li>
-        <li><a data-i="nav.ask" href="ask.html">Ask</a></li>
-        <li><a data-i="nav.eyes" href="eyes.html">NASA Eyes</a></li>
         <li><a data-i="nav.w3d" href="#worlds3d">3D Worlds</a></li>
+        <li><a data-i="nav.ask" href="ask.html">Ask</a></li>
+        <li><a data-i="nav.play" href="lander.html">Play</a></li>
+        <li><a data-i="nav.teach" href="teacher.html">Teachers</a></li>
       </ul>
     </nav>
     <div class="top-actions">
@@ -139,6 +137,7 @@
       <div><strong id="v1dist">—</strong><span data-i="stat.v1">estimated distance of Voyager 1 from the Sun today</span></div>
       <div><strong data-i="stat.laserN">55+ yrs</strong><span data-i="stat.laser">the Apollo 11 laser mirror has been answering scientists</span></div>
     </section>
+    <p class="accuracy-line" data-i="stat.src">Every fact is checked against NASA mission records. <a href="sources.html">See our sources →</a></p>
 
     <!-- ============ START HERE: the best of the site in about 10 minutes ============ -->
     <section class="section start" id="start" aria-labelledby="startTitle">
@@ -201,12 +200,7 @@
       <p class="start-facts" data-i="start.facts">Made for ages 8–14 · every story can be read aloud · English, Español and हिंदी · works offline · every fact checked against NASA records (<a href="sources.html">Sources</a>) · free <a href="teacher.html">teacher pack</a></p>
     </section>
 
-    <!-- ============ GHOST OF THE DAY ============ -->
-    <section class="section gotd-sec" id="today" aria-labelledby="gotdTitle">
-      <div class="gotd" id="gotd"></div>
-    </section>
-
-    <!-- ============ MAP ============ -->
+    <!-- ============ GHOST MAP ============ -->
     <section class="section" id="map" aria-labelledby="mapTitle">
       <header class="sec-head">
         <p data-i="map.eyebrow" class="eyebrow">Ghost Map</p>
@@ -263,6 +257,18 @@
       <article class="chapter" id="chapter" aria-live="polite"></article>
     </section>
 
+    <!-- ============ STORIES: comics, podcast, cartoons ============ -->
+    <section class="section stories-sec" id="stories" aria-labelledby="storiesTitle">
+      <p data-i="stories.eyebrow" class="eyebrow">One story, many formats</p>
+      <h2 id="storiesTitle" data-i="stories.title">Read it, hear it, watch it</h2>
+      <p data-i="stories.desc" class="w3d-desc">The same true stories, told the way you like best: a comic narrated by a lander that is still sitting on Mars, a podcast about the last days of each machine, and short cartoons in their own voices.</p>
+      <div class="w3d-grid">
+        <a class="w3d-card" href="comics.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b data-i="xm.cx">Ghost Comics</b><small data-i="xm.cxSub">A comic for every machine. Issue #1: Viking 1, facing the wrong way.</small></a>
+        <a class="w3d-card" href="podcast.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-speaker"></use></svg></span><b data-i="xm.pd">Ghost Logs podcast</b><small data-i="xm.pdSub">Six seasons told by instruments, and an episode for every machine.</small></a>
+        <a class="w3d-card" href="shorts.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="xm.gs">Ghost Shorts</b><small data-i="xm.gsSub">Cartoon videos of the machines, in their own voices.</small></a>
+      </div>
+    </section>
+
     <!-- ============ OPPORTUNITY, UP CLOSE ============ -->
     <section class="section oppy" id="upclose" aria-labelledby="oppyTitle">
       <header class="sec-head">
@@ -278,7 +284,7 @@
       <div id="oppyBody" role="tabpanel" aria-labelledby="oppyTabBody" hidden></div>
     </section>
 
-    <!-- ============ TIMELINE ============ -->
+    <!-- ============ HOW IT WORKED ============ -->
     <section class="section" id="how" aria-labelledby="howTitle">
       <header class="sec-head">
         <p data-i="how.eyebrow" class="eyebrow">How it worked</p>
@@ -300,6 +306,7 @@
       </div>
     </section>
 
+    <!-- ============ THEN & NOW ============ -->
     <section class="section" id="thennow" aria-labelledby="tnTitle">
       <header class="sec-head">
         <p data-i="tn.eyebrow" class="eyebrow">Then &amp; now</p>
@@ -310,23 +317,7 @@
       <div class="tn-wrap" id="tnStage"></div>
     </section>
 
-    <section class="section" id="timeline" aria-labelledby="tlTitle">
-      <header class="sec-head">
-        <p data-i="tl.eyebrow" class="eyebrow">Timeline</p>
-        <h2 data-i="tl.title" id="tlTitle">Sixty years of leaving things behind</h2>
-        <p data-i="tl.desc">Scroll sideways through the decades. Colours show where each machine went.</p>
-      </header>
-      <div class="tl-filter seg" role="group" aria-label="Filter timeline">
-        <button data-i="f.all" aria-pressed="true" data-tl="all">All</button>
-        <button data-i="f.moon" aria-pressed="false" data-tl="moon">Moon</button>
-        <button data-i="f.mars" aria-pressed="false" data-tl="mars">Mars</button>
-        <button data-i="f.deep" aria-pressed="false" data-tl="deep">Elsewhere</button>
-      </div>
-      <div class="timeline" id="tl" tabindex="0" aria-label="Timeline, scrollable"></div>
-      <div class="more-row"><a class="more-link" href="timeline.html"><span data-i="more.timeline">Open the full timeline, year by year</span> <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a></div>
-    </section>
-
-    <!-- ============ DEEP SPACE ============ -->
+    <!-- ============ ELSEWHERE ============ -->
     <section class="section" id="deep" aria-labelledby="deepTitle">
       <header class="sec-head">
         <p data-i="deep.eyebrow" class="eyebrow">Elsewhere in the Solar System</p>
@@ -341,14 +332,22 @@
       <div class="deep-cards" id="deepCards"></div>
     </section>
 
-    <!-- ============ QUIZ ============ -->
-    <section class="section" id="quiz" aria-labelledby="quizTitle">
-      <header class="sec-head">
-        <p data-i="quiz.eyebrow" class="eyebrow">Who am I?</p>
-        <h2 data-i="quiz.title" id="quizTitle">Can you name the ghost?</h2>
-        <p data-i="quiz.desc">Read the clue, pick the machine. Score 6 or more to earn the <b>Archive Expert</b> badge.</p>
-      </header>
-      <div class="quiz" id="quizBox"></div>
+    <!-- ============ GO THERE IN 3D (3D Worlds, 3D Explore, NASA Eyes) ============ -->
+    <section class="section worlds3d" id="worlds3d" aria-labelledby="w3dTitle">
+      <p data-i="w3d.eyebrow" class="eyebrow">3D Worlds</p>
+      <h2 id="w3dTitle" data-i="w3d.title">Stand where they stand</h2>
+      <p data-i="w3d.desc" class="w3d-desc">Walk around the real landing sites on measured Moon and Mars terrain, find the hardware still sitting there, and relive two missions from launch to their last day. Each button switches into the 3D app; use “← Home” to come back.</p>
+      <div class="w3d-grid">
+        <a class="w3d-card moon" data-atlas="site:tranquility-base" href="atlas/index.html?go=site&amp;id=tranquility-base"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><b data-i="w3d.moon">Walk on the Moon</b><small data-i="w3d.moonSub">Tranquility Base, where Eagle landed. Five more Apollo sites inside.</small></a>
+        <a class="w3d-card mars" data-atlas="site:victoria-crater" href="atlas/index.html?go=site&amp;id=victoria-crater"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg></span><b data-i="w3d.mars">Drive on Mars</b><small data-i="w3d.marsSub">Victoria crater with Opportunity. Seven more Mars sites inside.</small></a>
+        <a class="w3d-card" data-atlas="relive:apollo-11" href="atlas/index.html?go=relive&amp;id=apollo-11"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="w3d.a11">Relive Apollo 11</b><small data-i="w3d.a11Sub">From launch to splashdown, step by step.</small></a>
+        <a class="w3d-card" data-atlas="relive:mer-opportunity" href="atlas/index.html?go=relive&amp;id=mer-opportunity"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="w3d.opp">Relive Opportunity</b><small data-i="w3d.oppSub">Fourteen years on Mars, drive by drive.</small></a>
+        <a class="w3d-card" href="catalogue.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b data-i="w3d.missions">Mission records</b><small data-i="w3d.missionsSub">Dates, milestones, hardware and sources for 44 missions.</small></a>
+        <a class="w3d-card" href="landings.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg></span><b data-i="w3d.all">All 14 landing sites</b><small data-i="w3d.allSub">Search every Moon and Mars site and land at any of them.</small></a>
+        <a class="w3d-card" href="explore.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg></span><b data-i="w3d.ex">Spin the Moon and Mars</b><small data-i="w3d.exSub">3D globes with every machine, and a flight out to where the Voyagers are now.</small></a>
+        <a class="w3d-card" href="eyes.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-rocket"></use></svg></span><b data-i="w3d.eyes">NASA Eyes on the Solar System</b><small data-i="w3d.eyesSub">NASA/JPL's live 3D solar system: fly to Voyager 1 right now.</small></a>
+      </div>
+      <p class="w3d-note" data-i="w3d.note">Needs a computer or a recent phone with 3D graphics. Mars sites download about 100 MB the first time.</p>
     </section>
 
     <!-- ============ ASK THE ARCHIVE ============ -->
@@ -375,6 +374,38 @@
       </div>
     </section>
 
+    <!-- ============ TIMELINE ============ -->
+    <section class="section" id="timeline" aria-labelledby="tlTitle">
+      <header class="sec-head">
+        <p data-i="tl.eyebrow" class="eyebrow">Timeline</p>
+        <h2 data-i="tl.title" id="tlTitle">Sixty years of leaving things behind</h2>
+        <p data-i="tl.desc">Scroll sideways through the decades. Colours show where each machine went.</p>
+      </header>
+      <div class="tl-filter seg" role="group" aria-label="Filter timeline">
+        <button data-i="f.all" aria-pressed="true" data-tl="all">All</button>
+        <button data-i="f.moon" aria-pressed="false" data-tl="moon">Moon</button>
+        <button data-i="f.mars" aria-pressed="false" data-tl="mars">Mars</button>
+        <button data-i="f.deep" aria-pressed="false" data-tl="deep">Elsewhere</button>
+      </div>
+      <div class="timeline" id="tl" tabindex="0" aria-label="Timeline, scrollable"></div>
+      <div class="more-row"><a class="more-link" href="timeline.html"><span data-i="more.timeline">Open the full timeline, year by year</span> <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a></div>
+    </section>
+
+    <!-- ============ GHOST OF THE DAY ============ -->
+    <section class="section gotd-sec" id="today" aria-labelledby="gotdTitle">
+      <div class="gotd" id="gotd"></div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="section" id="quiz" aria-labelledby="quizTitle">
+      <header class="sec-head">
+        <p data-i="quiz.eyebrow" class="eyebrow">Who am I?</p>
+        <h2 data-i="quiz.title" id="quizTitle">Can you name the ghost?</h2>
+        <p data-i="quiz.desc">Read the clue, pick the machine. Score 6 or more to earn the <b>Archive Expert</b> badge.</p>
+      </header>
+      <div class="quiz" id="quizBox"></div>
+    </section>
+
     <!-- ============ ARCHIVE ============ -->
     <section class="section" id="archive" aria-labelledby="arcTitle">
       <header class="sec-head">
@@ -397,51 +428,15 @@
       <div class="gallery" id="gallery"></div>
     </section>
 
-    <!-- ============ EXPLORE CTA ============ -->
-    <section class="explore-cta">
-      <div>
-        <p data-i="ex.eyebrow" class="eyebrow">Space Exploration Mode</p>
-        <h2 data-i="ex.title">Fly around the Moon and Mars in 3D</h2>
-        <p data-i="ex.desc">Spin the globes, find the beacons, and travel out to where the Voyagers are now.</p>
-      </div>
-      <a data-i="ex.btn" class="btn btn-primary btn-lg" href="explore.html">Launch 3D Explore →</a>
-    </section>
-
-    <!-- ============ NASA EYES CTA ============ -->
-    <section class="explore-cta eyes-cta">
-      <div>
-        <p data-i="eyes.eyebrow" class="eyebrow">NASA Eyes on the Solar System</p>
-        <h2 data-i="eyes.title">See where every machine really is</h2>
-        <p data-i="eyes.desc">NASA/JPL's live 3D solar system, built from real spacecraft data. Fly to Voyager 1 right now, or travel back to Cassini's last morning at Saturn.</p>
-      </div>
-      <a data-i="eyes.btn" class="btn btn-primary btn-lg" href="eyes.html">Open NASA Eyes →</a>
-    </section>
-
-    <!-- ============ 3D WORLDS (site/atlas/) ============ -->
-    <section class="section worlds3d" id="worlds3d" aria-labelledby="w3dTitle">
-      <p data-i="w3d.eyebrow" class="eyebrow">3D Worlds</p>
-      <h2 id="w3dTitle" data-i="w3d.title">Stand where they stand</h2>
-      <p data-i="w3d.desc" class="w3d-desc">Walk around the real landing sites on measured Moon and Mars terrain, find the hardware still sitting there, and relive two missions from launch to their last day. Each button switches into the 3D app; use “← Home” to come back.</p>
-      <div class="w3d-grid">
-        <a class="w3d-card moon" data-atlas="site:tranquility-base" href="atlas/index.html?go=site&amp;id=tranquility-base"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><b data-i="w3d.moon">Walk on the Moon</b><small data-i="w3d.moonSub">Tranquility Base, where Eagle landed. Five more Apollo sites inside.</small></a>
-        <a class="w3d-card mars" data-atlas="site:victoria-crater" href="atlas/index.html?go=site&amp;id=victoria-crater"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg></span><b data-i="w3d.mars">Drive on Mars</b><small data-i="w3d.marsSub">Victoria crater with Opportunity. Seven more Mars sites inside.</small></a>
-        <a class="w3d-card" data-atlas="relive:apollo-11" href="atlas/index.html?go=relive&amp;id=apollo-11"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="w3d.a11">Relive Apollo 11</b><small data-i="w3d.a11Sub">From launch to splashdown, step by step.</small></a>
-        <a class="w3d-card" data-atlas="relive:mer-opportunity" href="atlas/index.html?go=relive&amp;id=mer-opportunity"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="w3d.opp">Relive Opportunity</b><small data-i="w3d.oppSub">Fourteen years on Mars, drive by drive.</small></a>
-        <a class="w3d-card" href="catalogue.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b data-i="w3d.missions">Mission records</b><small data-i="w3d.missionsSub">Dates, milestones, hardware and sources for 44 missions.</small></a>
-        <a class="w3d-card" href="landings.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg></span><b data-i="w3d.all">All 14 landing sites</b><small data-i="w3d.allSub">Search every Moon and Mars site and land at any of them.</small></a>
-      </div>
-      <p class="w3d-note" data-i="w3d.note">Needs a computer or a recent phone with 3D graphics. Mars sites download about 100 MB the first time.</p>
-    </section>
-
     <!-- ============ EXPLORE MORE ============ -->
     <section class="section more-sec" id="more" aria-labelledby="moreTitle">
       <p data-i="xm.eyebrow" class="eyebrow">Explore more</p>
       <h2 id="moreTitle" data-i="xm.title">More ways to explore</h2>
       <p data-i="xm.desc" class="w3d-desc">Games, live data, things to print and tools for projects. <a href="#top" data-tour>Or take the one-minute tour.</a></p>
       <div class="w3d-grid more-grid">
-        <a class="w3d-card" href="shorts.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-play"></use></svg></span><b data-i="xm.gs">Ghost Shorts</b><small data-i="xm.gsSub">Cartoon videos of the machines, in their own voices.</small></a>
-        <a class="w3d-card" href="comics.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b data-i="xm.cx">Ghost Comics</b><small data-i="xm.cxSub">A comic for every machine. Issue #1: Viking 1, facing the wrong way.</small></a>
-        <a class="w3d-card" href="podcast.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-speaker"></use></svg></span><b data-i="xm.pd">Ghost Logs podcast</b><small data-i="xm.pdSub">Six seasons told by instruments, and an episode for every machine.</small></a>
+        <a class="w3d-card" href="teacher.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b data-i="xm.tp">Teacher pack</b><small data-i="xm.tpSub">Lesson plans, worksheets and a class quiz, free to use.</small></a>
+        <a class="w3d-card" href="adopt.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-award"></use></svg></span><b data-i="xm.ad">Adopt a Ghost</b><small data-i="xm.adSub">Print a certificate for your own machine, or one for every student.</small></a>
+        <a class="w3d-card" href="sources.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg></span><b data-i="xm.src">Sources</b><small data-i="xm.srcSub">The NASA records every fact on this site was checked against.</small></a>
         <a class="w3d-card" href="moon.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><b data-i="xm.moon">The Moon tonight</b><small data-i="xm.moonSub">Today's real Moon, and which Apollo sites are in sunlight.</small></a>
         <a class="w3d-card" href="timeline.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><b data-i="xm.tl">Timeline</b><small data-i="xm.tlSub">Every machine from launch to last word. Drag through the years.</small></a>
         <a class="w3d-card" href="tracker.html"><span class="w3d-ico" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><b data-i="xm.tr">Live tracker</b><small data-i="xm.trSub">Watch Voyager and the far travellers move, live.</small></a>
@@ -510,19 +505,19 @@
   <script src="js/icons.js?v=ed5e4fdc"></script>
 
   <script src="js/data.js?v=83e574d5"></script>
-  <script src="js/records.js?v=4d60be0b"></script>
+  <script src="js/records.js?v=aa80a554"></script>
   <script src="js/models.js?v=3954279e"></script>
   <script src="js/atlas-links.js?v=0d026fd0"></script>
   <script src="js/eyes-data.js?v=67a28b33"></script>
   <script src="js/explainers.js?v=24a770e8"></script>
-  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=5195828e", hi: "js/i18n/hi.js?v=b2575339" }[window.GOE_LANG] + '"><\/script>');</script>
-  <script src="js/oppy-data.js?v=9eef9b60"></script>
+  <script>if (window.GOE_LANG !== "en") document.write('<script src="' + { es: "js/i18n/es.js?v=9e72a486", hi: "js/i18n/hi.js?v=138baf09" }[window.GOE_LANG] + '"><\/script>');</script>
+  <script src="js/oppy-data.js?v=7b093852"></script>
   <script src="js/i18n.js?v=22597147"></script>
   <script src="js/app.js?v=566c8024"></script>
-  <script src="js/tour.js?v=b6741249"></script>
-  <script src="js/start.js?v=3acb6390"></script>
+  <script src="js/tour.js?v=22814c43"></script>
+  <script src="js/start.js?v=04933759"></script>
   <script src="js/oppy.js?v=b2f94865"></script>
-  <script src="js/shorts.js?v=a76d4a96"></script>
+  <script src="js/shorts.js?v=76335e28"></script>
   <script src="js/search.js?v=1616f10d"></script>
   <script src="js/glossary.js?v=f39d5e4e"></script>
   <script src="js/pwa.js?v=7612dde4"></script>
