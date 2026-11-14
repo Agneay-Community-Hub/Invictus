@@ -305,8 +305,8 @@
     drawer.classList.remove("is-closing", "is-opening");
     scrim.classList.remove("is-closing");
     if (cover) {
+      cover.classList.remove("is-opening");
       cover.style.display = "flex";
-      cover.classList.remove("is-open");
     }
 
     scrim.hidden = false;
@@ -318,17 +318,19 @@
     if (cover) void cover.offsetWidth;
 
     drawer.classList.add("is-opening");
+    if (cover) cover.classList.add("is-opening");
 
     const onCoverEnd = e => {
-      if (e && e.target !== cover) return;
+      if (e && e.animationName && e.animationName !== "folderFlapOpen") return;
       if (cover) {
         cover.removeEventListener("animationend", onCoverEnd);
         cover.style.display = "none";
+        cover.classList.remove("is-opening");
       }
     };
     if (cover) {
-      cover.addEventListener("animationend", onCoverEnd, { once: true });
-      coverAnimTimeout = setTimeout(onCoverEnd, 2100);
+      cover.addEventListener("animationend", onCoverEnd);
+      coverAnimTimeout = setTimeout(onCoverEnd, 2000);
     }
 
     $("#drawer").focus();
@@ -352,8 +354,13 @@
 
     const drawer = $("#drawer");
     const scrim = $("#scrim");
+    const cover = $("#folderCover");
 
     drawer.classList.remove("is-opening");
+    if (cover) {
+      cover.classList.remove("is-opening");
+      cover.style.display = "none";
+    }
     drawer.classList.add("is-closing");
     scrim.classList.add("is-closing");
 

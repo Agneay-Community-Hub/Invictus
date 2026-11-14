@@ -80,3 +80,23 @@ Merging branch `dossier_improvements` with the latest updates from incoming bran
    - Executed `node scripts/build-sw.mjs` to re-stamp all 558 script/link fingerprints and update `site/sw.js` cache version.
 4. **Merge Finalization:**
    - All unmerged paths staged cleanly with `git add .` and committed.
+
+---
+
+## 5. Iteration 4: Flap Animation Selector & Class Binding Fix
+
+### Problem Addressed:
+The dossier opened and showed the front page titles, but did not perform the 3D swing-open animation; instead, after a brief pause, the cover vanished abruptly and showed the inner content.
+
+### Root Cause Analysis:
+1. **Selector Mismatch:** In `site/css/style.css`, the keyframe rule was scoped strictly to `.folder-cover.is-opening`. However, `openDrawer` in `site/js/app.js` was only adding `is-opening` to the parent `#drawer` container, never to `#folderCover`.
+2. **Missing Animation Trigger:** Because `#folderCover` lacked `.is-opening`, `animation: folderFlapOpen` was never applied. The cover was only displayed statically via inline `cover.style.display = "flex"`.
+3. **Premature Fallback Timeout:** Because the animation never ran, the `animationend` event never fired, causing the cover to remain static until the fallback `setTimeout` unmounted it abruptly with `cover.style.display = "none"`.
+4. **Child Event Collision:** The `animationend` listener on `cover` had `{ once: true }`. When the child clasp finished its 0.35s unfasten animation and bubbled up, it prematurely removed the listener before `folderFlapOpen` could complete.
+
+### Solution:
+1. **Dual Selector Support:** Updated `site/css/style.css` to match both `.drawer.is-opening .folder-cover` and `.folder-cover.is-opening` (as well as for `.folder-clasp` and reduced-motion overrides).
+2. **Explicit Class Management:** Updated `openDrawer` in `site/js/app.js` to explicitly add `cover.classList.add("is-opening")` alongside `drawer.classList.add("is-opening")`, and cleanly strip it in `closeDrawer`.
+3. **Specific Animation-End Target:** Revised `onCoverEnd` to check specifically for `e.animationName === "folderFlapOpen"`, removing `{ once: true }` so child clasp animations do not consume or unbind the listener.
+4. **Compositor & 3D Polish:** Added `overflow: visible;` on `.drawer` to prevent 3D clipping at `-125deg`, added `will-change: transform, opacity;` to `.folder-cover`, and set `70% { opacity: 0.95; }` in `@keyframes folderFlapOpen` to keep the physical folder flap solid and opaque as it swings.
+5. **Re-stamped Service Worker:** Re-ran `node scripts/build-sw.mjs` (version `5497b42d72`).

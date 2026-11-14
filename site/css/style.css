@@ -300,6 +300,7 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 30px 90px -15px rgba(0, 0, 0, 0.92), 0 0 0 1px rgba(255, 179, 71, 0.18), 0 0 50px -10px rgba(12, 19, 34, 0.95);
   perspective: 1600px;
   transform-style: preserve-3d;
+  overflow: visible;
   outline: none;
 }
 
@@ -354,6 +355,8 @@ button { font: inherit; color: inherit; }
   border-radius: 20px;
   z-index: 50;
   transform-origin: 0% 50%;
+  transform: perspective(1400px) rotateY(0deg);
+  will-change: transform, opacity;
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -364,11 +367,13 @@ button { font: inherit; color: inherit; }
   backface-visibility: hidden;
 }
 
+.drawer.is-opening .folder-cover,
 .folder-cover.is-opening {
   display: flex !important;
   animation: folderFlapOpen 0.95s cubic-bezier(0.25, 1, 0.35, 1) 0.85s both;
 }
 
+.drawer.is-opening .folder-cover .folder-clasp,
 .folder-cover.is-opening .folder-clasp {
   animation: claspUnfasten 0.35s ease-out 0.75s both;
 }
@@ -1009,8 +1014,8 @@ button { font: inherit; color: inherit; }
     visibility: visible;
   }
 
-  25% {
-    opacity: 0.9;
+  70% {
+    opacity: 0.95;
   }
 
   100% {
@@ -1126,6 +1131,7 @@ button { font: inherit; color: inherit; }
     opacity: 1;
   }
 
+  .drawer.is-opening .folder-cover,
   .folder-cover.is-opening {
     display: none !important;
   }
