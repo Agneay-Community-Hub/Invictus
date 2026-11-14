@@ -128,7 +128,7 @@
           <div class="cert-sign"><b>${esc(t.keeper)}</b>Ghosts of Exploration</div>
           ${seal}
           <div class="cert-sign"><b>${esc(today)}</b>${esc(t.on)}</div>
-          <div class="cert-url">agneay-community-hub.github.io/PROJECT-AREA-51 · NASA Space Apps Challenge 2026</div>
+          <div class="cert-url">agneay-community-hub.github.io/Invictus · NASA Space Apps Challenge 2026</div>
         </div>
       </div>
     </article>`;

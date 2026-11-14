@@ -2,7 +2,7 @@
 
 Paste each section into the matching field of the form. The text under each heading is plain text, so it pastes cleanly into Google Forms.
 
-**PPT field:** upload `docs/pitch-deck.pdf` (10 pages, about 3 MB). The same deck is online at https://agneay-community-hub.github.io/PROJECT-AREA-51/pitch.html
+**PPT field:** upload `docs/pitch-deck.pdf` (10 pages, about 3 MB). The same deck is online at https://agneay-community-hub.github.io/Invictus/pitch.html
 
 ---
 
@@ -10,7 +10,7 @@ Paste each section into the matching field of the form. The text under each head
 
 Ghosts of Exploration is a free, story-driven website about the machines NASA left behind: 49 rovers, landers, Moon cars, science stations and probes on the Moon, on Mars and across the solar system, from Vanguard 1 (1958) to Ingenuity. Each machine tells its own story in a first-person "ghost log" built from real NASA mission facts. Kids aged 8 to 14, teachers and space fans can find the machines on a map at their true coordinates, walk 14 real landing sites in 3D, read a comic for every machine, listen to an 85-episode podcast, watch cartoon shorts, play games and follow the far probes live. It works offline, in English, Spanish and Hindi, with no sign-up and no tracking.
 
-Live site: https://agneay-community-hub.github.io/PROJECT-AREA-51/
+Live site: https://agneay-community-hub.github.io/Invictus/
 
 ---
 
@@ -68,7 +68,7 @@ RISKS AND MITIGATION
 
 ## What is ALREADY done
 
-All of the following is live at https://agneay-community-hub.github.io/PROJECT-AREA-51/
+All of the following is live at https://agneay-community-hub.github.io/Invictus/
 
 ARCHIVE
 - 49 machines on the Moon, on Mars and across the solar system, each with a first-person ghost log, a story at two reading levels, planned versus actual results, discoveries, what was left behind, an epitaph, NASA photos and videos, and NASA and NSSDCA source links.

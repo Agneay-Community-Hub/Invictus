@@ -34,11 +34,11 @@ The main page has a language switcher (EN / ES / हिं). It remembers the ch
 
 The dossiers open with `#` links, which search engines barely index, so `scripts/build-pages.mjs` also writes a plain, fast page for every machine in all three languages: 147 pages in `site/machines/`, plus an index page per language ("All 49 machines", linked in the footer). Each page has its own title, description, canonical link, `hreflang` language alternates, Open Graph image (the machine's NASA photo) and schema.org structured data (Article, BreadcrumbList, educational audience, citations). The script also writes `sitemap.xml` (159 URLs with language alternates and images), `robots.txt`, and the home page's structured data (WebSite, LearningResource and an ItemList of all machines).
 
-To get indexed faster, add the site to [Google Search Console](https://search.google.com/search-console) and submit `https://agneay-community-hub.github.io/PROJECT-AREA-51/sitemap.xml`. (A project site's `robots.txt` is not at the domain root, so search engines find the sitemap through Search Console or the links between pages rather than through `robots.txt`.)
+To get indexed faster, add the site to [Google Search Console](https://search.google.com/search-console) and submit `https://agneay-community-hub.github.io/Invictus/sitemap.xml`. (A project site's `robots.txt` is not at the domain root, so search engines find the sitemap through Search Console or the links between pages rather than through `robots.txt`.)
 
 ## Live site
 
-https://agneay-community-hub.github.io/PROJECT-AREA-51/
+https://agneay-community-hub.github.io/Invictus/
 
 GitHub Pages publishes the `site/` folder automatically on every push to `main` that changes it, using `.github/workflows/pages.yml`. You can also re-run it by hand from the repo's **Actions** tab. `netlify.toml` is kept in case you ever want to host on Netlify instead.
 

@@ -86,7 +86,7 @@
       <div class="as-page">
         <header class="as-head"><span>Ghosts of Exploration</span><span>Name: ____________________</span></header>
         <h2>${title}</h2>${body}
-        <footer class="as-foot">${foot || "More machines, stories and pictures: agneay-community-hub.github.io/PROJECT-AREA-51"}</footer>
+        <footer class="as-foot">${foot || "More machines, stories and pictures: agneay-community-hub.github.io/Invictus"}</footer>
       </div>
     </section>`;
 

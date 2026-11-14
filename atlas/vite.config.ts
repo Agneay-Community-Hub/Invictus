@@ -116,7 +116,7 @@ function unityBuilds(): Plugin {
 }
 
 export default defineConfig({
-  // Ghosts of Exploration: relative base so it works at /atlas/ locally and at /PROJECT-AREA-51/atlas/ on GitHub Pages
+  // Ghosts of Exploration: relative base so it works at /atlas/ locally and at /Invictus/atlas/ on GitHub Pages
   base: './',
   plugins: [basePaths(), react(), unityBuilds()],
   server: { port: 5173, proxy: { '/api': 'http://127.0.0.1:8000' } },
