@@ -303,6 +303,7 @@
     stopSpeech();
     destroyHow();
     if (soundPlaying) soundPlaying.pause();
+    if (document.fullscreenElement && fullByApi) { document.exitFullscreen().catch(() => { }); fullByApi = false; }
     $("#scrim").hidden = true; $("#drawer").hidden = true; document.body.style.overflow = "";
     openId = null; history.replaceState(null, "", location.pathname);
     $$("#drawer video").forEach(v => v.pause());
@@ -334,10 +335,11 @@
         <li><span>${t("d.heading", "Heading")}</span><b>${esc(a.heading)}</b></li></ul></div>`;
     }
     $("#drawerBody").innerHTML = `
-      <div class="d-hero">${m0 ? `<img id="dImg" src="assets/nasa/${m0.f}" alt="${esc(m0.cap)}">` : `<div class="ph" aria-hidden="true">${typeIco(a.type)}</div>`}${hasModel(a.id) ? `<button class="btn btn-small model-btn" data-model="${a.id}">${ico("cube")} ${t("d.model", "View 3D model")}</button>` : ""}</div>
+      <div class="d-media"><div class="d-hero">${m0 ? `<img id="dImg" src="assets/nasa/${m0.f}" alt="${esc(m0.cap)}">` : `<div class="ph" aria-hidden="true">${typeIco(a.type)}</div>`}${hasModel(a.id) ? `<button class="btn btn-small model-btn" data-model="${a.id}">${ico("cube")} ${t("d.model", "View 3D model")}</button>` : ""}</div>
       ${a.media.length > 1 ? `<div class="d-thumbs" role="group" aria-label="More photos">${a.media.map((m, i) => `<button data-i="${i}" aria-current="${i === 0}" aria-label="Photo ${i + 1}"><img src="assets/nasa/${m.f}" alt=""></button>`).join("")}</div>` : ""}
-      ${m0 ? `<p class="d-cap" id="dCap">${esc(m0.cap)} <a href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">NASA · ${esc(m0.id)}</a></p>` : `<p class="d-cap">No close-up photo exists of this one — it crashed where no camera could see.</p>`}
+      ${m0 ? `<p class="d-cap" id="dCap">${esc(m0.cap)} <a href="${NASA_PAGE(m0.id)}" target="_blank" rel="noopener">NASA · ${esc(m0.id)}</a></p>` : `<p class="d-cap">No close-up photo exists of this one — it crashed where no camera could see.</p>`}</div>
       <div class="d-main">
+        <nav class="d-toc" id="dToc" aria-label="${t("d.toc", "Jump to")}"></nav>
         <div class="d-tags">${pill(a.status)}<span class="tag">${esc(WORLDS[a.world].short)}</span><span class="tag">${esc(TYPES[a.type])}</span><span class="tag">${esc(a.mission)}</span></div>
         <h2 id="dName">${esc(a.name)}</h2>
         <p class="d-sub">${a.nick && a.nick !== a.mission ? esc(a.nick) + " · " : ""}${esc(a.fixedPlace || a.place || a.heading)}${a.lat != null ? ` · ${Math.abs(a.lat).toFixed(2)}°${a.lat >= 0 ? "N" : "S"}, ${Math.abs(a.lon).toFixed(2)}°${a.lon >= 0 ? "E" : "W"}` : ""}</p>
@@ -392,6 +394,7 @@
         </div>
       </div>`;
     $("#drawerBody").scrollTop = 0;
+    buildToc();
     bindTn($("#drawerBody"));
     $("#drawerBody [data-upclose]")?.addEventListener("click", () => closeDrawer());
     if (typeof SOUNDS !== "undefined") bindSounds($("#drawerBody"));
@@ -417,7 +420,48 @@
     const more = $("#moreBtn");
     if (more) more.addEventListener("click", () => { prefs.level = "scientist"; savePrefs(); applyPrefs(); rerenderLevel(); });
   }
+  // Full-screen dossier: the drawer fills the window (and the screen, where the browser allows it),
+  // with the photos fixed on the left and a bar of section links over the story on the right.
+  const FULL_KEY = "goe-dossier-full";
+  let fullByApi = false;
+  function setFull(on, { api = true, remember = true } = {}) {
+    const d = $("#drawer"), b = $("#dFull");
+    d.classList.toggle("full", on);
+    b.setAttribute("aria-pressed", String(on));
+    const label = on ? t("d.fullExit", "Exit full screen (F)") : t("d.fullEnter", "Full screen (F)");
+    b.setAttribute("aria-label", label); b.title = label;
+    b.innerHTML = ico(on ? "minimize" : "maximize");
+    if (remember) try { localStorage.setItem(FULL_KEY, on ? "1" : "0"); } catch { }
+    if (!api) return;
+    if (on && !document.fullscreenElement && document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().then(() => { fullByApi = true; }).catch(() => { });
+    } else if (!on && document.fullscreenElement && fullByApi) {
+      document.exitFullscreen().catch(() => { }); fullByApi = false;
+    }
+  }
+  document.addEventListener("fullscreenchange", () => {
+    // the browser's own Esc leaves full screen: go back to the side panel too
+    if (!document.fullscreenElement && fullByApi) { fullByApi = false; if ($("#drawer").classList.contains("full")) setFull(false, { api: false }); }
+  });
+  function buildToc() {
+    const toc = $("#dToc"); if (!toc) return;
+    const body = $("#drawerBody");
+    const heads = [[body.querySelector(".ghost"), t("d.tocLog", "Ghost log")], ...$$("#drawerBody .d-main .d-block > h3").map(h => [h.parentElement, h.textContent.trim()])]
+      .filter(([el]) => el);
+    toc.innerHTML = heads.map(([el, label], i) => { el.id ||= "dsec" + i; return `<a href="#${el.id}" data-sec="${el.id}">${esc(label)}</a>`; }).join("");
+    toc.onclick = e => {
+      const a = e.target.closest("[data-sec]"); if (!a) return;
+      e.preventDefault();
+      const el = document.getElementById(a.dataset.sec);
+      const calm = matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.classList.contains("reduce-motion");
+      // land just under the sticky section bar; correct once more after images above have loaded
+      const go = smooth => body.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - toc.offsetHeight - 12), behavior: smooth ? "smooth" : "auto" });
+      go(!calm); setTimeout(() => go(false), calm ? 50 : 700);
+    };
+  }
   function initDrawer() {
+    $("#dFull").addEventListener("click", () => setFull(!$("#drawer").classList.contains("full")));
+    try { if (localStorage.getItem(FULL_KEY) === "1" && innerWidth > 900) setFull(true, { api: false, remember: false }); } catch { }
     $("#dClose").addEventListener("click", closeDrawer);
     $("#scrim").addEventListener("click", closeDrawer);
     const step = d => { const i = ORDER.indexOf(openId); const n = ORDER[(i + d + ORDER.length) % ORDER.length]; stopSpeech(); openId = n; renderDrawer(n); if (!progress.opened.includes(n)) { progress.opened.push(n); saveProgress(); checkBadges(); } history.replaceState(null, "", "#artifact=" + n); };
@@ -427,8 +471,12 @@
       if (e.key === "Escape") {
         if (!$("#lightbox").hidden) return closeLightbox();
         if (!$("#passport").hidden) return ($("#passport").hidden = true);
+        if (!$("#drawer").hidden && $("#drawer").classList.contains("full") && !document.querySelector(".gs-back:not([hidden]), .model-modal:not([hidden])")) return setFull(false);
         if (!$("#drawer").hidden) return closeDrawer();
         if (!$("#settings").hidden) { $("#settings").hidden = true; $("#settingsBtn").setAttribute("aria-expanded", "false"); }
+      }
+      if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey && !$("#drawer").hidden && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || "") && !document.activeElement?.isContentEditable) {
+        e.preventDefault(); setFull(!$("#drawer").classList.contains("full"));
       }
       // focus trap
       if (e.key === "Tab" && !$("#drawer").hidden && $("#lightbox").hidden && !document.querySelector(".model-modal:not([hidden])")) {

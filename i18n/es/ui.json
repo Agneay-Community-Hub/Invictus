@@ -337,7 +337,23 @@
     "d.askQ1": "¿Dónde está {name} ahora?",
     "d.askQ2": "¿Qué descubrió {name}?",
     "d.askBtn": "Preguntar",
-    "d.checkFacts": "Comprueba los datos"
+    "d.checkFacts": "Comprueba los datos",
+    "d.toc": "Ir a",
+    "d.tocLog": "Diario fantasma",
+    "d.fullEnter": "Pantalla completa (F)",
+    "d.fullExit": "Salir de pantalla completa (F)",
+    "play.eyebrow": "Jugar",
+    "play.title": "Juegos sobre las máquinas",
+    "play.desc": "Aterriza una nave, maneja un róver con retraso, construye una sonda y juega con cartas. Todos los juegos usan datos reales de las misiones.",
+    "play.land": "Aterrízalo tú",
+    "play.landSub": "Enciende el motor y posa la nave con suavidad, con la gravedad real de cada mundo. Cada choque explica lo que hicieron las misiones reales.",
+    "play.moon": "La Luna",
+    "play.mars": "Marte",
+    "play.jezero": "Cráter Jezero",
+    "play.quiz": "¿Quién soy?",
+    "play.quizSub": "Adivina la máquina por sus pistas. Justo debajo.",
+    "play.print": "Pasatiempos para imprimir",
+    "play.printSub": "Una sopa de letras, dibujos para colorear y más."
   },
   "status": {
     "silent": {
