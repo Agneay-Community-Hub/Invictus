@@ -284,38 +284,113 @@
   }
 
   /* ---------------- DRAWER ---------------- */
-  let openId = null, returnFocus = null;
+  let openId = null, returnFocus = null, isClosingDrawer = false;
   const ORDER = [...ARTIFACTS].sort((a, b) => ["moon", "mars", "deep"].indexOf(a.world) - ["moon", "mars", "deep"].indexOf(b.world) || a.year - b.year).map(a => a.id);
 
   function openDrawer(id, from) {
+    if (isClosingDrawer) return;
     returnFocus = from || document.activeElement;
     openId = id;
-    renderDrawer(id);
-    $("#scrim").hidden = false; $("#drawer").hidden = false;
+    renderDrawer(id, false); // initial open: do not trigger page-flip
+    const scrim = $("#scrim");
+    const drawer = $("#drawer");
+    const cover = $("#folderCover");
+
+    // Reset any ongoing closing/opening state
+    drawer.classList.remove("is-closing", "is-opening");
+    scrim.classList.remove("is-closing", "is-opening");
+    if (cover) {
+      cover.classList.remove("is-opening");
+      cover.style.display = "flex";
+      cover.style.opacity = "1";
+      cover.style.visibility = "visible";
+      cover.style.pointerEvents = "none";
+    }
+
+    // Unhide elements in DOM
+    scrim.hidden = false;
+    drawer.hidden = false;
     document.body.style.overflow = "hidden";
-    $("#drawer").focus();
+
+    // Force synchronous reflow so browser registers display: flex before animating
+    void drawer.offsetWidth;
+    if (cover) void cover.offsetWidth;
+
+    // Trigger opening animation sequence
+    scrim.classList.add("is-opening");
+    drawer.classList.add("is-opening");
+    if (cover) cover.classList.add("is-opening");
+
+    // Clean up cover flap once the 3D swing completes without abrupt timer resets on .drawer
+    let cleaned = false;
+    const cleanCover = () => {
+      if (cleaned) return;
+      cleaned = true;
+      if (cover) {
+        cover.style.display = "none";
+        cover.classList.remove("is-opening");
+      }
+    };
+    if (cover) {
+      cover.addEventListener("animationend", cleanCover, { once: true });
+    }
+    setTimeout(cleanCover, 1200);
+
+    drawer.focus();
     history.replaceState(null, "", "#artifact=" + id);
     if (!progress.opened.includes(id)) { progress.opened.push(id); saveProgress(); checkBadges(); }
   }
   let dHow = null;
   function destroyHow() { if (dHow) { dHow.destroy(); dHow = null; } }
   function closeDrawer() {
+    if (isClosingDrawer || $("#drawer").hidden) return;
+    isClosingDrawer = true;
     stopSpeech();
     destroyHow();
     if (soundPlaying) soundPlaying.pause();
-    $("#scrim").hidden = true; $("#drawer").hidden = true; document.body.style.overflow = "";
-    openId = null; history.replaceState(null, "", location.pathname);
     $$("#drawer video").forEach(v => v.pause());
-    if (returnFocus && document.contains(returnFocus)) returnFocus.focus();
+    const drawer = $("#drawer");
+    const scrim = $("#scrim");
+    drawer.classList.remove("is-opening");
+    drawer.classList.add("is-closing");
+    scrim.classList.remove("is-opening");
+    scrim.classList.add("is-closing");
+    setTimeout(() => {
+      scrim.hidden = true;
+      drawer.hidden = true;
+      drawer.classList.remove("is-closing");
+      scrim.classList.remove("is-closing");
+      document.body.style.overflow = "";
+      openId = null;
+      history.replaceState(null, "", location.pathname);
+      isClosingDrawer = false;
+      if (returnFocus && document.contains(returnFocus)) returnFocus.focus();
+    }, 240);
   }
   function videoHTML(key) {
     const v = VIDEOS[key]; if (!v) return "";
     return `<div class="d-video"><video controls preload="none" poster="${v.poster}" playsinline><source src="${NASA_VIDEO(v.id)}" type="video/mp4">Your browser can't play this video.</video>
       <p>${esc(v.title)}${v.note ? " · " + esc(v.note) : ""} · <a href="${NASA_PAGE(v.id)}" target="_blank" rel="noopener">NASA source</a></p></div>`;
   }
-  function renderDrawer(id) {
+  function renderDrawer(id, isFlip = false) {
     const a = byId[id], idx = ORDER.indexOf(id);
     $("#dCount").textContent = `${WORLDS[a.world].short} · ${t("xOfY", "{x} of {y}").replace("{x}", idx + 1).replace("{y}", ORDER.length)}`;
+    const tabTitle = $("#dTabTitle");
+    if (tabTitle) tabTitle.textContent = `${a.name.toUpperCase()} // DOSSIER`;
+    const tabBadge = $("#dTabBadge");
+    if (tabBadge) tabBadge.textContent = WORLDS[a.world].short.toUpperCase();
+    const coverName = $("#dCoverName");
+    if (coverName) coverName.textContent = a.name.toUpperCase();
+    const coverWorld = $("#dCoverWorld");
+    if (coverWorld) coverWorld.textContent = `${WORLDS[a.world].short.toUpperCase()} ARCHIVE · RECORD #${String(idx + 1).padStart(2, "0")}`;
+    const body = $("#drawerBody");
+    if (body) {
+      body.classList.remove("page-flip");
+      if (isFlip) {
+        void body.offsetWidth;
+        body.classList.add("page-flip");
+      }
+    }
     const m0 = a.media[0];
     const facts = a.stats.map(([k, v]) => {
       let val = v;
@@ -425,7 +500,7 @@
   function initDrawer() {
     $("#dClose").addEventListener("click", closeDrawer);
     $("#scrim").addEventListener("click", closeDrawer);
-    const step = d => { const i = ORDER.indexOf(openId); const n = ORDER[(i + d + ORDER.length) % ORDER.length]; stopSpeech(); openId = n; renderDrawer(n); if (!progress.opened.includes(n)) { progress.opened.push(n); saveProgress(); checkBadges(); } history.replaceState(null, "", "#artifact=" + n); };
+    const step = d => { const i = ORDER.indexOf(openId); const n = ORDER[(i + d + ORDER.length) % ORDER.length]; stopSpeech(); openId = n; renderDrawer(n, true); if (!progress.opened.includes(n)) { progress.opened.push(n); saveProgress(); checkBadges(); } history.replaceState(null, "", "#artifact=" + n); };
     $("#dPrev").addEventListener("click", () => step(-1));
     $("#dNext").addEventListener("click", () => step(1));
     document.addEventListener("keydown", e => {
