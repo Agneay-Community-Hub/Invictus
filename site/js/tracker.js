@@ -11,6 +11,7 @@
   const auAt = (d, t) => d.au2025 + d.rate * ((t - Date.UTC(2025, 0, 1)) / YR);
   const kmS = d => d.rate * AU / (YR / 1000);
   const cover = a => a.media && a.media[0] ? "assets/nasa/" + a.media[0].f : null;
+  const thumb = a => a.media && a.media[0] ? "assets/nasa/thumb/" + a.media[0].f.replace(/\.\w+$/, ".jpg") : null; // small copy for cards (scripts/build-thumbs.py)
   const pill = s => `<span class="pill" style="color:${STATUS[s].color}">${STATUS[s].label}</span>`;
   const hms = s => { s = Math.max(0, Math.round(s)); const h = (s / 3600) | 0, m = ((s % 3600) / 60) | 0, x = s % 60; return `${h}h ${String(m).padStart(2, "0")}m ${String(x).padStart(2, "0")}s`; };
   const n0 = n => Math.round(n).toLocaleString("en");
@@ -32,7 +33,7 @@
   // ---- one card per probe ----
   $("#trCards").innerHTML = probes.map(a => `
     <article class="tr-card" id="tr-${a.id}">
-      <div class="tr-media">${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : typeIco(a.type)}</div>
+      <div class="tr-media">${cover(a) ? `<img src="${thumb(a)}" alt="" loading="lazy" decoding="async">` : typeIco(a.type)}</div>
       <div class="tr-body">
         <div class="tr-head">${pill(a.status)}<h2>${esc(a.name)}</h2><p>Launched ${a.year} · ${esc(a.heading || "")}</p></div>
         <dl class="tr-nums" data-live>

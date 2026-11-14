@@ -22,8 +22,9 @@
 
   /* ---------------- helpers ---------------- */
   const cover = a => a.media && a.media[0] ? "assets/nasa/" + a.media[0].f : null;
+  const thumb = a => a.media && a.media[0] ? "assets/nasa/thumb/" + a.media[0].f.replace(/\.\w+$/, ".jpg") : null; // small copy for cards (scripts/build-thumbs.py)
   const thumbHTML = (a, cls = "thumb") => cover(a)
-    ? `<img class="${cls}" src="${cover(a)}" alt="" loading="lazy">`
+    ? `<img class="${cls}" src="${thumb(a)}" alt="" loading="lazy" decoding="async">`
     : `<span class="${cls} ph" aria-hidden="true">${typeIco(a.type)}</span>`;
   const pill = s => `<span class="pill" style="color:${STATUS[s].color}">${STATUS[s].label}</span>`;
   const auNow = d => d.au2025 + d.rate * ((Date.now() - Date.UTC(2025, 0, 1)) / (365.25 * 864e5));
@@ -483,7 +484,7 @@
   function initChapters() {
     $("#chapterNav").innerHTML = CHAPTERS.map((c, i) => {
       const a = byId[c.id];
-      return `<button role="tab" data-i="${i}" aria-selected="${i === 0}" class="${progress.chapters.includes(c.id) ? "read" : ""}">${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : ""}${i + 1}. ${esc(a.name)}</button>`;
+      return `<button role="tab" data-i="${i}" aria-selected="${i === 0}" class="${progress.chapters.includes(c.id) ? "read" : ""}">${cover(a) ? `<img src="${thumb(a)}" alt="" loading="lazy" decoding="async">` : ""}${i + 1}. ${esc(a.name)}</button>`;
     }).join("");
     $$("#chapterNav button").forEach(b => b.addEventListener("click", () => { chapter = +b.dataset.i; renderChapter(true); }));
     const sec = $("#logs");
@@ -538,7 +539,7 @@
     $("#tl").innerHTML = Object.entries(decades).map(([d, list]) => `
       <div class="decade"><h3>${d}s</h3>
         ${list.map(a => `<button class="tl-item" data-id="${a.id}" style="--c:${WORLDS[a.world].color}">
-          ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph" aria-hidden="true">${typeIco(a.type)}</span>`}
+          ${cover(a) ? `<img src="${thumb(a)}" alt="" loading="lazy" decoding="async">` : `<span class="ph" aria-hidden="true">${typeIco(a.type)}</span>`}
           <span><b>${esc(a.name)}</b><small>${a.year} · ${esc(WORLDS[a.world].short)} · ${esc(STATUS[a.status].label)}</small></span></button>`).join("")}
       </div>`).join("");
     $$("#tl .tl-item").forEach(b => b.addEventListener("click", () => openDrawer(b.dataset.id, b)));
@@ -572,7 +573,7 @@
     const deep = ARTIFACTS.filter(a => a.world === "deep");
     $("#deepCards").innerHTML = deep.slice(0, 8).map(a => `
       <button class="card" data-id="${a.id}">
-        ${cover(a) ? `<img src="${cover(a)}" alt="" loading="lazy">` : `<span class="ph">${typeIco(a.type)}</span>`}
+        ${cover(a) ? `<img src="${thumb(a)}" alt="" loading="lazy" decoding="async">` : `<span class="ph">${typeIco(a.type)}</span>`}
         <span class="card-body">${pill(a.status)}${hasModel(a.id) ? '<span class="tag3d">3D model</span>' : ""}<b>${esc(a.name)}</b>
           <p>${esc(a.dist ? "~" + fmtKm(auNow(a.dist)) + " from the Sun" : a.fixedPlace)}</p>
           <p class="live">${a.dist ? t("deep.signal", "Signal travel time: ~") + lightTime(auNow(a.dist)) : t("deep.launched", "Launched ") + a.dates.launch}</p></span>
@@ -951,6 +952,16 @@
         </div>
       </div>`;
     $("#gotdOpen").addEventListener("click", e => openDrawer(a.id, e.currentTarget));
+    // "On this day": real anniversaries from the machines' dates (js/anniversaries.js), linking to the Ghost Calendar
+    if (window.Anniv) {
+      const now = new Date(), hits = Anniv.onDay(now.getMonth(), now.getDate());
+      const p = document.createElement("p"); p.className = "gotd-otd";
+      p.innerHTML = hits.length && (window.GOE_LANG || "en") === "en" // event wording is English-only for now
+        ? `${ico("calendar")} <b>${t("otd.on", "On this day:")}</b> ` + hits.slice(0, 2).map(e => `${esc(e.a.name)}, ${esc(e.text.charAt(0).toLowerCase() + e.text.slice(1))} (${now.getFullYear() - e.y} ${t("otd.ago", "years ago")})`).join("; ")
+          + `. <a href="calendar.html">${t("otd.more", "Ghost Calendar →")}</a>`
+        : `${ico("calendar")} <a href="calendar.html">${t("otd.none", "What happened on this day, or on your birthday? Ghost Calendar →")}</a>`;
+      box.querySelector(".gotd-actions").before(p);
+    }
     $("#gotdSpeak").addEventListener("click", e => toggleSpeech(e.currentTarget, a.name + ". " + a.ghost));
     const url = new URL("index.html#artifact=" + a.id, location.href).href;
     $("#gotdShare").addEventListener("click", async () => {

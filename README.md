@@ -76,6 +76,7 @@ The Ask page works without this. The AI mode needs a tiny server to keep your Ge
 | **Ghost Logs** | 12 short story chapters you can step through with the ← → keys. Each one can be read aloud. |
 | **Opportunity, up close** | A section of its own (separate from the How it worked animations): her life in 14 moments with an odometer that counts up to 45.16 km and her first-person memory of each moment, plus an Inside the rover diagram with 14 numbered parts and X-ray goggles that reveal the 6 hidden inside her body. Linked from Opportunity's and Spirit's dossiers. |
 | **Timeline** | Artifacts grouped by decade from the 1960s to the 2020s, with a filter by world. |
+| **Ghost Calendar** (`calendar.html`) | "On this day" for the whole archive: every launch, landing and last word with an exact date in `data.js` (129 moments), worked out by `js/anniversaries.js`. Shows today's anniversaries (also as a line under Ghost of the day on the home page), a date picker for birthdays that lists the same day in other years and which machines were out there working on that exact day, the next six anniversaries, the whole year by month, and an `.ics` download that puts every anniversary in Google, Apple or Outlook calendars, repeating yearly. `calendar.html?date=YYYY-MM-DD` opens a date. |
 | **Elsewhere** | Machines beyond the Moon and Mars surface: Vanguard 1 (still circling Earth), MESSENGER (Mercury), the Pioneer Venus probes and Magellan (Venus), the Mars orbiters Mariner 9, Mars Climate Orbiter and Mars Global Surveyor, Galileo (Jupiter), Cassini (Saturn), Dawn (still orbiting Ceres), NEAR (asteroid Eros), Deep Impact (comet Tempel 1), and machines circling the Sun on their own (Mariner 2 and 4, ISEE-3, Kepler, Spitzer, Stardust), plus a log-scale ruler of Pioneer 10/11, Voyager 1/2 and New Horizons at *estimated* distances for today's date. |
 | **Then & now** | Drag a slider between a mission photo and a later view of the same place: Apollo 11, Apollo 12/Surveyor 3, Surveyor 1, Phoenix and InSight. Also shown in those dossiers. |
 | **Listen** | 7 real recordings, streamed from NASA videos: Mars wind, Ingenuity's blades, Perseverance's "puff, whir, zap", how sound changes on Mars, a marsquake, a meteoroid impact and Apollo 15 astronauts driving. |
@@ -108,6 +109,7 @@ site/
   js/app.js         2D logic
   js/explore.js     3D logic (Three.js 0.160)
   assets/nasa/      54 NASA images (resized to ≤1400px), named by NASA ID
+  assets/nasa/thumb/  560px copies used by card grids and lists (about a third of the bytes); rebuild with `python scripts/build-thumbs.py` after adding a photo
   assets/maps/      moon.jpg (NASA SVS), mars.jpg, stars.jpg, earth.jpg (Solar System Scope, CC BY 4.0)
   assets/ui/        badge icons cut out from Fantasy_Rpg_UI_Kit
   assets/models/    12 NASA GLB models (~19 MB), from NASA 3D Resources
