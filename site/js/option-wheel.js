@@ -371,6 +371,7 @@
   function initNavOptionWheel() {
     if (window._navWheelInitialized) return;
     window._navWheelInitialized = true;
+    document.documentElement.classList.add('has-nav-wheel');   // css/style.css: on phones, only these pages hide the list for the dial
 
     const navToggles = document.querySelectorAll('.nav-toggle');
     const navlist = document.getElementById('navlist');

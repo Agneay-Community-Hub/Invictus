@@ -302,3 +302,7 @@ body.ask-reading .ghost-fibers-bg { opacity: .55; }          /* once a conversat
 
 /* the top bar (and its menu panel) sits above the chat column */
 body.ask-page .topbar { z-index: 50; }
+/* phones: the suggestion chips scroll inside the content width (no edge bleed that widened the page) */
+@media (max-width: 768px) {
+  .ask-suggest { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+}

@@ -850,3 +850,10 @@ body.cat-page { background:
 .gs-links { display: flex; gap: 8px; flex-wrap: wrap; }
 .gs-card[aria-current=true] { outline: 3px solid var(--amber); outline-offset: 3px; }
 @media (max-width: 860px) { .gs-player { grid-template-columns: 1fr; } }
+
+/* embed builder: one column on phones; the machine picker stays on screen */
+@media (max-width: 760px) {
+  .em-grid { grid-template-columns: 1fr; }
+  .em-form label { min-width: 0; }
+  .em-form select { max-width: 100%; margin-left: 0; margin-top: 6px; display: block; }
+}
