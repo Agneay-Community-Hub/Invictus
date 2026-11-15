@@ -15,7 +15,7 @@
     get(k, d) { try { const v = localStorage.getItem("goe:" + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
     set(k, v) { try { localStorage.setItem("goe:" + k, JSON.stringify(v)); } catch { /* ignore */ } }
   };
-  const progress = Object.assign({ opened: [], chapters: [], voice: false, quizBest: 0, explore: false, badges: [] }, store.get("progress", {}));
+  const progress = Object.assign({ opened: [], chapters: [], voice: false, quizBest: 0, explore: false, badges: [], seenBadges: [] }, store.get("progress", {}));
   const saveProgress = () => store.set("progress", progress);
   const prefs = Object.assign({ level: "explorer", size: 1, motion: false, spacing: false }, store.get("prefs", {}));
   const savePrefs = () => store.set("prefs", prefs);
@@ -64,7 +64,15 @@
   /* ---------------- nav ---------------- */
   function initNav() {
     const t = $(".nav-toggle"), ul = $("#navlist");
-    t.addEventListener("click", () => { const o = ul.classList.toggle("open"); t.setAttribute("aria-expanded", o); });
+    const phone = matchMedia("(max-width: 768px)");
+    if (t) {
+      t.addEventListener("click", () => {
+        if (window.OptionWheel && phone.matches) return;           // phones: js/option-wheel.js opens the dial
+        if (window.NavPanel) return NavPanel.toggle();              // laptops and tablets: the grouped menu panel
+        const o = ul.classList.toggle("open");
+        t.setAttribute("aria-expanded", o);
+      });
+    }
     // If the full menu doesn't fit on one line (narrow window, browser zoom, longer Spanish/Hindi
     // labels), collapse it into the ☰ button instead of letting the page run off the screen.
     const bar = $(".topbar");
@@ -596,13 +604,14 @@
     const ticks = [0.3, 1, 3, 10, 30, 100, 300];
     const probes = ARTIFACTS.filter(a => a.dist).map(a => ({ a, au: auNow(a.dist) })).sort((p, q) => p.au - q.au);
     const heights = [24, 40, 82, 124, 166, 200];
+    const bodyTops = [36, 18, 36, 18, 36, 18, 36, 18, 36];
     $("#ruler").innerHTML = `
       <div class="zone" style="left:${X(94)}%;right:0;--b:26px"><span>Termination shock (~94 AU) →</span></div>
       <div class="zone" style="left:${X(120)}%;right:0;--b:4px"><span>Interstellar space begins (~120 AU) →</span></div>
       <div class="axis"></div>
       ${ticks.map(t => `<div class="tick" style="left:${X(t)}%"><span>${t} AU</span></div>`).join("")}
-      <div class="body" style="left:0"><i style="width:22px;height:22px;background:radial-gradient(#fff6c8,#ffb347);box-shadow:0 0 18px #ffb347"></i><span>Sun →</span></div>
-      ${bodies.map(([n, au, s, c], i) => `<div class="body" style="left:${X(au)}%"><i style="width:${s}px;height:${s}px;background:${c}"></i><span style="top:${i % 2 ? 34 : 18}px">${n}</span></div>`).join("")}
+      <div class="body sun-body" style="left:0"><i style="width:22px;height:22px;background:radial-gradient(#fff6c8,#ffb347);box-shadow:0 0 18px #ffb347"></i><span class="sun-tag">Sun</span></div>
+      ${bodies.map(([n, au, s, c], i) => `<div class="body" style="left:${X(au)}%"><i style="width:${s}px;height:${s}px;background:${c}"></i><span style="top:${bodyTops[i] || 18}px">${n}</span></div>`).join("")}
       ${probes.map((p, i) => `<button class="probe" style="left:${X(p.au)}%;--c:${STATUS[p.a.status].color};--h:${heights[i]}px;bottom:93px" data-id="${p.a.id}">
         <b>${esc(p.a.name)}</b><small>~${p.au.toFixed(0)} AU</small><span class="pdot"></span></button>`).join("")}`;
     $("#ruler").setAttribute("aria-label", "Distances from the Sun: " + probes.map(p => `${p.a.name} about ${p.au.toFixed(0)} AU`).join(", "));
@@ -790,12 +799,30 @@
       explore: !!progress.explore || !!store.get("explored", false), all: ARTIFACTS.every(a => progress.opened.includes(a.id))
     };
   }
+  function updateBadgeNotification() {
+    if (!Array.isArray(progress.seenBadges)) progress.seenBadges = [];
+    const unviewed = progress.badges.filter(id => !progress.seenBadges.includes(id)).length;
+    const countEl = $("#badgeCount");
+    if (countEl) {
+      if (unviewed > 0) {
+        countEl.textContent = unviewed;
+        countEl.style.display = "grid";
+        countEl.classList.add("has-unread");
+      } else {
+        countEl.textContent = "0";
+        countEl.style.display = "none";
+        countEl.classList.remove("has-unread");
+      }
+    }
+    $("#passportBtn")?.setAttribute("aria-label", `Open explorer passport, ${progress.badges.length} badges${unviewed ? ` (${unviewed} new)` : ""}`);
+  }
+
   function checkBadges() {
     const e = earned();
     BADGES.forEach(b => {
       if (e[b.id] && !progress.badges.includes(b.id)) { progress.badges.push(b.id); saveProgress(); toast(b.icon, `Badge earned: <b>${esc(b.name)}</b>`); }
     });
-    $("#badgeCount").textContent = progress.badges.length; $("#passportBtn").setAttribute("aria-label", `Open explorer passport, ${progress.badges.length} badges`);
+    updateBadgeNotification();
     renderPassport();
   }
   function renderPassport() {
@@ -807,13 +834,27 @@
   }
   function initPassport() {
     const m = $("#passport");
-    $("#passportBtn").addEventListener("click", () => { renderPassport(); m.hidden = false; $("[data-close]", m).focus(); });
+    const openPassport = () => {
+      progress.seenBadges = [...progress.badges];
+      saveProgress();
+      updateBadgeNotification();
+      renderPassport();
+      m.hidden = false;
+      $("[data-close]", m)?.focus();
+    };
+    $("#passportBtn").addEventListener("click", openPassport);
     $("[data-close]", m).addEventListener("click", () => (m.hidden = true));
     m.addEventListener("click", e => { if (e.target === m) m.hidden = true; });
     $("#resetProgress").addEventListener("click", () => {
       if (!confirm("Reset all badges and progress?")) return;
-      Object.assign(progress, { opened: [], chapters: [], voice: false, quizBest: 0, explore: false, badges: [] });
+      Object.assign(progress, { opened: [], chapters: [], voice: false, quizBest: 0, explore: false, badges: [], seenBadges: [] });
       store.set("explored", false); saveProgress(); checkBadges(); initChapters();
+    });
+    if (location.hash === "#passport") {
+      setTimeout(openPassport, 200);
+    }
+    window.addEventListener("hashchange", () => {
+      if (location.hash === "#passport") openPassport();
     });
     checkBadges();
   }

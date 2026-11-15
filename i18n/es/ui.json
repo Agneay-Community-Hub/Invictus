@@ -359,7 +359,21 @@
     "xm.story": "El viaje de Echo",
     "xm.storySub": "Todo el archivo en unos 5 minutos, contado por Echo, el último mensaje a casa (en inglés).",
     "gh.label": "Nuestro código en GitHub (se abre en otra pestaña)",
-    "gh.foot": "Ver el código en GitHub"
+    "gh.foot": "Ver el código en GitHub",
+    "nav.panel": "Menú del sitio",
+    "nav.g.explore": "Explora",
+    "nav.g.stories": "Historias y ciencia",
+    "nav.g.play": "Juega y pregunta",
+    "nav.g.learn": "Para docentes",
+    "nav.h.map": "Cada máquina donde reposa",
+    "nav.h.deep": "De Mercurio a las estrellas",
+    "nav.h.w3d": "Camina por los sitios reales",
+    "nav.h.logs": "Contados con su propia voz",
+    "nav.h.stories": "Dibujos, cómics y un pódcast",
+    "nav.h.how": "Cómo aterrizaron, paso a paso",
+    "nav.h.play": "Aterriza, conduce, construye",
+    "nav.h.ask": "Pregunta lo que quieras",
+    "nav.h.teach": "Clases, fichas y un juego"
   },
   "status": {
     "silent": {

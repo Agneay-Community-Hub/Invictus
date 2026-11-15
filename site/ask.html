@@ -19,38 +19,87 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
-  <link rel="stylesheet" href="css/style.css?v=10a24bf6">
-  <link rel="stylesheet" href="css/ask.css?v=429c6133">
+  <link rel="stylesheet" href="css/style.css?v=669c05f4">
+  <link rel="stylesheet" href="css/ask.css?v=9d7f5d03">
   <link rel="icon" href="assets/ui/book.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#060a13">
   <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+  <script>
+    (function () {
+      var l = "";
+      try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("goe:lang") || ""; if (l) localStorage.setItem("goe:lang", l); } catch (e) { }
+      l = l === "es" || l === "hi" ? l : "en";
+      document.documentElement.lang = l;
+      window.GOE_LANG = l;
+      if (l !== "en") document.write('<script src="js/i18n/' + l + '.js"><\/script>');
+    })();
+  </script>
 </head>
 <body class="ask-page">
+  <div class="ghost-fibers-bg" id="askFibersContainer" aria-hidden="true">
+    <canvas class="ghost-fibers-canvas" id="askFibersCanvas"></canvas>
+  </div>
   <a class="skip" href="#askInput">Skip to the question box</a>
 
-  <header class="topbar">
-    <a class="back-btn" href="index.html#ask" data-back aria-label="Go back"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg><span>Back</span></a>
+  <header class="topbar nav-compact">
     <a class="brand" href="index.html" aria-label="Ghosts of Exploration, home">
       <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-text"><strong>Ghosts of Exploration</strong><small>Abandoned but not Forgotten</small></span>
+      <span class="brand-text"><strong>Ghosts of Exploration</strong><small data-i="brand.sub">Abandoned but not Forgotten</small></span>
     </a>
     <nav class="mainnav" aria-label="Main">
       <button class="nav-toggle" aria-expanded="false" aria-controls="navlist" aria-label="Open menu"><span></span><span></span><span></span></button>
       <ul id="navlist">
-        <li><a href="index.html#map">Ghost Map</a></li>
-        <li><a href="index.html#logs">Ghost Logs</a></li>
-        <li><a href="index.html#timeline">Timeline</a></li>
-        <li><a href="index.html#deep">Elsewhere</a></li>
-        <li><a href="quiz.html">Quiz</a></li>
-        <li><a href="lander.html">Play</a></li>
-        <li><a href="ask.html" class="active" aria-current="page">Ask</a></li>
+        <li><a data-i="nav.map" href="index.html#map">Ghost Map</a></li>
+        <li><a data-i="nav.logs" href="index.html#logs">Ghost Logs</a></li>
+        <li><a data-i="nav.stories" href="index.html#stories">Stories</a></li>
+        <li><a data-i="nav.how" href="index.html#how">How it worked</a></li>
+        <li><a data-i="nav.deep" href="index.html#deep">Elsewhere</a></li>
+        <li><a data-i="nav.w3d" href="index.html#worlds3d">3D Worlds</a></li>
+        <li><a data-i="nav.ask" href="ask.html" class="active" aria-current="page">Ask</a></li>
+        <li><a data-i="nav.play" href="index.html#play">Play</a></li>
+        <li><a data-i="nav.teach" href="teacher.html">Teachers</a></li>
       </ul>
     </nav>
     <div class="top-actions">
-      <a class="btn btn-glow" href="explore.html"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg> 3D Explore</a>
+      <a data-i="top.3d" class="btn btn-glow" href="explore.html"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg> 3D Explore</a>
+      <a class="icon-btn" id="passportBtn" href="index.html#passport" aria-label="Open explorer passport">
+        <img src="assets/ui/trophy.png" alt="" width="26" height="26"><span class="badge-count" id="badgeCount" style="display:none">0</span>
+      </a>
+      <div class="lang-switch" role="group" aria-label="Language / Idioma / भाषा">
+        <a data-lang="en" href="?lang=en" hreflang="en" lang="en" title="English">EN</a><a data-lang="es" href="?lang=es" hreflang="es" lang="es" title="Español">ES</a><a data-lang="hi" href="?lang=hi" hreflang="hi" lang="hi" title="हिंदी">हिं</a>
+      </div>
+      <a class="icon-btn gh-btn" href="https://github.com/Agneay-Community-Hub/Invictus" target="_blank" rel="noopener" data-i-al="gh.label" aria-label="Our code on GitHub (opens in a new tab)" title="Our code on GitHub"><svg class="gh-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg></a>
+      <button data-i-al="set.open" class="icon-btn" id="settingsBtn" aria-label="Reading and accessibility settings" aria-expanded="false" aria-controls="settings">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm8.6 4.6-.1-1.1 2-1.6-2-3.4-2.4.9a8 8 0 0 0-1.9-1.1L15.8 3h-3.9l-.4 2.6a8 8 0 0 0-1.9 1.1l-2.4-.9-2 3.4 2 1.6a8 8 0 0 0 0 2.2l-2 1.6 2 3.4 2.4-.9c.6.5 1.2.8 1.9 1.1l.4 2.6h3.9l.4-2.6c.7-.3 1.3-.6 1.9-1.1l2.4.9 2-3.4-2-1.6.1-1.1Z"/></svg>
+      </button>
     </div>
   </header>
+
+  <!-- settings popover -->
+  <section class="settings" id="settings" hidden aria-label="Settings">
+    <h2 data-i="set.title">Make it yours</h2>
+    <div class="set-row">
+      <span data-i="set.level" class="set-label">Story level</span>
+      <div class="seg" role="radiogroup" aria-label="Story level">
+        <button data-i="set.explorer" role="radio" aria-checked="true" data-level="explorer">Explorer <small>ages 8–11</small></button>
+        <button data-i="set.scientist" role="radio" aria-checked="false" data-level="scientist">Scientist <small>ages 12+</small></button>
+      </div>
+    </div>
+    <div class="set-row">
+      <span data-i="set.size" class="set-label">Text size</span>
+      <div class="seg" role="radiogroup" aria-label="Text size">
+        <button role="radio" aria-checked="false" data-size="0.92">A</button>
+        <button role="radio" aria-checked="true" data-size="1">A</button>
+        <button role="radio" aria-checked="false" data-size="1.15">A</button>
+        <button role="radio" aria-checked="false" data-size="1.3">A</button>
+      </div>
+    </div>
+    <label class="set-row switch"><span data-i="set.motion" class="set-label">Reduce motion</span><input type="checkbox" id="reduceMotion"><span class="track" aria-hidden="true"></span></label>
+    <label class="set-row switch"><span data-i="set.spacing" class="set-label">Dyslexia-friendly spacing</span><input type="checkbox" id="spacing"><span class="track" aria-hidden="true"></span></label>
+    <button data-i="set.install" class="btn btn-small" id="installBtn" type="button" hidden><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"></use></svg> Install as an app (works offline)</button>
+    <p data-i="set.note" class="set-note">Every story can be read aloud — look for the <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-speaker"></use></svg> button.</p>
+  </section>
 
   <main class="ask-wrap" id="main">
     <section class="ask-intro" aria-labelledby="askTitle">
@@ -87,8 +136,13 @@
   <script src="js/data.js?v=83e574d5"></script>
   <script src="js/explainers.js?v=24a770e8"></script>
   <script src="js/ask-config.js?v=498ffe29"></script>
-  <script src="js/ask.js?v=3097c108"></script>
-  <script src="js/back.js?v=0ad31277"></script>
+  <script src="js/i18n.js?v=22597147"></script>
+  <script src="js/back.js?v=0ad31277" defer></script>
+  <script src="js/option-wheel.js?v=678638e6"></script>
+  <script src="js/nav-panel.js?v=dcfdf365"></script>
+  <script src="js/ghost-fibers.js?v=02c88aa0"></script>
+  <script src="js/thought-line.js?v=61b1da15"></script>
+  <script src="js/ask.js?v=5d62d4b9"></script>
   <script src="js/search.js?v=3332e47b"></script>
   <script src="js/glossary.js?v=f39d5e4e"></script>
   <script src="js/pwa.js?v=7612dde4"></script>
