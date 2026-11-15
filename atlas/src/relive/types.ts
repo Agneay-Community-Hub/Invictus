@@ -22,6 +22,7 @@ export type TimeBasis = 'sourced' | 'derived' | 'sequence' | 'conceptual'
 export type EventKind =
   | 'countdown' | 'ignition' | 'liftoff' | 'staging' | 'jettison' | 'cutoff' | 'burn' | 'orbit' | 'docking'
   | 'separation' | 'coast' | 'landing' | 'surface' | 'entry' | 'parachute' | 'splashdown' | 'deploy' | 'comms' | 'end' | 'discovery'
+  | 'flyby' | 'perihelion'
 
 export interface MissionEvent {
   id: string
@@ -36,6 +37,11 @@ export interface MissionEvent {
   sources: string[]
   /** a sound cue fired when playback crosses this event (synthesised sound design, never archival audio) */
   cue?: AudioCue
+  /** a NASA recording played when playback crosses this event (labelled on the card; a sonification is data converted
+   *  to sound, never sound heard in space) */
+  recording?: { url: string; title: string; credit: string; kind: 'sonification' | 'recording'; sources: string[] }
+  /** a NASA image from the event itself (shown on the card, credited) */
+  image?: { src: string; title: string; credit: string; id: string; sources: string[] }
   // ── historical record (Relive overhaul, Milestone 3) — see timeline.ts eventRecord() for the defaults
   /** the time exactly as the source prints it ('102:45:39.90' GET, '04:55 UTC', '2003-12-10') */
   published?: string
@@ -84,6 +90,8 @@ export type Environment =
   | 'mars-near' // approach and entry
   | 'mars-descent' // parachute, airbags, bounces
   | 'mars-surface'
+  | 'sun-near' // inner heliosphere: Parker Solar Probe's encounters
+  | 'venus-near' // a Venus gravity assist
 
 export interface Phase {
   id: string
@@ -120,7 +128,9 @@ export type AudioCue = 'ignition' | 'staging' | 'pyro' | 'chute' | 'bounce' | 'b
 export interface Shot {
   /** chase: behind/below the vehicle looking along it; side: broadside; wide: far framing with the body; ground: fixed
    *  observer at the launch site; orbit: slow circle around the vehicle; top: overhead of a surface scene */
-  kind: 'chase' | 'side' | 'wide' | 'ground' | 'orbit' | 'top' | 'low'
+  kind: 'chase' | 'side' | 'wide' | 'ground' | 'orbit' | 'top' | 'low' | 'sun'
+  /** Unity missions, 'wide': the body framed with the spacecraft (mission-defined index, e.g. Parker 0 Sun, 2 Venus) */
+  target?: number
   /** metres from the vehicle (or the body radius multiple for 'wide') */
   dist: number
   /** degrees above the local horizon */
@@ -130,6 +140,9 @@ export interface Shot {
   fov?: number
   /** wide shots: put the camera on the sunlit side of the body (a night-side orbit would otherwise be a black frame) */
   lit?: boolean
+  /** Unity 'wide' shots: an OBSERVER viewpoint this many target radii behind and sunward of the spacecraft, so the body
+   *  is large and lit behind it (the spacecraft is drawn enlarged); `azim` turns the viewpoint around the line of sight */
+  obs?: number
 }
 
 export interface ShotCue { t: Met; shot: Shot; label?: string }
@@ -150,7 +163,7 @@ export interface MissionScript {
   /** UTC of MET 0 (range zero / liftoff reference) */
   epochMs: number
   epochNote: string
-  vehicle: 'saturn-v' | 'delta-ii-7925h'
+  vehicle: 'saturn-v' | 'delta-ii-7925h' | 'delta-iv-heavy' | 'atlas-v-551' | 'titan-ivb-centaur'
   /** 'get': GET hhh:mm:ss (Apollo); 'days': L+ d hh:mm:ss (long cruises) */
   clock: 'get' | 'days'
   phases: Phase[]
@@ -162,6 +175,50 @@ export interface MissionScript {
   illustrative: string[]
   /** the player's 'Jump to' targets: a label and the event it jumps to (in mission order) */
   jumps?: { label: string; event: string }[]
+  /**
+   * Unity missions (NASA robotic mission experiences): the 3-D view is the MissionsExplorer Unity player instead of
+   * ReliveScene; the timeline, cards, evidence and audio are the same. See docs/missions/shared/architecture.md.
+   */
+  renderer?: 'three' | 'unity'
+  unity?: UnityMissionConfig
   /** the hand-off at the end of the mission */
   conclusion: { title: string; text: string; sources: string[] }
+}
+
+/** A part of the spacecraft the visitor can inspect (order = the Unity mission's anchor list). */
+export interface InstrumentDef {
+  id: string
+  name: string
+  /** the suite or system it belongs to */
+  suite?: string
+  /** what it measures / does, in the source's terms */
+  measures: string
+  /** where it is, in the source's terms */
+  location: string
+  /** how its place on the 3-D model was found */
+  placement: 'named-part' | 'matched' | 'approximate'
+  placementNote: string
+  sources: string[]
+}
+
+/** a NASA photograph shown during the launch (MET seconds from which it is shown) */
+export interface LaunchPhoto { from: number; src: string; nasaId: string; title: string; date: string; credit: string }
+
+export interface UnityMissionConfig {
+  /** the mission id the Unity player builds ('parker', 'juno', 'cassini') */
+  mission: string
+  instruments: InstrumentDef[]
+  /** /missions/<mission>/trajectory.json (JPL Horizons vectors) for the HUD */
+  trajectory: string
+  /** HUD reference body: distances are measured from it */
+  centre: { name: string; radiusKm: number }
+  /** missions with several frames (Juno: cruise around the Sun, then around Jupiter): from that UTC on, the read-out
+   *  uses this trajectory track and centre */
+  frames?: { fromMs: number; track: string; centre: { name: string; radiusKm: number; surface?: string } }[]
+  /** the launch shown at the start (RECONSTRUCTED vehicle, ILLUSTRATIVE climb); MET 0 = liftoff (script.epochMs) */
+  launch?: { name: string; site: string; padSeconds: number; photos: LaunchPhoto[]; sources: string[] }
+  /** the "Orbits" overview (labelled, top-down): AU from the frame centre, per frame (fromMs = when it applies) */
+  overview: { fromMs?: number; dist: number; elev?: number; azim?: number }[]
+  /** provenance of each visual layer, shown in "How this is built" */
+  layers: { name: string; kind: 'nasa-model' | 'trajectory' | 'reconstructed' | 'illustrative' | 'visualisation' | 'model'; note: string }[]
 }

@@ -1,0 +1,81 @@
+/* Unity mission view (Parker, Juno, Cassini-Huygens): the player canvas + what the web draws over it */
+.m3d { position: absolute; inset: 0; overflow: hidden; background: #000; }
+.m3d-canvas { position: absolute; inset: 0; touch-action: none; }
+.m3d-canvas canvas { width: 100%; height: 100%; display: block; outline: none; }
+
+.m3d-loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(420px, calc(100% - 32px)); display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: var(--r); text-align: center; }
+.m3d-bar { height: 4px; border-radius: 2px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+.m3d-bar i { display: block; height: 100%; background: var(--acc, #67e8f9); transition: width 0.25s ease; }
+.m3d-loading small { color: var(--mut); }
+
+/* trajectory read-out = Layer B (live parameters) in the shared .relive-tele slot (top-left; relive.css positions it and
+   moves top-left story cards below it). Compact: altitude + speed; "More" adds the rest. */
+.relive-tele.m3d-readout { max-width: min(330px, calc(100% - 24px)); min-width: 0; font-size: 12px; }
+.m3d-readout dl { margin: 0; display: grid; gap: 3px; }
+.m3d-readout dl > div { display: grid; grid-template-columns: minmax(0, auto) 1fr; gap: 8px; align-items: baseline; }
+.m3d-readout dt { color: var(--txt-dim); font-size: 11px; }
+.m3d-readout dd { margin: 0; font-variant-numeric: tabular-nums; text-align: right; font-family: var(--font-mono); font-size: 12.5px; color: #fff; }
+.m3d-readout small { color: var(--mut); font-family: var(--font); font-size: 10.5px; }
+.m3d-ro-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 4px; }
+.m3d-src, .m3d-ro-note { margin: 0; font-size: 10px; color: var(--mut); letter-spacing: 0.04em; }
+.m3d-ro-more { border: 0; background: none; color: var(--accent, #67e8f9); font: inherit; font-size: 11px; cursor: pointer; padding: 2px 0; }
+
+/* view tools: top-right, under the Relive toolbar */
+.m3d-tools { position: absolute; right: 12px; top: calc(var(--relive-top, 64px) + 8px); display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; max-width: calc(100% - 24px); }
+.m3d-tools .btn.on { background: rgba(103, 232, 249, 0.18); border-color: var(--line-hi); }
+
+.m3d-list { position: absolute; right: 12px; top: calc(var(--relive-top, 64px) + 52px); z-index: 2; width: min(280px, calc(100% - 24px)); max-height: 46vh; overflow-y: auto; display: flex; flex-direction: column; padding: 6px; border-radius: var(--r-sm, 8px); }
+.m3d-li { text-align: left; padding: 7px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--txt); font: inherit; font-size: 13px; cursor: pointer; }
+.m3d-li:hover, .m3d-li:focus-visible { background: rgba(255, 255, 255, 0.06); }
+.m3d-li.on { background: rgba(103, 232, 249, 0.16); }
+.m3d-li small { color: var(--mut); }
+
+.m3d-inst { position: absolute; right: 12px; top: calc(var(--relive-top, 64px) + 52px); width: min(380px, calc(100% - 24px)); max-height: 60vh; overflow-y: auto; padding: 12px 14px; border-radius: var(--r, 12px); font-size: 13px; line-height: 1.45; }
+.m3d-inst header { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.m3d-inst h3 { margin: 2px 0 6px; font-size: 16px; }
+.m3d-inst p { margin: 6px 0; }
+.m3d-place { color: var(--mut); font-size: 12px; }
+.m3d-place-approximate b { color: #fbbf24; }
+.m3d-cite { font-size: 11px; color: var(--mut); }
+
+/* labels pinned to the model while inspecting (positions from Unity, 10 Hz) */
+.m3d-labels { position: absolute; inset: 0; pointer-events: none; }
+.m3d-label { position: absolute; transform: translate(10px, -50%); display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 6px; border-radius: 999px; border: 1px solid var(--line); background: rgba(4, 8, 18, 0.72); color: var(--txt); font: inherit; font-size: 11px; white-space: nowrap; pointer-events: auto; cursor: pointer; transition: left 0.1s linear, top 0.1s linear; }
+.m3d-label i { width: 7px; height: 7px; border-radius: 50%; background: #67e8f9; margin-left: -14px; box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6); }
+.m3d-label.on { border-color: #67e8f9; background: rgba(8, 40, 52, 0.85); }
+
+@media (max-width: 600px) {
+  .relive-tele.m3d-readout { max-width: calc(100% - 16px); font-size: 11px; }
+  .m3d-readout dd small { display: none; }
+  .m3d-tools { top: auto; bottom: calc(var(--relive-bottom, 112px) + 8px); right: 8px; }
+  .m3d-tools .btn { font-size: 12px; padding: 4px 8px; }
+  .m3d-list { top: auto; bottom: calc(var(--relive-bottom, 112px) + 48px); max-height: 38vh; }
+  .m3d-inst { top: auto; left: 8px; right: 8px; width: auto; bottom: calc(var(--relive-bottom, 112px) + 8px); max-height: 46vh; }
+  .m3d-label { font-size: 10px; }
+}
+
+/* orbit legend: bottom-right above the timeline (story cards avoid the spacecraft; the legend is small and faint) */
+.m3d-legend { position: absolute; right: 12px; bottom: calc(var(--relive-bottom, 112px) + 8px); max-width: min(380px, calc(100% - 24px)); display: flex; flex-direction: column; gap: 3px; padding: 6px 10px; border-radius: var(--r-sm, 8px); font-size: 11px; color: var(--txt-dim); pointer-events: none; }
+.m3d-legend .ln { display: inline-block; width: 18px; height: 0; border-top: 2px solid; vertical-align: middle; margin-right: 6px; }
+.m3d-legend .ln.path { border-color: rgb(255, 199, 102); }
+.m3d-legend .ln.planet { border-color: rgba(153, 178, 217, 0.8); }
+.m3d-legend .ln.moon { border-color: rgba(128, 217, 184, 0.8); }
+@media (max-width: 600px) { .m3d-legend { display: none; } }
+
+/* the launch in NASA's photographs: full-screen, cross-fading, a slow push-in; captioned with date and credit */
+.m3d-film { position: absolute; inset: 0; background: #000; overflow: hidden; transition: opacity 0.4s linear; pointer-events: none; }
+.m3d-film img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.0); transition: opacity 1.2s ease, transform 14s linear; }
+.m3d-film img.on { opacity: 1; transform: scale(1.08); }
+.m3d-film::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45), transparent 22%, transparent 62%, rgba(0, 0, 0, 0.7)); }
+.m3d-film-cap { position: absolute; z-index: 1; left: 50%; transform: translateX(-50%); bottom: calc(var(--relive-bottom, 112px) + 14px); max-width: min(640px, calc(100% - 24px)); display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center; color: #fff; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); }
+.m3d-film-cap b { font-size: 15px; font-weight: 600; }
+.m3d-film-cap span { font-size: 11.5px; color: rgba(255, 255, 255, 0.78); }
+
+/* names on the Sun, planets and moons (and the spacecraft in the overview) */
+.m3d-bodies { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.m3d-body { position: absolute; transform: translate(-50%, -100%); padding: 1px 7px; border-radius: 999px; font-size: 11.5px; letter-spacing: 0.03em; color: rgba(235, 242, 255, 0.92); background: rgba(4, 8, 18, 0.45); white-space: nowrap; text-shadow: 0 1px 3px #000; transition: left 0.1s linear, top 0.1s linear; }
+.m3d-body.small { transform: translate(10px, -50%); }
+.m3d-body i { position: absolute; left: -16px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border: 1.5px solid rgba(200, 220, 255, 0.85); border-radius: 50%; }
+.m3d-body.craft { color: #ffd38a; transform: translate(10px, -50%); }
+.m3d-body.craft i { border-color: #ffc766; }
+@media (max-width: 600px) { .m3d-body { font-size: 10px; } .m3d-film-cap b { font-size: 13px; } }

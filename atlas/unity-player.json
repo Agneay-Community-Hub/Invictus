@@ -32,6 +32,38 @@
           "sha256": "db333b107f483eb5390a515d103defea0df7d049626d1a434ae5aaa627c02cc2"
         }
       ]
+    },
+    "missions": {
+      "id": "7b01e05647a9",
+      "unity": "6000.4.3f1",
+      "dir": "unity-cache/MissionsExplorer/Build",
+      "baseUrl": "https://github.com/Agneay-Community-Hub/Invictus/releases/download/unity-missions-7b01e05647a9/",
+      "files": [
+        {
+          "name": "MissionsExplorer.data",
+          "bytes": 31754165,
+          "modified": "2026-11-15T06:51:13.185Z",
+          "sha256": "54c1f312912c785baf5e4529cfd3ed158bb26a97982d47bb157fa687fe1e36e5"
+        },
+        {
+          "name": "MissionsExplorer.framework.js",
+          "bytes": 472380,
+          "modified": "2026-11-15T06:51:13.201Z",
+          "sha256": "f50ca71f747af0de4200a3514a7f4f5ba7929cc0faee1c0e1c24e76f46e753d8"
+        },
+        {
+          "name": "MissionsExplorer.loader.js",
+          "bytes": 26982,
+          "modified": "2026-11-15T06:51:13.919Z",
+          "sha256": "5ad17d5d02bc30ca9c287ac2ce0c664c92e16bf2b0c084571a148c421ba39cbd"
+        },
+        {
+          "name": "MissionsExplorer.wasm",
+          "bytes": 59089491,
+          "modified": "2026-11-15T06:51:14.092Z",
+          "sha256": "34d79f52516d4befc973f5ad77d9da010de50a0f5825165897d84b022df14e6c"
+        }
+      ]
     }
   }
 }

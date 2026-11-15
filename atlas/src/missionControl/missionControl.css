@@ -95,6 +95,10 @@
   animation: present-toast 9s ease forwards;
 }
 .present-toast .warn { color: var(--warm); }
+/* back on the home / orbital view: the bottom centre is the mission-card strip, so the note sits in the top-right
+   notification zone under the navigation (surfaces keep the bottom centre, which their HUD leaves free) */
+.present-toast[data-path='orbit'] { top: calc(var(--header-top, 12px) + var(--header-h, 56px) + 12px); right: 16px; left: auto; bottom: auto; transform: none; max-width: min(380px, calc(100vw - 32px)); }
+@media (max-width: 600px) { .present-toast[data-path='orbit'] { right: 8px; left: 8px; max-width: none; } }
 @keyframes present-toast { 0%, 12% { opacity: 0; } 18%, 88% { opacity: 1; } 100% { opacity: 0; } }
 
 /* the entry button in surface HUDs */

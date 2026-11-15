@@ -19,7 +19,9 @@ import { RELIVE_SCRIPTS } from '../relive/player'
 import type { MissionScript } from '../relive/types'
 
 export type MissionTab = 'relive' | 'explore' | 'catalogue' | 'discovered'
-export type Destination = 'moon' | 'mars' | 'all'
+/** 'deep': the Sun and the outer Solar System (every target other than the Moon and Mars) */
+export type Destination = 'moon' | 'mars' | 'deep' | 'all'
+export const inDest = (target: string | undefined, dest: Destination) => dest === 'all' || (dest === 'deep' ? !!target && target !== 'moon' && target !== 'mars' : target === dest)
 
 interface MissionControlUI {
   open: boolean
@@ -102,6 +104,29 @@ export const REPLAYS: ReplayEntry[] = [
     vehicle: 'Delta II 7925H · cruise stage · aeroshell, parachute and airbag lander · Opportunity rover',
     coverage: 'full',
     note: 'Launch to egress is reconstructed in 3-D. The surface years (2004–2019) are dated milestones and discoveries over an orbital overview of Meridiani Planum — not reconstructed drive by drive.',
+  },
+  {
+    scriptId: 'parker-solar-probe',
+    missionId: 'parker-solar-probe',
+    vehicle: 'Parker Solar Probe (NASA 3D model) on its JPL Horizons trajectory',
+    coverage: 'partial',
+    notReplayed: 'The mission is still operating. The replay ends with NASA’s latest report: the 29th close approach (4 Sept 2026) and the extension into 2029.',
+    note: 'From launch (2018) to the 29th close approach (4 Sept 2026) and the extension into 2029, in Unity: the spacecraft on JPL’s reconstructed trajectory, the seven Venus flybys and the encounters inside the corona. The launch itself is told, not modelled. The mission is still operating.',
+  },
+  {
+    scriptId: 'juno',
+    missionId: 'juno',
+    vehicle: 'Juno (NASA 3D model), spinning at its documented rates, on its JPL Horizons trajectory',
+    coverage: 'partial',
+    notReplayed: 'Juno is still orbiting Jupiter. The replay ends where JPL’s reconstructed trajectory ends (26 Sept 2026, after perijove 87). The launch is told, not modelled.',
+    note: 'In Unity: the Earth flyby, Jupiter orbit insertion, the polar science orbits and the Ganymede, Europa and Io flybys.',
+  },
+  {
+    scriptId: 'cassini',
+    missionId: 'cassini',
+    vehicle: 'Cassini with ESA’s Huygens probe (NASA 3D models) on JPL’s reconstructed trajectory',
+    coverage: 'full',
+    note: 'In Unity: the cruise, Saturn orbit insertion, Huygens’ descent to Titan (JPL’s predicted descent trajectory), the Enceladus and Titan discoveries, the 22 Grand Finale dives and the loss of signal. The launch is told, not modelled.',
   },
 ]
 

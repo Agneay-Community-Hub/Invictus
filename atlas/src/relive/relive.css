@@ -212,3 +212,8 @@
 .relive-tl-bar .tick::before { content: ''; position: absolute; inset: -3px -5px -5px; }
 /* the intro card sits over the live scene: opaque enough that the vehicle never shows through the text */
 .relive-intro.glass, .relive-intro { background: rgba(5, 9, 20, 0.97); }
+
+/* an image from the event itself (e.g. Huygens' view from Titan's surface), credited */
+.relive-card-img { margin: 8px 0 4px; }
+.relive-card-img img { display: block; width: 100%; max-height: 220px; object-fit: cover; border-radius: 8px; }
+.relive-card-img figcaption { margin-top: 4px; font-size: 10.5px; color: var(--mut); }

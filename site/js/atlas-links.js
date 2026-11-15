@@ -11,7 +11,7 @@ const ATLAS_SITES = {
   viking1: "mars-viking-1", viking2: "mars-viking-2", pathfinder: "mars-pathfinder", sojourner: "mars-pathfinder",
   spirit: "mars-spirit", opportunity: "victoria-crater", phoenix: "mars-phoenix", curiosity: "mars-curiosity", insight: "mars-insight"
 };
-const ATLAS_RELIVE = { apollo11: "apollo-11", opportunity: "mer-opportunity" };
+const ATLAS_RELIVE = { apollo11: "apollo-11", opportunity: "mer-opportunity", cassini: "cassini" };
 
 // Mission catalogue id (js/atlas-data.js) → our machines (js/data.js), for links in both directions
 const MISSION_MACHINES = {
@@ -25,7 +25,8 @@ const MISSION_MACHINES = {
   "magellan": ["magellan"], "galileo": ["galileo"], "near": ["near"], "stardust": ["stardust"], "messenger": ["messenger"],
   "deep-impact": ["deepimpact"], "new-horizons": ["newhorizons"], "dawn": ["dawn"]
 };
-const ATLAS_RELIVE_BY_MISSION = { "apollo-11": "apollo-11", "mer-opportunity": "mer-opportunity" };
+const ATLAS_RELIVE_BY_MISSION = { "apollo-11": "apollo-11", "mer-opportunity": "mer-opportunity",
+  "cassini": "cassini", "juno": "juno", "parker-solar-probe": "parker-solar-probe" };
 
 // go: site | relive | journey (see atlas/src/embed/ghosts.ts)
 function atlasURL(go, id) {

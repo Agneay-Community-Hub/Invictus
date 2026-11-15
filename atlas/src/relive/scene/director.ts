@@ -29,6 +29,7 @@ export function shotPose(shot: Shot, f: Frame, wall: number, subjectSize: number
     fov = Math.max(1.2, Math.min(fov, need))
   }
   switch (shot.kind) {
+    case 'sun': // Unity missions only (Parker); the Three.js scenes never use it
     case 'chase': {
       const back = rotAxis(v3.mul(v, -d * Math.cos(el)), up, az)
       return { eye: v3.add(center, v3.add(back, v3.mul(up, d * Math.sin(el)))), target: v3.add(center, v3.mul(v, d * 0.1)), fov }

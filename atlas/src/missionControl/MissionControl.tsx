@@ -15,7 +15,7 @@ import { useDiscovery } from '../discovery/progress'
 import { SITE_DISCOVERIES } from '../discovery/siteDiscoveries'
 import { useSurface } from '../surface/surfaceState'
 import { input } from '../input/appInput'
-import { REPLAYS, exploreContext, missionControl, replayFor, replayScript, replaySpan, savedReplayPosition, useMissionControl, type Destination, type MissionTab } from './missionState'
+import { REPLAYS, inDest, exploreContext, missionControl, replayFor, replayScript, replaySpan, savedReplayPosition, useMissionControl, type Destination, type MissionTab } from './missionState'
 import './missionControl.css'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -31,7 +31,7 @@ function fmtDate(iso: string | null | undefined): string {
 const fmtMs = (ms: number) => fmtDate(new Date(ms).toISOString())
 const fact = (f?: Fact<string>) => (f?.value ? fmtDate(f.value) : 'not published')
 const STATUS: Record<string, string> = { completed: 'Completed', ended: 'Ended', operating: 'Operating', lost: 'Lost', unknown: 'Unknown' }
-const DEST: Record<string, string> = { moon: 'Moon', mars: 'Mars' }
+const DEST: Record<string, string> = { moon: 'Moon', mars: 'Mars', sun: 'the Sun', deep: 'Sun & outer planets' }
 const destName = (t: string) => DEST[t] ?? t.charAt(0).toUpperCase() + t.slice(1)
 
 function Sources({ ids }: { ids: string[] }) {
@@ -63,7 +63,7 @@ export function leaveForSite(id: string) {
 // ─────────────────────────────────────────────────────────────────── Relive Mission
 
 function ReliveTab({ dest }: { dest: Destination }) {
-  const list = REPLAYS.filter((r) => dest === 'all' || MISSION_BY_ID[r.missionId]?.target === dest)
+  const list = REPLAYS.filter((r) => inDest(MISSION_BY_ID[r.missionId]?.target, dest))
   if (!list.length) return <p className="muted">No historical replay is available for this destination yet.</p>
   return (
     <div className="mc-cards">
@@ -77,7 +77,7 @@ function ReliveTab({ dest }: { dest: Destination }) {
           <article key={r.scriptId} className="mc-card" data-testid={`mc-replay-${r.scriptId}`} data-coverage={r.coverage}>
             <header className="mc-card-h">
               <span className="eyebrow">RELIVE MISSION · {m.agency} · {destName(m.target).toUpperCase()}</span>
-              <span className={`mc-badge ${r.coverage}`}>{r.coverage === 'full' ? 'Full lifecycle' : 'Partial lifecycle'}</span>
+              <span className={`mc-badge ${r.coverage}`}>{r.coverage === 'full' ? 'Full lifecycle' : m.status.value === 'operating' ? 'Ongoing mission · to NASA’s latest report' : 'Partial lifecycle'}</span>
             </header>
             <h3>{m.name}</h3>
             <p className="mc-summary">{m.summary}</p>
@@ -93,7 +93,7 @@ function ReliveTab({ dest }: { dest: Destination }) {
               {r.note && <> <span className="mc-note">{r.note}</span></>}
             </p>
             <p className="mc-prov muted small">
-              {span.sourced} of {span.events} event times read from sources{span.sequence ? `, ${span.sequence} placed in their published order (time not published)` : ''}; {span.sources} sources. The 3-D scenes are reconstructions, not mission footage; the sound is synthesised.
+              {span.sourced} of {span.events} event times read from sources{span.sequence ? `, ${span.sequence} placed in their published order (time not published)` : ''}; {span.sources} sources. The 3-D scenes are reconstructions, not mission footage; the sound is synthesised{sc.events.some((e) => e.recording) ? ', except the labelled NASA recordings' : ''}.
               {' '}<Sources ids={sc.events.flatMap((e) => e.sources)} />
             </p>
             <div className="mc-actions">
@@ -122,7 +122,8 @@ function ReliveTab({ dest }: { dest: Destination }) {
 
 function ExploreTab({ dest }: { dest: Destination }) {
   const here = useStore((s) => s.surfaceSiteId)
-  const bodies = (dest === 'all' ? ['moon', 'mars'] : [dest]) as ('moon' | 'mars')[]
+  const bodies = (dest === 'all' ? ['moon', 'mars'] : dest === 'deep' ? [] : [dest]) as ('moon' | 'mars')[]
+  if (!bodies.length) return <p className="muted">There are no surfaces to explore for the Sun and the outer planets: their missions are orbiters and flybys (and Huygens’ descent). Open <b>Relive Mission</b> to follow Parker Solar Probe, Juno and Cassini-Huygens.</p>
   return (
     <div className="mc-explore">
       {bodies.map((b) => {
@@ -167,7 +168,7 @@ function ExploreTab({ dest }: { dest: Destination }) {
 // ─────────────────────────────────────────────────────────────────── Mission Catalogue
 
 function CatalogueTab({ dest }: { dest: Destination }) {
-  const list = MISSIONS.filter((m) => dest === 'all' || m.target === dest)
+  const list = MISSIONS.filter((m) => inDest(m.target, dest))
   return (
     <div className="mc-catalogue" role="list">
       {list.map((m) => <CatalogueRow key={m.id} m={m} />)}
@@ -223,7 +224,7 @@ function DiscoveredTab({ dest }: { dest: Destination }) {
   const surf = useSurface()
   const here = useStore((s) => s.surfaceSiteId)
   const rows = Object.entries(bySite)
-    .filter(([sid, lv]) => Object.values(lv).some((v) => v >= 1) && (dest === 'all' || (UNITY_SITE_BY_ID[sid] ?? SITE_BY_ID[sid])?.bodyId === dest))
+    .filter(([sid, lv]) => Object.values(lv).some((v) => v >= 1) && inDest((UNITY_SITE_BY_ID[sid] ?? SITE_BY_ID[sid])?.bodyId, dest))
     .map(([sid, lv]) => {
       const cfg = SITE_DISCOVERIES[sid]
       const objs = cfg ? Object.values(cfg.objects) : []
@@ -302,7 +303,7 @@ function MissionControlPanel() {
             <span className="muted small" data-testid="mc-context">{where}</span>
           </div>
           <div className="mc-dest" role="group" aria-label="Destination">
-            {(['moon', 'mars', 'all'] as Destination[]).map((d) => (
+            {(['moon', 'mars', 'deep', 'all'] as Destination[]).map((d) => (
               <button key={d} className={'chip' + (M.dest === d ? ' on' : '')} aria-pressed={M.dest === d} onClick={() => M.set({ dest: d })} data-testid={`mc-dest-${d}`}>
                 {d === 'all' ? 'All destinations' : destName(d)}
               </button>

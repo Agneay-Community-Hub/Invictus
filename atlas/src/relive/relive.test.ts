@@ -2,13 +2,16 @@ import { OPP_LANDING_EN } from './marsSurfaceData'
 import { describe, expect, it } from 'vitest'
 import { APOLLO_11, get } from './scripts/apollo11'
 import { OPPORTUNITY, MER_LANDING, MER_ENTRY } from './scripts/opportunity'
+import { PARKER, PARKER_INSTRUMENTS } from './scripts/parker'
+import { JUNO } from './scripts/juno'
+import { CASSINI } from './scripts/cassini'
 import { SOURCES } from '../missions/sources'
 import { eventIndexAt, eventsCrossed, formatMet, metAt, phaseAt, playAt, playLength, rateAt, sampleTrack, shotAt, validateScript } from './timeline'
 import { frameAt, merTransferAngleDeg, _test } from './flight'
 import { R_EARTH, R_MOON, v3 } from './geo'
 import { RELIVE_SCRIPTS } from './player'
 
-const SCRIPTS = [APOLLO_11, OPPORTUNITY]
+const SCRIPTS = [APOLLO_11, OPPORTUNITY, PARKER, JUNO, CASSINI]
 const NMI = 1852
 
 describe('Relive Mission scripts: honesty contract', () => {
@@ -67,7 +70,7 @@ describe('Relive Mission scripts: honesty contract', () => {
   })
 
   it('the registry exposes both scripts', () => {
-    expect(Object.keys(RELIVE_SCRIPTS).sort()).toEqual(['apollo-11', 'mer-opportunity'])
+    expect(Object.keys(RELIVE_SCRIPTS).sort()).toEqual(['apollo-11', 'cassini', 'juno', 'mer-opportunity', 'parker-solar-probe'])
   })
 })
 
@@ -143,7 +146,7 @@ describe('flight model: built from the published values', () => {
   })
 
   it('every frame is finite across both missions', () => {
-    for (const s of SCRIPTS) {
+    for (const s of SCRIPTS.filter((x) => x.renderer !== 'unity')) {
       const L = playLength(s.segments)
       for (let u = 0; u <= L; u += 0.37) {
         const t = metAt(s.segments, u)

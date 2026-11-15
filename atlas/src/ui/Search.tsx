@@ -123,14 +123,15 @@ export function Search({ hasActiveModal = false }: { hasActiveModal?: boolean })
               onClick={() => choose(r)}
               data-testid={`search-hit-${r.key}`}
             >
-              <span className="search-hit-main">
-                <i aria-hidden>{ICON[r.kind]}</i>
-                <span>
-                  <b>{r.name}</b>
-                  <small>{r.detail}</small>
-                </span>
+              <i className="search-hit-ic" aria-hidden>{ICON[r.kind]}</i>
+              <span className="search-hit-text">
+                <b className="search-hit-name">{r.name}</b>
+                {r.detail && <small className="search-hit-detail">{r.detail}</small>}
               </span>
-              <em>{KIND_LABEL[r.kind]} · {actionText(r)}</em>
+              <span className="search-hit-meta">
+                <em className="search-hit-kind">{KIND_LABEL[r.kind]}</em>
+                <span className="search-hit-action">{actionText(r)}</span>
+              </span>
             </button>
           ))}
           {!results.length && <div className="empty">No planet, mission, site or instrument matches “{q}”.</div>}

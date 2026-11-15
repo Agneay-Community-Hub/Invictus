@@ -34,7 +34,39 @@ class MissionAudio {
   readonly stats = { contexts: 0, cuesRequested: 0, cuesPlayed: 0, cuesSilenced: 0, last: [] as { cue: AudioCue; medium: Medium; gain: number }[], running: () => audio.status() === 'running' }
 
   async start() { await audio.unlock() }
-  stop() { /* the shared engine stays; the planetary layers are released by the scene */ }
+  stop() { this.stopRecording() /* the shared engine stays; the planetary layers are released by the scene */ }
+
+  // ── NASA recordings / sonifications attached to events (MissionEvent.recording): decoded once, played on the
+  //    mission bus, so the global Sound settings (mute, master, mission level) apply. One at a time.
+  private buffers = new Map<string, Promise<AudioBuffer | null>>()
+  private playing: { src: AudioBufferSourceNode; gain: GainNode } | null = null
+  readonly recordings: string[] = []
+  recording(url: string) {
+    const bus = audio.bus('mission')
+    if (!bus || !this.enabled) return
+    let p = this.buffers.get(url)
+    if (!p) {
+      p = fetch(url).then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(String(r.status)))))
+        .then((b) => bus.ctx.decodeAudioData(b)).catch(() => null)
+      this.buffers.set(url, p)
+    }
+    void p.then((buf) => {
+      if (!buf) return
+      this.stopRecording()
+      const src = bus.ctx.createBufferSource(); src.buffer = buf
+      const gain = bus.ctx.createGain(); gain.gain.value = 0.9
+      src.connect(gain); gain.connect(bus.node); src.start()
+      src.onended = () => { if (this.playing?.src === src) this.playing = null }
+      this.playing = { src, gain }
+      this.recordings.push(url)
+    })
+  }
+  stopRecording() {
+    const p = this.playing
+    if (!p) return
+    this.playing = null
+    try { const t = p.gain.context.currentTime; p.gain.gain.setTargetAtTime(0, t, 0.3); p.src.stop(t + 1.2) } catch { /* already stopped */ }
+  }
 
   setContext(medium: Medium, distanceM: number, pressure: number) { this.where = { medium, distanceM, pressure } }
 

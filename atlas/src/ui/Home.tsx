@@ -23,7 +23,7 @@ export function exploreSolarSystem() {
 
 interface MissionCard {
   missionId: string
-  world: 'moon' | 'mars'
+  world: 'moon' | 'mars' | 'sun' | 'jupiter' | 'saturn'
   /** what the card opens: a historical replay, or the explorable landing site */
   relive?: string
   siteId?: string
@@ -34,6 +34,9 @@ interface MissionCard {
 const CARDS: MissionCard[] = [
   { missionId: 'apollo-11', world: 'moon', relive: 'apollo-11', siteId: 'tranquility-base', blurb: 'Saturn V to splashdown on the published mission clock, and the descent stage still standing at Tranquility Base.' },
   { missionId: 'mer-opportunity', world: 'mars', relive: 'mer-opportunity', siteId: 'victoria-crater', blurb: 'Launch, airbag landing and fifteen years on Meridiani Planum; drive Victoria crater where it worked.' },
+  { missionId: 'cassini', world: 'saturn', relive: 'cassini', blurb: 'Twenty years from launch to the final plunge: Huygens on Titan, the plumes of Enceladus and 22 dives inside the rings.' },
+  { missionId: 'parker-solar-probe', world: 'sun', relive: 'parker-solar-probe', blurb: 'Seven Venus flybys to fly through the Sun’s atmosphere, its heat shield always toward the Sun.' },
+  { missionId: 'juno', world: 'jupiter', relive: 'juno', blurb: 'A spinning, solar-powered orbiter on polar orbits over Jupiter’s clouds, then past Ganymede, Europa and Io.' },
   { missionId: 'mer-spirit', world: 'mars', siteId: 'mars-spirit', blurb: 'Opportunity’s twin, at Columbia Memorial Station inside Gusev crater.' },
   { missionId: 'msl-curiosity', world: 'mars', siteId: 'mars-curiosity', blurb: 'The nuclear-powered rover at Bradbury Landing on the floor of Gale crater.' },
   { missionId: 'mars-pathfinder', world: 'mars', siteId: 'mars-pathfinder', blurb: 'The first rover on Mars, Sojourner, beside its lander in Ares Vallis.' },
@@ -43,6 +46,7 @@ const CARDS: MissionCard[] = [
 ]
 
 const year = (iso?: string | null) => (iso ? iso.slice(0, 4) : '')
+const WORLD: Record<MissionCard['world'], string> = { moon: 'Moon', mars: 'Mars', sun: 'Sun', jupiter: 'Jupiter', saturn: 'Saturn' }
 
 /** the mission strip: whole cards only (no card cut at the edge), scrolled by page with the arrow buttons */
 function useStrip() {
@@ -70,7 +74,7 @@ export function Home() {
   return (
     <div className="home" data-testid="home">
       <section className="home-hero" aria-labelledby="home-title">
-        <span className="home-kicker">NASA mission heritage · The Moon · Mars</span>
+        <span className="home-kicker">NASA mission heritage · The Moon · Mars · Deep space</span>
         <h1 id="home-title">Abandoned but Not Forgotten</h1>
         <p className="home-tag">Every machine has a story. Every mission left a legacy.</p>
         <p className="home-lede">
@@ -89,10 +93,10 @@ export function Home() {
             <b>Explore Mars</b>
             <small>{marsSites} landing sites with the THEIA rover</small>
           </button>
-          <button role="listitem" className="home-entry relive primary" onClick={() => missionControl.open('relive', { dest: 'all' })} data-testid="home-relive">
+          <button role="listitem" className="home-entry relive-entry primary" onClick={() => missionControl.open('relive', { dest: 'all' })} data-testid="home-relive">
             <span className="home-entry-ic" aria-hidden>▶</span>
             <b>Relive a mission</b>
-            <small>Apollo 11 · Opportunity, launch to end</small>
+            <small>Apollo 11 · Opportunity · Cassini · Parker · Juno</small>
           </button>
           <button role="listitem" className="home-entry solar" onClick={exploreSolarSystem} data-testid="home-explore-solar">
             <span className="home-entry-ic" aria-hidden>☀</span>
@@ -132,8 +136,8 @@ export function Home() {
             return (
               <article key={c.missionId} className={'home-card ' + c.world} data-testid={`home-card-${c.missionId}`}>
                 <div className="home-card-top">
-                  <span className="home-card-meta">{c.world === 'moon' ? 'Moon' : 'Mars'} · {year(m.launch.value)}{end ? `–${end}` : ''}</span>
-                  <button className="home-card-record" onClick={() => missionControl.open('catalogue', { dest: c.world, focus: c.missionId })} title="The mission record with sources">
+                  <span className="home-card-meta">{WORLD[c.world]} · {year(m.launch.value)}{end ? `–${end}` : ''}</span>
+                  <button className="home-card-record" onClick={() => missionControl.open('catalogue', { dest: c.world === 'moon' || c.world === 'mars' ? c.world : 'deep', focus: c.missionId })} title="The mission record with sources">
                     Record
                   </button>
                 </div>

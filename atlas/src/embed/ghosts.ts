@@ -3,7 +3,7 @@
  *
  * The main site switches into this app with links such as
  *   atlas/index.html?go=site&id=tranquility-base      land at a Moon or Mars site (SURFACE_SITES / UNITY_SITES id)
- *   atlas/index.html?go=relive&id=apollo-11           relive a mission (RELIVE_SCRIPTS id: apollo-11, mer-opportunity)
+ *   atlas/index.html?go=relive&id=apollo-11           relive a mission (RELIVE_SCRIPTS id: apollo-11, mer-opportunity, cassini, juno, parker-solar-probe)
  *   atlas/index.html?go=missions | journey&id=moon|mars
  * plus &from=<page to come back to>. The calls are exactly the ones this app's own Home buttons make.
  * It is used as a player (playerOnly): one landing site or replay at a time, then back to the main site. A

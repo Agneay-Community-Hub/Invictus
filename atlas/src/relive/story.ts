@@ -212,7 +212,30 @@ const EXP_MARS_HOP: Book = {
   'hop-handoff': { title: 'Touchdown next', text: 'The carrier lands on the real measured terrain, and THEIA drives out.' },
 }
 
-const BOOKS: Record<string, Book> = { 'apollo-11': APOLLO_11, 'mer-opportunity': OPPORTUNITY }
+/** Parker Solar Probe: gentle wording of its sourced events (scripts/parker.ts); no fact beyond the event text */
+const PARKER: Book = {
+  launch: { title: 'Leaving Earth for the Sun', text: 'On 12 August 2018, a Delta IV Heavy rocket lifted Parker Solar Probe off from Florida. Its goal: to fly through the Sun’s outer atmosphere, closer than anything before it.', why: 'Scientists wanted to know why the Sun’s atmosphere is so hot, and what drives the solar wind that reaches Earth.' },
+  shield: { title: 'A shield made for the Sun', text: 'Everything depends on this shield. Its Sun-facing side reaches about 1,377 °C, yet just behind it the spacecraft stays at about 30 °C.', term: 'Thermal Protection System', why: 'The shield must always face the Sun. Every instrument, every wire, the whole spacecraft lives in its shadow.' },
+  'venus-1': { title: 'Venus, the first time', text: 'Parker swings past Venus. The planet’s gravity slows Parker down in its orbit around the Sun, and that lets it fall closer to the Sun.', term: 'Gravity assist', why: 'Going toward the Sun is hard: a spacecraft leaving Earth carries Earth’s sideways speed. Venus takes some of it away, seven times.' },
+  'perihelion-1': { title: 'The first close pass', text: 'Parker reaches the closest point of its first orbit around the Sun. It will come back again and again, a little closer each time Venus helps.', term: 'Perihelion' },
+  'venus-2': { title: 'Venus again', text: 'The second Venus flyby. Parker’s orbit shrinks again.' },
+  'venus-3': { title: 'A third pass of Venus', text: 'Each flyby pulls the next closest approach in toward the Sun.' },
+  'venus-4': { title: 'The fourth Venus flyby', text: 'Parker is being steered, one flyby at a time, toward the Sun’s atmosphere.' },
+  corona: { title: 'Inside the Sun’s atmosphere', text: 'On 28 April 2021, Parker crossed into the corona, the Sun’s outer atmosphere. No spacecraft had ever been there. The first visit lasted only a few hours.', term: 'Alfvén critical surface', why: 'Inside this boundary, the Sun’s plasma is still tied to the Sun. Beyond it, the solar wind moves too fast for any wave to travel back.' },
+  'perihelion-8': { title: 'Deep in the corona', text: 'At its closest, Parker dips into a bright structure in the corona called a pseudostreamer.' },
+  'venus-5': { title: 'Venus, five', text: 'Another flyby, another step closer.' },
+  'corona-results': { title: 'What Parker found', text: 'The edge of the corona is not smooth: it has spikes and valleys. And some sudden zig-zags in the Sun’s magnetic field start right at the visible surface.', term: 'Switchbacks', why: 'These are clues to how the Sun heats its atmosphere and launches the solar wind.' },
+  'venus-6': { title: 'The sixth Venus flyby', text: 'Only one more to go.' },
+  'venus-7': { title: 'The last Venus flyby', text: 'The seventh and final pass of Venus sets Parker on its closest orbit of all.' },
+  'perihelion-22': { title: 'Closer than ever', text: 'About 6.1 million kilometres from the Sun’s surface, moving at about 690,000 km/h — the fastest any human-made object has travelled. Even so, that is only about 0.064 % of the speed of light.', why: 'Here Parker measures the young solar wind, before it has travelled out toward the planets.' },
+  beacon: { title: 'Safe and sound', text: 'During the closest pass Parker could not talk to Earth. Late on 26 December (US Eastern time), a simple beacon tone arrived: Parker had come through safely.' },
+  'perihelion-23': { title: 'And again', text: 'Three months later, Parker matched its record.' },
+  'perihelion-29': { title: 'The 29th close approach', text: 'In September 2026, Parker passed the Sun for the 29th time, still matching its record.' },
+  checkin: { title: 'All systems normal', text: 'Three days later, the team reported that Parker was working normally.' },
+  extended: { title: 'The journey continues', text: 'NASA has extended the mission into 2029. Parker keeps flying through the Sun’s atmosphere.' },
+}
+
+const BOOKS: Record<string, Book> = { 'apollo-11': APOLLO_11, 'mer-opportunity': OPPORTUNITY, 'parker-solar-probe': PARKER }
 
 /** the end-of-mission screen: what happened, and what the machines left behind (from each script's conclusion) */
 export const CONCLUSIONS: Record<string, { title: string; text: string; left: string }> = {
@@ -225,6 +248,21 @@ export const CONCLUSIONS: Record<string, { title: string; text: string; left: st
     title: 'Opportunity’s long journey',
     text: 'Built for 90 Martian days, Opportunity explored for more than 14 years and drove 45 kilometres. Its last signal came during a planet-wide dust storm in June 2018.',
     left: 'It still sits in Perseverance Valley, on the rim of Endeavour crater.',
+  },
+  'parker-solar-probe': {
+    title: 'Still flying through the corona',
+    text: 'Parker is still orbiting the Sun, passing about 6.1 million kilometres from its surface at each closest approach. NASA has extended the mission into 2029.',
+    left: 'Its 29th close approach was on 4 September 2026; its systems were working normally three days later.',
+  },
+  cassini: {
+    title: 'Cassini’s journey ended',
+    text: 'On 15 September 2017 Cassini dived into Saturn’s atmosphere, sending its measurements to the very last moment. NASA chose this ending to protect Enceladus and Titan, moons that might hold the conditions for life.',
+    left: 'It left Huygens on Titan, and more than 450,000 images and 635 GB of science that scientists still study.',
+  },
+  juno: {
+    title: 'Still orbiting Jupiter',
+    text: 'Juno is still at work: NASA lists it as an active mission, and JPL’s trajectory follows it through its 87th close pass of Jupiter in September 2026.',
+    left: 'Its orbit now takes about 33 days, after the flybys of Ganymede, Europa and Io shortened it.',
   },
 }
 
@@ -252,8 +290,9 @@ export function storyFor(sc: MissionScript, e: MissionEvent): StoryLine {
 }
 
 /** plain-language explanation of how precisely an event's time is known (shown in "How do we know?") */
-export function timeKnownAs(precision: string, basis: MissionEvent['basis']): string {
-  if (basis === 'conceptual') return 'This is a conceptual expedition step, not a real mission event.'
+export function timeKnownAs(precision: string, basis: MissionEvent['basis'], note?: string): string {
+  if (basis === 'conceptual') return note && !/expedition/i.test(note) ? 'This is not a dated event: it introduces part of the spacecraft at a fitting moment of the journey.' : 'This is a conceptual expedition step, not a real mission event.'
+  if (basis === 'derived' && note && /JPL Horizons/.test(note)) return 'NASA published the date. The time of day was worked out from JPL’s reconstruction of the spacecraft’s path (the navigation team’s trajectory), so it is shown only as precisely as that allows.'
   if (basis === 'sequence') return 'NASA did not publish an exact time for this event. We know the order it happened in, so it is placed between the events around it.'
   if (basis === 'derived') return 'This time was worked out from other published times (for example, “so many seconds after entry”).'
   if (precision === 'second' || precision === 'decisecond' || precision === 'centisecond') return 'NASA published this time to the second.'

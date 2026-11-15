@@ -14,7 +14,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url))
  * without the Unity build still serves the rest of the app and the Mars entry shows a clear message instead).
  */
 // Ghosts of Exploration: the player is downloaded into atlas/unity-cache/ (git-ignored) by scripts/fetch-unity-player.mjs
-const UNITY_BUILDS: Record<string, string> = { mars: 'unity-cache/MarsExplorer' }
+const UNITY_BUILDS: Record<string, string> = { mars: 'unity-cache/MarsExplorer', missions: 'unity-cache/MissionsExplorer' }
 
 /**
  * Ghosts of Exploration: this app is served from a sub-folder (site/atlas/), not the site root. The source refers to
@@ -22,7 +22,7 @@ const UNITY_BUILDS: Record<string, string> = { mars: 'unity-cache/MarsExplorer' 
  * BASE_URL, so the source stays identical to the teammate's repo and is easy to sync.
  */
 const OUT_DIR = '../site/atlas'
-const ROOT_DIRS = 'assets|mars-sites|unity|draco'
+const ROOT_DIRS = 'assets|mars-sites|unity|draco|missions'
 function basePaths(): Plugin {
   const jsxAttr = new RegExp(`=(['"])\\/(${ROOT_DIRS})\\/([^'"\\n]*)\\1`, 'g') // JSX: href="/assets/…"
   const quoted = new RegExp(`(['"])\\/(${ROOT_DIRS})\\/([^'"\\n]*)\\1`, 'g')

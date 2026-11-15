@@ -15,6 +15,7 @@
  */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ReliveScene } from './scene/ReliveScene'
+import { UnityMissionView } from '../missions3d/UnityMissionView'
 import { RELIVE_SCRIPTS, SPEEDS, clock, currentEventIndex, onReliveEvent, relive, useRelive } from './player'
 import { formatClock, formatUtc, playAt, sampleTrack } from './timeline'
 import { missionAudio } from './audio'
@@ -36,6 +37,7 @@ const ICON: Record<MissionEvent['kind'], string> = {
   discovery: '🔬',
   countdown: '⏱', ignition: '🔥', liftoff: '🚀', staging: '⇊', jettison: '✂', cutoff: '■', burn: '➶', orbit: '◌', docking: '⧉',
   separation: '⇵', coast: '…', landing: '⬇', surface: '👣', entry: '☄', parachute: '☂', splashdown: '🌊', deploy: '⛭', comms: '📡', end: '◆',
+  flyby: '↷', perihelion: '☉',
 }
 
 const STATUS: Record<string, string> = { completed: 'Completed', ended: 'Ended', operating: 'Operating', lost: 'Lost', unknown: 'Unknown' }
@@ -188,12 +190,18 @@ function pickCorner(): Corner {
   const rects: [Corner, number, number][] = phone
     ? [['bl', 8, bottomY], ['tl', 8, topY]]
     : [['bl', 10, bottomY], ['br', W - 10 - cw, bottomY], ['tl', 10, topY], ['tr', W - 10 - cw, topY]]
+  // panels that own a place on screen (live parameters, legends, view tools) mark themselves data-relive-reserve: a story
+  // card never goes on top of them (their overlap counts three times the subject's)
+  const reserved = typeof document !== 'undefined'
+    ? [...document.querySelectorAll('[data-relive-reserve]')].map((e) => e.getBoundingClientRect()).filter((b) => b.width > 0)
+    : []
   let best: Corner = 'bl', bo = Infinity
   const overlap: Partial<Record<Corner, number>> = {}
   for (const [c, rx, ry] of rects) {
     const ox = Math.max(0, Math.min(sub[2], rx + cw) - Math.max(sub[0], rx))
     const oy = Math.max(0, Math.min(sub[3], ry + ch) - Math.max(sub[1], ry))
-    const o = ox * oy
+    let o = ox * oy
+    for (const b of reserved) o += 3 * Math.max(0, Math.min(b.right, rx + cw) - Math.max(b.left, rx)) * Math.max(0, Math.min(b.bottom, ry + ch) - Math.max(b.top, ry))
     overlap[c] = o / (cw * ch)
     if (o < bo - 1) { bo = o; best = c }
   }
@@ -223,6 +231,13 @@ function StoryCard({ script, i, corner, compact, onClose, onKnow }: { script: Mi
       {!mini && <p>{s.text}</p>}
       {!mini && s.why && <p className="why" data-testid="story-why"><b>Why it mattered:</b> {s.why}</p>}
       {!mini && s.term && <p className="term">This step is called <i>{s.term}</i>.</p>}
+      {!mini && e.image && (
+        <figure className="relive-card-img" data-testid="story-image">
+          <img src={e.image.src} alt={e.image.title} loading="lazy" />
+          <figcaption>{e.image.title} · {e.image.credit} · {e.image.id}</figcaption>
+        </figure>
+      )}
+      {!mini && e.recording && <p className="term" data-testid="story-recording">🔊 {e.recording.title} — {e.recording.kind === 'sonification' ? 'data converted into sound (a sonification), not sound heard in space' : 'a NASA recording'}. {e.recording.credit}</p>}
       {!mini && <footer>
         {conceptual ? <span className="concept">Conceptual flight · not a real mission</span> : (
           <button className="linkish" onClick={onKnow} data-testid="relive-card-know">How do we know?</button>
@@ -239,7 +254,7 @@ function EventEvidence({ script, e }: { script: MissionScript; e: MissionEvent }
     <section className="relive-evidence" data-testid="relive-evidence">
       <h4>{e.title}</h4>
       <p>{e.text} <Cite ids={e.sources} /></p>
-      <p className="plain">{timeKnownAs(r.precision, e.basis)}</p>
+      <p className="plain">{timeKnownAs(r.precision, e.basis, e.timeNote)}</p>
       <p className="plain">{r.visual.reconstruction.startsWith('Reconstructed') || /reconstruct/i.test(r.visual.reconstruction)
         ? 'The 3-D scene is a reconstruction built from the mission record. It is not NASA film footage.'
         : r.visual.reconstruction}{' '}The sound is recreated, not recorded on the mission.</p>
@@ -439,7 +454,7 @@ export default function ReliveMission() {
   useEffect(() => {
     if (!S.id) return
     missionAudio.start()
-    const off = onReliveEvent((e) => { if (e.cue) missionAudio.cue(e.cue) })
+    const off = onReliveEvent((e) => { if (e.cue) missionAudio.cue(e.cue); if (e.recording) missionAudio.recording(e.recording.url) })
     return () => { off(); missionAudio.stop() }
   }, [S.id])
 
@@ -564,7 +579,8 @@ export default function ReliveMission() {
   const showCard = explain && S.card && placed === cardKey && S.status !== 'intro' && S.status !== 'ended'
   const hideChrome = cinema && !chrome
   const ending = CONCLUSIONS[script.id]
-  const hasTele = S.status !== 'intro' && S.status !== 'ended' && (exp || teleRows(script, S.t).length > 0)
+  // the live-parameter slot is taken (the story cards keep clear of it): expeditions, published telemetry, Unity read-outs
+  const hasTele = S.status !== 'intro' && S.status !== 'ended' && (exp || script.renderer === 'unity' || teleRows(script, S.t).length > 0)
 
   return (
     <div className="relive" role="dialog" aria-modal="true" aria-label={exp ? script.title : `Relive the mission: ${script.title}`} data-testid="relive-root" data-kind={exp ? 'expedition' : 'relive'}
@@ -574,7 +590,9 @@ export default function ReliveMission() {
         onPointerMove={(e) => { if (!drag.current) return; live.user.yaw -= (e.clientX - drag.current.x) * 0.006; live.user.pitch = Math.max(-1.2, Math.min(1.2, live.user.pitch + (e.clientY - drag.current.y) * 0.005)); drag.current = { x: e.clientX, y: e.clientY } }}
         onPointerUp={() => { drag.current = null }} onPointerCancel={() => { drag.current = null }}
         onWheel={(e) => { if (freeCam) live.user.zoom = Math.max(0.3, Math.min(6, live.user.zoom * (e.deltaY > 0 ? 1.12 : 1 / 1.12))) }}>
-        <ReliveScene scriptId={script.id} mode={qmode} profile={profile} />
+        {script.renderer === 'unity'
+          ? <UnityMissionView script={script} />
+          : <ReliveScene scriptId={script.id} mode={qmode} profile={profile} />}
       </div>
 
       {/* ───────── top toolbar: one compact row */}

@@ -50,7 +50,10 @@
   // the two full-mission replays
   const REPLAYS = [
     { id: "apollo-11", img: "as11-40-5903.jpg", title: "Apollo 11", sub: "16–24 July 1969 · from launch to splashdown", what: "Watch the whole first Moon landing mission step by step, with NASA's records behind every event." },
-    { id: "mer-opportunity", img: "PIA22222.jpg", title: "Opportunity", sub: "2003–2018 · launch to last contact", what: "Fourteen years on Mars, drive by drive, including her two years at Victoria crater." }
+    { id: "mer-opportunity", img: "PIA22222.jpg", title: "Opportunity", sub: "2003–2018 · launch to last contact", what: "Fourteen years on Mars, drive by drive, including her two years at Victoria crater." },
+    { id: "cassini", img: "cassini-launch.jpg", title: "Cassini–Huygens", sub: "1997–2017 · launch to the final plunge into Saturn", what: "Thirteen years at Saturn: the rings, Enceladus' jets, Huygens' parachute ride down to Titan, and the last signal." },
+    { id: "juno", img: "juno-launch.jpg", title: "Juno", sub: "2011–today · still orbiting Jupiter", what: "The spinning, solar-powered probe that dives over Jupiter's poles, on the real path worked out by NASA's navigators." },
+    { id: "parker-solar-probe", img: "parker-launch.jpg", title: "Parker Solar Probe", sub: "2018–today · still flying past the Sun", what: "The fastest machine ever built, its heat shield always facing the Sun, swooping through the Sun's outer atmosphere." }
   ];
   $("#reliveGrid").innerHTML = REPLAYS.map(r => `<article class="land-card" data-w="replay">
       <div class="land-img"><img src="assets/nasa/${r.img}" alt="" loading="lazy"><span class="land-world replay">Replay</span></div>

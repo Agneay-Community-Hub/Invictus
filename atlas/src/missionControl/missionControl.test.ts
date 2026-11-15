@@ -54,7 +54,9 @@ describe('Mission Control', () => {
         expect(r.notReplayed).toBeTruthy()
         if (end) expect(span.last.ms).toBeLessThan(end)
       }
-      expect(span.first.ms).toBeLessThanOrEqual(dateMs(m.launch.value!) + 60e3)
+      // a date-only launch value (no published time in the record) counts the whole day
+      const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(m.launch.value!)
+      expect(span.first.ms).toBeLessThanOrEqual(dateMs(m.launch.value!) + (dateOnly ? 86400e3 : 60e3))
     }
     expect(REPLAYS.find((r) => r.missionId === 'apollo-11')?.coverage).toBe('full')
     expect(REPLAYS.find((r) => r.missionId === 'mer-opportunity')?.coverage).toBe('full')

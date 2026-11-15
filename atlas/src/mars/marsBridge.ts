@@ -216,7 +216,9 @@ export function startMars(canvas: HTMLCanvasElement, build: string, onProgress: 
         // the player files are versioned by build id (?v=<id>): keep them in Unity's IndexedDB cache and never refetch.
         // Unity's default revalidates the .data and never stores the .wasm / framework ("no-store"), so every visit
         // downloaded ~55 MB again; a new build has new URLs, so a stale player can never be served.
-        cacheControl: () => 'immutable',
+        // ONLY the versioned player files: the same function is asked about every request the player makes (site data
+        // under /mars-sites/, textures), which must stay uncached so a redeploy is seen at once.
+        cacheControl: (url: string) => (/\/unity\/[^?]+\?v=/.test(url) ? 'immutable' : 'no-store'),
         companyName: 'Cosmic Atlas',
         productName: 'Mars',
         productVersion: '3',

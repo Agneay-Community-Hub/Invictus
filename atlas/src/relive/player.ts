@@ -14,12 +14,15 @@
 import { create } from 'zustand'
 import { APOLLO_11 } from './scripts/apollo11'
 import { OPPORTUNITY } from './scripts/opportunity'
+import { PARKER } from './scripts/parker'
+import { JUNO } from './scripts/juno'
+import { CASSINI } from './scripts/cassini'
 import type { MissionEvent, MissionScript } from './types'
 import { eventIndexAt, eventsCrossed, metAt, phaseAt, playAt, playLength, rateAt } from './timeline'
 import { useStore } from '../store/store'
 import { capturePresent, present, usePresent, verifyPresent } from './presentState'
 
-export const RELIVE_SCRIPTS: Record<string, MissionScript> = { [APOLLO_11.id]: APOLLO_11, [OPPORTUNITY.id]: OPPORTUNITY }
+export const RELIVE_SCRIPTS: Record<string, MissionScript> = { [APOLLO_11.id]: APOLLO_11, [OPPORTUNITY.id]: OPPORTUNITY, [PARKER.id]: PARKER, [JUNO.id]: JUNO, [CASSINI.id]: CASSINI }
 
 export type ReliveStatus = 'idle' | 'intro' | 'playing' | 'paused' | 'ended'
 export const SPEEDS = [0.5, 1, 2, 4, 8]
