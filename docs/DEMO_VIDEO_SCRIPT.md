@@ -1,5 +1,12 @@
 # 30-second demo video: script and shot list
 
+**Already recorded:** `docs/demo-video/` holds this shot list as a finished, silent 30-second video (1920×1080, 30 fps), ready for your voice-over:
+- `demo-30s-subtitled.mp4`: English subtitles burned in;
+- `demo-30s-clean.mp4`: no subtitles, if you'd rather add captions in your editor;
+- `demo-30s.srt`: the subtitles as a file, timed to the narration below.
+
+To add your voice, open the video in Clipchamp, record a voice-over track while it plays, and export. The narration below matches the subtitles line for line.
+
 **The idea:** open with Echo, show one machine told in several ways, prove it's real and accurate, and end on the kids' side (play, 3D, classroom). Storytelling first, technology second.
 
 **How to record**

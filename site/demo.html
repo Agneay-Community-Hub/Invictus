@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo (7 slides) — Ghosts of Exploration</title>
+  <meta name="description" content="Ten-slide pitch for Ghosts of Exploration, NASA Space Apps Challenge 2026.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghosts of Exploration">
+  <meta property="og:title" content="Pitch — Ghosts of Exploration">
+  <meta property="og:description" content="Ten-slide pitch for Ghosts of Exploration, NASA Space Apps Challenge 2026.">
+  <meta property="og:url" content="https://agneay-community-hub.github.io/Invictus/demo.html">
+  <meta property="og:image" content="https://agneay-community-hub.github.io/Invictus/assets/share/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ghosts of Exploration: the Apollo 17 lunar rover parked on the Moon, beside the site title.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://agneay-community-hub.github.io/Invictus/demo.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
+  <link rel="icon" href="assets/ui/star.png">
+  <style>
+    :root { --bg: #060a13; --panel: #0f1729; --line: #2f4166; --text: #e9eef7; --muted: #9eabc2; --amber: #ffb347; --amber2: #ffd08a; --cyan: #7fd4ff; --ok: #5ee6a8; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: #000; color: var(--text); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; }
+    .deck { height: 100%; display: grid; place-items: center; }
+    .slide { display: none; width: min(100vw, calc(100vh * 16 / 9)); aspect-ratio: 16 / 9; background: radial-gradient(900px 500px at 85% 0%, rgba(255,179,71,.1), transparent 60%), radial-gradient(700px 500px at 0% 100%, rgba(127,212,255,.08), transparent 60%), var(--bg);
+      position: relative; overflow: hidden; padding: 4.2% 5%; font-size: clamp(10px, 1.55vw, 22px); }
+    .slide.on { display: flex; flex-direction: column; }
+    h1, h2, h3 { font-family: "Space Grotesk", sans-serif; margin: 0 0 .4em; line-height: 1.1; }
+    h1 { font-size: 3.6em; } h2 { font-size: 2.3em; } h3 { font-size: 1.15em; color: var(--amber2); }
+    .eyebrow { color: var(--amber); text-transform: uppercase; letter-spacing: .18em; font-weight: 700; font-size: .75em; margin: 0 0 .8em; }
+    p, li { font-size: 1em; line-height: 1.45; color: #d6deea; }
+    .muted { color: var(--muted); }
+    .accent { color: var(--amber); }
+    .row { display: grid; gap: 3%; flex: 1; min-height: 0; }
+    .r2 { grid-template-columns: 1fr 1.25fr; align-items: center; }
+    .r3 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 2.2%; }
+    .shot { width: 100%; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 20px 40px -20px #000; display: block; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 3% 4%; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+    .card img { width: 100%; border-radius: 8px; margin-bottom: .45em; flex: 1; min-height: 0; object-fit: cover; object-position: top; }
+    .card b { font-family: "Space Grotesk", sans-serif; }
+    .card p { font-size: .78em; margin: .2em 0 0; }
+    .big { font-family: "Space Grotesk", sans-serif; font-size: 2.4em; color: var(--amber2); line-height: 1; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2%; margin-top: auto; }
+    .stats div { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: .7em .9em; }
+    .stats span { display: block; color: var(--muted); font-size: .78em; margin-top: .2em; }
+    .stats .big { font-size: 2.4em; color: var(--amber2); margin: 0; }
+    ul.ticks { list-style: none; padding: 0; margin: 0; } ul.ticks li { padding-left: 1.4em; position: relative; margin: .35em 0; } ul.ticks li::before { content: "★"; color: var(--amber); position: absolute; left: 0; }
+    .roadmap { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+    .roadmap .card b { font-size: 1.15em; margin-bottom: .3em; }
+    .roadmap li { font-size: .85em; }
+    .roadmap .card img { object-position: left top; }
+    .r2 h3 { margin-top: 0; }
+    .num { position: absolute; right: 2.4%; bottom: 3%; color: var(--muted); font-size: .7em; }
+    .title-bg { position: absolute; right: -6%; top: 50%; transform: translateY(-50%); width: 52%; border-radius: 50%; opacity: .9; filter: drop-shadow(0 0 60px rgba(255,179,71,.35)); }
+    .nav { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; align-items: center; background: rgba(15,23,41,.85); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; }
+    .nav button { background: transparent; border: 0; color: var(--text); font-size: 1.1rem; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; }
+    .nav button:hover { background: #1b2742; }
+    .nav span { color: var(--muted); font-size: .85rem; min-width: 4em; text-align: center; }
+    /* Portrait phones: each slide fills the screen as a scrollable card with readable text */
+    @media screen and (max-width: 760px) and (orientation: portrait) {
+      .deck { display: block; height: 100%; }
+      .slide { width: 100%; height: 100%; height: 100dvh; aspect-ratio: auto; font-size: 15px; padding: 28px 18px 88px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+      h1 { font-size: 2.3em; } h2 { font-size: 1.7em; } .eyebrow { font-size: .8em; }
+      .row, .r2, .r3 { grid-template-columns: 1fr; grid-template-rows: none; gap: 14px; flex: none; }
+      .card { padding: 14px; overflow: visible; }
+      .card img { flex: none; max-height: 200px; }
+      .card p { font-size: .9em; }
+      .stats { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 18px; }
+      .stats .big, .big { font-size: 1.8em; }
+      .title-bg { position: static; transform: none; width: 55%; margin: 8px auto 0; display: block; }
+      .num { position: static; display: block; margin-top: 16px; text-align: right; font-size: .8em; }
+      .nav button { width: 44px; height: 44px; }
+    }
+    @media print {
+      @page { size: 1600px 900px; margin: 0; }
+      html, body { background: var(--bg); }
+      .deck { display: block; height: auto; }
+      .slide { display: flex !important; flex-direction: column; width: 1600px; height: 900px; aspect-ratio: auto; font-size: 22px; page-break-after: always; break-after: page; }
+      .nav { display: none; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+    /* back button: same look as the site's (css/style.css), floating over the slides */
+    .back-btn { position: fixed; top: 14px; left: 14px; z-index: 5; display: inline-flex; align-items: center; gap: 10px; max-width: min(250px, 40vw); min-height: 44px; padding: 4px 16px 4px 4px; border-radius: 999px; border: 1px solid var(--line); background: rgba(15,23,41,.85); backdrop-filter: blur(8px); color: var(--text); text-decoration: none; font-size: 16px; transition: border-color .2s, box-shadow .2s; }
+    .back-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,179,71,.14); color: var(--amber2); transition: background .2s, color .2s; }
+    .back-ic svg { width: 18px; height: 18px; }
+    .back-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+    .back-txt small { font-size: .66rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+    .back-txt b { font-family: "Space Grotesk", sans-serif; font-size: .92rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .back-btn:hover, .back-btn:focus-visible { border-color: var(--amber); box-shadow: 0 0 18px rgba(255,179,71,.18); }
+    .back-btn:hover .back-ic, .back-btn:focus-visible .back-ic { background: var(--amber); color: #111; }
+    .back-btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+    @media (max-width: 640px) { .back-btn { padding: 4px 12px 4px 4px; gap: 8px; max-width: 42vw; } .back-txt small { display: none; } }
+    @media (max-width: 380px) { .back-btn { padding: 4px; } .back-txt { display: none; } }
+    @media print { .back-btn { display: none !important; } }
+  </style>
+</head>
+<body>
+<a class="back-btn" href="index.html" data-back aria-label="Go back"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg><span>Back</span></a>
+<div class="deck" id="deck">
+  <section class="slide" aria-label="Slide 1: Title">
+    <p class="eyebrow">NASA Space Apps Challenge 2026 · Abandoned but not Forgotten</p>
+    <h1>Ghosts of<br>Exploration</h1>
+    <p style="font-size:1.35em;max-width:52%">They stopped talking.<br><span class="accent">Their stories didn't.</span></p>
+    <p class="muted" style="max-width:48%;margin-top:auto">A free, story-driven website where 49 machines NASA left on the Moon, on Mars and across the solar system tell their own stories, for kids aged 8–14, classrooms and space fans.</p>
+    <p class="accent" style="max-width:48%"><b>agneay-community-hub.github.io/Invictus</b></p>
+    <img class="title-bg" src="assets/nasa/as17-152-23272.jpg" alt="">
+    <span class="num">1 / 7</span>
+  </section>
+
+  <section class="slide" aria-label="Slide 2: Abstract">
+    <p class="eyebrow">Abstract</p>
+    <h2>Turning silent hardware into stories kids remember</h2>
+    <div class="row r2">
+      <div>
+        <ul class="ticks">
+          <li>Hundreds of tonnes of NASA hardware rest on the Moon and Mars, and probes are still drifting out of the solar system. Most of their stories sit in technical records written for adults.</li>
+          <li><b>Ghosts of Exploration</b> gives each of 49 machines a voice: a first-person <b>ghost log</b> built from real NASA mission facts.</li>
+          <li>Kids start with <b>Echo's 5-minute journey</b>, then meet every machine on a map at true coordinates, as a <b>cartoon short, a comic and a podcast</b>, in 3D landing sites and in games.</li>
+          <li>Free, works offline, in English, Spanish and Hindi, with no sign-up and no tracking.</li>
+        </ul>
+      </div>
+      <img class="shot" src="assets/pitch/03-dossier.jpg" alt="A machine's dossier with its ghost log">
+    </div>
+    <span class="num">2 / 7</span>
+  </section>
+
+  <section class="slide" aria-label="Slide 3: Echo's journey">
+    <p class="eyebrow">The front door · Echo's journey</p>
+    <h2>The whole archive in 5 minutes</h2>
+    <div class="row r2">
+      <img class="shot" src="assets/pitch/31-echo.jpg" alt="Echo telling the story of Spirit and Opportunity, with the fact 90 days to 14 years">
+      <div>
+        <ul class="ticks">
+          <li><b>Echo</b> is the last radio message a spacecraft ever sends home. It travels at the speed of light from the Moon to interstellar space.</li>
+          <li><b>9 narrated scenes</b> over real NASA photos, with captions always on, so it works with the sound off.</li>
+          <li><b>One key fact per scene</b>, each with a link to go deeper into the site.</li>
+          <li>Voyager 1's distance and signal time are <b>worked out live</b>.</li>
+        </ul>
+        <div class="stats" style="margin-top:.9em;grid-template-columns:repeat(3,1fr)">
+          <div><span class="big">5</span><span>minutes</span></div>
+          <div><span class="big">9</span><span>scenes</span></div>
+          <div><span class="big">0</span><span>sign-ups</span></div>
+        </div>
+      </div>
+    </div>
+    <span class="num">3 / 7</span>
+  </section>
+
+  <section class="slide" aria-label="Slide 4: Already done, explore">
+    <p class="eyebrow">What is already done · 1 of 3 · Explore</p>
+    <h2>A working archive of 49 machines</h2>
+    <div class="row r3">
+      <div class="card"><img src="assets/pitch/02-ghost-map.jpg" alt=""><b>Ghost Map and dossiers</b><p>Every machine at its true coordinates, with story, dates, discoveries, photos and NASA sources.</p></div>
+      <div class="card"><img src="assets/pitch/28-landings.jpg" alt=""><b>14 landing sites in 3D</b><p>Walk real Moon and Mars terrain, measured from orbit, and relive whole missions.</p></div>
+      <div class="card"><img src="assets/pitch/04-how-it-worked.jpg" alt=""><b>How it worked</b><p>11 step-by-step animations: airbags, sky cranes, impactors, laser mirrors, quakes.</p></div>
+      <div class="card"><img src="assets/pitch/23-moon.jpg" alt=""><b>The Moon tonight</b><p>Today's real Moon phase, and which Apollo sites are in sunlight right now.</p></div>
+      <div class="card"><img src="assets/pitch/24-timeline.jpg" alt=""><b>Timeline</b><p>Every machine from launch to last word. Drag through the years, or listen in order.</p></div>
+      <div class="card"><img src="assets/pitch/08-3d-explore.jpg" alt=""><b>3D, NASA Eyes and a live tracker</b><p>Spin the worlds, see real spacecraft, and watch Voyager's distance tick up live.</p></div>
+    </div>
+    <span class="num">4 / 7</span>
+  </section>
+
+  <section class="slide" aria-label="Slide 5: Already done, stories">
+    <p class="eyebrow">What is already done · 2 of 3 · Stories in every format</p>
+    <h2>Read it, hear it, watch it, play it</h2>
+    <div class="row r3">
+      <div class="card"><img src="assets/pitch/20-comics.jpg" alt=""><b>Ghost Comics</b><p>A flip-book comic for all 49 machines. Issue #1: Viking 1, “Facing the Wrong Way”.</p></div>
+      <div class="card"><img src="assets/nasa/v-voyager.jpg" alt=""><b>Ghost Logs podcast</b><p>85 episodes: six seasons told by instruments, plus an episode for every machine.</p></div>
+      <div class="card"><img src="assets/pitch/33-shorts-all.jpg" alt=""><b>Ghost Shorts: all 49</b><p>A cartoon for every machine, narrated with its ghost log, with subtitles.</p></div>
+      <div class="card"><img src="assets/pitch/34-dossier-full.jpg" alt=""><b>This story, three ways</b><p>Every dossier links its cartoon, comic and podcast, with a full-screen reading mode.</p></div>
+      <div class="card"><img src="assets/pitch/35-play.jpg" alt=""><b>Play: every game</b><p>Land with real gravity, drive with signal delay, build a probe, Ghost Cards and the quiz.</p></div>
+      <div class="card"><img src="assets/pitch/09-ask.jpg" alt=""><b>Ask the Archive</b><p>Questions answered from the archive, offline, with an optional AI guide.</p></div>
+    </div>
+    <span class="num">5 / 7</span>
+  </section>
+
+  <section class="slide" aria-label="Slide 6: Already done, learning">
+    <p class="eyebrow">What is already done · 3 of 3 · Learning for everyone</p>
+    <h2>Ready for classrooms today</h2>
+    <div class="row r2">
+      <ul class="ticks">
+        <li><b>Teacher pack:</b> 3 lesson plans linked to NGSS, 4 worksheets with an answer key, a projector quiz</li>
+        <li><b>Print and play:</b> colouring pages, word search, wall poster, Ghost Cards deck, adoption certificates</li>
+        <li><b>Open data:</b> every machine, mission, site and photo as CSV or JSON, plus an embed code for other websites</li>
+        <li><b>Three languages:</b> English, Español and हिंदी on the main pages, with read-aloud in each</li>
+        <li><b>Accessible:</b> two reading levels, text sizes, dyslexia-friendly spacing, glossary pop-ups, keyboard and screen-reader support</li>
+        <li><b>Works anywhere:</b> phones, tablets and offline once loaded</li>
+      </ul>
+      <img class="shot" src="assets/pitch/10-teacher.jpg" alt="A printable worksheet from the teacher pack">
+    </div>
+    <div class="stats">
+      <div><span class="big">49</span><span>machines</span></div>
+      <div><span class="big">49</span><span>cartoon shorts</span></div>
+      <div><span class="big">85</span><span>podcast episodes</span></div>
+      <div><span class="big">95</span><span>cited sources</span></div>
+    </div>
+    <span class="num">6 / 7</span>
+  </section>
+
+  <section class="slide" aria-label="Slide 7: Impact">
+    <p class="eyebrow">Impact</p>
+    <h2>Give the ghosts a voice</h2>
+    <p style="max-width:72%">Kids leave knowing that every mission ends, that the machines are still out there, and that today's discoveries were built on theirs. Teachers get a ready-made, sourced, free resource that works in any classroom, starting with a 5-minute story anyone can follow.</p>
+    <div class="stats">
+      <div><span class="big">49</span><span>machines across the solar system</span></div>
+      <div><span class="big">49</span><span>cartoon shorts, one per machine</span></div>
+      <div><span class="big">14</span><span>landing sites in 3D</span></div>
+      <div><span class="big">3</span><span>languages</span></div>
+    </div>
+    <p class="accent" style="margin-top:1.2em;font-size:1.15em"><b>agneay-community-hub.github.io/Invictus</b></p>
+    <p class="muted" style="font-size:.75em">Photos and data: NASA (public domain). NASA does not endorse this project.</p>
+    <span class="num">7 / 7</span>
+  </section>
+</div>
+
+<nav class="nav" aria-label="Slides">
+  <button id="prev" aria-label="Previous slide">←</button><span id="pos">1 / 7</span><button id="next" aria-label="Next slide">→</button>
+  <button id="fs" aria-label="Full screen" title="Full screen">⛶</button>
+</nav>
+<script>
+  (() => {
+    const slides = [...document.querySelectorAll(".slide")];
+    let i = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+    const show = n => { i = Math.max(0, Math.min(slides.length - 1, n)); slides.forEach((s, k) => s.classList.toggle("on", k === i)); document.getElementById("pos").textContent = `${i + 1} / ${slides.length}`; history.replaceState(null, "", "#" + (i + 1)); };
+    document.getElementById("prev").onclick = () => show(i - 1);
+    document.getElementById("next").onclick = () => show(i + 1);
+    document.getElementById("fs").onclick = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
+    addEventListener("keydown", e => {
+      if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); show(i + 1); }
+      if (["ArrowLeft", "PageUp"].includes(e.key)) show(i - 1);
+      if (e.key === "Home") show(0); if (e.key === "End") show(slides.length - 1);
+      if (e.key === "f") document.getElementById("fs").click();
+    });
+    let x0 = null; addEventListener("touchstart", e => (x0 = e.touches[0].clientX)); addEventListener("touchend", e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1)); x0 = null; });
+    show(i);
+  })();
+</script>
+<script src="js/back.js?v=0ad31277"></script>
+</body>
+</html>

@@ -25,7 +25,7 @@ for (const p of pagesToStamp) {
   after = after.replace(/"(js\/i18n\/[\w-]+\.js)(?:\?v=\w+)?"/g, (m, rel) => { try { stamped++; return `"${rel}?v=${fingerprint(rel)}"`; } catch { return m; } });
   if (after !== before) writeFileSync(p, after);
 }
-const SKIP = [/^assets\/video\/.*\.mp4$/, /^atlas\//, /^sw\.js$/, /^assets\/models\//, /^assets\/maps\/hd\//, /^machines\//, /^js\/i18n\//, /^sitemap\.xml$/, /^robots\.txt$/]; // hd = optional NASA JPL mode textures // 3D models are large: cached the first time someone opens them
+const SKIP = [/^assets\/video\/.*\.mp4$/, /^demo-deck\.pdf$/, /^atlas\//, /^sw\.js$/, /^assets\/models\//, /^assets\/maps\/hd\//, /^machines\//, /^js\/i18n\//, /^sitemap\.xml$/, /^robots\.txt$/]; // hd = optional NASA JPL mode textures // 3D models are large: cached the first time someone opens them
 const files = [];
 (function walk(dir) {
   for (const name of readdirSync(dir)) {

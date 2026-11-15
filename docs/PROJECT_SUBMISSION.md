@@ -18,7 +18,8 @@ Abandoned but not Forgotten: Storytelling about NASA's Discarded Equipment on th
 - **Start here (5-minute story):** https://agneay-community-hub.github.io/Invictus/story.html
 - **Code:** https://github.com/Agneay-Community-Hub/Invictus
 - **Pitch deck (12 slides):** https://agneay-community-hub.github.io/Invictus/pitch.html, also `docs/pitch-deck.pptx` and `docs/pitch-deck.pdf`
-- **Demo video (30 s):** ✏️ add the link after recording it with `docs/DEMO_VIDEO_SCRIPT.md`
+- **Demo (7 slides, for the Global Awards):** https://agneay-community-hub.github.io/Invictus/demo-deck.pdf (no login needed). Also as web slides at https://agneay-community-hub.github.io/Invictus/demo.html, and as `docs/demo-deck.pptx`.
+- **Demo video (30 s):** ✏️ add the link after adding your voice to `docs/demo-video/demo-30s-subtitled.mp4` and uploading it
 
 ## High-level summary
 *(About 150 words.)*
