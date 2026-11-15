@@ -31,15 +31,7 @@ body.ask-page {
   z-index: 2;
 }
 
-/* Ensure ask.html topbar always stays in compact nav mode with hamburger button matching Home navbar */
-.topbar.nav-compact .nav-toggle,
-body.ask-page .topbar .nav-toggle { display: block !important; }
-.topbar.nav-compact .mainnav,
-body.ask-page .topbar .mainnav { order: 3; margin-left: 0; }
-.topbar.nav-compact .mainnav ul,
-body.ask-page .topbar .mainnav ul { display: none !important; }
-.topbar.nav-compact .top-actions,
-body.ask-page .topbar .top-actions { margin-left: auto; }
+/* The topbar follows css/style.css: the normal menu on computers, the dial on phones. */
 
 .mainnav a.active { color: var(--text); background: var(--panel2); }
 
@@ -288,3 +280,25 @@ body.ask-page .topbar .top-actions { margin-left: auto; }
     font-size: 1.35rem;
   }
 }
+
+/* ---- Readability over the particles: full effect at the edges and on arrival, calm behind the text ---- */
+.ghost-fibers-bg {
+  transition: opacity 1.4s ease;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.42) 24%, rgba(0,0,0,.42) 76%, #000 100%);
+          mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.42) 24%, rgba(0,0,0,.42) 76%, #000 100%);
+}
+body.ask-reading .ghost-fibers-bg { opacity: .55; }          /* once a conversation starts, the background steps back */
+.ask-wrap::before {                                             /* a soft dark reading column behind the chat */
+  content: ""; position: absolute; inset: 0 -56px; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, transparent 0, rgba(6,10,19,.74) 9%, rgba(6,10,19,.74) 91%, transparent 100%);
+}
+.ask-intro h1, .ask-sub, .ask-status, .ask-intro .eyebrow { text-shadow: 0 1px 10px rgba(3,6,12,.95), 0 0 2px rgba(3,6,12,.9); }
+.ask-suggest button, .ask-mode { backdrop-filter: blur(4px); }
+@media (max-width: 768px) {
+  .ghost-fibers-bg { -webkit-mask-image: none; mask-image: none; opacity: .6; }   /* narrow screens: text spans the width */
+  body.ask-reading .ghost-fibers-bg { opacity: .35; }
+  .ask-wrap::before { inset: 0; background: rgba(6,10,19,.6); }
+}
+
+/* the top bar (and its menu panel) sits above the chat column */
+body.ask-page .topbar { z-index: 50; }

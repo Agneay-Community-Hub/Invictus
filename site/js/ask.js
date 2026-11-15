@@ -344,6 +344,7 @@
       ? `<span class="avatar" aria-hidden="true">${ico("user")}</span><div class="bubble">${html}</div>`
       : `<span class="avatar" aria-hidden="true"><img src="assets/ui/book.png" alt=""></span><div class="bubble">${html}</div>`;
     log.appendChild(el);
+    if (role === "user") document.body.classList.add("ask-reading");   // calm the particles once a conversation starts
     el.scrollIntoView({ block: "end", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
     return el;
   }
@@ -530,11 +531,15 @@
   }
 
   const t = $(".nav-toggle"), ul = $("#navlist");
-  if (t && ul && !window.OptionWheel) {
+  const phone = matchMedia("(max-width: 768px)");
+  if (t && ul) {
     t.addEventListener("click", () => {
+      if (window.OptionWheel && phone.matches) return;             // phones: js/option-wheel.js opens the dial
+      if (window.NavPanel) return NavPanel.toggle();               // laptops and tablets: the grouped menu panel
       const o = ul.classList.toggle("open");
       t.setAttribute("aria-expanded", o);
     });
+    ul.addEventListener("click", e => { if (e.target.tagName === "A") { ul.classList.remove("open"); t.setAttribute("aria-expanded", "false"); } });
   }
 
   // Sync explorer passport notification count

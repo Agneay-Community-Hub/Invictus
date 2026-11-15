@@ -64,8 +64,11 @@
   /* ---------------- nav ---------------- */
   function initNav() {
     const t = $(".nav-toggle"), ul = $("#navlist");
-    if (!window.OptionWheel && t) {
+    const phone = matchMedia("(max-width: 768px)");
+    if (t) {
       t.addEventListener("click", () => {
+        if (window.OptionWheel && phone.matches) return;           // phones: js/option-wheel.js opens the dial
+        if (window.NavPanel) return NavPanel.toggle();              // laptops and tablets: the grouped menu panel
         const o = ul.classList.toggle("open");
         t.setAttribute("aria-expanded", o);
       });

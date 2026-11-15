@@ -577,19 +577,11 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
    whatever the screen width, zoom level or language. */
 .topbar.nav-compact .nav-toggle { display: block; }
 .topbar.nav-compact .mainnav { order: 3; margin-left: 0; }
-.topbar.nav-compact .mainnav ul { display: none !important; }
+.topbar.nav-compact .mainnav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 2px; background: var(--bg2); border-bottom: 1px solid var(--line); padding: 8px 16px 16px; box-shadow: 0 18px 40px -12px rgba(0,0,0,.7); }
+.topbar.nav-compact .mainnav ul.open { display: flex; }
+.topbar.nav-compact .mainnav a { padding: 12px; font-size: 1rem; }
 .topbar.nav-compact .top-actions { margin-left: auto; }
-@media (max-width: 1440px) {
-  .nav-toggle { display: block; }
-  .mainnav { order: 3; margin-left: 0; }
-  .mainnav ul { display: none !important; }
-  .top-actions { margin-left: auto; }
-}
 @media (max-width: 1020px) {
-  .nav-toggle { display: block; }
-  .mainnav { order: 3; margin-left: 0; }
-  .mainnav ul { display: none !important; }
-  .top-actions { margin-left: auto; }
   .hero { grid-template-columns: 1fr; }
   .hero-photo { max-width: 420px; }
   .map-layout { grid-template-columns: 1fr; }
@@ -1555,3 +1547,53 @@ body.nav-wheel-open {
   }
 }
 
+
+/* ---- Phones only: the menu becomes the ☰ button, which opens the dial (js/option-wheel.js) with its ✕ to close ---- */
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .mainnav { order: 3; margin-left: 0; }
+  .mainnav ul { display: none !important; }
+  .top-actions { margin-left: auto; }
+}
+/* an open menu turns ☰ into ✕ */
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* laptops (769–1560px): make room so the full menu fits on one line */
+@media (min-width: 769px) and (max-width: 1560px) {
+  .topbar { gap: 10px; }
+  .brand-text small { display: none; }
+  .top-actions .sx-btn kbd, .top-actions .sx-btn .sx-lbl { display: none; }
+  .top-actions .sx-btn { width: 40px; padding: 0; justify-content: center; margin-right: 0; }
+  .top-actions .btn-glow { padding-left: 12px; padding-right: 12px; }
+  .mainnav a { padding-left: 6px; padding-right: 6px; }
+}
+
+/* ---- Menu panel (laptops and tablets when the menu bar doesn't fit): js/nav-panel.js ---- */
+.nav-panel {
+  position: absolute; top: calc(100% + 8px); right: clamp(12px, 3vw, 32px); z-index: 60;
+  width: min(520px, calc(100vw - 24px)); max-height: calc(100dvh - 90px); overflow: auto;
+  padding: 16px; border-radius: 18px; border: 1px solid var(--line2);
+  background: rgba(11, 17, 32, .97); box-shadow: 0 24px 60px -16px rgba(0,0,0,.8), 0 0 0 1px rgba(255,179,71,.06);
+  animation: npIn .18s ease-out;
+}
+.nav-panel[hidden] { display: none; }
+@keyframes npIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.np-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
+.np-h { margin: 4px 0 6px 10px; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--amber2); }
+.np-item { display: flex; align-items: center; gap: 11px; padding: 8px 10px; border-radius: 12px; color: var(--text); text-decoration: none; }
+.np-item:hover, .np-item:focus-visible { background: var(--panel2); outline: none; box-shadow: inset 0 0 0 1px var(--line2); }
+.np-item[aria-current="page"] { background: rgba(255,179,71,.1); box-shadow: inset 0 0 0 1px rgba(255,179,71,.35); }
+.np-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: rgba(255,179,71,.12); color: var(--amber2); }
+.np-ic .ico { width: 18px; height: 18px; }
+.np-tx { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.np-tx b { font-family: var(--head); font-size: .95rem; font-weight: 600; }
+.np-tx small { color: var(--muted); font-size: .78rem; }
+.np-item:hover .np-ic, .np-item:focus-visible .np-ic { background: var(--amber); color: #111; }
+.np-foot { display: flex; align-items: center; gap: 11px; margin-top: 10px; padding: 10px; border-top: 1px solid var(--line); color: var(--text); text-decoration: none; border-radius: 0 0 12px 12px; }
+.np-foot b { flex: 1; font-family: var(--head); font-size: .95rem; font-weight: 600; }
+.np-foot .np-arrow { color: var(--amber2); transition: transform .15s; }
+.np-foot:hover, .np-foot:focus-visible { background: var(--panel2); outline: none; }
+.np-foot:hover .np-arrow { transform: translateX(3px); }
+@media (max-width: 560px) { .np-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .nav-panel { animation: none; } }

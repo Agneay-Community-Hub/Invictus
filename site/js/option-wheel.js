@@ -512,6 +512,7 @@
       if (t.dataset.navWheelBound) return;
       t.dataset.navWheelBound = 'true';
       t.addEventListener('click', (e) => {
+        if (!window.matchMedia('(max-width: 768px)').matches) return;   // computers and tablets use the normal menu
         e.preventDefault();
         e.stopPropagation();
         const now = Date.now();
@@ -526,6 +527,8 @@
     });
 
     closeBtn?.addEventListener('click', closeOverlay);
+    // turning a phone sideways or widening the window past phone size closes the dial
+    window.matchMedia('(max-width: 768px)').addEventListener?.('change', ev => { if (!ev.matches && !overlay.hasAttribute('hidden')) closeOverlay(); });
     backdrop?.addEventListener('click', closeOverlay);
 
     window.addEventListener('keydown', (e) => {
